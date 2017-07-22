@@ -2,7 +2,7 @@
 
 !include styles.puml
 
-object OWAStateStore {
+object OWAState {
   levels = {levelID: LevelState}
 }
 

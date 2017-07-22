@@ -17,7 +17,7 @@
     }
   },
   "author": "Colin Sullivan <colin@colin-sullivan.net>",
-  "license": "MIT",
+  "license": "GPLv3",
   "devDependencies": {
     "npm-watch": "^0.2.0"
   }

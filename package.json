@@ -1,0 +1,24 @@
+{
+  "name": "owa",
+  "version": "0.0.1",
+  "description": "Out of this World Advice is an interactive art installation.  owa.awakening.io",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha",
+    "build_docs": "plantuml -tsvg docs/*.puml",
+    "watch_docs": "npm-watch build_docs"
+  },
+  "watch": {
+    "build_docs": {
+      "patterns": [
+        "docs"
+      ],
+      "extensions": "puml"
+    }
+  },
+  "author": "Colin Sullivan <colin@colin-sullivan.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "npm-watch": "^0.2.0"
+  }
+}

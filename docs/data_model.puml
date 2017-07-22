@@ -1,0 +1,21 @@
+@startuml
+
+!include styles.puml
+
+object OWAStateStore {
+  levels = {levelID: LevelState}
+}
+
+object LevelState {
+segment = [SegmentState]
+}
+
+object SegmentState {
+bool isActive
+}
+
+OWAStateStore *-- LevelState
+LevelState *-- SegmentState
+
+
+@enduml

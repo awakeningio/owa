@@ -1,15 +1,7 @@
-import { createStore, combineReducers } from 'redux'
+import configureStore from "./configureStore"
 
-import owa from './reducers/owa'
+import OWAController from "./OWAController"
 
-console.log("owa");
-console.log(owa);
+var owaStateStore = configureStore();
 
-var owaStateStore = createStore(combineReducers({
-  owa
-}));
-
-console.log("Hello!");
-
-console.log("owaStateStore.getState()");
-console.log(owaStateStore.getState());
+var owaController = new OWAController(owaStateStore);

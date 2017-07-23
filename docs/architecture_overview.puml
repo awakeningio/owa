@@ -1,4 +1,48 @@
 @startuml
 
 !include styles.puml
+
+namespace owa {
+  class OWAController {
+    Top level entity for controlling everything.
+    Entry point, starts all sub-controllers.
+
+    inputController
+    simulatorInputController
+  }
+
+  class SimulatorInputController {
+    
+    Converts messages from simulator UI into
+    dispatched actions.
+
+
+  }
+  OWAController o-- SimulatorInputController
+  
+  /'class InputController {'/
+    /'Converts arduino inputs to dispatched actions.'/
+
+    /'serialport.SerialPort arduinoPort'/
+    /'..'/
+    /'+ handleButtonMessage(data)'/
+  /'}'/
+  /'OWAController o-- InputController'/
+  
+  /'class LightRenderer {'/
+    /'Renders and returns a buffer of pixels.'/
+    /'Could switch between animations as'/
+    /'state changes.'/
+    /'..'/
+    /'store'/
+    /'Array allAnimations'/
+    /'LightAnimation currentAnimation'/
+    /'--'/
+    /'+ render(t)'/
+    /'+ getOutputBuffer()'/
+  /'}'/
+  
+}
+
+
 @enduml

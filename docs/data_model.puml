@@ -2,19 +2,19 @@
 
 !include styles.puml
 
-object OWAState {
+object InteractionState {
   levels = {levelID: LevelState}
 }
 
 object LevelState {
-segment = [SegmentState]
+segments = [SegmentState]
 }
 
 object SegmentState {
 bool isActive
 }
 
-OWAStateStore *-- LevelState
+InteractionState *-- LevelState
 LevelState *-- SegmentState
 
 

@@ -7,6 +7,7 @@ namespace owa {
     Top level entity for controlling everything.
     Entry point, starts all sub-controllers.
 
+    OWAStateStore store
     inputController
     simulatorInputController
   }
@@ -15,6 +16,8 @@ namespace owa {
     
     Converts messages from simulator UI into
     dispatched actions.
+
+    oscListener
 
 
   }
@@ -41,8 +44,37 @@ namespace owa {
     /'+ render(t)'/
     /'+ getOutputBuffer()'/
   /'}'/
+
+  class StateStore {
+    Main state store for OWA app
+
+    See data model for state tree.
+  }
+
+  class OSCActionListener {
+    Forward actions from osc.js to a Redux state store.
+
+    store
+    oscSocket
+  }
+
+  class OSCActionDispatcher {
+    Redux middleware to dispatch actions via osc.js
+
+    oscSocket
+  }
+
+  namespace simulator {
+    class OWAUIApp {
+      Entry point for the GUI
+
+      owa.StateStore store
+      owa.OSCActionDispatcher oscActionDispatcher
+    }
+  }
   
 }
+
 
 
 @enduml

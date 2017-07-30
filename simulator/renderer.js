@@ -18,11 +18,10 @@ $('rect.cls-1').on('click', (e) => {
   console.log("buttonIDParsed");
   console.log(buttonIDParsed);
   var buttonEvent = {
-    type: 'BUTTON_PRESSED',
     level: Number(buttonIDParsed[1]),
     position: Number(buttonIDParsed[2])
   };
   console.log("buttonEvent");
   console.log(buttonEvent);
-  ipcRenderer.send('dispatch', buttonEvent);
+  ipcRenderer.send('dispatchButtonPressed', buttonEvent);
 });

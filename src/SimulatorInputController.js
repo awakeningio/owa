@@ -8,35 +8,37 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import osc from "node-osc"
+import osc from 'osc'
 
 import ControllerWithStore from "./ControllerWithStore"
 import { getEnvOrError } from "./utils"
 
 class SimulatorInputController extends ControllerWithStore {
   init () {
-    this.oscServer = new osc.Server(
-      getEnvOrError("SIMULATOR_INPUT_PORT"),
-      "127.0.0.1"
-    );
-    this.oscServer.on("message", (msg, rinfo) => {
-      console.log("msg");
-      console.log(msg);
-      console.log("rinfo");
-      console.log(rinfo);
-
-      var command = msg[0];
-      switch (command) {
-        case '/button_pressed':
-          console.log("msg");
-          console.log(msg);
-          break;
-        
-        default:
-          break;
-      }
+    this.oscPort = new osc.UDPPort({
+      localAddress: '127.0.0.1',
+      localPort: getEnvOrError('SIMULATOR_OSC_OUT_PORT'),
+      remoteAddress: '127.0.0.1',
+      remotePort: getEnvOrError('SIMULATOR_OSC_IN_PORT')
     });
-    
+    this.oscPort.on("message", (msg) => {
+      //console.log("msg");
+      //console.log(msg);
+
+      let actionPairs = msg.args.slice(1);
+      let i;
+      let action = {
+        type: msg.args[0],
+        payload: {}
+      };
+      for (i = 0; i < actionPairs.length - 1; i+=2) {
+        action.payload[actionPairs[i]] = actionPairs[i + 1];
+      }
+
+      this.store.dispatch(action);
+
+    });
+    this.oscPort.open();
   }
 }
 

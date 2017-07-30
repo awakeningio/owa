@@ -56,7 +56,6 @@ app.on('ready', () => {
 ipcMain.on('dispatch', (event, arg) => {
   console.log("arg");
   console.log(arg);
-  event.sender.send('dispatch', event)
 })
 
 //// This method will be called when Electron has finished

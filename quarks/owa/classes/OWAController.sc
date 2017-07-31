@@ -62,12 +62,24 @@ OWAController {
     this.sequencers = List.new();
     sounds = List.new();
 
+    store.subscribe({
+      this.handle_state_change();
+    });
+
     store.dispatch((
       type: "OWA_SOUND_INIT_DONE"
     ));
 
 
     ^this;
+  }
+
+  handle_state_change {
+    var state = this.store.getState();
+
+    "OWAController.handle_state_change".postln();
+    "state:".postln;
+    state.postln;
   }
 
   initSequencer {

@@ -3,7 +3,8 @@ OWAController {
 
   // MixerChannel instance
   var outputChannel,
-    <>store,
+    <>owaStore,
+    <>linkStore,
     <>sequencers,
     sounds,
     sequencerNameToClass,
@@ -29,8 +30,8 @@ OWAController {
 
     "OWAController.init".postln();
 
-    store = StateStore.getInstance();
-    store.setDispatchLocations((
+    owaStore = StateStore.getInstance();
+    owaStore.setDispatchLocations((
       \main: (
         addr: "127.0.0.1",
         port: "SC_OSC_OUT_PORT".getenv().asInteger()
@@ -62,11 +63,11 @@ OWAController {
     this.sequencers = List.new();
     sounds = List.new();
 
-    store.subscribe({
+    owaStore.subscribe({
       this.handle_state_change();
     });
 
-    store.dispatch((
+    owaStore.dispatch((
       type: "OWA_SOUND_INIT_DONE"
     ));
 
@@ -75,7 +76,7 @@ OWAController {
   }
 
   handle_state_change {
-    var state = this.store.getState();
+    var state = this.owaStore.getState();
 
     "OWAController.handle_state_change".postln();
     "state:".postln;
@@ -87,7 +88,7 @@ OWAController {
 
     this.sequencers.add(
       sequencerNameToClass[sequencer.name.asSymbol()].new((
-        store: this.store,
+        owaStore: this.owaStore,
         name: sequencer.name,
         outputChannel: outputChannel,
         bufManager: bufManager
@@ -100,7 +101,7 @@ OWAController {
 
     sounds.add(
       QueuableSound.new((
-        store: this.store,
+        owaStore: this.owaStore,
         name: sound.name,
         outputChannel: outputChannel,
         bufManager: bufManager
@@ -108,39 +109,39 @@ OWAController {
     );
   }
 
-  initFromAPI {
-    arg initialState;
-    var state,
-      me = this;
+  //initFromAPI {
+    //arg initialState;
+    //var state,
+      //me = this;
 
-    this.store = StateStore.new(initialState);
-    state = this.store.getState();
+    //this.owaStore = StateStore.new(initialState);
+    //state = this.owaStore.getState();
 
-    TempoClock.default.tempo = state.tempo / 60.0;
+    //TempoClock.default.tempo = state.tempo / 60.0;
 
-    // TODO: Kill any currently running sequencers
+    //// TODO: Kill any currently running sequencers
 
-    // load all bufs
-    "loading buffers...".postln();
-    bufManager.load_bufs(state.bufferList, {
-      //"initializing sounds...".postln();
-      //state.sounds.do({
-        //arg sound;
-        //me.initSound(sound);
-      //});
+    //// load all bufs
+    //"loading buffers...".postln();
+    //bufManager.load_bufs(state.bufferList, {
+      ////"initializing sounds...".postln();
+      ////state.sounds.do({
+        ////arg sound;
+        ////me.initSound(sound);
+      ////});
 
-      //"initializing sequencers...".postln();
-      //// create sequencers
-      //state.sequencers.do({
-        //arg sequencer;
-        //"sequencer:".postln;
-        //sequencer.postln;
-        //me.initSequencer(sequencer);
-      //});
+      ////"initializing sequencers...".postln();
+      ////// create sequencers
+      ////state.sequencers.do({
+        ////arg sequencer;
+        ////"sequencer:".postln;
+        ////sequencer.postln;
+        ////me.initSequencer(sequencer);
+      ////});
 
 
-    });
-  }
+    //});
+  //}
 
   /**
    *  This is a singleton, use this method to get the

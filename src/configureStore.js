@@ -12,6 +12,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 
 import owa from './reducers/owa'
+import abletonlinkRedux from 'abletonlink-redux'
 
 /**
  *  logging of state-store messages
@@ -26,9 +27,10 @@ const logger = store => next => action => {
   //return next(action);
 };
 
-export default function configureStore (initialState = {}) {
+export function configureStore (initialState = {}) {
   let rootReducer = combineReducers({
-    owa
+    owa: owa,
+    link: abletonlinkRedux.reducer
   });
   let createStoreWithMiddleware = applyMiddleware(
     logger
@@ -36,4 +38,11 @@ export default function configureStore (initialState = {}) {
 
 
   return createStoreWithMiddleware(rootReducer, initialState);
+}
+
+export function configureLinkStore () {
+  let rootReducer = combineReducers({
+    link: abletonlinkRedux.reducer
+  });
+  return createStore(rootReducer);
 }

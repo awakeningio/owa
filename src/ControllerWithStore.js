@@ -9,8 +9,9 @@
  **/
 
 class ControllerWithStore {
-  constructor(store) {
+  constructor(store, params) {
     this.store = store;
+    this.params = params || null;
 
     this.init();
 

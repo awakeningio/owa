@@ -38,7 +38,15 @@ ipcMain.on('dispatchButtonPressed', (event, arg) => {
     args: [
       {
         type: "s",
+        value: "type"
+      },
+      {
+        type: "s",
         value: "BUTTON_PRESSED"
+      },
+      {
+        type: "s",
+        value: "payload"
       },
       {
         type: "s",

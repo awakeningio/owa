@@ -16,9 +16,7 @@ namespace owa {
     Converts messages from simulator UI into
     dispatched actions.
 
-    oscListener
-
-
+    oscActionListener
   }
   OWAController o-- SimulatorInputController
   
@@ -44,18 +42,16 @@ namespace owa {
     oscSocket
   }
 
-  class OSCActionDispatcher {
-    Redux middleware to dispatch actions via osc.js
+  /'class OSCActionDispatcher {'/
+    /'Redux middleware to dispatch actions via osc.js'/
 
-    oscSocket
-  }
+    /'oscSocket'/
+  /'}'/
 
   namespace simulator {
     class OWAUIApp {
       Entry point for the GUI
 
-      owa.StateStore store
-      owa.OSCActionDispatcher oscActionDispatcher
     }
   }
   

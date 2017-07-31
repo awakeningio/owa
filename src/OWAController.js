@@ -10,11 +10,13 @@
 
 import ControllerWithStore from "./ControllerWithStore"
 import SimulatorInputController from "./SimulatorInputController"
+import SoundController from "./SoundController"
 
 class OWAController extends ControllerWithStore {
   init () {
 
-    this.simulatorInputController = new SimulatorInputController(this.store);
+    this.inputController = new SimulatorInputController(this.store);
+    this.soundController = new SoundController(this.store);
     
   }
 

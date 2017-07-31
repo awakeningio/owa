@@ -19,11 +19,11 @@ import owa from './reducers/owa'
 const logger = store => next => action => {
   let now = new Date();
   console.info(`${now.toString()}: [OWA] dispatching`, action);
-  //let result = next(action)
-  console.log('next state', JSON.stringify(store.getState()))
-  //console.groupEnd(action.type)
-  //return result
-  return next(action);
+  console.log('prev state', JSON.stringify(store.getState(), ' ', 4))
+  let result = next(action)
+  console.log('next state', JSON.stringify(store.getState(), ' ', 4))
+  return result
+  //return next(action);
 };
 
 export default function configureStore (initialState = {}) {

@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "osc": "^2.2.0",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "supercolliderjs": "^0.14.2"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",

@@ -2,20 +2,37 @@
 
 !include styles.puml
 
-object InteractionState {
-  levels = {levelID: LevelState}
+object owaStateStore {  
+  SessionState session
 }
 
-object LevelState {
-segments = [SegmentState]
-}
+object SessionState {
+  Anything relating to the current interaction session.
 
-object SegmentState {
-bool isActive
+  Enum sessionPhase = {IDLE, INIT, ...}
 }
+owaStateStore *-- SessionState
 
-InteractionState *-- LevelState
-LevelState *-- SegmentState
+/'object InteractionState {'/
+  /'levels = {levelID: LevelState}'/
+/'}'/
+
+/'object LevelState {'/
+/'segments = [SegmentState]'/
+/'}'/
+
+/'object SegmentState {'/
+/'bool isActive'/
+/'}'/
+
+/'InteractionState *-- LevelState'/
+/'LevelState *-- SegmentState'/
+
+object linkStateStore {
+  abletonlink.tempo
+  abletonlink.beat
+  abletonlink.bar
+}
 
 
 @enduml

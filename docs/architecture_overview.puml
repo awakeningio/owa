@@ -30,10 +30,17 @@ namespace owa {
   /'}'/
   /'OWAController o-- ArduinoInputController'/
   
-  class StateStore {
+  class owaStateStore {
     Main state store for OWA app
 
     See data model for state tree.
+  }
+
+  class linkStateStore {
+    A separate Redux state store for the Ableton Link state.  It changes
+    very frequently and thus does not need to be in the same store.
+
+    See data model for tree
   }
 
   class OSCActionListener {
@@ -44,8 +51,15 @@ namespace owa {
   }
 
   class AbletonLinkController
-  class SoundController
+  OWAController *-- AbletonLinkController
+  class SoundController {
+    Forwards state changes to SuperCollider and forwards dispatches from SC
+    to the store.
+
+    OSCActionListener actionListener
+  }
   OWAController *-- SoundController
+  SoundController *-- OSCActionListener
 
   /'class OSCActionDispatcher {'/
     /'Redux middleware to dispatch actions via osc.js'/
@@ -60,14 +74,17 @@ namespace owa {
     }
   }
 
-  namespace quarks.owa {
-    class StateStore
-    class OWAController {
-      store
-    }
+  namespace quarks {
+    namespace owa {
+      class OWAController {
+        StateStore owaStore
+        StateStore linkStore
+      }
 
-    OWAController *-- StateStore
+      OWAController *-- StateStore
+    }
   }
+
   
 }
 

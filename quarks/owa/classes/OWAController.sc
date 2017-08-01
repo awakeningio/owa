@@ -8,7 +8,8 @@ OWAController {
     <>sequencers,
     sounds,
     sequencerNameToClass,
-    bufManager;
+    bufManager,
+    clockController;
 
 
   *new {
@@ -30,13 +31,15 @@ OWAController {
 
     "OWAController.init".postln();
 
-    owaStore = StateStore.getInstance();
+    owaStore = StateStore.new(());
     owaStore.setDispatchLocations((
       \main: (
         addr: "127.0.0.1",
         port: "SC_OSC_OUT_PORT".getenv().asInteger()
       )
     ));
+
+    linkStore = StateStore.new(());
 
     outputChannel = MixerChannel.new(
       "OWAController",
@@ -63,9 +66,22 @@ OWAController {
     this.sequencers = List.new();
     sounds = List.new();
 
+    //linkStore.subscribe({
+      //var linkState = linkStore.getState();
+      //"linkStore changed".postln();
+      //"linkState:".postln;
+      //linkState.postln;
+
+    //});
+
     owaStore.subscribe({
       this.handle_state_change();
     });
+
+    clockController = ReduxAbletonTempoClockController.new((
+      store: linkStore,
+      clockOffsetSeconds: 0.0
+    ));
 
     owaStore.dispatch((
       type: "OWA_SOUND_INIT_DONE"

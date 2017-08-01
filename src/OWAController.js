@@ -16,7 +16,9 @@ class OWAController extends ControllerWithStore {
   init () {
 
     this.inputController = new SimulatorInputController(this.store);
-    this.soundController = new SoundController(this.store);
+    this.soundController = new SoundController(this.store, {
+      linkStateStore: this.params.linkStateStore
+    });
     
   }
 

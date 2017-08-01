@@ -29,8 +29,7 @@ const logger = store => next => action => {
 
 export function configureStore (initialState = {}) {
   let rootReducer = combineReducers({
-    owa: owa,
-    link: abletonlinkRedux.reducer
+    owa: owa
   });
   let createStoreWithMiddleware = applyMiddleware(
     logger
@@ -42,7 +41,7 @@ export function configureStore (initialState = {}) {
 
 export function configureLinkStore () {
   let rootReducer = combineReducers({
-    link: abletonlinkRedux.reducer
+    abletonlink: abletonlinkRedux.reducer
   });
   return createStore(rootReducer);
 }

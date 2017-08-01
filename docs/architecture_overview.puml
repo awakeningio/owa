@@ -9,6 +9,7 @@ namespace owa {
 
     OWAStateStore store
     inputController
+    soundController
   }
 
   class SimulatorInputController {
@@ -20,14 +21,14 @@ namespace owa {
   }
   OWAController o-- SimulatorInputController
   
-  class ArduinoInputController {
-    Converts arduino inputs to dispatched actions.
+  /'class ArduinoInputController {'/
+    /'Converts arduino inputs to dispatched actions.'/
 
-    serialport.SerialPort arduinoPort
-    ..
-    + handleButtonMessage(data)
-  }
-  OWAController o-- ArduinoInputController
+    /'serialport.SerialPort arduinoPort'/
+    /'..'/
+    /'+ handleButtonMessage(data)'/
+  /'}'/
+  /'OWAController o-- ArduinoInputController'/
   
   class StateStore {
     Main state store for OWA app
@@ -42,6 +43,10 @@ namespace owa {
     oscSocket
   }
 
+  class AbletonLinkController
+  class SoundController
+  OWAController *-- SoundController
+
   /'class OSCActionDispatcher {'/
     /'Redux middleware to dispatch actions via osc.js'/
 
@@ -53,6 +58,15 @@ namespace owa {
       Entry point for the GUI
 
     }
+  }
+
+  namespace quarks.owa {
+    class StateStore
+    class OWAController {
+      store
+    }
+
+    OWAController *-- StateStore
   }
   
 }

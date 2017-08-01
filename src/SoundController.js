@@ -25,20 +25,39 @@ class SoundController extends ControllerWithStore {
     });
 
     this.lastState = this.store.getState();
+
+    this.linkStore = this.params.linkStateStore;
     
     this.store.dispatch({
       type: actionTypes.OWA_SOUND_INIT_STARTED
     });
 
 
-    this.scapi = null;
+    this.owaAPI = null;
 
-    console.log("Booting SuperCollider lang...");
-    sc.lang.boot().then((sclang) => {
-      let mainFilePath = __dirname + '/../main.sc';
-      sclang.executeFile(mainFilePath);
+    if (!process.env.EXTERNAL_SC) {
+      console.log("Booting SuperCollider lang...");
+      sc.lang.boot().then((sclang) => {
+        let mainFilePath = __dirname + '/../main.sc';
+        sclang.executeFile(mainFilePath);
+      });
+    }
+
+
+  }
+
+  handle_link_state_change () {
+    var linkState = this.linkStore.getState();
+    this.call("owa.setLinkState", [linkState]).catch((err) => {
+      console.log("err");
+      console.log(err);
     });
+  }
 
+  handle_api_error (err) {
+    console.log("API ERROR!");
+    console.log("err");
+    console.log(err);
   }
 
   handle_state_change () {
@@ -49,24 +68,21 @@ class SoundController extends ControllerWithStore {
 
       if (state.owa.soundReady == OWA_READY_STATES.READY) {
         var api = new sc.scapi();
+        this.owaAPI = api;
+        this.owaAPI.log.echo = true;
 
-        this.scapi = api;
-        api.log.echo = true;
-
-        api.on("error", function (err) {
-          console.log("[SoundController] API ERROR: ");
-          console.log(err);
+        this.owaAPI.on("error", (err) => {
+          this.handle_api_error(err);
         });
-
-        //console.log("sc api connecting...");
-        api.connect();
-        this.call("StateStore.init", [this.store.getState()]);
+        this.owaAPI.connect();
+        this.linkStore.subscribe(() => {
+          this.handle_link_state_change();
+        });
       }
       
-    } else {
-      if (state.owa.soundReady == OWA_READY_STATES.READY) {
-        this.call("StateStore.setState", [state]);
-      }
+    }
+    if (state.owa.soundReady == OWA_READY_STATES.READY) {
+      this.call("owa.setState", [state]);
     }
 
     this.lastState = state;
@@ -80,7 +96,7 @@ class SoundController extends ControllerWithStore {
     return this._apiCallIndex;
   }
   call (apiMethodName, args) {
-    return this.scapi.call(this.getAPICallIndex(), apiMethodName, args);
+    return this.owaAPI.call(this.getAPICallIndex(), apiMethodName, args);
   }
 }
 

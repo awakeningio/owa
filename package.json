@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "abletonlink-redux": "0.0.3",
+    "awakening-sequencers": "^0.7.0",
     "osc": "^2.2.0",
     "redux": "^3.7.2",
     "supercolliderjs": "^0.14.2"

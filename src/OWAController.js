@@ -12,6 +12,8 @@ import ControllerWithStore from "./ControllerWithStore"
 import SimulatorInputController from "./SimulatorInputController"
 import SoundController from "./SoundController"
 
+import awakeningSequencers from "awakening-sequencers"
+
 class OWAController extends ControllerWithStore {
   init () {
 
@@ -19,6 +21,10 @@ class OWAController extends ControllerWithStore {
     this.soundController = new SoundController(this.store, {
       linkStateStore: this.params.linkStateStore
     });
+
+    setTimeout(() => {
+      this.store.dispatch(awakeningSequencers.actions.sequencerQueued('level_10-segment_0'));
+    }, 5000);
     
   }
 

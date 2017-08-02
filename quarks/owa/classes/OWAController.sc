@@ -48,7 +48,7 @@ OWAController {
       outbus: 0
     );
 
-    outputChannel.level = 0.2;
+    outputChannel.level = 1.0;
 
     //  create the buffer manager that will load the samples we need for this
     //  patch.
@@ -56,11 +56,9 @@ OWAController {
       rootDir: projDir +/+ "sounds"
     ));
 
-    //sequencerNameToClass = (
-      //zaps: LazersSequencer,
-      //orgperc: OrganicPercussionSequencer,
-      //pad: RightSequencer
-    //);
+    sequencerNameToClass = (
+      simple: SimpleSequencer
+    );
 
 
     this.sequencers = List.new();
@@ -71,7 +69,6 @@ OWAController {
       //"linkStore changed".postln();
       //"linkState:".postln;
       //linkState.postln;
-
     //});
 
     owaStore.subscribe({
@@ -95,8 +92,15 @@ OWAController {
     var state = this.owaStore.getState();
 
     "OWAController.handle_state_change".postln();
-    "state:".postln;
-    state.postln;
+
+    if ((sequencers.size() == 0).and(state.sequencers != nil), {
+      "state:".postln;
+      state.postln;
+      state.sequencers.do({
+        arg sequencerState;
+        this.initSequencer(sequencerState);
+      });
+    });
   }
 
   initSequencer {
@@ -104,26 +108,27 @@ OWAController {
 
     this.sequencers.add(
       sequencerNameToClass[sequencer.name.asSymbol()].new((
-        owaStore: this.owaStore,
-        name: sequencer.name,
-        outputChannel: outputChannel,
-        bufManager: bufManager
+        store: this.owaStore,
+        sequencerId: sequencer.sequencerId,
+        bufManager: bufManager,
+        //outputChannel: outputChannel,
+        clockController: clockController
       ))
     );
   }
 
-  initSound {
-    arg sound;
+  //initSound {
+    //arg sound;
 
-    sounds.add(
-      QueuableSound.new((
-        owaStore: this.owaStore,
-        name: sound.name,
-        outputChannel: outputChannel,
-        bufManager: bufManager
-      ));
-    );
-  }
+    //sounds.add(
+      //QueuableSound.new((
+        //owaStore: this.owaStore,
+        //name: sound.name,
+        //outputChannel: outputChannel,
+        //bufManager: bufManager
+      //));
+    //);
+  //}
 
   //initFromAPI {
     //arg initialState;

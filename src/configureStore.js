@@ -14,11 +14,6 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import * as reducers from './reducers'
 import abletonlinkRedux from 'abletonlink-redux'
 
-console.log("reducers");
-console.log(reducers);
-console.log("reducers.sequencers");
-console.log(reducers.sequencers);
-
 /**
  *  logging of state-store messages
  **/
@@ -36,7 +31,7 @@ const logger = store => next => action => {
 export function configureStore (initialState) {
   let rootReducer = combineReducers(reducers);
   let createStoreWithMiddleware = applyMiddleware(
-    logger
+    //logger
   )(createStore);
 
 

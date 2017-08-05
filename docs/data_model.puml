@@ -35,6 +35,9 @@ object LevelState {
   How many beats in one measure
   int segmentMeterQuant
   \n
+  Duration of a one beat, this is like the time sig denominator
+  int beatDur = 1
+  \n
   How many measures in one segment
   int segmentDuration
   \n

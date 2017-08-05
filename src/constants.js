@@ -1,4 +1,59 @@
+/**
+ *  @file       constants.js
+ *
+ *
+ *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
+ *
+ *  @copyright  2017 Colin Sullivan
+ *  @license    Licensed under the GPLv3 license.
+ **/
+
 export const OWA_READY_STATES = {
   INIT: "INIT",
   READY: "READY"
+};
+
+let IDLE = "IDLE";
+let TRANS_10 = "TRANS_10";
+let PLAYING_10 = "PLAYING_10";
+let TRANS_8 = "TRANS_8";
+let PLAYING_8 = "PLAYING_8";
+let TRANS_6 = "TRANS_6";
+let PLAYING_6 = "PLAYING_6";
+let TRANS_4 = "TRANS_4";
+let PLAYING_4 = "PLAYING_4";
+let ADVICE_READY = "ADVICE_READY";
+let TRANS_ADVICE = "TRANS_ADVICE";
+let PLAYING_ADVICE = "PLAYING_ADVICE";
+let TRANS_IDLE = "TRANS_IDLE";
+export const SESSION_PHASES = {
+  IDLE,
+  TRANS_10,
+  PLAYING_10,
+  TRANS_8,
+  PLAYING_8,
+  TRANS_6,
+  PLAYING_6,
+  TRANS_4,
+  PLAYING_4,
+  ADVICE_READY,
+  TRANS_ADVICE,
+  PLAYING_ADVICE,
+  TRANS_IDLE
+};
+
+export const NEXT_SESSION_PHASES = {
+  IDLE: TRANS_10,
+  TRANS_10: PLAYING_10,
+  PLAYING_10: TRANS_8,
+  TRANS_8: PLAYING_8,
+  PLAYING_8: TRANS_6,
+  TRANS_6: PLAYING_6,
+  PLAYING_6: TRANS_4,
+  TRANS_4: PLAYING_4,
+  PLAYING_4: ADVICE_READY,
+  ADVICE_READY: TRANS_ADVICE,
+  TRANS_ADVICE: PLAYING_ADVICE,
+  PLAYING_ADVICE: TRANS_IDLE,
+  TRANS_IDLE: IDLE
 };

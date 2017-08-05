@@ -6,6 +6,7 @@ OWAController {
     <>owaStore,
     <>linkStore,
     <>sequencers,
+    sessionController,
     sounds,
     sequencerNameToClass,
     bufManager,
@@ -28,6 +29,8 @@ OWAController {
     // This only works when sclang is launched from a terminal, not from
     // the GUI.
     "OWAController.init".postln();
+
+    OWAConstants.init();
 
     owaStore = StateStore.new(());
     owaStore.setDispatchLocations((
@@ -76,6 +79,11 @@ OWAController {
     clockController = ReduxAbletonTempoClockController.new((
       store: linkStore,
       clockOffsetSeconds: 0.0
+    ));
+
+    sessionController = SessionTimingController.new((
+      store: owaStore,
+      clockController: clockController
     ));
 
     owaStore.dispatch((

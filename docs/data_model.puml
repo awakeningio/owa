@@ -3,35 +3,70 @@
 !include styles.puml
 
 object owaStateStore {  
-  SessionState session
+  bool soundReady
+  Enum SESSION_PHASES sessionPhase
+  \n
+  LevelState levels[]
+  SequencerState sequencers{}
 }
 
-object SessionState {
-  Anything relating to the current interaction session.
-
-  Enum sessionPhase = {IDLE, INIT, ...}
+object SESSION_PHASES { 
+IDLE
+TRANS_10
+PLAYING_10
+TRANS_8
+PLAYING_8
+TRANS_6
+PLAYING_6
+TRANS_4
+PLAYING_4
+ADVICE_READY
+TRANS_ADVICE
+PLAYING_ADVICE
+TRANS_IDLE
 }
-owaStateStore *-- SessionState
 
-/'object InteractionState {'/
-  /'levels = {levelID: LevelState}'/
-/'}'/
+owaStateStore *-- SESSION_PHASES
 
-/'object LevelState {'/
-/'segments = [SegmentState]'/
-/'}'/
+object LevelState {
+  string id
+  SegmentState segments[]
+  \n
+  How many beats in one measure
+  int segmentMeterQuant
+  \n
+  How many measures in one segment
+  int segmentDuration
+  \n
+  Index of the active segment of this level or null if the level is 
+  inactive.
+  activeSegmentIndex
+}
+owaStateStore *-- LevelState
 
-/'object SegmentState {'/
-/'bool isActive'/
-/'}'/
-
-/'InteractionState *-- LevelState'/
-/'LevelState *-- SegmentState'/
+object SegmentState {
+  string sequencerId
+}
+LevelState *-- SegmentState
 
 object linkStateStore {
   abletonlink.tempo
   abletonlink.beat
   abletonlink.bar
+}
+
+object SequencerState {
+  Awakening sequencers object
+  
+  name
+  clockOffsetSeconds
+  beat
+  nextBeat
+  numBeats
+  playingState
+  isReady
+  playQuant: [4, 0]
+  stopQuant: [8, 0]
 }
 
 

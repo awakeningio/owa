@@ -20,15 +20,13 @@ OWAController {
 
   init {
     arg params;
-    var me = this;
-    var now = thisThread.clock.seconds;
-    var tempo = 150.0/60.0;
-    var tickClock;
+    //var me = this;
+    //var now = thisThread.clock.seconds;
+    //var tempo = 150.0/60.0;
+    //var tickClock;
     
     // This only works when sclang is launched from a terminal, not from
     // the GUI.
-    var projDir = File.getcwd();
-
     "OWAController.init".postln();
 
     owaStore = StateStore.new(());
@@ -53,7 +51,7 @@ OWAController {
     //  create the buffer manager that will load the samples we need for this
     //  patch.
     bufManager = BufferManager.new((
-      rootDir: projDir +/+ "sounds"
+      rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
     ));
 
     sequencerNameToClass = (
@@ -105,6 +103,9 @@ OWAController {
 
   initSequencer {
     arg sequencer;
+
+    "sequencer.name:".postln;
+    sequencer.name.postln;
 
     this.sequencers.add(
       sequencerNameToClass[sequencer.name.asSymbol()].new((

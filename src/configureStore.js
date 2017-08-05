@@ -11,9 +11,13 @@
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 
-import owa from './reducers/owa'
+import * as reducers from './reducers'
 import abletonlinkRedux from 'abletonlink-redux'
-import awakeningSequencers from "awakening-sequencers"
+
+console.log("reducers");
+console.log(reducers);
+console.log("reducers.sequencers");
+console.log(reducers.sequencers);
 
 /**
  *  logging of state-store messages
@@ -28,22 +32,9 @@ const logger = store => next => action => {
   //return next(action);
 };
 
-function create_initial_state () {
-  return {
-    sequencers: {
-      'level_10-segment_0': awakeningSequencers.create_default_sequencer(
-        'level_10-segment_0',
-        'simple'
-      )
-    }
-  };
-}
 
-export function configureStore (initialState = create_initial_state()) {
-  let rootReducer = combineReducers({
-    sequencers: awakeningSequencers.reducer,
-    owa: owa,
-  });
+export function configureStore (initialState) {
+  let rootReducer = combineReducers(reducers);
   let createStoreWithMiddleware = applyMiddleware(
     logger
   )(createStore);

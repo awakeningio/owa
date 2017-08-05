@@ -8,9 +8,9 @@
     "build_docs": "plantuml -tsvg docs/*.puml",
     "watch_docs": "npm-watch build_docs",
     "build": "babel src -d build",
-    "build_dev": "babel -s true --source-root build/ src -d build",
-    "watch": "npm-watch build_dev",
-    "start": "node build/main.js"
+    "watch": "npm-watch build",
+    "start": "node build/main.js",
+    "start_dev": "babel-node src/main.js"
   },
   "watch": {
     "build_docs": {
@@ -19,7 +19,7 @@
       ],
       "extensions": "puml"
     },
-    "build_dev": {
+    "build": {
       "patterns": [
         "src"
       ],

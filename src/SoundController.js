@@ -64,9 +64,9 @@ class SoundController extends ControllerWithStore {
 
     var state = this.store.getState();
 
-    if (state.owa.soundReady !== this.lastState.owa.soundReady) {
+    if (state.soundReady !== this.lastState.soundReady) {
 
-      if (state.owa.soundReady == OWA_READY_STATES.READY) {
+      if (state.soundReady == OWA_READY_STATES.READY) {
         var api = new sc.scapi();
         this.owaAPI = api;
         this.owaAPI.log.echo = true;
@@ -81,7 +81,7 @@ class SoundController extends ControllerWithStore {
       }
       
     }
-    if (state.owa.soundReady == OWA_READY_STATES.READY) {
+    if (state.soundReady == OWA_READY_STATES.READY) {
       this.call("owa.setState", [state]);
     }
 

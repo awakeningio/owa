@@ -22,6 +22,7 @@ SimpleSequencer : AwakenedSequencer {
     // define a simple synth
     patch = Patch(\paramexample);
     releaseTime = patch.releaseTime;
+    releaseTime.value = currentState.releaseTime;
     patch.prepareForPlay();
     patchSynth = patch.asSynthDef().add();
     ^patch

@@ -7,20 +7,19 @@
  *  @copyright  2017 Colin Sullivan
  *  @license    Licensed under the GPLv3 license.
  **/
-import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants';
+import { SESSION_PHASES } from '../constants';
 
 import * as actionTypes from '../actionTypes';
 
-export default function sessionPhase (state = SESSION_PHASES.IDLE, action) {
-  let nextPhase;
+function get_initial_state () {
+  return SESSION_PHASES.IDLE;
+}
+export default function sessionPhase (state = get_initial_state(), action) {
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
-      nextPhase = NEXT_SESSION_PHASES[state];
-      state = nextPhase;
-      break;
+      return action.payload.phase;
     
     default:
-      break
+      return state;
   }
-  return state;
 }

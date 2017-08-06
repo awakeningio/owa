@@ -24,7 +24,10 @@ class SoundController extends ControllerWithStore {
       remotePort: getEnvOrError('SC_OSC_IN_PORT')
     });
 
-    this.lastState = this.store.getState();
+    var state = this.store.getState();
+    this.lastState = {
+      soundReady: state.soundReady
+    };
 
     this.linkStore = this.params.linkStateStore;
     
@@ -65,6 +68,7 @@ class SoundController extends ControllerWithStore {
     var state = this.store.getState();
 
     if (state.soundReady !== this.lastState.soundReady) {
+      this.lastState.soundReady = state.soundReady;
 
       if (state.soundReady == OWA_READY_STATES.BOOTED) {
         var api = new sc.scapi();
@@ -90,8 +94,6 @@ class SoundController extends ControllerWithStore {
     if (state.soundReady == OWA_READY_STATES.READY) {
       this.call("owa.setState", [state]);
     }
-
-    this.lastState = state;
   }
   getAPICallIndex () {
     if (this._apiCallIndex < Number.MAX_SAFE_INTEGER - 1) {

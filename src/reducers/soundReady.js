@@ -5,19 +5,15 @@ export default function soundReady (state = false, action) {
   
   switch (action.type) {
     case actionTypes.OWA_SOUND_BOOT_STARTED:
-      state = OWA_READY_STATES.BOOTING;
-      break;
+      return OWA_READY_STATES.BOOTING;
 
     case actionTypes.OWA_SOUND_BOOTED:
-      state = OWA_READY_STATES.BOOTED;
-      break;
+      return OWA_READY_STATES.BOOTED;
 
     case actionTypes.OWA_SOUND_INIT_DONE:
-      state = OWA_READY_STATES.READY;
-      break;
+      return OWA_READY_STATES.READY;
     
     default:
-      break;
+      return state;
   }
-  return state;
 }

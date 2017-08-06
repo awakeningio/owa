@@ -26,12 +26,16 @@ const logger = store => next => action => {
   return result
   //return next(action);
 };
-
-
-export function configureStore (initialState) {
-  let rootReducer = combineReducers(reducers);
+export function configureStore (initialState = {}) {
+  let rootReducer = function (state, action) {
+    state.soundReady = reducers.soundReady(state.soundReady, action);
+    state.sessionPhase = reducers.sessionPhase(state.sessionPhase, action);
+    state.sequencers = reducers.sequencers(state.sequencers, action);
+    state.levels = reducers.levels(state.levels, action, state.sequencers);
+    return state;
+  };
   let createStoreWithMiddleware = applyMiddleware(
-    //logger
+    logger
   )(createStore);
 
 

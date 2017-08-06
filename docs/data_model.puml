@@ -44,6 +44,9 @@ object LevelState {
   Index of the active segment of this level or null if the level is 
   inactive.
   activeSegmentIndex
+  \n
+  If this level is currently in playback.
+  playingState
 }
 owaStateStore *-- LevelState
 

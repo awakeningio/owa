@@ -2,7 +2,7 @@
 
 !include styles.puml
 
-namespace owa {
+namespace nodejs.owa {
   class OWAController {
     Top level entity for controlling everything.
     Entry point, starts all sub-controllers.
@@ -74,20 +74,24 @@ namespace owa {
     }
   }
 
-  namespace quarks {
-    namespace owa {
-      class OWAController {
-        StateStore owaStore
-        StateStore linkStore
-      }
-
-      OWAController *-- StateStore
-    }
-  }
-
-  
 }
 
+package quarks.owa {
+  class OWAController {
+    StateStore owaStore
+    StateStore linkStore
+    SessionTimingController sessionTimingController
+    ReduxAbletonTempoClockController clockController
+  }
+  OWAController *-- quarks.supercollider_redux.StateStore
+  OWAController *-- quarks.supercollider_redux.ReduxAbletonTempoClockController
+
+  class SessionTimingController {
+    Handles scheduling the timing to transition from one phase to the
+    next.
+  }
+  OWAController *-- SessionTimingController
+}
 
 
 @enduml

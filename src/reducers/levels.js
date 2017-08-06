@@ -11,28 +11,29 @@
 import { SESSION_PHASES } from '../constants';
 import * as actionTypes from '../actionTypes';
 
+import { PLAYING_STATES } from 'awakening-sequencers';
 
-function create_default_segment (levelId, segmentIndex) {
+
+function create_default_segment (numSegments, segmentIndex) {
   let segment = {
-    sequencerId: `level_${levelId}-segment_${segmentIndex}`
+    sequencerId: `level_${numSegments}-segment_${segmentIndex}`
   };
   return segment;
 }
 
-function create_default_level (id, segmentMeterQuant, beatDur, segmentDuration) {
+function create_default_level (numSegments, segmentMeterQuant, beatDur, segmentDuration) {
   let level = {
-    id,
+    numSegments,
     segments: [],
     segmentMeterQuant,
     beatDur,
     segmentDuration,
-    activeSegmentIndex: false
+    activeSegmentIndex: false,
+    playingState: PLAYING_STATES.STOPPED
   };
-
-  let numSegments = id;
   let i = 0;
   for (i = 0; i < numSegments; i++) {
-    level.segments.push(create_default_segment(id, i));
+    level.segments.push(create_default_segment(numSegments, i));
   }
 
   return level;
@@ -56,7 +57,23 @@ export default function levels (state = create_default_state(), action) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       switch (action.payload.phase) {
         case SESSION_PHASES.PLAYING_10:
+          state.level_10.playingState = PLAYING_STATES.PLAYING;
           state.level_10.activeSegmentIndex = 0;
+          break;
+
+        case SESSION_PHASES.PLAYING_8:
+          state.level_8.playingState = PLAYING_STATES.PLAYING;
+          state.level_8.activeSegmentIndex = 0;
+          break;
+
+        case SESSION_PHASES.PLAYING_6:
+          state.level_6.playingState = PLAYING_STATES.PLAYING;
+          state.level_6.activeSegmentIndex = 0;
+          break;
+
+        case SESSION_PHASES.PLAYING_4:
+          state.level_4.playingState = PLAYING_STATES.PLAYING;
+          state.level_4.activeSegmentIndex = 0;
           break;
         
         default:

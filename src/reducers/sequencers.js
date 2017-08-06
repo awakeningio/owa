@@ -12,7 +12,13 @@ function create_initial_state () {
     )
   };
   initialState['level_10-segment_0'].releaseTime = 1.2;
+  initialState['level_10-segment_0'].pbind = {
+    dur: [1, 1, 1, 1, 1, 'r5']
+  };
   initialState['level_10-segment_1'].releaseTime = 0.2;
+  initialState['level_10-segment_1'].pbind = {
+    dur: ['r5', 1, 1, 1, 1, 1]
+  };
   return initialState;
 }
 

@@ -16,28 +16,15 @@ import supercolliderRedux from "supercollider-redux";
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 
-//function create_default_segment (numSegments, segmentIndex) {
-  //let segment = {
-    //sequencerId: `level_${numSegments}-segment_${segmentIndex}`
-  //};
-  //return segment;
-//}
-
-function create_default_level (levelId, numSegments, segmentMeterQuant, beatDur, segmentDuration) {
+function create_default_level (levelId, numSegments) {
   let level = {
     levelId,
     numSegments,
-    //segments: [],
     sequencerIds: [],
-    segmentMeterQuant,
-    beatDur,
-    segmentDuration,
-    activeSequencerIndex: false,
     playingState: PLAYING_STATES.STOPPED
   };
   let i = 0;
   for (i = 0; i < numSegments; i++) {
-    //level.segments.push(create_default_segment(numSegments, i));
     level.sequencerIds.push(`${levelId}-segment_${i}`);
   }
 
@@ -80,12 +67,6 @@ function level (state, action, sequencers) {
   let levelSequencers = state.sequencerIds.map((sequencerId) => {
     return sequencers[sequencerId];
   });
-  console.log("levelSequencers");
-  console.log(levelSequencers);
-  let activeSequencer = false;
-  if (state.activeSequencerIndex !== false) {
-    activeSequencer = levelSequencers[state.activeSequencerIndex];
-  }
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       if (
@@ -94,61 +75,43 @@ function level (state, action, sequencers) {
       ) {
         // if the level is not playing
         if (state.playingState == PLAYING_STATES.STOPPED) {
-          // queue the level's first sequencer
+          // queue the levels sequencers
           state.playingState = PLAYING_STATES.QUEUED;
-          state.activeSequencerIndex = 0;
-          levelSequencers[state.activeSequencerIndex].playingState = PLAYING_STATES.QUEUED;
+          levelSequencers.forEach((sequencer) => {
+            sequencer.playingState = PLAYING_STATES.QUEUED;
+          });
         }
 
       } else {
-        // TODO: this level shouldn't be playing
+        // this level shouldn't be playing
+        // TODO: test
         if (state.playingState == PLAYING_STATES.PLAYING) {
           state.playingState = PLAYING_STATES.STOP_QUEUED;
+          levelSequencers.forEach((sequencer) => {
+            sequencer.playingState = PLAYING_STATES.STOP_QUEUED;
+          });
         }
 
       }
       break;
 
-    //case awakeningSequencers.actionTypes.SEQUENCER_STOPPED:
+    case awakeningSequencers.actionTypes.SEQUENCER_STOPPED:
 
-      //// a sequencer just stopped
-
-      //// if it was our active sequencer
-      //if (action.payload.sequencerId == activeSequencer.sequencerId) {
-        //// consider our level to have stopped
-        //state.playingState = PLAYING_STATES.STOPPED;
-        //state.activeSequencerIndex = false;
-      //}
-      //break;
+      // a sequencer just stopped
+      // if it was one of our sequencers
+      if (state.sequencerIds.includes(action.payload.sequencerId)) {
+        // consider our level to have stopped
+        state.playingState = PLAYING_STATES.STOPPED;
+      }
+      break;
     
-    case supercolliderRedux.actionTypes.SUPERCOLLIDER_EVENTSTREAMPLAYER_NEXTBEAT:
-      // if it was our active sequencer
-      if (action.payload.id == activeSequencer.sequencerId) {
+    case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
+      // if it was one of our sequencers
+      if (state.sequencerIds.includes(action.payload.sequencerId)) {
         // if we just queued, we are definitely playing now
         if (state.playingState == PLAYING_STATES.QUEUED) {
           state.playingState = PLAYING_STATES.PLAYING;
         }
-
-        // if the active sequencer's stop has not yet been scheduled
-        if (activeSequencer.playingState == PLAYING_STATES.PLAYING) {
-          // schedule it
-          activeSequencer.playingState = PLAYING_STATES.STOP_QUEUED;
-          
-          // if the level should keep playing
-          if (state.playingState == PLAYING_STATES.PLAYING) {
-
-            // move onto the next sequencer
-            state.activeSequencerIndex = (
-              state.activeSequencerIndex + 1
-            ) % state.numSegments;
-
-            levelSequencers[state.activeSequencerIndex].playingState = (
-              PLAYING_STATES.QUEUED
-            );
-
-          }
-        }
-
       }
       break;
     default:
@@ -159,7 +122,7 @@ function level (state, action, sequencers) {
 
 function create_default_state () {
   return {
-    'level_10': create_default_level('level_10', 2, 5, 1, 1),
+    'level_10': create_default_level('level_10', 2),
     'level_8': create_default_level('level_8', 8),
     'level_6': create_default_level('level_6', 6),
     'level_4': create_default_level('level_4', 4),

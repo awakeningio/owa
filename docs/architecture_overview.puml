@@ -88,9 +88,23 @@ package quarks.owa {
 
   class SessionTimingController {
     Handles scheduling the timing to transition from one phase to the
-    next.
+    next using the master clock.
+    
+    ReduxAbletonTempoClockController clockController
   }
   OWAController *-- SessionTimingController
+  SessionTimingController *-- quarks.supercollider_redux.ReduxAbletonTempoClockController
+
+  class LevelTimingController {
+    Handles the scheduling of playback within one level.  When playingState
+    changes, start changing sequencer state appropriately.  Queue sequencer
+    start, when sequencer starts queue sequencer stop and next sequencer start,
+    etc.
+
+    ReduxAbletonTempoClockController clockController
+  }
+  OWAController *-- LevelTimingController
+  LevelTimingController *-- quarks.supercollider_redux.ReduxAbletonTempoClockController
 }
 
 

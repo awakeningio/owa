@@ -75,6 +75,13 @@ export default function levels (state = create_default_state(), action) {
           state.level_4.playingState = PLAYING_STATES.PLAYING;
           state.level_4.activeSegmentIndex = 0;
           break;
+
+        case SESSION_PHASES.TRANS_ADVICE:
+          state.level_10.playingState = PLAYING_STATES.STOP_QUEUED;
+          state.level_8.playingState = PLAYING_STATES.STOP_QUEUED;
+          state.level_6.playingState = PLAYING_STATES.STOP_QUEUED;
+          state.level_4.playingState = PLAYING_STATES.STOP_QUEUED;
+          break;
         
         default:
           break;

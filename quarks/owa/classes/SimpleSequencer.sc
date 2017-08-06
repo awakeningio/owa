@@ -30,8 +30,6 @@ SimpleSequencer : AwakenedSequencer {
 
   initStream {
     var dur = List.new();
-    "currentState.pbind.dur:".postln;
-    currentState.pbind.dur.postln;
     currentState.pbind.dur.do({
       arg val;
 
@@ -42,8 +40,6 @@ SimpleSequencer : AwakenedSequencer {
       });
 
     });
-    "dur:".postln;
-    dur.postln;
     pat = Pbind(
       // the name of the SynthDef to use for each note
       \instrument, patchSynth.name,

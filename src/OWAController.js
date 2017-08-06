@@ -23,10 +23,10 @@ class OWAController extends ControllerWithStore {
       linkStateStore: this.params.linkStateStore
     });
 
-    //setTimeout(() => {
-      ////this.store.dispatch(awakeningSequencers.actions.sequencerQueued('level_10-segment_0'));
-      //this.store.dispatch(actions.sessionPhaseAdvanced());
-    //}, 5000);
+    setTimeout(() => {
+      //this.store.dispatch(awakeningSequencers.actions.sequencerQueued('level_10-segment_0'));
+      this.store.dispatch(actions.sessionPhaseAdvanced('TRANS_10'));
+    }, 5000);
     
   }
 

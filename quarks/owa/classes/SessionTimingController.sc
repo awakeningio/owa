@@ -29,8 +29,10 @@ SessionTimingController {
   handle_state_change {
     var state = store.getState();
     var autoTransitionSessionPhases = OWAConstants.autoTransitionSessionPhases;
+    var nextSessionPhases = OWAConstants.nextSessionPhases;
+    var nextPhase;
 
-    "SessionTimingController.handle_state_change".postln();
+    //"SessionTimingController.handle_state_change".postln();
 
     if (state.sessionPhase != lastState.sessionPhase, {
       lastState.sessionPhase = state.sessionPhase;
@@ -40,9 +42,29 @@ SessionTimingController {
         autoTransitionSessionPhases.includes(
           state.sessionPhase.asSymbol()
       ), {
-        "setting up auto transition".postln();
+        nextPhase = nextSessionPhases[state.sessionPhase.asSymbol()];
+        this.schedule_transition_to_phase(nextPhase);
       });
 
     });
+  }
+
+  schedule_transition_to_phase {
+    arg phase;
+    var phaseDuration = 16;
+
+    (
+      "[SessionTimingController]: Scheduling transition to phase "
+      ++ phase
+    ).postln();
+
+    clockController.clock.play({
+      store.dispatch((
+        type: 'SESSION_PHASE_ADVANCED',
+        payload: (
+          phase: phase
+        )
+      ));
+    }, [phaseDuration, 0]);
   }
 }

@@ -11,7 +11,7 @@
 import ControllerWithStore from "./ControllerWithStore"
 import OSCActionListener from "./OSCActionListener"
 import { getEnvOrError } from "./utils"
-import { OWA_READY_STATES } from "./constants"
+import { OWA_READY_STATES, SESSION_PHASES, NEXT_SESSION_PHASES } from "./constants"
 import * as actionTypes from "./actionTypes"
 
 import sc from 'supercolliderjs';
@@ -29,7 +29,7 @@ class SoundController extends ControllerWithStore {
     this.linkStore = this.params.linkStateStore;
     
     this.store.dispatch({
-      type: actionTypes.OWA_SOUND_INIT_STARTED
+      type: actionTypes.OWA_SOUND_BOOT_STARTED
     });
 
 
@@ -66,7 +66,7 @@ class SoundController extends ControllerWithStore {
 
     if (state.soundReady !== this.lastState.soundReady) {
 
-      if (state.soundReady == OWA_READY_STATES.READY) {
+      if (state.soundReady == OWA_READY_STATES.BOOTED) {
         var api = new sc.scapi();
         this.owaAPI = api;
         this.owaAPI.log.echo = true;
@@ -78,6 +78,12 @@ class SoundController extends ControllerWithStore {
         this.linkStore.subscribe(() => {
           this.handle_link_state_change();
         });
+        this.call("owa.init", [{
+          constants: {
+            SESSION_PHASES,
+            NEXT_SESSION_PHASES
+          }
+        }]);
       }
       
     }

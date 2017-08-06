@@ -9,7 +9,8 @@
  **/
 
 export const OWA_READY_STATES = {
-  INIT: "INIT",
+  BOOTING: "BOOTING",
+  BOOTED: "BOOTED",
   READY: "READY"
 };
 

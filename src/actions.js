@@ -11,8 +11,11 @@
 
 import * as actionTypes from './actionTypes';
 
-export function sessionPhaseAdvanced () {
+export function sessionPhaseAdvanced (phase) {
   return {
-    type: actionTypes.SESSION_PHASE_ADVANCED
+    type: actionTypes.SESSION_PHASE_ADVANCED,
+    payload: {
+      phase
+    }
   }
 }

@@ -14,24 +14,10 @@ OWAController {
 
 
   *new {
-    arg params;
-
-    ^super.new.init(params);
+    ^super.new.boot();
   }
 
-  init {
-    arg params;
-    //var me = this;
-    //var now = thisThread.clock.seconds;
-    //var tempo = 150.0/60.0;
-    //var tickClock;
-    
-    // This only works when sclang is launched from a terminal, not from
-    // the GUI.
-    "OWAController.init".postln();
-
-    OWAConstants.init();
-
+  boot {
     owaStore = StateStore.new(());
     owaStore.setDispatchLocations((
       \main: (
@@ -41,7 +27,7 @@ OWAController {
     ));
 
     linkStore = StateStore.new(());
-
+    
     outputChannel = MixerChannel.new(
       "OWAController",
       Server.default,
@@ -65,12 +51,23 @@ OWAController {
     this.sequencers = List.new();
     sounds = List.new();
 
-    //linkStore.subscribe({
-      //var linkState = linkStore.getState();
-      //"linkStore changed".postln();
-      //"linkState:".postln;
-      //linkState.postln;
-    //});
+    owaStore.dispatch((
+      type: "OWA_SOUND_BOOTED"
+    ));
+  }
+
+  init {
+    arg params;
+    //var me = this;
+    //var now = thisThread.clock.seconds;
+    //var tempo = 150.0/60.0;
+    //var tickClock;
+    
+    // This only works when sclang is launched from a terminal, not from
+    // the GUI.
+    "OWAController.init".postln();
+
+    OWAConstants.init(params);
 
     owaStore.subscribe({
       this.handle_state_change();
@@ -111,9 +108,6 @@ OWAController {
 
   initSequencer {
     arg sequencer;
-
-    "sequencer.name:".postln;
-    sequencer.name.postln;
 
     this.sequencers.add(
       sequencerNameToClass[sequencer.name.asSymbol()].new((
@@ -179,9 +173,19 @@ OWAController {
    */
   *getInstance {
     if (this.instance == nil, {
-      this.instance = OWAController.new(());
+      this.initInstance();
     });
 
+    ^this.instance;
+  }
+
+  *initInstance {
+    arg params;
+    if (this.instance != nil, {
+      "OWAAlreadyInstantiated".throw();    
+    }, {
+      this.instance = OWAController.new(());
+    });
     ^this.instance;
   }
 }

@@ -47,12 +47,13 @@
   ~pat = Pbind(
     // the name of the SynthDef to use for each note
     \instrument, ~patchSynth.name,
-    //\degree, Pseq([16, 12, 12, 12, 12], inf),
-    \degree, Pseq([24, Pseries(8, 4, 4), Pseries(16, -4, 4), 4], inf),
-    \scale, ~scale,
+    \degree, Pseq([16, 12, 12, 12, 12]),
+    //\degree, Pseq([24, Pseries(8, 4, 4), Pseries(16, -4, 4), 4]),
+    //\scale, ~scale,
     // rhythmic values
     //\dur, Pseq(dur, inf),
-    \dur, Pbrown(1.0/16.0, 1.0, 1.0/16.0),
+    //\dur, Pbrown(1.0/16.0, 1.0, 1.0/16.0),
+    \dur, 1
     //\releaseTime, ~patch.releaseTime
   );
   

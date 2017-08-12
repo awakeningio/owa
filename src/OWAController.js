@@ -11,12 +11,14 @@
 import ControllerWithStore from "./ControllerWithStore"
 import SimulatorInputController from "./SimulatorInputController"
 import SoundController from "./SoundController"
+import logger from "./logging"
 
 //import awakeningSequencers from "awakening-sequencers"
 import * as actions from './actions'
 
 class OWAController extends ControllerWithStore {
   init () {
+    logger.debug('OWAController.init');
 
     this.inputController = new SimulatorInputController(this.store);
     this.soundController = new SoundController(this.store, {

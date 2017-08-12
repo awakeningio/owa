@@ -29,31 +29,27 @@ TRANS_IDLE
 owaStateStore *-- SESSION_PHASES
 
 object LevelState {
-  string id
-  SegmentState segments[]
+  string levelId
+  string sequencerIds[]
   \n
-  How many beats in one measure
-  int segmentMeterQuant
+  Amount of sequencers (and buttons) on this level
+  int numSegments
   \n
-  Duration of a one beat, this is like the time sig denominator
-  int beatDur = 1
-  \n
-  How many measures in one segment
-  int segmentDuration
-  \n
-  Index of the active segment of this level or null if the level is 
+  Index of the active sequencer on this level or false if the level is 
   inactive.
-  activeSegmentIndex
+  int activeSequencerIndex
+  Id of the active sequencer.  This also needs to be stored because the
+  playback order may change and the index above may no longer point to the
+  currently playing sequencer
+  string activeSequencerId
+  \n
+  Sequencer ordering (activeSequencerIndex is an index into this list).
+  string sequencerPlaybackOrder[];
   \n
   If this level is currently in playback.
-  playingState
+  PLAYING_STATES playingState
 }
 owaStateStore *-- LevelState
-
-object SegmentState {
-  string sequencerId
-}
-LevelState *-- SegmentState
 
 object linkStateStore {
   abletonlink.tempo
@@ -74,6 +70,7 @@ object SequencerState {
   playQuant: [4, 0]
   stopQuant: [8, 0]
 }
+LevelState *-- SequencerState
 
 
 @enduml

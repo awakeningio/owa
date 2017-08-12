@@ -9,15 +9,29 @@ function create_initial_state () {
     'level_10-segment_1': awakeningSequencers.create_default_sequencer(
       'level_10-segment_1',
       'simple'
+    ),
+    'level_10-segment_2': awakeningSequencers.create_default_sequencer(
+      'level_10-segment_2',
+      'simple'
     )
   };
+  initialState['level_10-segment_0'].numBeats = 10;
   initialState['level_10-segment_0'].releaseTime = 1.2;
   initialState['level_10-segment_0'].pbind = {
-    dur: [1, 1, 1, 1, 1, 'r5']
+    degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
+    octave: 4
   };
+  initialState['level_10-segment_1'].numBeats = 10;
   initialState['level_10-segment_1'].releaseTime = 0.2;
   initialState['level_10-segment_1'].pbind = {
-    dur: ['r5', 1, 1, 1, 1, 1]
+    degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
+    octave: 6
+  };
+  initialState['level_10-segment_2'].numBeats = 10;
+  initialState['level_10-segment_2'].releaseTime = 0.2;
+  initialState['level_10-segment_2'].pbind = {
+    degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
+    octave: 5
   };
   return initialState;
 }

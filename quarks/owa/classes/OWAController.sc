@@ -10,8 +10,7 @@ OWAController {
     sounds,
     sequencerNameToClass,
     bufManager,
-    clockController,
-    levelControllers;
+    clockController;
 
 
   *new {
@@ -51,7 +50,6 @@ OWAController {
 
     this.sequencers = List.new();
     sounds = List.new();
-    levelControllers = List.new();
 
     owaStore.dispatch((
       type: "OWA_SOUND_BOOTED"
@@ -103,19 +101,6 @@ OWAController {
       state.sequencers.do({
         arg sequencerState;
         this.initSequencer(sequencerState);
-      });
-    });
-
-    if ((levelControllers.size() == 0).and(state.levels != nil), {
-      "[OWAController]: Initializing level controllers".postln();    
-      state.levels.keysValuesDo({
-        arg levelId, levelState;
-        levelControllers.add(
-          LevelTimingController.new((
-            store: owaStore,
-            levelId: levelId
-          ));
-        )
       });
     });
   }

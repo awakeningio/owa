@@ -15,11 +15,31 @@ function get_initial_state () {
   return SESSION_PHASES.IDLE;
 }
 export default function sessionPhase (state = get_initial_state(), action) {
+  console.log("sessionPhase");
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       return action.payload.phase;
+
+    case actionTypes.BUTTON_PRESSED:
+      console.log("action.payload");
+      console.log(action.payload);
+      console.log("state == SESSION_PHASES.IDLE");
+      console.log(state == SESSION_PHASES.IDLE);
+      console.log("action.payload.level == 2");
+      console.log(action.payload.level == 2);
+      console.log("action.payload.position == 1");
+      console.log(action.payload.position == 1);
+      if (
+        state == SESSION_PHASES.IDLE
+        && action.payload.level == 2
+        && action.payload.position == 1
+      ) {
+        return SESSION_PHASES.TRANS_10;
+      }
+      break;
     
     default:
       return state;
   }
+  return state;
 }

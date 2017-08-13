@@ -72,6 +72,7 @@ function level (state, action, sequencers) {
   let levelSequencers = state.sequencerIds.map((sequencerId) => {
     return sequencers[sequencerId];
   });
+  let buttonLevelId;
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       if (
@@ -163,9 +164,63 @@ function level (state, action, sequencers) {
         );
         let nextSequencerId = state.sequencerPlaybackOrder[nextSequencerIndex];
         sequencers[nextSequencerId].playingState = PLAYING_STATES.QUEUED;
-        console.log("activeSequencer.numBeats");
-        console.log(activeSequencer.numBeats);
         sequencers[nextSequencerId].playQuant = [activeSequencer.numBeats, 0];
+      }
+      break;
+    
+    case actionTypes.BUTTON_PRESSED:
+      // if the press was for this level
+      buttonLevelId = `level_${action.payload.level}`;
+      if (buttonLevelId == state.levelId) {
+        // if this level is playing
+        if (state.playingState == PLAYING_STATES.PLAYING) {
+          let selectedSequencerId = (
+            `level_${action.payload.level}-segment_${action.payload.position}`
+          );
+          let selectedSequencerIndex = state.sequencerPlaybackOrder.indexOf(
+            selectedSequencerId
+          );
+          console.log("selectedSequencerId");
+          console.log(selectedSequencerId);
+          console.log("selectedSequencerIndex");
+          console.log(selectedSequencerIndex);
+
+          // stop queued sequencer
+          let nextSequencerIndex = (
+            (state.activeSequencerIndex + 1) % state.numSegments
+          );
+          let nextSequencerId = state.sequencerPlaybackOrder[
+            nextSequencerIndex
+          ];
+          
+          if (
+            selectedSequencerIndex == nextSequencerIndex ||
+            selectedSequencerIndex == state.activeSequencerIndex
+          ) {
+            // do nothing
+            break;
+          } else {
+            // stop next sequencer
+            sequencers[nextSequencerId].playingState = PLAYING_STATES.STOPPED;
+
+            // swap selected sequencer with one that would have been next
+            state.sequencerPlaybackOrder[nextSequencerIndex] = (
+              selectedSequencerId
+            );
+            state.sequencerPlaybackOrder[selectedSequencerIndex] = (
+              nextSequencerId
+            );
+
+            // queue new next one
+            sequencers[selectedSequencerId].playingState = PLAYING_STATES.QUEUED;
+            let activeSequencer = sequencers[state.activeSequencerId];
+            sequencers[selectedSequencerId].playQuant = [
+              activeSequencer.numBeats,
+              0
+            ];
+          }
+
+        }
       }
       break;
     default:

@@ -31,7 +31,7 @@ function create_initial_state () {
   initialState['level_10-segment_2'].releaseTime = 0.2;
   initialState['level_10-segment_2'].pbind = {
     degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
-    octave: 5
+    octave: 8
   };
   return initialState;
 }

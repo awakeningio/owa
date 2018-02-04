@@ -28,28 +28,33 @@ TRANS_IDLE
 
 owaStateStore *-- SESSION_PHASES
 
-object LevelState {
-  string levelId
+object SegmentState {
+  string segmentId
   string sequencerIds[]
   \n
-  Amount of sequencers (and buttons) on this level
-  int numSegments
-  \n
-  Index of the active sequencer on this level or false if the level is 
-  inactive.
-  int activeSequencerIndex
-  Id of the active sequencer.  This also needs to be stored because the
-  playback order may change and the index above may no longer point to the
-  currently playing sequencer
-  string activeSequencerId
-  \n
-  Sequencer ordering (activeSequencerIndex is an index into this list).
-  string sequencerPlaybackOrder[];
-  \n
-  If this level is currently in playback.
+  If this segment is currently in playback.
   PLAYING_STATES playingState
 }
+
+object LevelState {
+  string levelId
+  SegmentState segments{}
+  int numSegments
+  \n
+  Segment ordering (segmentPlaybackIndex is an index into this list).
+  string segmentPlaybackOrder[];
+  \n
+  Index of the active segment on this level or false if the level is 
+  inactive.
+  int activeSegmentIndex
+  \n
+  Id of the active sequencer.  This also needs to be stored because the
+  playback order may change and the segmentPlaybackIndex may no longer point
+  to the currently playing sequencer
+  string activeSegmentId
+}
 owaStateStore *-- LevelState
+LevelState *-- SegmentState
 
 object linkStateStore {
   abletonlink.tempo
@@ -70,7 +75,7 @@ object SequencerState {
   playQuant: [4, 0]
   stopQuant: [8, 0]
 }
-LevelState *-- SequencerState
+SegmentState *-- SequencerState
 
 
 @enduml

@@ -11,6 +11,8 @@
 import { SESSION_PHASES } from '../constants';
 import * as actionTypes from '../actionTypes';
 
+import { create_initial_segment, segment } from './segments'
+
 import awakeningSequencers from 'awakening-sequencers';
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
@@ -18,19 +20,21 @@ const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 function create_default_level (levelId, numSegments) {
   let level = {
     levelId,
+    segments: {},
     numSegments,
-    sequencerIds: [],
+    segmentPlaybackOrder: [],
+    activeSegmentIndex: false,
+    activeSegmentId: false,
     playingState: PLAYING_STATES.STOPPED,
-    activeSequencerIndex: false,
-    activeSequencerId: false,
-    sequencerPlaybackOrder: []
   };
   let i = 0;
-  // at first, sequencers play back in default ordering
+  // create all segments
   for (i = 0; i < numSegments; i++) {
-    let sequencerId = `${levelId}-segment_${i}`;
-    level.sequencerIds.push(sequencerId);
-    level.sequencerPlaybackOrder.push(sequencerId);
+    let segmentId = `${levelId}-segment_${i}`;
+    let segment = create_initial_segment(segmentId);
+    level.segments[segmentId] = segment;
+    // at first, sequencers play back in default ordering
+    level.segmentPlaybackOrder.push(segmentId);
   }
 
   return level;
@@ -69,10 +73,9 @@ function shouldBePlaying (levelId, sessionPhase) {
 }
 
 function level (state, action, sequencers) {
-  let levelSequencers = state.sequencerIds.map((sequencerId) => {
-    return sequencers[sequencerId];
-  });
+  // if a button was pressed, this is the level id of the button press
   let buttonLevelId;
+
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       if (
@@ -84,33 +87,42 @@ function level (state, action, sequencers) {
           // set level as queued
           state.playingState = PLAYING_STATES.QUEUED;
 
-          // queue the levels first sequencer
-          state.activeSequencerIndex = 0;
-          state.activeSequencerId = (
-            state.sequencerPlaybackOrder[state.activeSequencerIndex]
+          // queue the levels first segment
+          state.activeSegmentIndex = 0;
+          state.activeSegmentId = state.segmentPlaybackOrder[
+            state.activeSegmentIndex
+          ]
+          state.segments[state.activeSegmentId].playingState = (
+            PLAYING_STATES.QUEUED
           );
-          let activeSequencer = sequencers[state.activeSequencerId];
-          activeSequencer.playQuant = [
-            activeSequencer.numBeats,
-            0
-          ];
-          activeSequencer.playingState = PLAYING_STATES.QUEUED;
+
+          //// queue the levels first sequencer
+          //state.activeSequencerIndex = 0;
+          //state.activeSequencerId = (
+            //state.sequencerPlaybackOrder[state.activeSequencerIndex]
+          //);
+          //let activeSequencer = sequencers[state.activeSequencerId];
+          //activeSequencer.playQuant = [
+            //activeSequencer.numBeats,
+            //0
+          //];
         }
 
       } else {
         // this level shouldn't be playing
         // TODO: test
         if (state.playingState == PLAYING_STATES.PLAYING) {
+          console.log("TODO: stop the level");
           // level gets STOP_QUEUED
-          state.playingState = PLAYING_STATES.STOP_QUEUED;
-          levelSequencers.forEach((sequencer) => {
-            // all playing sequencers get STOP_QUEUED
-            if (sequencer.playingState == PLAYING_STATES.PLAYING) {
-              sequencer.playingState = PLAYING_STATES.STOP_QUEUED;
-            } else {
-              sequencer.playingState = PLAYING_STATES.STOPPED;
-            }
-          });
+          //state.playingState = PLAYING_STATES.STOP_QUEUED;
+          //levelSequencers.forEach((sequencer) => {
+            //// all playing sequencers get STOP_QUEUED
+            //if (sequencer.playingState == PLAYING_STATES.PLAYING) {
+              //sequencer.playingState = PLAYING_STATES.STOP_QUEUED;
+            //} else {
+              //sequencer.playingState = PLAYING_STATES.STOPPED;
+            //}
+          //});
         }
 
       }

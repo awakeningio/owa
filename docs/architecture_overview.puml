@@ -1,6 +1,4 @@
-@startuml
-
-!include styles.puml
+@startuml !include styles.puml
 
 namespace nodejs.owa {
   class OWAController {
@@ -97,8 +95,7 @@ package quarks.owa {
   owa.api ()- OWAController
 
   class SessionTimingController {
-    Handles scheduling the timing to transition from one phase to the
-    next using the master clock.
+    Handles scheduling the timing to transition phases (when?)
     
     ReduxAbletonTempoClockController clockController
     StateStore linkStore
@@ -106,19 +103,6 @@ package quarks.owa {
   OWAController *-- SessionTimingController
   SessionTimingController *-- quarks.supercollider_redux.ReduxAbletonTempoClockController
   SessionTimingController *-- quarks.supercollider_redux.StateStore
-
-  class LevelTimingController {
-    Handles the scheduling of playback within one level.  When playingState
-    changes, start changing sequencer state appropriately.  Queue sequencer
-    start, when sequencer starts queue sequencer stop and next sequencer start,
-    etc.
-
-    ReduxAbletonTempoClockController clockController
-    StateStore store
-  }
-  OWAController *-- LevelTimingController
-  LevelTimingController *-- quarks.supercollider_redux.ReduxAbletonTempoClockController
-  LevelTimingController *-- quarks.supercollider_redux.StateStore
 }
 
 

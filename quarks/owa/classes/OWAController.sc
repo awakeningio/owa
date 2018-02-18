@@ -5,12 +5,11 @@ OWAController {
   var outputChannel,
     <>owaStore,
     <>linkStore,
-    <>sequencers,
     sessionController,
     sounds,
-    sequencerNameToClass,
     bufManager,
-    clockController;
+    clockController,
+    seqFactory;
 
 
   *new {
@@ -43,12 +42,9 @@ OWAController {
       rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
     ));
 
-    sequencerNameToClass = (
-      simple: SimpleSequencer
-    );
+    seqFactory = AwakenedSequencerFactory.getInstance();
+    seqFactory.setBufManager(bufManager);
 
-
-    this.sequencers = List.new();
     sounds = List.new();
 
     owaStore.dispatch((
@@ -78,10 +74,14 @@ OWAController {
       clockOffsetSeconds: 0.0
     ));
 
+    seqFactory.setClockController(clockController);
+
     sessionController = SessionTimingController.new((
       store: owaStore,
       clockController: clockController
     ));
+    
+    seqFactory.setStore(owaStore);
 
     owaStore.dispatch((
       type: "OWA_SOUND_INIT_DONE"
@@ -92,32 +92,8 @@ OWAController {
   }
 
   handle_state_change {
-    var state = this.owaStore.getState();
-
-    "OWAController.handle_state_change".postln();
-
-    if ((sequencers.size() == 0).and(state.sequencers != nil), {
-      "[OWAController]: Initializing sequencers list".postln();
-      state.sequencers.do({
-        arg sequencerState;
-        this.initSequencer(sequencerState);
-      });
-    });
   }
 
-  initSequencer {
-    arg sequencer;
-
-    this.sequencers.add(
-      sequencerNameToClass[sequencer.name.asSymbol()].new((
-        store: this.owaStore,
-        sequencerId: sequencer.sequencerId,
-        bufManager: bufManager,
-        //outputChannel: outputChannel,
-        clockController: clockController
-      ))
-    );
-  }
 
   //initSound {
     //arg sound;

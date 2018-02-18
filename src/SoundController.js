@@ -12,7 +12,8 @@ import ControllerWithStore from "./ControllerWithStore"
 import OSCActionListener from "./OSCActionListener"
 import { getEnvOrError } from "./utils"
 import { OWA_READY_STATES, SESSION_PHASES, NEXT_SESSION_PHASES } from "./constants"
-import * as actionTypes from "./actionTypes"
+
+import logger from './logging';
 
 import sc from 'supercolliderjs';
 
@@ -24,29 +25,15 @@ class SoundController extends ControllerWithStore {
       remotePort: getEnvOrError('SC_OSC_IN_PORT')
     });
 
-    var state = this.store.getState();
     this.lastState = {
-      soundReady: state.soundReady
+      soundReady: null
     };
 
     this.linkStore = this.params.linkStateStore;
     
-    this.store.dispatch({
-      type: actionTypes.OWA_SOUND_BOOT_STARTED
-    });
-
-
     this.owaAPI = null;
 
-    if (!process.env.EXTERNAL_SC) {
-      console.log("Booting SuperCollider lang...");
-      sc.lang.boot().then((sclang) => {
-        let mainFilePath = __dirname + '/../main.sc';
-        sclang.executeFile(mainFilePath);
-      });
-    }
-
-
+    this.handle_state_change();
   }
 
   handle_link_state_change () {
@@ -75,14 +62,17 @@ class SoundController extends ControllerWithStore {
         this.owaAPI = api;
         this.owaAPI.log.echo = true;
 
-        this.owaAPI.on("error", (err) => {
-          this.handle_api_error(err);
-        });
+        this.owaAPI.on("error", this.handle_api_error.bind(this));
+        logger.debug('SoundController owaAPI.connect');
         this.owaAPI.connect();
         this.linkStore.subscribe(() => {
           this.handle_link_state_change();
         });
+        this.handle_link_state_change();
+        logger.debug('SoundController calling owa.init');
         this.call("owa.init", [{
+          linkState: this.linkStore.getState(),
+          state: this.store.getState(),
           constants: {
             SESSION_PHASES,
             NEXT_SESSION_PHASES
@@ -104,7 +94,13 @@ class SoundController extends ControllerWithStore {
     return this._apiCallIndex;
   }
   call (apiMethodName, args) {
-    return this.owaAPI.call(this.getAPICallIndex(), apiMethodName, args);
+    if (this.owaAPI) {
+      return this.owaAPI.call(this.getAPICallIndex(), apiMethodName, args);
+    } else {
+      return new Promise((res) => {
+        res();
+      });
+    }
   }
 }
 

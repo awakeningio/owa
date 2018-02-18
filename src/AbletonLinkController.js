@@ -28,6 +28,15 @@ class AbletonLinkController extends ControllerWithStore {
     this.link = new abletonlink();
 
     var lastBpm = null;
+
+    this.store.dispatch(abletonlinkRedux.actions.linkBPMChanged(
+        this.link.bpm
+    ));
+    this.store.dispatch(abletonlinkRedux.actions.linkTransportChanged(
+        this.link.beat,
+        this.link.phase
+    ));
+
     this.link.startUpdate(20, (beat, phase, bpm) => {
       if (bpm != lastBpm) {
         this.store.dispatch(abletonlinkRedux.actions.linkBPMChanged(bpm));

@@ -26,6 +26,10 @@ const logger = store => next => action => {
   return result
   //return next(action);
 };
+const middleware = [
+  //logger
+];
+
 export function configureStore (initialState = {}) {
   let rootReducer = function (state, action) {
     state.soundReady = reducers.soundReady(state.soundReady, action);
@@ -35,7 +39,7 @@ export function configureStore (initialState = {}) {
     return state;
   };
   let createStoreWithMiddleware = applyMiddleware(
-    logger
+    ...middleware
   )(createStore);
 
 

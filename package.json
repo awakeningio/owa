@@ -40,11 +40,12 @@
     "npm-watch": "^0.2.0"
   },
   "dependencies": {
-    "abletonlink-redux": "0.0.3",
-    "awakening-sequencers": "^0.7.7",
+    "abletonlink-redux": "0.0.6",
+    "awakening-sequencers": "^0.7.9",
     "osc": "^2.2.0",
     "redux": "^3.7.2",
-    "supercollider-redux": "0.0.55",
+    "serialport": "^6.0.5",
+    "supercollider-redux": "0.0.7",
     "supercolliderjs": "^0.14.2",
     "winston": "^2.3.1"
   },

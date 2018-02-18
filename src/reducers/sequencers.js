@@ -4,15 +4,15 @@ function create_initial_state () {
   let initialState = {
     'level_10-segment_0': awakeningSequencers.create_default_sequencer(
       'level_10-segment_0',
-      'simple'
+      'SimpleSequencer'
     ),
     'level_10-segment_1': awakeningSequencers.create_default_sequencer(
       'level_10-segment_1',
-      'simple'
+      'SimpleSequencer'
     ),
     'level_10-segment_2': awakeningSequencers.create_default_sequencer(
       'level_10-segment_2',
-      'simple'
+      'SimpleSequencer'
     )
   };
   initialState['level_10-segment_0'].numBeats = 10;

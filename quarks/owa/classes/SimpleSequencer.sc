@@ -21,7 +21,35 @@ SimpleSequencer : AwakenedSequencer {
     //]);
     //// define a simple synth
     //patch = Patch(\paramexample);
-    patch = Patch("cs.percussion.Impulsive");
+    patch = Patch("cs.percussion.Impulsive", (
+
+      harms: [
+        (
+          ratio: 4.875,
+          rq: 0.1
+        ),
+        (
+          ratio: 2.5,
+          rq: 0.1
+        ),
+        /*(
+          ratio: 2,
+          rq: 0.01
+        ),*/
+        /*(
+          ratio: 1.875,
+          rq: 0.08
+        ),
+        (
+          ratio: 1.5,
+          rq: 0.06
+        ),*/
+        (
+          ratio: 1,
+          rq: 0.09
+        )
+      ]
+    ));
     //releaseTime = patch.releaseTime;
     //releaseTime.value = currentState.releaseTime;
     patch.prepareForPlay();

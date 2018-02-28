@@ -1,3 +1,14 @@
+/**
+ *  @file       sound_pallette.sc
+ *
+ *
+ *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
+ *  @author     Emma Lefley
+ *
+ *  @copyright  2018 Colin Sullivan & Emma Lefley
+ *  @license    Licensed under the GPLv3 license.
+ **/
+
 (
   s.plotTree;
 )

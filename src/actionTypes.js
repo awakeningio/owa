@@ -1,3 +1,13 @@
+/**
+ *  @file       actionTypes.js
+ *
+ *
+ *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
+ *
+ *  @copyright  2018 Colin Sullivan
+ *  @license    Licensed under the GPLv3 license.
+ **/
+
 export const OWA_SOUND_BOOT_STARTED = "OWA_SOUND_BOOT_STARTED";
 export const OWA_SOUND_BOOTED = "OWA_SOUND_BOOTED";
 export const OWA_SOUND_INIT_DONE = "OWA_SOUND_INIT_DONE";

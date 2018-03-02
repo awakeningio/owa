@@ -46,6 +46,6 @@ function create_initial_state () {
   return initialState;
 }
 
-export default function sequencers (state = create_initial_state(), action) {
+export default function sequencers (state = {}, action) {
   return awakeningSequencers.reducer(state, action);
 }

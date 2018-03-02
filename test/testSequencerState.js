@@ -29,11 +29,16 @@ describe("Sequencer States", function () {
     });
   });
 
-  it("should have proper number of levels and segments", function () {
-
+  it("should have proper number of levels", function () {
     expect(state.levels.allIds.length).to.equal(3);
-    expect(state.segments.allIds.length).to.equal(12);
+  });
 
+  it("should have proper number of segments", function () {
+    expect(state.segments.allIds.length).to.equal(12);
+  });
+
+  it("should have proper segment playback order", function () {
+    expect(state.levels.byId['level_2'].segmentPlaybackOrder).to.deep.equal([0, 1]);
   });
 
   it("should be in IDLE phase", function () {

@@ -17,29 +17,6 @@ import awakeningSequencers from 'awakening-sequencers';
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 
-function create_default_level (levelId, numSegments) {
-  let level = {
-    levelId,
-    segments: {},
-    numSegments,
-    segmentPlaybackOrder: [],
-    activeSegmentIndex: false,
-    activeSegmentId: false,
-    playingState: PLAYING_STATES.STOPPED,
-  };
-  let i = 0;
-  // create all segments
-  for (i = 0; i < numSegments; i++) {
-    let segmentId = `${levelId}-segment_${i}`;
-    let segment = create_initial_segment(segmentId);
-    level.segments[segmentId] = segment;
-    // at first, sequencers play back in default ordering
-    level.segmentPlaybackOrder.push(segmentId);
-  }
-
-  return level;
-
-}
 
 function shouldBePlaying (levelId, sessionPhase) {
   if ([
@@ -241,16 +218,6 @@ function level (state, action, sequencers) {
   return state;
 }
 
-function create_default_state () {
-  return {
-    'level_10': create_default_level('level_10', 3),
-    //'level_8': create_default_level('level_8', 8),
-    //'level_6': create_default_level('level_6', 6),
-    //'level_4': create_default_level('level_4', 4),
-    //'level_2': create_default_level('level_2', 2)
-  };
-}
-
 let levelNames = [
   'level_10',
   //'level_8',
@@ -259,9 +226,27 @@ let levelNames = [
   //'level_2'
 ];
 
-export default function levels (state = create_default_state(), action, sequencers) {
+function levelsById (state = {}, action, sequencers) {
   levelNames.forEach((levelName) => {
     state[levelName] = level(state[levelName], action, sequencers);
   });
+  return state;
+}
+
+function levelsAllIds (state, action) {
+  return state;
+}
+
+export default function (state = {byId: {}, allIds: []}, action) {
+  let newById = levelsById(state.byId, action);
+  let newAllIds = levelsAllIds(state.allIds, action);
+
+  if (newById !== state.byId || newAllIds !== state.allIds) {
+    state = {
+      byId: newById,
+      allIds: newAllIds
+    };
+  }
+
   return state;
 }

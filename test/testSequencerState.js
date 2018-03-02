@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 
 import { OWA_READY_STATES, SESSION_PHASES } from '../src/constants'
-
 import {configureStore, configureLinkStore} from "../src/configureStore"
 import OWAController from "../src/OWAController"
+import * as actions from '../src/actions'
 
 describe("Sequencer States", function () {
   var store = configureStore();
@@ -44,7 +44,20 @@ describe("Sequencer States", function () {
   it("should be in IDLE phase", function () {
     expect(state.sessionPhase).to.equal(SESSION_PHASES.IDLE);
   });
-  
+
+  it("should not transition phase when level2 button is pressed", function () {
+    store.dispatch(actions.buttonPressed('level_2', 0));
+    state = store.getState();
+
+    expect(state.sessionPhase).to.equal(SESSION_PHASES.IDLE);
+  });
+
+  it("should transition when level6 button is pressed", function () {
+    store.dispatch(actions.buttonPressed('level_6', 0));
+    state = store.getState();
+    expect(state.sessionPhase).to.equal(SESSION_PHASES.TRANS_6);
+  });
+
   it("should close down cleanly", function (done) {
     owaController.quit().then(() => {
       done();

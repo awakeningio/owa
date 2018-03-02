@@ -19,3 +19,13 @@ export function sessionPhaseAdvanced (phase) {
     }
   }
 }
+
+export function buttonPressed (levelId, segmentIndex) {
+  return {
+    type: actionTypes.BUTTON_PRESSED,
+    payload: {
+      levelId,
+      segmentIndex
+    }
+  };
+}

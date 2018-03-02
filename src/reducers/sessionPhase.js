@@ -7,7 +7,7 @@
  *  @copyright  2017 Colin Sullivan
  *  @license    Licensed under the GPLv3 license.
  **/
-import { SESSION_PHASES } from '../constants';
+import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants';
 
 import * as actionTypes from '../actionTypes';
 
@@ -21,11 +21,10 @@ export default function sessionPhase (state = get_initial_state(), action) {
 
     case actionTypes.BUTTON_PRESSED:
       if (
-        state == SESSION_PHASES.IDLE
-        && action.payload.level == 2
-        && action.payload.position == 1
+        state === SESSION_PHASES.IDLE
+        && action.payload.levelId === 'level_6'
       ) {
-        return SESSION_PHASES.TRANS_10;
+        return NEXT_SESSION_PHASES[state];
       }
       break;
     

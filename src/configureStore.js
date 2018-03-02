@@ -10,6 +10,7 @@
 
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createLogger } from 'redux-logger'
 
 import { create_level, create_segment } from './models'
 import abletonlinkRedux from 'abletonlink-redux'
@@ -18,15 +19,9 @@ import rootReducer from './reducers'
 /**
  *  logging of state-store messages
  **/
-const logger = store => next => action => {
-  let now = new Date();
-  console.info(`${now.toString()}: [OWA] dispatching`, action);
-  console.log('prev state', JSON.stringify(store.getState(), ' ', 4))
-  let result = next(action)
-  console.log('next state', JSON.stringify(store.getState(), ' ', 4))
-  return result
-  //return next(action);
-};
+const logger = createLogger({
+  
+});
 const middleware = [
 ];
 
@@ -71,9 +66,6 @@ export function configureStore () {
       allIds: Object.keys(segmentsById)
     }
   };
-
-
-
 
   return createStoreWithMiddleware(rootReducer, initialState);
 }

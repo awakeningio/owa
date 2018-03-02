@@ -227,9 +227,6 @@ let levelNames = [
 ];
 
 function levelsById (state = {}, action, sequencers) {
-  levelNames.forEach((levelName) => {
-    state[levelName] = level(state[levelName], action, sequencers);
-  });
   return state;
 }
 

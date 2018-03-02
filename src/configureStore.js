@@ -11,8 +11,8 @@
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 
-import * as reducers from './reducers'
 import abletonlinkRedux from 'abletonlink-redux'
+import rootReducer from './reducers'
 
 /**
  *  logging of state-store messages
@@ -27,17 +27,13 @@ const logger = store => next => action => {
   //return next(action);
 };
 const middleware = [
-  //logger
 ];
 
+if (process.env.NODE_ENV === 'development') {
+  middleware.push(logger);
+}
+
 export function configureStore (initialState = {}) {
-  let rootReducer = function (state, action) {
-    state.soundReady = reducers.soundReady(state.soundReady, action);
-    state.sessionPhase = reducers.sessionPhase(state.sessionPhase, action);
-    state.sequencers = reducers.sequencers(state.sequencers, action);
-    state.levels = reducers.levels(state.levels, action, state.sequencers);
-    return state;
-  };
   let createStoreWithMiddleware = applyMiddleware(
     ...middleware
   )(createStore);

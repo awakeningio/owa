@@ -58,6 +58,9 @@ class OSCActionListener extends ControllerWithStore {
     });
     this.oscPort.open();
   }
+  quit () {
+    this.oscPort.close();
+  }
 }
 
 export default OSCActionListener;

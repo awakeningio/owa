@@ -2,13 +2,30 @@
 
 !include styles.puml
 
-object owaStateStore {  
+object state {  
   bool soundReady
+  bool lightsReady
   Enum SESSION_PHASES sessionPhase
   \n
-  LevelState levels[]
+  levels levels{}
+  segments segments{}
+
   SequencerState sequencers{}
 }
+
+object levels {
+  LevelState byId{}
+  string allIds[]
+}
+state *-- levels
+levels *-- LevelState
+
+object segments {
+  SegmentState byId{}
+  string allIds[]
+}
+state *-- segments
+segments *-- SegmentState
 
 object SESSION_PHASES { 
 IDLE
@@ -26,11 +43,9 @@ PLAYING_ADVICE
 TRANS_IDLE
 }
 
-owaStateStore *-- SESSION_PHASES
-
 object SegmentState {
   string segmentId
-  string sequencerIds[]
+  string sequencerId
   \n
   If this segment is currently in playback.
   PLAYING_STATES playingState
@@ -38,8 +53,6 @@ object SegmentState {
 
 object LevelState {
   string levelId
-  SegmentState segments{}
-  int numSegments
   \n
   Segment ordering (segmentPlaybackIndex is an index into this list).
   string segmentPlaybackOrder[];
@@ -53,8 +66,6 @@ object LevelState {
   to the currently playing sequencer
   string activeSegmentId
 }
-owaStateStore *-- LevelState
-LevelState *-- SegmentState
 
 object linkStateStore {
   abletonlink.tempo
@@ -75,7 +86,6 @@ object SequencerState {
   playQuant: [4, 0]
   stopQuant: [8, 0]
 }
-SegmentState *-- SequencerState
-
+state *-- SequencerState
 
 @enduml

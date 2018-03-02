@@ -102,6 +102,9 @@ class SoundController extends ControllerWithStore {
       });
     }
   }
+  quit () {
+    this.actionListener.quit();
+  }
 }
 
 export default SoundController;

@@ -15,6 +15,19 @@ import logger from "./logging"
 const EXTERNAL_SC = process.env.EXTERNAL_SC;
 
 class SCController {
+  quit() {
+    return new Promise((resolve, reject) => {
+      if (this.sclang) {
+        this.sclang.interpret('s.quit();').then(() => {
+          return this.sclang.quit().then(() => {
+            setTimeout(resolve, 500);
+          }).catch(reject);
+        }).catch(reject);
+      } else {
+        resolve();
+      }
+    });
+  }
   boot() {
     logger.debug('SCController.boot');
     
@@ -28,6 +41,7 @@ class SCController {
         };
         return sc.lang.boot(sclangOptions).then((sclang) => {
           logger.debug("sclang booted.");
+          this.sclang = sclang;
           return sclang.interpret(`
 MIDIClient.init;
 MIDIIn.connectAll;

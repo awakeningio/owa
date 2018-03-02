@@ -8,7 +8,15 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-export {default as soundReady} from './soundReady';
-export {default as sequencers} from './sequencers';
-export {default as levels} from './levels';
-export {default as sessionPhase} from './sessionPhase';
+import soundReady from './soundReady';
+import sequencers from './sequencers';
+import levels from './levels';
+import sessionPhase from './sessionPhase';
+
+export default function (state = {}, action) {
+  state.soundReady = soundReady(state.soundReady, action);
+  state.sessionPhase = sessionPhase(state.sessionPhase, action);
+  state.sequencers = sequencers(state.sequencers, action);
+  state.levels = levels(state.levels, action, state.sequencers);
+  return state;
+}

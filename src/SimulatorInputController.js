@@ -14,10 +14,6 @@ import { getEnvOrError } from "./utils"
 
 class SimulatorInputController extends ControllerWithStore {
   init () {
-    this.actionListener = new OSCActionListener(this.store, {
-      localPort: getEnvOrError('SIMULATOR_OSC_OUT_PORT'),
-      remotePort: getEnvOrError('SIMULATOR_OSC_IN_PORT')
-    });
   }
 }
 

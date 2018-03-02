@@ -58,6 +58,10 @@ class AbletonLinkController extends ControllerWithStore {
       this.link.bpm = state.queued_bpm;
     }
   }
+
+  quit () {
+    this.link.stopUpdate();
+  }
 }
 
 export default AbletonLinkController;

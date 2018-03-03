@@ -65,8 +65,6 @@ describe("Sequencer States", function () {
     expect(segment.sequencerId, "sequencerId of segment '${segment.segmentId}'")
       .to.not.be.false;
     sequencer = state.sequencers[segment.sequencerId];
-    console.log("sequencer");
-    console.log(sequencer);
     expect(sequencer).to.not.be.undefined;
   });
 
@@ -80,9 +78,15 @@ describe("Sequencer States", function () {
         sessionPhase = state.sessionPhase;
 
         expect(sessionPhase).to.equal(SESSION_PHASES.PLAYING_6);
+        unsub();
         done();
       }
     });
+  });
+
+  it("level should point to the proper segment", function () {
+    level = state.levels.byId['level_6'];
+    expect(level.segmentPlaybackIndex).to.equal(0);
   });
 
   it("should have queued segment sequencer", function () {
@@ -92,9 +96,15 @@ describe("Sequencer States", function () {
   it("level should have updated playback order", function () {
     expect(level.segmentPlaybackOrder).to.deep.equal([segment.segmentId]);
   });
+  
+  it("level should point to the proper segment", function () {
+    level = state.levels.byId['level_6'];
+    expect(level.segmentPlaybackIndex).to.equal(0);
+  });
 
-  var secondSegment = state.segments.byId[create_segmentId(level.levelId, 1)];
+  var secondSegment;
   it("should not transition on button press", function () {
+    secondSegment = state.segments.byId[create_segmentId(level.levelId, 1)];
     store.dispatch(actions.buttonPressed(level.levelId, 1));
     state = store.getState();
     expect(state.sessionPhase).to.equal(SESSION_PHASES.PLAYING_6);
@@ -102,6 +112,47 @@ describe("Sequencer States", function () {
 
   it("level should have updated playback order", function () {
     expect(level.segmentPlaybackOrder).to.deep.equal([segment.segmentId, secondSegment.segmentId]);
+  });
+
+  var secondSequencer;
+  it("sequencer for second segment should be queued", function () {
+    secondSequencer = state.sequencers[secondSegment.sequencerId];
+    expect(secondSequencer.playingState).to.equal(PLAYING_STATES.QUEUED);
+  });
+
+  it("second sequencer should start playing & first should be queued", function (done) {
+    state = store.getState();
+    secondSequencer = state.sequencers[secondSegment.sequencerId];
+    let unsub = store.subscribe(() => {
+      state = store.getState();
+      if (state.sequencers[secondSegment.sequencerId].playingState !== secondSequencer.playingState) {
+        secondSequencer = state.sequencers[secondSegment.sequencerId];
+        sequencer = state.sequencers[segment.sequencerId];
+        expect(secondSequencer.playingState).to.equal(PLAYING_STATES.PLAYING);
+        expect(sequencer.playingState).to.equal(PLAYING_STATES.QUEUED);
+        unsub();
+        done();
+      }
+    });
+  });
+  
+  it("level should point to the proper segment", function () {
+    level = state.levels.byId['level_6'];
+    expect(level.segmentPlaybackIndex).to.equal(1);
+  });
+
+  it("first should start and second should be queued", function (done) {
+    let unsub = store.subscribe(() => {
+      state = store.getState();
+      if (state.sequencers[segment.sequencerId].playingState !== sequencer.playingState) {
+        secondSequencer = state.sequencers[secondSegment.sequencerId];
+        sequencer = state.sequencers[segment.sequencerId];
+        expect(secondSequencer.playingState).to.equal(PLAYING_STATES.QUEUED);
+        expect(sequencer.playingState).to.equal(PLAYING_STATES.PLAYING);
+        unsub();
+        done();
+      }
+    });
   });
   
   it("should close down cleanly", function (done) {

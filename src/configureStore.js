@@ -61,7 +61,12 @@ export function configureStore () {
   });
 
   let sequencers = {
-    '6_0': create_default_sequencer('6_0', 'SimpleSequencer')
+    '6_0': create_default_sequencer('6_0', 'SimpleSequencer'),
+    '6_1': create_default_sequencer('6_1', 'SimpleSequencer'),
+    '6_2': create_default_sequencer('6_2', 'SimpleSequencer'),
+    '6_3': create_default_sequencer('6_3', 'SimpleSequencer'),
+    '6_4': create_default_sequencer('6_4', 'SimpleSequencer'),
+    '6_5': create_default_sequencer('6_5', 'SimpleSequencer'),
   };
   sequencers['6_0'].numBeats = 12;
   sequencers['6_0'].releaseTime = 1.2;
@@ -69,8 +74,43 @@ export function configureStore () {
     degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
     octave: 4
   };
+  sequencers['6_1'].numBeats = 12;
+  sequencers['6_1'].releaseTime = 1.2;
+  sequencers['6_1'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 4
+  };
+  sequencers['6_2'].numBeats = 12;
+  sequencers['6_2'].releaseTime = 1.2;
+  sequencers['6_2'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 4
+  };
+  sequencers['6_3'].numBeats = 12;
+  sequencers['6_3'].releaseTime = 1.2;
+  sequencers['6_3'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 4
+  };
+  sequencers['6_4'].numBeats = 12;
+  sequencers['6_4'].releaseTime = 1.2;
+  sequencers['6_4'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 4
+  };
+  sequencers['6_5'].numBeats = 12;
+  sequencers['6_5'].releaseTime = 1.2;
+  sequencers['6_5'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 4
+  };
 
   segmentsById[create_segmentId('level_6', 0)].sequencerId = '6_0';
+  segmentsById[create_segmentId('level_6', 1)].sequencerId = '6_1';
+  segmentsById[create_segmentId('level_6', 2)].sequencerId = '6_2';
+  segmentsById[create_segmentId('level_6', 3)].sequencerId = '6_3';
+  segmentsById[create_segmentId('level_6', 4)].sequencerId = '6_4';
+  segmentsById[create_segmentId('level_6', 5)].sequencerId = '6_5';
 
   let initialState = {
     levels: {

@@ -17,8 +17,8 @@ import segments from './segments';
 export default function (state, action) {
   state.soundReady = soundReady(state.soundReady, action);
   state.sessionPhase = sessionPhase(state.sessionPhase, action);
-  state.levels = levels(state.levels, action);
   state.segments = segments(state.segments, action);
-  state.sequencers = sequencers(state.sequencers, action, state.segments);
+  state.levels = levels(state.levels, action, state.segments);
+  state.sequencers = sequencers(state.sequencers, action, state.segments, state.levels, state.sessionPhase);
   return state;
 }

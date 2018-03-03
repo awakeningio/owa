@@ -8,6 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
+import awakeningSequencers from 'awakening-sequencers';
 import * as actionTypes from '../actionTypes'
 import { create_segmentId } from '../models'
 
@@ -224,18 +225,19 @@ import { create_segmentId } from '../models'
   ////'level_2'
 //];
 
-function level (state, action) {
+function level (state, action, segments) {
   switch (action.type) {
     case actionTypes.BUTTON_PRESSED:
+      state = Object.assign({}, state);
       // assuming top-level controller that filtered only BUTTON_PRESSED
       // actions for this level
       let segmentId = create_segmentId(
         action.payload.levelId,
         action.payload.segmentIndex
       );
-      if (state.segmentPlaybackIndex) {
-        state.segmentPlaybackOrder = state.segmentPlaybackOrder.splice(
-          state.segmentPlaybackIndex + 1,
+      if (state.segmentPlaybackIndex !== false) {
+        state.segmentPlaybackOrder.splice(
+          (state.segmentPlaybackIndex + 1) % state.numSegments,
           0,
           segmentId
         );
@@ -244,6 +246,27 @@ function level (state, action) {
         state.segmentPlaybackIndex = 0;
       }
       break;
+
+    case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
+      if (state.segmentPlaybackIndex === false) {
+        break;
+      }
+      let nextSegmentPlaybackIndex = (
+        (state.segmentPlaybackIndex + 1) % state.segmentPlaybackOrder.length
+      );
+
+      // look at the segment that should be next
+      let nextSegmentId = state.segmentPlaybackOrder[nextSegmentPlaybackIndex];
+      let nextSegment = segments.byId[nextSegmentId];
+
+      // is the sequencer for this segment ?
+      if (nextSegment.sequencerId === action.payload.sequencerId) {
+        // if so, our next segment has started playing
+        state = Object.assign({}, state);
+        state.segmentPlaybackIndex = nextSegmentPlaybackIndex;
+      }
+      
+      break;
     
     default:
       break;
@@ -251,14 +274,29 @@ function level (state, action) {
   return state;
 }
 
-function levelsById (state = {}, action) {
+function levelsById (state = {}, action, segments) {
   switch (action.type) {
     case actionTypes.BUTTON_PRESSED:
       let levelId = action.payload.levelId;
-      state = Object.assign({}, state);
-      state[levelId] = level(state[levelId], action);
+      let newLevel = level(state[levelId], action, segments);
+      if (state[levelId] !== newLevel) {
+        state = Object.assign({}, state);
+        state[levelId] = newLevel;
+      }
       break;
+
     default:
+      let levelChanged = false;
+      Object.keys(state).forEach((levelId) => {
+        let newLevel = level(state[levelId], action, segments);
+        if (newLevel !== state[levelId]) {
+          state[levelId] = newLevel;
+          levelChanged = true;
+        }
+      });
+      if (levelChanged) {
+        state = Object.assign({}, state);
+      }
       break;
   }
   return state;
@@ -268,8 +306,8 @@ function levelsAllIds (state, action) {
   return state;
 }
 
-export default function (state = {byId: {}, allIds: []}, action) {
-  let newById = levelsById(state.byId, action);
+export default function (state = {byId: {}, allIds: []}, action, segments) {
+  let newById = levelsById(state.byId, action, segments);
   let newAllIds = levelsAllIds(state.allIds, action);
 
   if (newById !== state.byId || newAllIds !== state.allIds) {

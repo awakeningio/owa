@@ -10,7 +10,7 @@
 
 import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
-import { create_segmentId } from '../models'
+import { create_segmentId, get_playing_levelId_for_sessionPhase } from '../models'
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 //function create_initial_state () {
@@ -65,7 +65,7 @@ function sequencer (state, action) {
   return state;
 }
 
-export default function sequencers (state = {}, action, segments) {
+export default function sequencers (state = {}, action, segments, levels, sessionPhase) {
   state = awakeningSequencers.reducer(state, action);
 
   switch (action.type) {
@@ -83,6 +83,34 @@ export default function sequencers (state = {}, action, segments) {
         state[sequencerId] = sequencer(state[sequencerId], action);
       }
 
+      break;
+
+    case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
+      // a sequencer just started playing
+      let activeSequencer = state[action.payload.sequencerId];
+
+      // get currently active level
+      let activeLevelId = get_playing_levelId_for_sessionPhase(sessionPhase);
+      if (activeLevelId) {
+        let activeLevel = levels.byId[activeLevelId];
+        // get next segment
+        let nextSegmentId = activeLevel.segmentPlaybackOrder[((
+            activeLevel.segmentPlaybackIndex + 1
+        ) % activeLevel.segmentPlaybackOrder.length)];
+        let nextSegment = segments.byId[nextSegmentId];
+
+        // queue next sequencer
+        state = Object.assign({}, state);
+        state[nextSegment.sequencerId] = Object.assign(
+          {},
+          state[nextSegment.sequencerId],
+          {
+            playingState: PLAYING_STATES.QUEUED,
+            playQuant: [activeSequencer.numBeats, 0]
+          }
+        );
+
+      }
       break;
     
     default:

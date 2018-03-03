@@ -1,8 +1,10 @@
 import { expect } from 'chai';
 
+import { PLAYING_STATES } from 'awakening-sequencers';
 import { OWA_READY_STATES, SESSION_PHASES } from '../src/constants'
 import {configureStore, configureLinkStore} from "../src/configureStore"
 import OWAController from "../src/OWAController"
+import { create_segmentId } from '../src/models'
 import * as actions from '../src/actions'
 
 describe("Sequencer States", function () {
@@ -37,10 +39,6 @@ describe("Sequencer States", function () {
     expect(state.segments.allIds.length).to.equal(12);
   });
 
-  it("should have proper segment playback order", function () {
-    expect(state.levels.byId['level_2'].segmentPlaybackOrder).to.deep.equal([0, 1]);
-  });
-
   it("should be in IDLE phase", function () {
     expect(state.sessionPhase).to.equal(SESSION_PHASES.IDLE);
   });
@@ -52,11 +50,44 @@ describe("Sequencer States", function () {
     expect(state.sessionPhase).to.equal(SESSION_PHASES.IDLE);
   });
 
+  var level = state.levels.byId['level_6'];
   it("should transition when level6 button is pressed", function () {
-    store.dispatch(actions.buttonPressed('level_6', 0));
+    store.dispatch(actions.buttonPressed(level.levelId, 0));
     state = store.getState();
     expect(state.sessionPhase).to.equal(SESSION_PHASES.TRANS_6);
   });
+
+  var segment, sequencer;
+  it("segment should have a sequencer", function () {
+    segment = state.segments.byId[create_segmentId(level.levelId, 0)];
+    sequencer = state.sequencers[segment.sequencerId];
+    expect(sequencer).to.not.be.false;
+  });
+
+  it("should have queued segment sequencer", function () {
+    expect(sequencer.playingState).to.equal(PLAYING_STATES.QUEUED);
+  });
+
+  it("level should have updated playback order", function () {
+    expect(level.segmentPlaybackOrder).to.deep.equal([segment.segmentId]);
+  });
+
+  it("should have transitioned to playing", function () {
+    expect(state.sessionPhase).to.equal(SESSION_PHASES.PLAYING_6);
+  });
+ 
+  var secondSegment = state.segments.byId[create_segmentId(level.levelId, 1)];
+  it("should not transition on button press", function () {
+    store.dispatch(actions.buttonPressed(level.levelId, 1));
+    state = store.getState();
+    expect(state.sessionPhase).to.equal(SESSION_PHASES.PLAYING_6);
+  });
+
+  it("level should have updated playback order", function () {
+    expect(level.segmentPlaybackOrder).to.deep.equal([segment.segmentId, secondSegment.segmentId]);
+  });
+  
+
 
   it("should close down cleanly", function (done) {
     owaController.quit().then(() => {

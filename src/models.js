@@ -1,19 +1,14 @@
 export function create_level (levelId, numSegments) {
-  let segmentPlaybackOrder = [];
-  let i;
-  for (i = 0; i < numSegments; i++) {
-    segmentPlaybackOrder.push(i);
-  }
   return {
     levelId,
-    segmentPlaybackOrder,
+    segmentPlaybackOrder: [],
     numSegments,
     activeSegmentIndex: false,
     activeSegmentId: false
   };
 }
 
-function create_segmentId (levelId, segmentIndex) {
+export function create_segmentId (levelId, segmentIndex) {
   return `${levelId}-segment_${segmentIndex}`;
 }
 

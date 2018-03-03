@@ -20,6 +20,7 @@ OWAConstants {
       'TRANS_8',
       'TRANS_6',
       'TRANS_4',
+      'TRANS_2',
       'TRANS_ADVICE',
       'TRANS_IDLE'
     ];

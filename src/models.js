@@ -3,7 +3,7 @@ export function create_level (levelId, numSegments) {
     levelId,
     segmentPlaybackOrder: [],
     numSegments,
-    activeSegmentIndex: false,
+    segmentPlaybackIndex: false,
     activeSegmentId: false
   };
 }

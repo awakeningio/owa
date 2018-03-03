@@ -9,43 +9,84 @@
  **/
 
 import awakeningSequencers from "awakening-sequencers"
+import * as actionTypes from '../actionTypes'
+import { create_segmentId } from '../models'
+const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
-function create_initial_state () {
-  let initialState = {
-    'level_10-segment_0': awakeningSequencers.create_default_sequencer(
-      'level_10-segment_0',
-      'SimpleSequencer'
-    ),
-    'level_10-segment_1': awakeningSequencers.create_default_sequencer(
-      'level_10-segment_1',
-      'SimpleSequencer'
-    ),
-    'level_10-segment_2': awakeningSequencers.create_default_sequencer(
-      'level_10-segment_2',
-      'SimpleSequencer'
-    )
-  };
-  initialState['level_10-segment_0'].numBeats = 10;
-  initialState['level_10-segment_0'].releaseTime = 1.2;
-  initialState['level_10-segment_0'].pbind = {
-    degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
-    octave: 4
-  };
-  initialState['level_10-segment_1'].numBeats = 10;
-  initialState['level_10-segment_1'].releaseTime = 0.2;
-  initialState['level_10-segment_1'].pbind = {
-    degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
-    octave: 6
-  };
-  initialState['level_10-segment_2'].numBeats = 10;
-  initialState['level_10-segment_2'].releaseTime = 0.2;
-  initialState['level_10-segment_2'].pbind = {
-    degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
-    octave: 8
-  };
-  return initialState;
+//function create_initial_state () {
+  //let initialState = {
+    //'level_10-segment_0': awakeningSequencers.create_default_sequencer(
+      //'level_10-segment_0',
+      //'SimpleSequencer'
+    //),
+    //'level_10-segment_1': awakeningSequencers.create_default_sequencer(
+      //'level_10-segment_1',
+      //'SimpleSequencer'
+    //),
+    //'level_10-segment_2': awakeningSequencers.create_default_sequencer(
+      //'level_10-segment_2',
+      //'SimpleSequencer'
+    //)
+  //};
+  //initialState['level_10-segment_0'].numBeats = 10;
+  //initialState['level_10-segment_0'].releaseTime = 1.2;
+  //initialState['level_10-segment_0'].pbind = {
+    //degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
+    //octave: 4
+  //};
+  //initialState['level_10-segment_1'].numBeats = 10;
+  //initialState['level_10-segment_1'].releaseTime = 0.2;
+  //initialState['level_10-segment_1'].pbind = {
+    //degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
+    //octave: 6
+  //};
+  //initialState['level_10-segment_2'].numBeats = 10;
+  //initialState['level_10-segment_2'].releaseTime = 0.2;
+  //initialState['level_10-segment_2'].pbind = {
+    //degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
+    //octave: 8
+  //};
+  //return initialState;
+//}
+
+function sequencer (state, action) {
+  switch (action.type) {
+    case actionTypes.BUTTON_PRESSED:
+      // assuming parent sequencer sent only when button is
+      // pressed for the segment containing this sequencer
+      // TODO: this will depend on other stuff
+      state = Object.assign({}, state);
+      state.playingState = PLAYING_STATES.QUEUED;
+      break;
+    
+    default:
+      break;
+  }
+  return state;
 }
 
-export default function sequencers (state = {}, action) {
-  return awakeningSequencers.reducer(state, action);
+export default function sequencers (state = {}, action, segments) {
+  state = awakeningSequencers.reducer(state, action);
+
+  switch (action.type) {
+    case actionTypes.BUTTON_PRESSED:
+      let segmentId = create_segmentId(
+        action.payload.levelId,
+        action.payload.segmentIndex
+      );
+      let segment = segments.byId[segmentId];
+      let sequencerId = segment.sequencerId;
+
+      if (sequencerId) {
+        // button was pressed for segment with this sequencer
+        state = Object.assign({}, state);
+        state[sequencerId] = sequencer(state[sequencerId], action);
+      }
+
+      break;
+    
+    default:
+      break;
+  }
+  return state;
 }

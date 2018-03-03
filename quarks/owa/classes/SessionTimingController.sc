@@ -68,10 +68,10 @@ SessionTimingController {
     arg phase;
     var phaseDuration = 16;
 
-    (
-      "[SessionTimingController]: Scheduling transition to phase "
-      ++ phase
-    ).postln();
+    //(
+      //"[SessionTimingController]: Scheduling transition to phase "
+      //++ phase
+    //).postln();
 
     clockController.clock.play({
       store.dispatch((

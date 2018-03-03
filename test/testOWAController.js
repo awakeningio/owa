@@ -40,10 +40,8 @@ describe("OWAController", function () {
   it("should close down cleanly", function (done) {
     owaController.quit().then(() => {
       done();
-      process.exit(0);
     }).catch((err) => {
       done(err);
-      process.exit(1);
     });
   });
 

@@ -12,15 +12,19 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { createLogger } from 'redux-logger'
 
-import { create_level, create_segment } from './models'
+import { create_level, create_segment, create_segmentId } from './models'
 import abletonlinkRedux from 'abletonlink-redux'
 import rootReducer from './reducers'
+import awakeningSequencers from 'awakening-sequencers';
+const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 
 /**
  *  logging of state-store messages
  **/
 const logger = createLogger({
-  
+  stateTransformer: (state) => {
+    return JSON.stringify(state, ' ', 4);
+  }
 });
 const middleware = [
 ];
@@ -56,6 +60,18 @@ export function configureStore () {
     }
   });
 
+  let sequencers = {
+    '6_0': create_default_sequencer('6_0', 'SimpleSequencer')
+  };
+  sequencers['6_0'].numBeats = 12;
+  sequencers['6_0'].releaseTime = 1.2;
+  sequencers['6_0'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 4
+  };
+
+  segmentsById[create_segmentId('level_6', 0)].sequencerId = '6_0';
+
   let initialState = {
     levels: {
       byId: levelsById,
@@ -64,7 +80,8 @@ export function configureStore () {
     segments: {
       byId: segmentsById,
       allIds: Object.keys(segmentsById)
-    }
+    },
+    sequencers
   };
 
   return createStoreWithMiddleware(rootReducer, initialState);

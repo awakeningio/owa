@@ -66,12 +66,23 @@ SessionTimingController {
 
   schedule_transition_to_phase {
     arg phase;
-    var phaseDuration = 16;
+    var phaseDuration,
+      state;
 
-    //(
-      //"[SessionTimingController]: Scheduling transition to phase "
-      //++ phase
-    //).postln();
+    state = store.getState();
+    phaseDuration = OWAConstants.transPhaseDurations[
+      state.sessionPhase.asSymbol()
+    ];
+
+    "state.sessionPhase:".postln;
+    state.sessionPhase.postln;
+    "OWAConstants.transPhaseDurations:".postln;
+    OWAConstants.transPhaseDurations.postln;
+
+    (
+      "[SessionTimingController]: Scheduling transition to phase "
+      ++ phase ++ " after duration " ++ phaseDuration
+    ).postln();
 
     clockController.clock.play({
       store.dispatch((

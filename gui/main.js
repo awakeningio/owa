@@ -40,8 +40,6 @@ app.on('ready', () => {
 
 // when a dispatch message is received from the renderer process
 ipcMain.on('dispatchButtonPressed', (event, arg) => {
-  console.log("arg");
-  console.log(arg);
   // forward it to the OWAServer
   oscPort.send({
     address: '/dispatch',
@@ -60,15 +58,15 @@ ipcMain.on('dispatchButtonPressed', (event, arg) => {
       },
       {
         type: "s",
-        value: 'level'
-      },
-      {
-        type: "i",
-        value: arg.level
+        value: 'levelId'
       },
       {
         type: "s",
-        value: 'position'
+        value: `level_${arg.level}`
+      },
+      {
+        type: "s",
+        value: 'segmentIndex'
       },
       {
         type: "i",

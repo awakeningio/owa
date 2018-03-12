@@ -15,10 +15,10 @@ export const OWA_READY_STATES = {
 };
 
 const IDLE = "IDLE";
-const TRANS_10 = "TRANS_10";
-const PLAYING_10 = "PLAYING_10";
-const TRANS_8 = "TRANS_8";
-const PLAYING_8 = "PLAYING_8";
+//const TRANS_10 = "TRANS_10";
+//const PLAYING_10 = "PLAYING_10";
+//const TRANS_8 = "TRANS_8";
+//const PLAYING_8 = "PLAYING_8";
 const TRANS_6 = "TRANS_6";
 const PLAYING_6 = "PLAYING_6";
 const TRANS_4 = "TRANS_4";
@@ -31,10 +31,10 @@ const PLAYING_ADVICE = "PLAYING_ADVICE";
 const TRANS_IDLE = "TRANS_IDLE";
 export const SESSION_PHASES = {
   IDLE,
-  TRANS_10,
-  PLAYING_10,
-  TRANS_8,
-  PLAYING_8,
+  //TRANS_10,
+  //PLAYING_10,
+  //TRANS_8,
+  //PLAYING_8,
   TRANS_6,
   PLAYING_6,
   TRANS_4,
@@ -50,10 +50,10 @@ export const SESSION_PHASES = {
 export const NEXT_SESSION_PHASES = {
   // our prototype only has levels 6, 4, 2
   IDLE: TRANS_6,
-  TRANS_10: PLAYING_10,
-  PLAYING_10: TRANS_8,
-  TRANS_8: PLAYING_8,
-  PLAYING_8: TRANS_6,
+  //TRANS_10: PLAYING_10,
+  //PLAYING_10: TRANS_8,
+  //TRANS_8: PLAYING_8,
+  //PLAYING_8: TRANS_6,
   TRANS_6: PLAYING_6,
   PLAYING_6: TRANS_4,
   TRANS_4: PLAYING_4,
@@ -64,4 +64,14 @@ export const NEXT_SESSION_PHASES = {
   TRANS_ADVICE: PLAYING_ADVICE,
   PLAYING_ADVICE: TRANS_IDLE,
   TRANS_IDLE: IDLE
+};
+
+export const TRANS_PHASE_DURATIONS = {
+  //TRANS_10,
+  //TRANS_8,
+  TRANS_6: 16,
+  TRANS_4: 16,
+  TRANS_2: 16,
+  TRANS_ADVICE: 16,
+  TRANS_IDLE: 16
 };

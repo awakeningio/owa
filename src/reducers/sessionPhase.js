@@ -11,6 +11,17 @@ import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants';
 
 import * as actionTypes from '../actionTypes';
 
+export function action_starts_transition (action, sessionPhase) {
+
+  if (action.type === actionTypes.BUTTON_PRESSED) {
+    return (
+      sessionPhase === SESSION_PHASES.IDLE
+      && action.payload.levelId === 'level_6'
+    );
+  }
+  return false;
+}
+
 function get_initial_state () {
   return SESSION_PHASES.IDLE;
 }
@@ -21,8 +32,7 @@ export default function sessionPhase (state = get_initial_state(), action) {
 
     case actionTypes.BUTTON_PRESSED:
       if (
-        state === SESSION_PHASES.IDLE
-        && action.payload.levelId === 'level_6'
+        action_starts_transition(action, state)
       ) {
         return NEXT_SESSION_PHASES[state];
       }

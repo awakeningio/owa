@@ -72,6 +72,8 @@ OWAController {
     // This only works when sclang is launched from a terminal, not from
     // the GUI.
     "OWAController.init".postln();
+    "params:".postln;
+    params.postln;
 
     OWAConstants.init(params);
 

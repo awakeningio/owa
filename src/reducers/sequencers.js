@@ -11,6 +11,8 @@
 import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
 import { create_segmentId, get_playing_levelId_for_sessionPhase } from '../models'
+import { action_starts_transition } from './sessionPhase'
+import { TRANS_PHASE_DURATIONS } from '../constants'
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 //function create_initial_state () {
@@ -49,23 +51,23 @@ const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
   //return initialState;
 //}
 
-function sequencer (state, action) {
-  switch (action.type) {
-    case actionTypes.BUTTON_PRESSED:
-      // assuming parent sequencer sent only when button is
-      // pressed for the segment containing this sequencer
-      // TODO: this will depend on other stuff
-      state = Object.assign({}, state);
-      state.playingState = PLAYING_STATES.QUEUED;
-      break;
+//function sequencer (state, action) {
+  //switch (action.type) {
+    //case actionTypes.BUTTON_PRESSED:
+      //// assuming parent sequencer sent only when button is
+      //// pressed for the segment containing this sequencer
+      //// TODO: this will depend on other stuff
+      //state = Object.assign({}, state);
+      //state.playingState = PLAYING_STATES.QUEUED;
+      //break;
     
-    default:
-      break;
-  }
-  return state;
-}
+    //default:
+      //break;
+  //}
+  //return state;
+//}
 
-export default function sequencers (state = {}, action, segments, levels, sessionPhase) {
+export default function sequencers (state = {}, action, segments, levels, sessionPhase, prevSessionPhase) {
   state = awakeningSequencers.reducer(state, action);
 
   switch (action.type) {
@@ -77,11 +79,20 @@ export default function sequencers (state = {}, action, segments, levels, sessio
       let segment = segments.byId[segmentId];
       let sequencerId = segment.sequencerId;
 
-      if (sequencerId) {
+      // if this was the press to transition a scene
+      if (action_starts_transition(action, prevSessionPhase)) {
         // button was pressed for segment with this sequencer
         state = Object.assign({}, state);
-        state[sequencerId] = sequencer(state[sequencerId], action);
+        state[sequencerId] = Object.assign(
+          {},
+          state[sequencerId],
+          {
+            playingState: PLAYING_STATES.QUEUED,
+            playQuant: [TRANS_PHASE_DURATIONS[sessionPhase], 0]
+          }
+        );
       }
+
 
       break;
 

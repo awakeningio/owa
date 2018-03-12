@@ -33,7 +33,7 @@ class SCController {
     
     return new Promise((resolve, reject) => {
       if (EXTERNAL_SC) {
-        resolve();
+        return resolve();
       } else {
         logger.debug("Booting SuperCollider...");
         var sclangOptions = {
@@ -48,8 +48,6 @@ MIDIIn.connectAll;
 API.mountDuplexOSC();
 s.options.inDevice = "JackRouter";
 s.options.outDevice = "JackRouter";
-s.options.numOutputBusChannels = 48;
-s.options.numInputBusChannels = 48;
 s.options.memSize = 8192 * 2 * 2 * 2;
 s.options.blockSize = 8;
 

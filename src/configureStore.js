@@ -23,6 +23,12 @@ const create_default_sequencer = awakeningSequencers.create_default_sequencer;
  **/
 const logger = createLogger({
   stateTransformer: (state) => {
+    let toPrint = {};
+    toPrint.sequencers = {
+      '6_0': state.sequencers['6_0'],
+      '6_1': state.sequencers['6_1']
+    };
+    toPrint.levels = state.levels;
     return JSON.stringify(state, ' ', 4);
   }
 });
@@ -72,7 +78,7 @@ export function configureStore () {
   sequencers['6_0'].releaseTime = 1.2;
   sequencers['6_0'].pbind = {
     degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 4
+    octave: 3
   };
   sequencers['6_1'].numBeats = 12;
   sequencers['6_1'].releaseTime = 1.2;
@@ -84,25 +90,25 @@ export function configureStore () {
   sequencers['6_2'].releaseTime = 1.2;
   sequencers['6_2'].pbind = {
     degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 4
+    octave: 5
   };
   sequencers['6_3'].numBeats = 12;
   sequencers['6_3'].releaseTime = 1.2;
   sequencers['6_3'].pbind = {
     degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 4
+    octave: 6
   };
   sequencers['6_4'].numBeats = 12;
   sequencers['6_4'].releaseTime = 1.2;
   sequencers['6_4'].pbind = {
     degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 4
+    octave: 7
   };
   sequencers['6_5'].numBeats = 12;
   sequencers['6_5'].releaseTime = 1.2;
   sequencers['6_5'].pbind = {
     degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 4
+    octave: 8
   };
 
   segmentsById[create_segmentId('level_6', 0)].sequencerId = '6_0';

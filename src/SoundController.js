@@ -11,7 +11,7 @@
 import ControllerWithStore from "./ControllerWithStore"
 import OSCActionListener from "./OSCActionListener"
 import { getEnvOrError } from "./utils"
-import { OWA_READY_STATES, SESSION_PHASES, NEXT_SESSION_PHASES } from "./constants"
+import * as constants from "./constants"
 
 import logger from './logging';
 
@@ -57,7 +57,7 @@ class SoundController extends ControllerWithStore {
     if (state.soundReady !== this.lastState.soundReady) {
       this.lastState.soundReady = state.soundReady;
 
-      if (state.soundReady == OWA_READY_STATES.BOOTED) {
+      if (state.soundReady == constants.OWA_READY_STATES.BOOTED) {
         var api = new sc.scapi();
         this.owaAPI = api;
         this.owaAPI.log.echo = true;
@@ -73,15 +73,12 @@ class SoundController extends ControllerWithStore {
         this.call("owa.init", [{
           linkState: this.linkStore.getState(),
           state: this.store.getState(),
-          constants: {
-            SESSION_PHASES,
-            NEXT_SESSION_PHASES
-          }
+          constants
         }]);
       }
       
     }
-    if (state.soundReady == OWA_READY_STATES.READY) {
+    if (state.soundReady == constants.OWA_READY_STATES.READY) {
       this.call("owa.setState", [state]);
     }
   }

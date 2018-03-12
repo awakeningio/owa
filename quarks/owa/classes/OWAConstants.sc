@@ -11,7 +11,8 @@
 OWAConstants {
   classvar <>autoTransitionSessionPhases,
     <>sessionPhases,
-    <>nextSessionPhases;
+    <>nextSessionPhases,
+    <>transPhaseDurations;
 
   *init {
     arg params;
@@ -26,5 +27,6 @@ OWAConstants {
     ];
     OWAConstants.sessionPhases = params.constants['SESSION_PHASES'];
     OWAConstants.nextSessionPhases = params.constants['NEXT_SESSION_PHASES'];
+    OWAConstants.transPhaseDurations = params.constants['TRANS_PHASE_DURATIONS'];
   }
 }

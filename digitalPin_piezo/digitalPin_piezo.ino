@@ -1,8 +1,7 @@
-const int numSensors = 12;
-const int buttonPin[numSensors] = {24,26,28,30,32,34,36,38,40,42,44,46};
+const int numSensors = 1;
+const int buttonPin[numSensors] = {13};
 int counter = 0;
 
-int sensorReading[numSensors] = {0,0,0,0,0,0,0,0,0,0,0,0};
 boolean buttonState;
 
 void setup() {

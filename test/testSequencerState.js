@@ -10,15 +10,17 @@ import * as actions from '../src/actions'
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 describe("Sequencer States", function () {
-  var store = configureStore();
-  var abletonLinkStateStore = configureLinkStore();
-  var owaController = new OWAController(store, {
-    linkStateStore: abletonLinkStateStore
-  });
-  var state = store.getState();
+  var store, abletonLinkStateStore, owaController, state, level, segment,
+    sequencer, sessionPhase;
 
   it("should init properly", function (done) {
     var unsub, soundReady = null;
+    store = configureStore();
+    abletonLinkStateStore = configureLinkStore();
+    owaController = new OWAController(store, {
+      linkStateStore: abletonLinkStateStore
+    });
+    state = store.getState();
 
     unsub = store.subscribe(() => {
       state = store.getState();
@@ -52,14 +54,13 @@ describe("Sequencer States", function () {
     expect(state.sessionPhase).to.equal(SESSION_PHASES.IDLE);
   });
 
-  var level = state.levels.byId['level_6'];
   it("should immediately transition when level6 button is pressed", function () {
+    level = state.levels.byId['level_6'];
     store.dispatch(actions.buttonPressed(level.levelId, 0));
     state = store.getState();
     expect(state.sessionPhase).to.equal(SESSION_PHASES.TRANS_6);
   });
 
-  var segment, sequencer;
   it("segment should have a sequencer", function () {
     segment = state.segments.byId[create_segmentId(level.levelId, 0)];
     expect(segment.sequencerId, "sequencerId of segment '${segment.segmentId}'")
@@ -68,7 +69,6 @@ describe("Sequencer States", function () {
     expect(sequencer).to.not.be.undefined;
   });
 
-  var sessionPhase;
   it("should eventually transition to playing", function (done) {
     state = store.getState();
     sessionPhase = state.sessionPhase;
@@ -84,7 +84,7 @@ describe("Sequencer States", function () {
     });
   });
 
-  it("level should point to the proper segment", function () {
+  it("level should point to segment 0", function () {
     level = state.levels.byId['level_6'];
     expect(level.segmentPlaybackIndex).to.equal(0);
   });
@@ -97,25 +97,29 @@ describe("Sequencer States", function () {
     expect(level.segmentPlaybackOrder).to.deep.equal([segment.segmentId]);
   });
   
-  it("level should point to the proper segment", function () {
+  it("level should point to segment 0", function () {
     level = state.levels.byId['level_6'];
     expect(level.segmentPlaybackIndex).to.equal(0);
   });
 
   var secondSegment;
-  it("should not transition on button press", function () {
+  it("should not transition sessionPhase on button press", function () {
     secondSegment = state.segments.byId[create_segmentId(level.levelId, 1)];
     store.dispatch(actions.buttonPressed(level.levelId, 1));
     state = store.getState();
     expect(state.sessionPhase).to.equal(SESSION_PHASES.PLAYING_6);
   });
 
-  it("level should have updated playback order", function () {
+  it("should have updated playback order", function () {
     expect(level.segmentPlaybackOrder).to.deep.equal([segment.segmentId, secondSegment.segmentId]);
   });
 
+  it("index should be the same", function () {
+    expect(level.segmentPlaybackIndex).to.equal(0);
+  });
+
   var secondSequencer;
-  it("sequencer for second segment should be queued", function () {
+  it("sequencer for second segment should be queued for the first time", function () {
     secondSequencer = state.sequencers[secondSegment.sequencerId];
     expect(secondSequencer.playingState).to.equal(PLAYING_STATES.QUEUED);
   });
@@ -136,21 +140,24 @@ describe("Sequencer States", function () {
     });
   });
   
-  it("level should point to the proper segment", function () {
+  it("level should point to second segment", function () {
     level = state.levels.byId['level_6'];
     expect(level.segmentPlaybackIndex).to.equal(1);
   });
 
-  it("first should start and second should be queued", function (done) {
+  it("auto first should start and second should be requeued", function (done) {
     let unsub = store.subscribe(() => {
       state = store.getState();
-      if (state.sequencers[segment.sequencerId].playingState !== sequencer.playingState) {
+      if (
+        state.sequencers[segment.sequencerId].playingState !== sequencer.playingState
+      ) {
         secondSequencer = state.sequencers[secondSegment.sequencerId];
         sequencer = state.sequencers[segment.sequencerId];
-        expect(secondSequencer.playingState).to.equal(PLAYING_STATES.QUEUED);
-        expect(sequencer.playingState).to.equal(PLAYING_STATES.PLAYING);
-        unsub();
-        done();
+        if (sequencer.playingState === PLAYING_STATES.PLAYING) {
+          expect(secondSequencer.playingState).to.equal(PLAYING_STATES.REQUEUED);
+          unsub();
+          done();
+        }
       }
     });
   });

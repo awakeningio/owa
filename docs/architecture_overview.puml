@@ -84,7 +84,7 @@ namespace nodejs.owa {
 
 }
 
-package quarks.owa {
+namespace quarks.owa {
   class OWAController {
     StateStore owaStateStore
     StateStore linkStateStore

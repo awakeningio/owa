@@ -4,3 +4,4 @@ node_modules
 .env
 .supercollider.yaml
 build
+.nyc_output

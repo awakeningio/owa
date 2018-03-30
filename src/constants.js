@@ -69,7 +69,7 @@ export const NEXT_SESSION_PHASES = {
 export const TRANS_PHASE_DURATIONS = {
   //TRANS_10,
   //TRANS_8,
-  TRANS_6: 16,
+  TRANS_6: 12,
   TRANS_4: 16,
   TRANS_2: 16,
   TRANS_ADVICE: 16,

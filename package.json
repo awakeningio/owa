@@ -4,7 +4,7 @@
   "description": "Out of this World Advice is an interactive art installation.  owa.awakening.io",
   "main": "build/main.js",
   "scripts": {
-    "test": "mocha --require babel-register --exit --timeout 10000 --slow 4000",
+    "test": "nyc mocha --require babel-register --exit --timeout 10000 --slow 4000",
     "build_docs": "plantuml -tsvg docs/*.puml",
     "watch_docs": "npm-watch build_docs",
     "build": "babel src -d build",
@@ -37,11 +37,12 @@
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "eslint": "^4.3.0",
-    "npm-watch": "^0.2.0"
+    "npm-watch": "^0.2.0",
+    "nyc": "^11.6.0"
   },
   "dependencies": {
     "abletonlink-redux": "0.0.6",
-    "awakening-sequencers": "^0.7.9",
+    "awakening-sequencers": "^0.8.1",
     "chai": "^4.1.2",
     "mocha": "^5.0.1",
     "osc": "^2.2.0",

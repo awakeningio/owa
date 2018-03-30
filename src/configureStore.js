@@ -137,5 +137,9 @@ export function configureLinkStore () {
   let rootReducer = combineReducers({
     abletonlink: abletonlinkRedux.reducer
   });
-  return createStore(rootReducer);
+  let middleware = [];
+  if (process.env.NODE_ENV === 'development') {
+    middleware.push(createLogger());
+  }
+  return createStore(rootReducer, applyMiddleware(...middleware));
 }

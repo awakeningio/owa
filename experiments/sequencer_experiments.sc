@@ -3,19 +3,19 @@
   var patch;
 
   //instr = Instr(\paramexample, {
-    //arg freq, amp = 1.0, modIndex = 0.5, releaseTime = 0.3;
-    //var out, car, mod;
-    //mod = SinOsc.ar(freq * modIndex);
-    //car = SinOsc.ar(freq * mod, 0, amp);
-    //out = car * EnvGen.kr(Env.linen(0.001, 0.05, releaseTime), doneAction: 2);
-    //[out, out];
+  //arg freq, amp = 1.0, modIndex = 0.5, releaseTime = 0.3;
+  //var out, car, mod;
+  //mod = SinOsc.ar(freq * modIndex);
+  //car = SinOsc.ar(freq * mod, 0, amp);
+  //out = car * EnvGen.kr(Env.linen(0.001, 0.05, releaseTime), doneAction: 2);
+  //[out, out];
   //}, [
-    //\freq,
-    //\amp,
-    //\lowfreq,
-    //ControlSpec(0.1, 5.0, \lin)
+  //\freq,
+  //\amp,
+  //\lowfreq,
+  //ControlSpec(0.1, 5.0, \lin)
   //]);
-  //instr = Instr("cs.percussion.Impulsive") 
+  //instr = Instr("cs.percussion.Impulsive")
   // define a simple synth
   ~patch = Patch("cs.percussion.Impulsive");
   //~patch.releaseTime.value = 0.4;
@@ -24,7 +24,7 @@
 )
 
 ~stop_player = {
-	var player = ~player;
+  var player = ~player;
   if (player != nil, {
     TempoClock.default.play({
       player.stop();
@@ -56,7 +56,7 @@
     \dur, 1
     //\releaseTime, ~patch.releaseTime
   );
-  
+
   ~player = ~pat.play(TempoClock.default, (), [4, 0]);
 )
 

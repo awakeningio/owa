@@ -35,7 +35,7 @@
 
       a = BBandStop.ar(
         a,
-        LFNoise1.kr(MouseX.kr(0.2, 2.0)).exprange(40, 15000), 
+        LFNoise1.kr(MouseX.kr(0.2, 2.0)).exprange(40, 15000),
         exprand(0.1, 2)
       );
 
@@ -135,4 +135,3 @@
   ]);
   socket = VoicerMIDISocket.new([3, \omni], v);
 )
-

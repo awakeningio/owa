@@ -24,6 +24,10 @@
 )
 
 (
+  s.plotTree();
+)
+
+(
 
   // eerie
 
@@ -134,4 +138,27 @@
     \modEnvShape,  Env.perc(0.0, 0.2)
   ]);
   socket = VoicerMIDISocket.new([3, \omni], v);
+)
+
+(
+  var p = Patch("cs.fm.Lazers", (
+    gate: 1
+  )),
+      patchSynth;
+    p.prepareForPlay();
+    patchSynth = p.asSynthDef().add();
+    Pbind(
+      \instrument,   patchSynth.name,
+      \dur,     Prand([
+        Pseq([1/4, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4]),
+        Pseq([1/8, 1/8, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4]),
+        Pseq([1/16, 1/16, 1/8, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4]),
+        Pseq([1/8, 1/8, 1/8, 1/8, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4, 1/4])
+      ], inf),
+      \amp,     0.1,
+      \carrierReleaseTime, Pfunc({ exprand(0.025, 0.1) }),
+      \mod2ReleaseTime, Pfunc({ exprand(0.01, 0.2) }),
+      \modIndex,  Pfunc({ exprand(0.01, 6) }),
+      \mod2Index,  Pfunc({ exprand(0.02, 6) })
+    ).play();
 )

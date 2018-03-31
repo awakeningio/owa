@@ -72,7 +72,7 @@ export function configureStore () {
     '6_2': create_default_sequencer('6_2', 'SimpleSequencer'),
     '6_3': create_default_sequencer('6_3', 'SimpleSequencer'),
     '6_4': create_default_sequencer('6_4', 'SimpleSequencer'),
-    '6_5': create_default_sequencer('6_5', 'SimpleSequencer'),
+    '6_5': create_default_sequencer('6_5', 'LazersSequencer'),
   };
   sequencers['6_0'].numBeats = 12;
   sequencers['6_0'].releaseTime = 1.2;
@@ -105,11 +105,6 @@ export function configureStore () {
     octave: 7
   };
   sequencers['6_5'].numBeats = 12;
-  sequencers['6_5'].releaseTime = 1.2;
-  sequencers['6_5'].pbind = {
-    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 8
-  };
 
   segmentsById[create_segmentId('level_6', 0)].sequencerId = '6_0';
   segmentsById[create_segmentId('level_6', 1)].sequencerId = '6_1';
@@ -138,8 +133,8 @@ export function configureLinkStore () {
     abletonlink: abletonlinkRedux.reducer
   });
   let middleware = [];
-  if (process.env.NODE_ENV === 'development') {
-    middleware.push(createLogger());
-  }
+  //if (process.env.NODE_ENV === 'development') {
+    //middleware.push(createLogger());
+  //}
   return createStore(rootReducer, applyMiddleware(...middleware));
 }

@@ -43,13 +43,6 @@ class OWAController extends ControllerWithStore {
       );
     });
 
-
-
-    //setTimeout(() => {
-      //this.store.dispatch(awakeningSequencers.actions.sequencerQueued('level_10-segment_0'));
-      ////this.store.dispatch(actions.sessionPhaseAdvanced('TRANS_10'));
-    //}, 5000);
-    
   }
 
   handle_state_change () {

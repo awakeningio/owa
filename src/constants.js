@@ -14,6 +14,11 @@ export const OWA_READY_STATES = {
   READY: "READY"
 };
 
+export const LEVEL_PLAYBACK_TYPE = {
+  SIMULTANEOUS: "SIMULTANEOUS",
+  SEQUENTIAL: "SEQUENTIAL"
+};
+
 const IDLE = "IDLE";
 //const TRANS_10 = "TRANS_10";
 //const PLAYING_10 = "PLAYING_10";

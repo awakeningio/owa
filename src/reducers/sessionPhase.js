@@ -14,10 +14,19 @@ import * as actionTypes from '../actionTypes';
 export function action_starts_transition (action, sessionPhase) {
 
   if (action.type === actionTypes.BUTTON_PRESSED) {
-    return (
+    if (
       sessionPhase === SESSION_PHASES.IDLE
       && action.payload.levelId === 'level_6'
-    );
+    ) {
+      return true;
+    } else if (
+      // TODO: implement 'momentum' mechanism for deciding
+      // when to advance session phase
+      sessionPhase === SESSION_PHASES.PLAYING_6
+      && action.payload.levelId === 'level_4'
+    ) {
+      return true;
+    }
   }
   return false;
 }

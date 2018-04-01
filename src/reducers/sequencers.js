@@ -12,7 +12,7 @@ import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
 import { create_segmentId, get_playing_levelId_for_sessionPhase } from '../models'
 import { action_starts_transition } from './sessionPhase'
-import { TRANS_PHASE_DURATIONS } from '../constants'
+import { TRANS_PHASE_DURATIONS, LEVEL_PLAYBACK_TYPE } from '../constants'
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 //function create_initial_state () {
@@ -72,7 +72,14 @@ function action_starts_playback (action, sessionPhase) {
   return (action.payload.levelId === currentLevelId);
 }
 
-export default function sequencers (state = {}, action, segments, levels, sessionPhase, prevSessionPhase) {
+export default function sequencers (
+  state = {},
+  action,
+  segments,
+  levels,
+  sessionPhase,
+  prevSessionPhase
+) {
   state = awakeningSequencers.reducer(state, action);
 
   switch (action.type) {
@@ -99,42 +106,75 @@ export default function sequencers (state = {}, action, segments, levels, sessio
       } else if (action_starts_playback(action, sessionPhase)) {
         state = Object.assign({}, state);
         let level = levels.byId[action.payload.levelId];
-        let currentSegmentId = level.segmentPlaybackOrder[
-          level.segmentPlaybackIndex
-        ];
-        let currentSegment = segments.byId[currentSegmentId];
-        let currentSequencer = state[currentSegment.sequencerId];
 
-        // dequeue all queued
-        Object.keys(state).forEach((sequencerId) => {
-          let seq = state[sequencerId];
+        if (level.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
+          //  get currently playing segment on this level
+          let currentSegmentId = level.segmentPlaybackOrder[
+            level.segmentPlaybackIndex
+          ];
+          let currentSegment = segments.byId[currentSegmentId];
 
-          switch (seq.playingState) {
-            case PLAYING_STATES.QUEUED:
-              state[sequencerId] = Object.assign({}, seq, {
-                playingState: PLAYING_STATES.STOPPED
-              });
-              break;
+          // get currently playing sequencer
+          let currentSequencer = state[currentSegment.sequencerId];
 
-            case PLAYING_STATES.REQUEUED:
-              state[sequencerId] = Object.assign({}, seq, {
-                playingState: PLAYING_STATES.PLAYING
-              });
-              break;
-            default:
-              break;
+          // dequeue all queued on this level
+          Object.keys(state).forEach((sequencerId) => {
+            let seq = state[sequencerId];
+
+            switch (seq.playingState) {
+              case PLAYING_STATES.QUEUED:
+                state[sequencerId] = Object.assign({}, seq, {
+                  playingState: PLAYING_STATES.STOPPED
+                });
+                break;
+
+              case PLAYING_STATES.REQUEUED:
+                state[sequencerId] = Object.assign({}, seq, {
+                  playingState: PLAYING_STATES.PLAYING
+                });
+                break;
+              default:
+                break;
+            }
+
+          });
+
+          // queue sequencer associated with button press once currently
+          // playing one finishes
+          state[sequencerId] = Object.assign(
+            {},
+            state[sequencerId],
+            {
+              playingState: PLAYING_STATES.QUEUED,
+              playQuant: [currentSequencer.numBeats, 1]
+            }
+          );
+        } else if (level.playbackType === LEVEL_PLAYBACK_TYPE.SIMULTANEOUS) {
+          // just queue or stop sequencer associated with button press.
+          if (state[sequencerId].playingState === PLAYING_STATES.PLAYING) {
+            state[sequencerId] = Object.assign(
+              {},
+              state[sequencerId],
+              {
+                playingState: PLAYING_STATES.STOP_QUEUED,
+                stopQuant: [
+                  state[sequencerId].numBeats,
+                  0
+                ]
+              }
+            );
+          } else if (state[sequencerId].playingState === PLAYING_STATES.STOPPED) {
+            state[sequencerId] = Object.assign(
+              {},
+              state[sequencerId],
+              {
+                playingState: PLAYING_STATES.QUEUED,
+                playQuant: [state[sequencerId].numBeats, 1]
+              }
+            );
           }
+        }
 
-        });
-
-        state[sequencerId] = Object.assign(
-          {},
-          state[sequencerId],
-          {
-            playingState: PLAYING_STATES.QUEUED,
-            playQuant: [currentSequencer.numBeats, 1]
-          }
-        );
       }
 
 
@@ -148,24 +188,29 @@ export default function sequencers (state = {}, action, segments, levels, sessio
       let activeLevelId = get_playing_levelId_for_sessionPhase(sessionPhase);
       if (activeLevelId) {
         let activeLevel = levels.byId[activeLevelId];
-        // get next segment
-        let nextSegmentId = activeLevel.segmentPlaybackOrder[((
-            activeLevel.segmentPlaybackIndex + 1
-        ) % activeLevel.segmentPlaybackOrder.length)];
-        let nextSegment = segments.byId[nextSegmentId];
 
-        // queue next sequencer
-        state = Object.assign({}, state);
-        let nextSequencer = state[nextSegment.sequencerId];
+        if (activeLevel.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
+          // get next segment
+          let nextSegmentId = activeLevel.segmentPlaybackOrder[((
+              activeLevel.segmentPlaybackIndex + 1
+          ) % activeLevel.segmentPlaybackOrder.length)];
+          let nextSegment = segments.byId[nextSegmentId];
 
-        state[nextSegment.sequencerId] = Object.assign(
-          {},
-          state[nextSegment.sequencerId],
-          {
-            playingState: (nextSequencer.playingState === PLAYING_STATES.PLAYING) ? PLAYING_STATES.REQUEUED : PLAYING_STATES.QUEUED,
-            playQuant: [activeSequencer.numBeats, 1]
-          }
-        );
+          // queue next sequencer
+          state = Object.assign({}, state);
+          let nextSequencer = state[nextSegment.sequencerId];
+
+          state[nextSegment.sequencerId] = Object.assign(
+            {},
+            state[nextSegment.sequencerId],
+            {
+              playingState: (
+                nextSequencer.playingState === PLAYING_STATES.PLAYING
+              ) ? PLAYING_STATES.REQUEUED : PLAYING_STATES.QUEUED,
+              playQuant: [activeSequencer.numBeats, 1]
+            }
+          );
+        }
 
       }
       break;

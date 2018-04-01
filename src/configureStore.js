@@ -12,7 +12,13 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { createLogger } from 'redux-logger'
 
-import { create_level, create_segment, create_segmentId } from './models'
+import {
+  create_simultaneous_level,
+  create_sequential_level,
+  create_segment,
+  create_segmentId
+} from './models'
+
 import abletonlinkRedux from 'abletonlink-redux'
 import rootReducer from './reducers'
 import awakeningSequencers from 'awakening-sequencers';
@@ -28,7 +34,7 @@ const logger = createLogger({
       '6_0': state.sequencers['6_0'],
       '6_1': state.sequencers['6_1']
     };
-    toPrint.levels = state.levels;
+    //toPrint.levels = state.levels;
     return JSON.stringify(state, ' ', 4);
   }
 });
@@ -48,9 +54,9 @@ export function configureStore () {
   let levelsById = {
     //'level_10': create_level('level_10', 3),
     //'level_8': create_level('level_8', 8),
-    'level_6': create_level('level_6', 6),
-    'level_4': create_level('level_4', 4),
-    'level_2': create_level('level_2', 2)
+    'level_6': create_simultaneous_level('level_6', 6),
+    'level_4': create_sequential_level('level_4', 4),
+    'level_2': create_simultaneous_level('level_2', 2)
   };
 
   // create segments for each level
@@ -73,7 +79,37 @@ export function configureStore () {
     '6_3': create_default_sequencer('6_3', 'SimpleSequencer'),
     '6_4': create_default_sequencer('6_4', 'SimpleSequencer'),
     '6_5': create_default_sequencer('6_5', 'LazersSequencer'),
+    '4_0': create_default_sequencer('4_0', 'ChordProgSequencer'),
+    '4_1': create_default_sequencer('4_1', 'ChordProgSequencer'),
+    '4_2': create_default_sequencer('4_2', 'ChordProgSequencer'),
+    '4_3': create_default_sequencer('4_3', 'ChordProgSequencer'),
   };
+
+  sequencers['4_0'].numBeats = 12;
+  sequencers['4_0'].releaseTime = 1.2;
+  sequencers['4_0'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 2
+  };
+  sequencers['4_1'].numBeats = 12;
+  sequencers['4_1'].releaseTime = 1.2;
+  sequencers['4_1'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 3
+  };
+  sequencers['4_2'].numBeats = 12;
+  sequencers['4_2'].releaseTime = 1.2;
+  sequencers['4_2'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 4
+  };
+  sequencers['4_3'].numBeats = 12;
+  sequencers['4_3'].releaseTime = 1.2;
+  sequencers['4_3'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
+    octave: 5
+  };
+
   sequencers['6_0'].numBeats = 12;
   sequencers['6_0'].releaseTime = 1.2;
   sequencers['6_0'].pbind = {
@@ -112,6 +148,10 @@ export function configureStore () {
   segmentsById[create_segmentId('level_6', 3)].sequencerId = '6_3';
   segmentsById[create_segmentId('level_6', 4)].sequencerId = '6_4';
   segmentsById[create_segmentId('level_6', 5)].sequencerId = '6_5';
+  segmentsById[create_segmentId('level_4', 0)].sequencerId = '4_0';
+  segmentsById[create_segmentId('level_4', 1)].sequencerId = '4_1';
+  segmentsById[create_segmentId('level_4', 2)].sequencerId = '4_2';
+  segmentsById[create_segmentId('level_4', 3)].sequencerId = '4_3';
 
   let initialState = {
     levels: {

@@ -11,14 +11,25 @@
 /******************************************************************************
 from: https://github.com/sparkfun/74HC4051_8-Channel_Mux_Breakout
  ******************************************************************************/
+
+// number of used input pins on the muxer
+const int numMuxerPins = 2;
+
+// number of select pins on the muxer
 const int numSelectPins = 4;
+
+// digital out (PWM) pins on Arduino connected to muxer select pins
 const int selectPins[numSelectPins] = {4, 5, 6, 7};
+
+// single Arduino analog input
 const int zInput = A0;
+
+// threshold of input voltage
+const int thresh = 80;
 
 void setup() 
 {
   Serial.begin(9600);
-
 
   for (int i=0; i<numSelectPins; i++)
   {
@@ -26,19 +37,18 @@ void setup()
     digitalWrite(selectPins[i], HIGH);
   }
   pinMode(zInput, INPUT);
-
-  // Print the header:
-  Serial.println("Y0\tY1\tY2\tY3\tY4\tY5\tY6\tY7");
-  Serial.println("---\t---\t---\t---\t---\t---\t---\t---");
 }
 
+int inputValue;
 void loop() 
 {
-  for (byte pin=0; pin<16; pin++)
+  for (byte pin=0; pin<numMuxerPins; pin++)
   {
     selectMuxPin(pin);
-    int inputValue = analogRead(A0);
-    Serial.print(String(int(pin)) + ":\t" + String(inputValue) + "\n");
+    inputValue = analogRead(A0);
+    if (inputValue > thresh) {
+      Serial.print(String(int(pin)) + ":\t" + String(inputValue) + "\n");
+    }    
   }
 }
 

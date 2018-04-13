@@ -30,7 +30,7 @@ SamplerSequencer : AwakenedSequencer {
     pat = Pbind(
       \instrument, patchSynth.name,
       \gate, 1,
-      \dur, 1
+      [\midinote, \dur], Pseq(bufManager.midiSequences[\subtle_kick], inf)
     );
     ^pat.asStream();
   }

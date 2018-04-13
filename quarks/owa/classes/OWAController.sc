@@ -100,7 +100,13 @@ OWAController {
       ["subtle_kick_03 [2018-04-13 134203].wav", \subtle_kick_03]
     ], ({
       // when buffers are done loading
+      // load midi files
+      bufManager.load_midi([
+        ["subtle_kick.mid", \subtle_kick, 8]
+      ]);
+      // initialize sequencers
       seqFactory.setStore(owaStore);
+      // tell main process we are done
       owaStore.dispatch((
         type: "OWA_SOUND_INIT_DONE"
       ));

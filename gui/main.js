@@ -12,6 +12,8 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 
 import osc from 'osc';
 
+const NODE_ENV=process.env.NODE_ENV;
+
 let mainWindow = null;
 
 let oscPort = new osc.UDPPort({
@@ -30,8 +32,10 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({width: 800, height: 600});
-  mainWindow.webContents.openDevTools()
+  mainWindow = new BrowserWindow({width: 1280, height: 1280});
+  if (NODE_ENV === 'development') {
+    mainWindow.webContents.openDevTools()
+  }
   mainWindow.loadURL('file://' + __dirname + '/index.html');
   mainWindow.on('closed', () => {
     mainWindow = null;

@@ -13,9 +13,11 @@ import sequencers from './sequencers';
 import levels from './levels';
 import sessionPhase from './sessionPhase';
 import segments from './segments';
+import fadecandyConnection from './fadecandyConnection';
 
 var prevSessionPhase;
 export default function (state, action) {
+  state.fadecandyConnection = fadecandyConnection(state.fadecandyConnection, action);
   state.soundReady = soundReady(state.soundReady, action);
   prevSessionPhase = state.sessionPhase;
   state.sessionPhase = sessionPhase(state.sessionPhase, action);

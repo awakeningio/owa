@@ -14,6 +14,12 @@ export const OWA_READY_STATES = {
   READY: "READY"
 };
 
+export const CONNECTION_STATUS = {
+  DISCONNECTED: "DISCONNECTED",
+  CONNECTING: "CONNECTING",
+  CONNECTED: "CONNECTED"
+};
+
 export const LEVEL_PLAYBACK_TYPE = {
   SIMULTANEOUS: "SIMULTANEOUS",
   SEQUENTIAL: "SEQUENTIAL"
@@ -79,4 +85,20 @@ export const TRANS_PHASE_DURATIONS = {
   TRANS_2: 16,
   TRANS_ADVICE: 16,
   TRANS_IDLE: 16
+};
+
+// pixel address ranges and their respective names.
+export const SEGMENTID_TO_PIXEL_RANGE = {
+  "level_6-segment_0": [0, 11],
+  "level_6-segment_1": [12, 23],
+  "level_6-segment_2": [24, 35],
+  "level_6-segment_3": [36, 47],
+  "level_6-segment_4": [48, 59],
+  "level_6-segment_5": [60, 71],
+  "level_4-segment_0": [72, 83],
+  "level_4-segment_1": [84, 95],
+  "level_4-segment_2": [96, 107],
+  "level_4-segment_3": [108, 119],
+  "level_2-segment_0": [120, 131],
+  "level_2-segment_1": [132, 143]
 };

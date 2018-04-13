@@ -10,24 +10,29 @@
 
 ({
 
-  var samplerPbindTest;
+  var samplerPbindTest, midiFileTest;
+  var bufManager = BufferManager.new((
+    rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
+  ));
 
   samplerPbindTest = ({
     
-    var bufManager = BufferManager.new((
-      rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
-    ));
     
     bufManager.load_bufs([
-      ["subtle_kick_01 [2018-04-13 134203].wav", \subtle_kick_01],
-      ["subtle_kick_02 [2018-04-13 134203].wav", \subtle_kick_02],
-      ["subtle_kick_03 [2018-04-13 134203].wav", \subtle_kick_03]
+      ["subtle_kick_01 [2018-04-13 134203].wav", \subtle_kick_01]
     ], ({
-
+      var midiFileSequences;
       var pat,
         patch,
         patStream,
         patchSynth;
+
+
+      bufManager.load_midi([
+        ["subtle_kick.mid", \subtle_kick, 8]
+      ]);
+
+      midiFileSequences = bufManager.midiSequences[\subtle_kick];
 
       patch = Patch("cs.sfx.PlayBuf", (
         buf: bufManager.bufs[\subtle_kick_01],
@@ -42,7 +47,7 @@
       pat = Pbind(
         \instrument, patchSynth.name,
         \gate, 1,
-        \dur, 1
+        [\midinote, \dur], Pseq(midiFileSequences, inf)
       );
 
       pat.play();

@@ -5,3 +5,4 @@ node_modules
 .supercollider.yaml
 build
 .nyc_output
+~.skp

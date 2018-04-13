@@ -73,7 +73,7 @@ export function configureStore () {
   });
 
   let sequencers = {
-    '6_0': create_default_sequencer('6_0', 'SimpleSequencer'),
+    '6_0': create_default_sequencer('6_0', 'SamplerSequencer'),
     '6_1': create_default_sequencer('6_1', 'SimpleSequencer'),
     '6_2': create_default_sequencer('6_2', 'SimpleSequencer'),
     '6_3': create_default_sequencer('6_3', 'SimpleSequencer'),

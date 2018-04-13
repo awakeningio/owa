@@ -93,11 +93,18 @@ OWAController {
       clockController: clockController
     ));
     
-    seqFactory.setStore(owaStore);
 
-    owaStore.dispatch((
-      type: "OWA_SOUND_INIT_DONE"
-    ));
+    bufManager.load_bufs([
+      ["subtle_kick_01 [2018-04-13 134203].wav", \subtle_kick_01],
+      ["subtle_kick_02 [2018-04-13 134203].wav", \subtle_kick_02],
+      ["subtle_kick_03 [2018-04-13 134203].wav", \subtle_kick_03]
+    ], ({
+      // when buffers are done loading
+      seqFactory.setStore(owaStore);
+      owaStore.dispatch((
+        type: "OWA_SOUND_INIT_DONE"
+      ));
+    }));
 
 
     ^this;

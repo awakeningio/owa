@@ -16,9 +16,9 @@ let mainWindow = null;
 
 let oscPort = new osc.UDPPort({
   localAddress: '127.0.0.1',
-  localPort: process.env.SIMULATOR_OSC_IN_PORT,
+  localPort: process.env.GUI_OSC_IN_PORT,
   remoteAddress: '127.0.0.1',
-  remotePort: process.env.SIMULATOR_OSC_OUT_PORT
+  remotePort: process.env.GUI_OSC_OUT_PORT
 });
 
 oscPort.open();

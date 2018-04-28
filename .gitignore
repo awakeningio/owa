@@ -7,3 +7,4 @@ build
 .nyc_output
 ~.skp
 ansible/roles/*.*
+*.retry

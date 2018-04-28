@@ -9,9 +9,9 @@ fadecandy_config:
         type: fadecandy
         map: [
           # [ OPC Channel, First OPC Pixel, First output pixel, Pixel count  ]
-#         [ 0, 0, 0, 50 ],
+         [ 0, 0, 0, 512 ],
           # [ OPC Channel, First OPC Pixel, First output pixel, Pixel count, Color channels  ]
 #         [ 0, 50, 64, 12, 'grb' ]
-          [ 0, 0, 0, ? ], [ 0, ?, 64, ? ], [ 0, ?, 128, ? ]
+#          [ 0, 0, 0, ? ], [ 0, ?, 64, ? ], [ 0, ?, 128, ? ]
         ]
 

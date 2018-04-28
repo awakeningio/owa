@@ -1,5 +1,12 @@
 ---
 - hosts: all
+  become: yes
   tasks:
+    - name: base packages
+      include_role:
+        name: base
+    - name: install node
+      include_role:
+        name: geerlingguy.nodejs
     - include_role:
-        name: fadecandy
+        name: colinsullivan.fadecandy

@@ -1,0 +1,16 @@
+---
+- name: update code
+  git:
+    repo: https://github.com/awakeningio/owa.git
+    dest: /home/pi/owa
+    clone: yes
+    update: yes
+    recursive: yes
+  register: owa_git
+- name: update npm deps
+  shell: npm install
+  register: npm_finished
+  failed_when: '"ERR!" in npm_finished.stderr'
+  when: owa_git.changed
+  args:
+    chdir: /home/pi/owa

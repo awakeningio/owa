@@ -10,3 +10,4 @@
         name: geerlingguy.nodejs
     - include_role:
         name: colinsullivan.fadecandy
+- import_playbook: site_deploy.yml

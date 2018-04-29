@@ -2,12 +2,14 @@
 - hosts: all
   become: yes
   tasks:
-    - name: base packages
-      include_role:
+    - include_role:
         name: base
-    - name: install node
-      include_role:
+    - include_role:
+        name: colinsullivan.audio
+    - include_role:
         name: geerlingguy.nodejs
     - include_role:
         name: colinsullivan.fadecandy
+    - include_role:
+        name: colinsullivan.supercollider
 - import_playbook: site_deploy.yml

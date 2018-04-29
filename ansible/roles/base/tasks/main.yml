@@ -5,9 +5,8 @@
     state: present
   with_items:
     - git
-    - vim
+    - vim-nox
     - tmux
-    - libasound2-dev
 - name: colin
   user:
     append: yes

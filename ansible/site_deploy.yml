@@ -1,7 +1,6 @@
 ---
 - hosts: all
-  become: yes
-  become_user: pi
+  become: no
   tasks:
     - include_role:
         name: owa

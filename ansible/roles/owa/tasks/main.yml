@@ -1,8 +1,12 @@
 ---
+- name: sclang conf
+  copy:
+    src: sclang_conf.yaml
+    dest: "/home/{{ owa_deploy_user }}/.config/SuperCollider/sclang_conf.yaml"
 - name: update code
   git:
     repo: https://github.com/awakeningio/owa.git
-    dest: /home/pi/owa
+    dest: "{{ owa_project_dir }}"
     clone: yes
     update: yes
     recursive: yes
@@ -13,4 +17,19 @@
   failed_when: '"ERR!" in npm_finished.stderr'
   when: owa_git.changed
   args:
-    chdir: /home/pi/owa
+    chdir: "{{owa_project_dir}}"
+- name: owa environment
+  template:
+    src: owa_env.j2
+    dest: "{{ owa_project_dir }}/owa_env"
+- name: .supercollider.yaml for supercolliderjs
+  copy:
+    src: .supercollider.yaml
+    dest: "{{ owa_project_dir }}/.supercollider.yaml"
+- name: sync sounds
+  synchronize:
+    dest: "{{ owa_sounds_dir }}/"
+    src: "{{ local_owa_sounds_dir }}"
+    times: yes
+    rsync_opts:
+      - "--exclude=*.asd"

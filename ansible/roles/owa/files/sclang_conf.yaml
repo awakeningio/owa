@@ -1,0 +1,71 @@
+includePaths:
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwCommon
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwMixerChannel
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwVoicer
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/JITMIDIKtl
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/XML
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/cs-supercollider-lib
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/API
+  - /home/colin/owa/node_modules/awakening-sequencers/quarks/awakening-sequencers
+  - /home/colin/owa/node_modules/supercollider-redux/quarks/supercollider-redux
+  - /home/colin/owa/quarks/owa
+excludePaths:
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/SystemOverwrites/flowViewExtensions.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/gui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/deprecated-3.5.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/Document-scanFor.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/cross-platform-recursiveResize.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/QtCollider/qt-recursiveResize.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/Lang/Workflow/extDocument-openStartup.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/Lang/Workflow/extDocument-closeAllHelp.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Drawing/extPen-roundedRect.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Drawing/extDrawIcon.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Drawing/extPen-arrow.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Drawing/extPen-addCurve.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Drawing/extPen-transformToRect.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Extensions/extGradient-fill.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Extensions/extSCWindow-asCode.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Views/ExpandView.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/Main Features/Interpolation/extPen-splineCurve.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/TempoClockGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwVoicer/VoicerGUI.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/DualNumberEditorGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/fixedwidthflowview.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Views/EZSmoothSlider.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/fixedwidthmultipagelayout.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/LayoutViews.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/ToggleTextField.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI/Views/EZSmoothRanger.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/ServerTools/ServerGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/UncoupledUsefulThings/KeyCodeResponderGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwMixerChannel/MixerScopeGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/CXLabel.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwVoicer/VoicerGUI.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Editors/EnvEditorGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Players/AbstractPlayerGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/ActionButton.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/LayoutValueSlider.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Sample/SampleGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Instr/InstrGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Editors/NumberEditorGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/CXMenu.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/Layouts.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Scheduling/TempoGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/ServerTools/ServerGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/HJHObjectGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Players/SimpleTriggerGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Players/PlayerBasicOpsGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Instr/PatchGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Players/PlayerBasicOpsGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Players/PlayerMixerGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Players/BeatClockPlayerGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Sequencers/HasSubjectGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Instr/PatchGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Players/SFP/SFPGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/Main Features/SVGFile
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/Main Features/EQ
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI
+postInlineWarnings: false

@@ -14,13 +14,14 @@ describe("Sequencer States", function () {
     sequencer, sessionPhase, secondSegment, secondSequencer;
 
   it("should init properly", function (done) {
-    var unsub, soundReady = null;
+    var unsub, soundReady;
     store = configureStore();
     abletonLinkStateStore = configureLinkStore();
     owaController = new OWAController(store, {
       linkStateStore: abletonLinkStateStore
     });
     state = store.getState();
+    soundReady = state.soundReady;
 
     unsub = store.subscribe(() => {
       state = store.getState();

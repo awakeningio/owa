@@ -22,17 +22,20 @@ describe("OWAController", function () {
       state = store.getState();
 
       if (state.soundReady !== soundReady) {
-        expect(state.soundReady).to.equal(OWA_READY_STATES.BOOTED);
-        unsub();
         soundReady = state.soundReady;
+       
+        if (state.soundReady === OWA_READY_STATES.BOOTED) {
+          expect(state.soundReady).to.equal(OWA_READY_STATES.BOOTED);
+          unsub();
 
-        unsub = store.subscribe(() => {
-          if (state.soundReady !== soundReady) {
-            expect(state.soundReady).to.equal(OWA_READY_STATES.READY);
-            unsub();
-            done();
-          }
-        });
+          unsub = store.subscribe(() => {
+            if (state.soundReady !== soundReady) {
+              expect(state.soundReady).to.equal(OWA_READY_STATES.READY);
+              unsub();
+              done();
+            }
+          });
+        }
       }
     });
   });

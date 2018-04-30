@@ -22,8 +22,7 @@ import {
  *
  *  @classdesc    Connect to fadecandy and dispatch the connection events
  *  to a state store.
- **/
-class FadecandyController {
+ **/ class FadecandyController {
   constructor(store) {
     this.store = store;
     // connecting directly to Fadecandy with this socket
@@ -37,7 +36,9 @@ class FadecandyController {
     this.opcStream = createOPCStream();
     this.opcStream.pipe(this.socket);
 
-    this.connect();
+    if (!process.env.TEST) {
+      this.connect();
+    }
   }
   handleSocketClosed () {
     this.store.dispatch({

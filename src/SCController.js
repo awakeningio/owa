@@ -20,7 +20,7 @@ class SCController {
       if (this.sclang) {
         this.sclang.interpret('s.quit();').then(() => {
           return this.sclang.quit().then(() => {
-            setTimeout(resolve, 500);
+            setTimeout(resolve, 1000);
           }).catch(reject);
         }).catch(reject);
       } else {

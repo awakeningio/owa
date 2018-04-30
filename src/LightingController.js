@@ -10,6 +10,8 @@
 
 import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
+import { SEGMENTID_TO_PIXEL_RANGE } from './constants'
+
 import createOPCStrand from "opc/strand"
 
 /**
@@ -23,15 +25,29 @@ class LightingController extends ControllerWithStore {
     // create our pixel buffer
     this.pixels = createOPCStrand(144);
 
+    // grab ranges of pixel buffer for each segment
+    this.segmentPixels = {};
+    Object.keys(SEGMENTID_TO_PIXEL_RANGE).forEach((segmentId) => {
+      this.segmentPixels[segmentId] = this.pixels.slice.apply(
+        this.pixels,
+        SEGMENTID_TO_PIXEL_RANGE[segmentId]
+      );
+    });
+
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);
 
     // start render loop
-    setInterval(this.tick.bind(this), 33);
+    if (!process.env.TEST) {
+      setInterval(this.tick.bind(this), 50);
+    }
   }
 
   tick () {
     this.fcController.writePixels(this.pixels);
+  }
+
+  quit () {
   }
 }
 

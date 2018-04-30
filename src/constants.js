@@ -9,6 +9,7 @@
  **/
 
 export const OWA_READY_STATES = {
+  NOT_BOOTED: "NOT_BOOTED",
   BOOTING: "BOOTING",
   BOOTED: "BOOTED",
   READY: "READY"

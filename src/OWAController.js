@@ -12,6 +12,7 @@ import { getEnvOrError } from "./utils"
 import ControllerWithStore from "./ControllerWithStore"
 import OSCActionListener from "./OSCActionListener"
 import SoundController from "./SoundController"
+import LightingController from './LightingController'
 import SCController from './SCController'
 import logger from "./logging"
 import * as actionTypes from "./actionTypes"
@@ -42,7 +43,10 @@ class OWAController extends ControllerWithStore {
           stateTreePrefix: 'abletonlink'
         }
       );
-    });
+      this.lightingController = new LightingController(this.store);
+    }).catch((err) => {
+      console.log(`ERROR while booting supercollider: ${err}`);
+    })
 
   }
 
@@ -58,6 +62,7 @@ class OWAController extends ControllerWithStore {
         this.actionListener.quit();
         this.soundController.quit();
         this.abletonLinkController.quit();
+        this.lightingController.quit();
         resolve();
         
       }).catch(reject);

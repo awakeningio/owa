@@ -28,7 +28,7 @@ function set_for_two_seconds (pixels, r, g, b) {
 function test_range (segmentId) {
   return new Promise(resolve => {
     let pixelRange = SEGMENTID_TO_PIXEL_RANGE[segmentId];
-    let pixels = lightingController.pixels.slice.apply(lightingController.pixels, pixelRange);
+    let pixels = lightingController.segmentPixels[segmentId];
 
     console.log("segmentId");
     console.log(segmentId);

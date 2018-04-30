@@ -8,6 +8,7 @@
     - vim-nox
     - tmux
     - xsel
+    - liblo-tools
 - name: colin
   user:
     append: yes

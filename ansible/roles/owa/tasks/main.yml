@@ -3,6 +3,7 @@
   copy:
     src: sclang_conf.yaml
     dest: "/home/{{ owa_deploy_user }}/.config/SuperCollider/sclang_conf.yaml"
+
 - name: update code
   git:
     repo: https://github.com/awakeningio/owa.git
@@ -11,6 +12,7 @@
     update: yes
     recursive: yes
   register: owa_git
+
 - name: update npm deps
   shell: npm install
   register: npm_finished
@@ -18,14 +20,17 @@
   when: owa_git.changed
   args:
     chdir: "{{owa_project_dir}}"
+
 - name: owa environment
   template:
     src: owa_env.j2
     dest: "{{ owa_project_dir }}/owa_env"
+
 - name: .supercollider.yaml for supercolliderjs
   copy:
     src: .supercollider.yaml
     dest: "{{ owa_project_dir }}/.supercollider.yaml"
+
 - name: sync sounds
   synchronize:
     dest: "{{ owa_sounds_dir }}/"

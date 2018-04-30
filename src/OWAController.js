@@ -25,7 +25,8 @@ class OWAController extends ControllerWithStore {
     logger.debug('OWAController.init');
     this.actionListener = new OSCActionListener(this.store, {
       localPort: getEnvOrError('GUI_OSC_OUT_PORT'),
-      remotePort: getEnvOrError('GUI_OSC_IN_PORT')
+      remotePort: getEnvOrError('GUI_OSC_IN_PORT'),
+      remoteHost: getEnvOrError('GUI_HOST')
     });
     this.scController = new SCController();
     this.store.dispatch({

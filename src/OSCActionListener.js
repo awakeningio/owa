@@ -19,10 +19,11 @@ import ControllerWithStore from "./ControllerWithStore"
  **/
 class OSCActionListener extends ControllerWithStore {
   init () {
+    console.log(`binding to 0.0.0.0:${this.params.localPort}`);
     this.oscPort = new osc.UDPPort({
-      localAddress: '127.0.0.1',
+      localAddress: '0.0.0.0',
       localPort: this.params.localPort,
-      remoteAddress: '127.0.0.1',
+      remoteAddress: this.params.remoteHost || '127.0.0.1',
       remotePort: this.params.remotePort
     });
     this.oscPort.on("message", (msg) => {

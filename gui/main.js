@@ -17,9 +17,9 @@ const NODE_ENV=process.env.NODE_ENV;
 let mainWindow = null;
 
 let oscPort = new osc.UDPPort({
-  localAddress: '127.0.0.1',
+  localAddress: '0.0.0.0',
   localPort: process.env.GUI_OSC_IN_PORT,
-  remoteAddress: '127.0.0.1',
+  remoteAddress: process.env.OWA_HOST,
   remotePort: process.env.GUI_OSC_OUT_PORT
 });
 

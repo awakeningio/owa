@@ -12,6 +12,8 @@
     update: yes
     recursive: yes
   register: owa_git
+  tags:
+    - deploy_code
 
 - name: update npm deps
   shell: npm install
@@ -20,6 +22,8 @@
   when: owa_git.changed
   args:
     chdir: "{{owa_project_dir}}"
+  tags:
+    - deploy_code
 
 - name: owa environment
   template:

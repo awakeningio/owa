@@ -56,8 +56,8 @@ class FadecandyController {
     });
     this.socket.connect(7890);
   }
-  writePixels (buffer) {
-    this.opcStream.writePixels(0, buffer);
+  writePixels (pixels) {
+    this.opcStream.writePixels(0, pixels.buffer);
   }
 }
 

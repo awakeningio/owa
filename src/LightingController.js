@@ -8,6 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
+import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
 import createOPCStrand from "opc/strand"
 
@@ -17,15 +18,20 @@ import createOPCStrand from "opc/strand"
  *  @classdesc    Top-level controller for all things lighting.  Intiailizes
  *  pixel buffers, sets up Fadecandy connection, etc.
  **/
-class LightingController {
-  constructor(store) {
-    this.store = store;
-
+class LightingController extends ControllerWithStore {
+  init() {
     // create our pixel buffer
-    this.fcPixels = createOPCStrand(144);
+    this.pixels = createOPCStrand(144);
 
     // create FadecandyController (and initiate connection)
-    this.fcController = new FadecandyController(store);
+    this.fcController = new FadecandyController(this.store);
+
+    // start render loop
+    setInterval(this.tick.bind(this), 33);
+  }
+
+  tick () {
+    this.fcController.writePixels(this.pixels);
   }
 }
 

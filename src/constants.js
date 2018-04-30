@@ -89,16 +89,16 @@ export const TRANS_PHASE_DURATIONS = {
 
 // pixel address ranges and their respective names.
 export const SEGMENTID_TO_PIXEL_RANGE = {
-  "level_6-segment_0": [0, 11],
-  "level_6-segment_1": [12, 23],
-  "level_6-segment_2": [24, 35],
-  "level_6-segment_3": [36, 47],
-  "level_6-segment_4": [48, 59],
-  "level_6-segment_5": [60, 71],
-  "level_4-segment_0": [72, 83],
-  "level_4-segment_1": [84, 95],
-  "level_4-segment_2": [96, 107],
-  "level_4-segment_3": [108, 119],
-  "level_2-segment_0": [120, 131],
-  "level_2-segment_1": [132, 143]
+  "level_6-segment_0": [0, 12],
+  "level_6-segment_1": [12, 24],
+  "level_6-segment_2": [24, 36],
+  "level_6-segment_3": [36, 48],
+  "level_6-segment_4": [48, 60],
+  "level_6-segment_5": [60, 72],
+  "level_4-segment_0": [72, 84],
+  "level_4-segment_1": [84, 96],
+  "level_4-segment_2": [96, 108],
+  "level_4-segment_3": [108, 120],
+  "level_2-segment_0": [120, 132],
+  "level_2-segment_1": [132, 144]
 };

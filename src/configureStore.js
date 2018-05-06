@@ -83,8 +83,22 @@ export function configureStore () {
     '4_1': create_default_sequencer('4_1', 'ChordProgSequencer'),
     '4_2': create_default_sequencer('4_2', 'ChordProgSequencer'),
     '4_3': create_default_sequencer('4_3', 'ChordProgSequencer'),
+    '2_0': create_default_sequencer('2_0', 'SimpleSequencer'),
+    '2_1': create_default_sequencer('2_1', 'SimpleSequencer')
   };
 
+  sequencers['2_0'].numBeats = 8;
+  sequencers['2_0'].releaseTime = 1.2;
+  sequencers['2_0'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4],
+    octave: 2
+  };
+  sequencers['2_1'].numBeats = 8;
+  sequencers['2_1'].releaseTime = 1.2;
+  sequencers['2_1'].pbind = {
+    degree: [8, 4, 4, 8, 4, 4],
+    octave: 3
+  };
   sequencers['4_0'].numBeats = 12;
   sequencers['4_0'].releaseTime = 1.2;
   sequencers['4_0'].pbind = {
@@ -152,6 +166,8 @@ export function configureStore () {
   segmentsById[create_segmentId('level_4', 1)].sequencerId = '4_1';
   segmentsById[create_segmentId('level_4', 2)].sequencerId = '4_2';
   segmentsById[create_segmentId('level_4', 3)].sequencerId = '4_3';
+  segmentsById[create_segmentId('level_2', 0)].sequencerId = '2_0';
+  segmentsById[create_segmentId('level_2', 1)].sequencerId = '2_1';
 
   let initialState = {
     levels: {

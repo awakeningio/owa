@@ -10,7 +10,9 @@
 
 import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
-import { SEGMENTID_TO_PIXEL_RANGE } from './constants'
+import SegmentLightingController from './SegmentLightingController';
+import { SEGMENTID_TO_PIXEL_RANGE } from './constants';
+import TWEEN from '@tweenjs/tween.js';
 
 import createOPCStrand from "opc/strand"
 
@@ -22,16 +24,27 @@ import createOPCStrand from "opc/strand"
  **/
 class LightingController extends ControllerWithStore {
   init() {
+    let state = this.store.getState();
+    let segmentIds = state.segments.allIds;
     // create our pixel buffer
     this.pixels = createOPCStrand(144);
 
-    // grab ranges of pixel buffer for each segment
-    this.segmentPixels = {};
-    Object.keys(SEGMENTID_TO_PIXEL_RANGE).forEach((segmentId) => {
-      this.segmentPixels[segmentId] = this.pixels.slice.apply(
+    // ranges of pixel buffer for each segment
+    //this.segmentPixels = {};
+    // subcontrollers for each segment
+    this.segmentLightingControllers = [];
+
+    segmentIds.forEach((segmentId) => {
+      let pixels = this.pixels.slice.apply(
         this.pixels,
         SEGMENTID_TO_PIXEL_RANGE[segmentId]
       );
+      this.segmentLightingControllers.push(
+        new SegmentLightingController(this.store, {
+          segmentId,
+          pixels
+        })
+      )
     });
 
     // create FadecandyController (and initiate connection)
@@ -44,6 +57,7 @@ class LightingController extends ControllerWithStore {
   }
 
   tick () {
+    TWEEN.update();
     this.fcController.writePixels(this.pixels);
   }
 

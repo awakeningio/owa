@@ -8,9 +8,14 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import { app, BrowserWindow, ipcMain } from 'electron';
+//import { app, BrowserWindow, ipcMain } from 'electron';
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 
-import osc from 'osc';
+//import osc from 'osc';
+const osc = require('osc');
 
 const NODE_ENV=process.env.NODE_ENV;
 

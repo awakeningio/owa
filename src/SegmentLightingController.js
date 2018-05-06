@@ -30,8 +30,9 @@ class SegmentLightingController extends ControllerWithStore {
     this.queuedAnimation = new SegmentQueuedAnimation({
       pixels: this.params.pixels
     });
-    this.playingAnimation = new SegmentPlayingAnimation({
-      pixels: this.params.pixels
+    this.playingAnimation = new SegmentPlayingAnimation(this.store, {
+      pixels: this.params.pixels,
+      segmentId: this.params.segmentId
     });
     
     this.lastState = {
@@ -56,12 +57,10 @@ class SegmentLightingController extends ControllerWithStore {
 
         case awakeningSequencers.PLAYING_STATES.PLAYING:
           this.queuedAnimation.stop();
-          this.playingAnimation.start();
           break;
         
         default:
           this.queuedAnimation.stop();
-          this.playingAnimation.stop();
       }
 
     }

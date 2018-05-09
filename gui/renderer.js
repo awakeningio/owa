@@ -2,8 +2,11 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-import {ipcRenderer} from 'electron'
-import $ from 'jquery'
+//import {ipcRenderer} from 'electron'
+//import $ from 'jquery'
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
+const $ = require('jquery');
 
 // In renderer process (web page).
 ipcRenderer.on('dispatch', (event, arg) => {

@@ -17,15 +17,28 @@ const ipcMain = electron.ipcMain;
 //import osc from 'osc';
 const osc = require('osc');
 
-const NODE_ENV=process.env.NODE_ENV;
+/**
+ *  Retrieve an environment variable by name, error if it doesn't exist.
+ **/
+function getEnvOrError(envName) {
+  var result = process.env[envName];
+
+  if (result) {
+    return result;
+  } else {
+    throw new Error(`env variable '${envName}' not defined`);
+  }
+}
+
+const NODE_ENV=getEnvOrError('NODE_ENV');
 
 let mainWindow = null;
 
 let oscPort = new osc.UDPPort({
   localAddress: '0.0.0.0',
-  localPort: process.env.GUI_OSC_IN_PORT,
-  remoteAddress: process.env.OWA_HOST,
-  remotePort: process.env.GUI_OSC_OUT_PORT
+  localPort: getEnvOrError('GUI_OSC_IN_PORT'),
+  remoteAddress: getEnvOrError('OWA_HOST'),
+  remotePort: getEnvOrError('GUI_OSC_OUT_PORT')
 });
 
 oscPort.open();
@@ -49,8 +62,7 @@ app.on('ready', () => {
 
 // when a dispatch message is received from the renderer process
 ipcMain.on('dispatchButtonPressed', (event, arg) => {
-  // forward it to the OWAServer
-  oscPort.send({
+  let message = {
     address: '/dispatch',
     args: [
       {
@@ -82,5 +94,8 @@ ipcMain.on('dispatchButtonPressed', (event, arg) => {
         value: arg.position
       }
     ]
-  });
+  };
+  console.log(`dispatching ${JSON.stringify(message)}...`);
+  // forward it to the OWAServer
+  oscPort.send(message);
 });

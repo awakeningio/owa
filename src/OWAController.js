@@ -17,6 +17,7 @@ import SCController from './SCController'
 import logger from "./logging"
 import * as actionTypes from "./actionTypes"
 import AbletonLinkController from "./AbletonLinkController"
+import SerialInputController from './SerialInputController'
 
 //import awakeningSequencers from "awakening-sequencers"
 //import * as actions from './actions'
@@ -44,6 +45,7 @@ class OWAController extends ControllerWithStore {
         }
       );
       this.lightingController = new LightingController(this.store);
+      this.serialInputController = new SerialInputController(this.store);
     }).catch((err) => {
       console.log(`ERROR while booting supercollider: ${err}`);
     })

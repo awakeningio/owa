@@ -30,12 +30,12 @@ const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 const logger = createLogger({
   stateTransformer: (state) => {
     let toPrint = {};
-    toPrint.sequencers = {
-      '6_0': state.sequencers['6_0'],
-      '6_1': state.sequencers['6_1']
-    };
+    //toPrint.sequencers = {
+      //'6_0': state.sequencers['6_0'],
+      //'6_1': state.sequencers['6_1']
+    //};
     //toPrint.levels = state.levels;
-    return JSON.stringify(state, ' ', 4);
+    return JSON.stringify(toPrint, ' ', 4);
   }
 });
 const middleware = [

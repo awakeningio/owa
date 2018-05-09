@@ -10,7 +10,8 @@
     "build": "babel src -d build",
     "watch": "npm-watch build",
     "start": "node build/main.js",
-    "start_dev": "babel-node src/main.js"
+    "start_dev": "babel-node src/main.js",
+    "serialport-list": "serialport-list"
   },
   "watch": {
     "build_docs": {
@@ -41,6 +42,7 @@
     "nyc": "^11.6.0"
   },
   "dependencies": {
+    "@serialport/parser-readline": "^1.0.5",
     "@tweenjs/tween.js": "^17.2.0",
     "abletonlink-redux": "0.0.6",
     "awakening-sequencers": "^0.8.1",
@@ -50,7 +52,7 @@
     "osc": "^2.2.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "serialport": "^6.0.5",
+    "serialport": "^6.2.0",
     "supercollider-redux": "0.0.7",
     "supercolliderjs": "^0.14.2",
     "winston": "^2.3.1"

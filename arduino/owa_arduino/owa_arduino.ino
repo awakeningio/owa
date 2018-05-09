@@ -32,6 +32,10 @@ const int zInput = A0;
 // threshold of input voltage
 const int thresh = 10;
 
+// button message for sending button presses
+const int msgLen = strlen("B01\n");
+char msg[msgLen];
+
 void setup() 
 {
   Serial.begin(9600);
@@ -44,17 +48,17 @@ void setup()
   pinMode(zInput, INPUT);
 }
 
-int inputValue;
 bool wasTriggered;
 void loop() 
 {
   for (byte pin=0; pin<numMuxerPins; pin++)
   {
     selectMuxPin(pin);
-    inputValue = analogRead(A0);
-    wasTriggered = buttons[pin].handleInputValue(inputValue);
+    wasTriggered = buttons[pin].handleInputValue(analogRead(A0));
     if (wasTriggered) {
-      Serial.println(String(millis()) + ":\t" + String(int(pin)));
+      /*Serial.println(String(millis()) + ":\t" + String(int(pin)));*/
+      sprintf(msg, "B%02d\n", int(pin));
+      Serial.write(msg);
     }
     /*if (inputValue > thresh) {*/
       /*Serial.print(String(int(pin)) + ":\t" + String(inputValue) + "\n");*/

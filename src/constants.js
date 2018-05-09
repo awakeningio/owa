@@ -103,3 +103,18 @@ export const SEGMENTID_TO_PIXEL_RANGE = {
   "level_2-segment_0": [120, 132],
   "level_2-segment_1": [132, 144]
 };
+
+export const BUTTON_ID_TO_LEVEL_SEGMENT = {
+  "00": ["level_2", 0],
+  "01": ["level_2", 1],
+  "02": ['level_4', 0],
+  "03": ['level_4', 0],
+  "04": ['level_4', 0],
+  "05": ['level_4', 0],
+  "06": ['level_6', 0],
+  "07": ['level_6', 0],
+  "08": ['level_6', 0],
+  "09": ['level_6', 0],
+  "10": ['level_6', 0],
+  "11": ['level_6', 0]
+};

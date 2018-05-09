@@ -12,20 +12,25 @@
 from: https://github.com/sparkfun/74HC4051_8-Channel_Mux_Breakout
  ******************************************************************************/
 
+#include "PiezoButton.h"
+
+
 // number of used input pins on the muxer
-const int numMuxerPins = 2;
+const int numMuxerPins = 12;
+
+PiezoButton buttons[numMuxerPins];
 
 // number of select pins on the muxer
 const int numSelectPins = 4;
 
 // digital out (PWM) pins on Arduino connected to muxer select pins
-const int selectPins[numSelectPins] = {4, 5, 6, 7};
+const int selectPins[numSelectPins] = {6, 7, 8, 9};
 
 // single Arduino analog input
 const int zInput = A0;
 
 // threshold of input voltage
-const int thresh = 80;
+const int thresh = 10;
 
 void setup() 
 {
@@ -40,15 +45,20 @@ void setup()
 }
 
 int inputValue;
+bool wasTriggered;
 void loop() 
 {
   for (byte pin=0; pin<numMuxerPins; pin++)
   {
     selectMuxPin(pin);
     inputValue = analogRead(A0);
-    if (inputValue > thresh) {
-      Serial.print(String(int(pin)) + ":\t" + String(inputValue) + "\n");
-    }    
+    wasTriggered = buttons[pin].handleInputValue(inputValue);
+    if (wasTriggered) {
+      Serial.println(String(millis()) + ":\t" + String(int(pin)));
+    }
+    /*if (inputValue > thresh) {*/
+      /*Serial.print(String(int(pin)) + ":\t" + String(inputValue) + "\n");*/
+    /*}    */
   }
 }
 

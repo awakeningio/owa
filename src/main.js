@@ -8,13 +8,13 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import {configureStore, configureLinkStore} from "./configureStore"
+import {configureStore} from "./configureStore"
 
 import OWAController from "./OWAController"
 
 var owaStateStore = configureStore();
-var abletonLinkStateStore = configureLinkStore();
+//var abletonLinkStateStore = configureLinkStore();
 
-var owaController = new OWAController(owaStateStore, {
-  linkStateStore: abletonLinkStateStore
+new OWAController(owaStateStore, {
+  //linkStateStore: abletonLinkStateStore
 });

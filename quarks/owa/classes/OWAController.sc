@@ -13,8 +13,8 @@ OWAController {
 
   // MixerChannel instance
   var outputChannel,
-    <>owaStore,
-    <>linkStore,
+    <>store,
+    //<>linkStore,
     sessionController,
     sounds,
     bufManager,
@@ -27,15 +27,15 @@ OWAController {
   }
 
   boot {
-    owaStore = StateStore.new(());
-    owaStore.setDispatchLocations((
+    store = StateStore.new(());
+    store.setDispatchLocations((
       \main: (
         addr: "127.0.0.1",
         port: "SC_OSC_OUT_PORT".getenv().asInteger()
       )
     ));
 
-    linkStore = StateStore.new(());
+    //linkStore = StateStore.new(());
     
     outputChannel = MixerChannel.new(
       "OWAController",
@@ -57,39 +57,35 @@ OWAController {
 
     sounds = List.new();
 
-    owaStore.dispatch((
+    store.dispatch((
       type: "OWA_SOUND_BOOTED"
     ));
   }
 
   init {
     arg params;
-    //var me = this;
-    //var now = thisThread.clock.seconds;
-    //var tempo = 150.0/60.0;
-    //var tickClock;
-    
-    // This only works when sclang is launched from a terminal, not from
-    // the GUI.
     "OWAController.init".postln();
-    "params:".postln;
-    params.postln;
+    //"params:".postln;
+    //params.postln;
 
     OWAConstants.init(params);
 
-    owaStore.subscribe({
+    store.subscribe({
       this.handle_state_change();
     });
 
-    clockController = ReduxAbletonTempoClockController.new((
-      store: linkStore,
-      clockOffsetSeconds: 0.0
+    //clockController = ReduxAbletonTempoClockController.new((
+      //store: linkStore,
+      //clockOffsetSeconds: 0.0
+    //));
+    clockController = OWAClockController.new((
+      store: store
     ));
 
     seqFactory.setClockController(clockController);
 
     sessionController = SessionTimingController.new((
-      store: owaStore,
+      store: store,
       clockController: clockController
     ));
     
@@ -105,9 +101,9 @@ OWAController {
         ["subtle_kick.mid", \subtle_kick, 8]
       ]);
       // initialize sequencers
-      seqFactory.setStore(owaStore);
+      seqFactory.setStore(store);
       // tell main process we are done
-      owaStore.dispatch((
+      store.dispatch((
         type: "OWA_SOUND_INIT_DONE"
       ));
     }));
@@ -125,7 +121,7 @@ OWAController {
 
     //sounds.add(
       //QueuableSound.new((
-        //owaStore: this.owaStore,
+        //store: this.store,
         //name: sound.name,
         //outputChannel: outputChannel,
         //bufManager: bufManager
@@ -138,8 +134,8 @@ OWAController {
     //var state,
       //me = this;
 
-    //this.owaStore = StateStore.new(initialState);
-    //state = this.owaStore.getState();
+    //this.store = StateStore.new(initialState);
+    //state = this.store.getState();
 
     //TempoClock.default.tempo = state.tempo / 60.0;
 

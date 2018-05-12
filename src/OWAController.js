@@ -16,7 +16,7 @@ import LightingController from './LightingController'
 import SCController from './SCController'
 import logger from "./logging"
 import * as actionTypes from "./actionTypes"
-import AbletonLinkController from "./AbletonLinkController"
+//import AbletonLinkController from "./AbletonLinkController"
 import SerialInputController from './SerialInputController'
 
 //import awakeningSequencers from "awakening-sequencers"
@@ -36,14 +36,14 @@ class OWAController extends ControllerWithStore {
     });
     this.scController.boot().then(() => {
       this.soundController = new SoundController(this.store, {
-        linkStateStore: this.params.linkStateStore
+        //linkStateStore: this.params.linkStateStore
       });
-      this.abletonLinkController = new AbletonLinkController(
-        this.params.linkStateStore,
-        {
-          stateTreePrefix: 'abletonlink'
-        }
-      );
+      //this.abletonLinkController = new AbletonLinkController(
+        //this.params.linkStateStore,
+        //{
+          //stateTreePrefix: 'abletonlink'
+        //}
+      //);
       this.lightingController = new LightingController(this.store);
       this.serialInputController = new SerialInputController(this.store);
     }).catch((err) => {
@@ -63,7 +63,7 @@ class OWAController extends ControllerWithStore {
 
         this.actionListener.quit();
         this.soundController.quit();
-        this.abletonLinkController.quit();
+        //this.abletonLinkController.quit();
         this.lightingController.quit();
         resolve();
         

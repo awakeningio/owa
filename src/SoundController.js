@@ -29,20 +29,20 @@ class SoundController extends ControllerWithStore {
       soundReady: null
     };
 
-    this.linkStore = this.params.linkStateStore;
+    //this.linkStore = this.params.linkStateStore;
     
     this.owaAPI = null;
 
     this.handle_state_change();
   }
 
-  handle_link_state_change () {
-    var linkState = this.linkStore.getState();
-    this.call("owa.setLinkState", [linkState]).catch((err) => {
-      console.log("err");
-      console.log(err);
-    });
-  }
+  //handle_link_state_change () {
+    //var linkState = this.linkStore.getState();
+    //this.call("owa.setLinkState", [linkState]).catch((err) => {
+      //console.log("err");
+      //console.log(err);
+    //});
+  //}
 
   handle_api_error (err) {
     console.log("API ERROR!");
@@ -65,13 +65,13 @@ class SoundController extends ControllerWithStore {
         this.owaAPI.on("error", this.handle_api_error.bind(this));
         logger.debug('SoundController owaAPI.connect');
         this.owaAPI.connect();
-        this.linkStore.subscribe(() => {
-          this.handle_link_state_change();
-        });
-        this.handle_link_state_change();
+        //this.linkStore.subscribe(() => {
+          //this.handle_link_state_change();
+        //});
+        //this.handle_link_state_change();
         logger.debug('SoundController calling owa.init');
         this.call("owa.init", [{
-          linkState: this.linkStore.getState(),
+          //linkState: this.linkStore.getState(),
           state: this.store.getState(),
           constants
         }]);

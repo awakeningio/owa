@@ -27,7 +27,7 @@ OWAClockController {
 
     tempo = store.getState().tempo;
 
-    clock = TempoClock.new(tempo: tempo);
+    clock = TempoClock.new(tempo: tempo / 60.0);
   }
   handle_state_change {
     // TODO: handle queueing tempo changes here

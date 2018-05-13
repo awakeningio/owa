@@ -10,7 +10,7 @@
 
 ({
 
-  var samplerPbindTest, midiFileTest;
+  var samplerPbindTest, wideBassTest;
   var bufManager = BufferManager.new((
     rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
   ));
@@ -55,6 +55,42 @@
     }));
   });
 
+  wideBassTest = ({
+    var pat,
+      patch,
+      patchSynth,
+      notes;
+    patch = Patch("cs.fm.WideBass", (
+      amp: 0.7,
+      //attackModFreq: "A4".notemidi().midicps(),
+      //toneModulatorGainMultiplier: 7.0,
+      //toneModulatorLFOAmount: 40.0,
+      //toneModulatorLFORate: 0.75
+    ));
+    patch.prepareForPlay();
+    patchSynth = patch.asSynthDef().add();
+    
+    notes = ["C#0", "D0"].notemidi();
+    "notes:".postln;
+    notes.postln;
+
+    pat = Pbind(
+      \amp, 0.7,
+      \type, \instr,
+      \instr, "cs.fm.WideBass",
+      \note, Pseq(notes, inf),
+      \dur, 4,
+      \sustain, 3.5,
+      \attackModFreq, "A0".notemidi().midicps(),
+      \toneModulatorGainMultiplier, 2.0,
+      \toneModulatorLFOAmount, 4.0,
+      \toneModulatorLFORate, 1.5
+    );
+
+    "playing...".postln();
+    pat.play();
+  });
+
   "Setting up".postln();
 
   MIDIClient.init;
@@ -64,9 +100,14 @@
   s.options.outDevice = "JackRouter";
   s.options.memSize = 8192 * 2 * 2 * 2;
   s.options.blockSize = 8;
+  s.meter();
+  s.plotTree();
+
+  TempoClock.default.tempo = 140.0 / 60.0;
 
   s.waitForBoot({
-    samplerPbindTest.value();
+    //samplerPbindTest.value();
+    wideBassTest.value();
   });
 
   s.boot();

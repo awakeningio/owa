@@ -14,6 +14,8 @@ import awakeningSequencers from 'awakening-sequencers';
 import ControllerWithStore from './ControllerWithStore';
 
 const dimLayerColor = Color.hsv([0.72 * 360, 20, 20]);
+console.log("dimLayerColor.rgb().round().color");
+console.log(dimLayerColor.rgb().round().color);
 const playingLayerColor = Color.hsv([0.72 * 360, 50, 50]);
 const playingBeatColor = Color.hsv([0.72 * 360, 50, 100]);
 
@@ -69,7 +71,10 @@ class SegmentPlayingAnimation extends ControllerWithStore {
       let i = 0;
       // fill all leds with same color (pretty dim)
       for (i = 0; i < pixels.length; i++) {
-        pixels.setPixel.apply(pixels, [i].concat(dimLayerColor.color));
+        pixels.setPixel.apply(
+          pixels,
+          [i].concat(dimLayerColor.rgb().round().color)
+        );
       }
       // for each beat
       for (i = 0; i < numBeats; i++) {
@@ -78,7 +83,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
         // make it brighter
         pixels.setPixel.apply(
           pixels,
-          [ledIndex].concat(playingLayerColor.color)
+          [ledIndex].concat(playingLayerColor.rgb().round().color)
         );
 
         // if this is the current beat
@@ -86,7 +91,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
           // it is the brightest
           pixels.setPixel.apply(
             pixels,
-            [ledIndex].concat(playingBeatColor.color)
+            [ledIndex].concat(playingBeatColor.rgb().round().color)
           );
         }
       }

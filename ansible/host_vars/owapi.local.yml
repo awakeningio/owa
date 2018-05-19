@@ -12,8 +12,11 @@ fadecandy_config:
          #[ 0, 0, 0, 512 ],
           # [ OPC Channel, First OPC Pixel, First output pixel, Pixel count, Color channels  ]
 #         [ 0, 50, 64, 12, 'grb' ]
-          [ 0, 0, 64, 48 ],
-          [ 0, 48, 0, 48 ],
-          [ 0, 96, 128, 48 ]
+          [ 0, 0, 0, 24 ],
+          [ 0, 24, 64, 24 ],
+          [ 0, 48, 128, 24 ],
+          [ 0, 72, 192, 24 ],
+          [ 0, 96, 256, 24 ],
+          [ 0, 120, 320, 24 ]
         ]
 

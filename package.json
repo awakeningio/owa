@@ -12,6 +12,7 @@
     "start": "node build/main.js",
     "start_dev": "babel-node src/main.js",
     "test_lighting_config": "babel-node src/testLightingConfig.js",
+    "test_lighting_animation": "babel-node src/testLightingAnimation.js",
     "serialport-list": "serialport-list"
   },
   "watch": {

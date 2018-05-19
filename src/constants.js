@@ -104,6 +104,12 @@ export const SEGMENTID_TO_PIXEL_RANGE = {
   "level_2-segment_1": [132, 144]
 };
 
+export const LEVELID_TO_PIXEL_RANGE = {
+  'level_2': [120, 144],
+  'level_4': [72, 120],
+  'level_6': [0, 72]
+};
+
 export const BUTTON_ID_TO_LEVEL_SEGMENT = {
   "00": ["level_2", 1],
   "01": ["level_2", 0],

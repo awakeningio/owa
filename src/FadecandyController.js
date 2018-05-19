@@ -55,8 +55,6 @@ import {
     this.store.dispatch({
       type: FADECANDY_CONNECTING
     });
-    console.log("process.env.FADECANDY_HOST");
-    console.log(process.env.FADECANDY_HOST);
     this.socket.connect(7890, process.env.FADECANDY_HOST || 'localhost');
   }
   writePixels (pixels) {

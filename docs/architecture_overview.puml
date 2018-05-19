@@ -69,6 +69,14 @@ namespace nodejs.owa {
   SoundController *-- redux.Store
   SoundController "owa.api" -down-> quarks.owa.OWAController
 
+  class LightingController {
+    Top level controller for lighting.
+  }
+  OWAController *-- LightingController
+
+
+
+
   /'class OSCActionDispatcher {'/
     /'redux middleware to dispatch actions via osc.js'/
 

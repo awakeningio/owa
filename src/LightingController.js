@@ -51,7 +51,7 @@ class LightingController extends ControllerWithStore {
     this.fcController = new FadecandyController(this.store);
 
     // start render loop
-    if (!process.env.TEST) {
+    if (!process.env.DISABLE_LIGHTING) {
       setInterval(this.tick.bind(this), 50);
     }
   }

@@ -36,7 +36,7 @@ import {
     this.opcStream = createOPCStream();
     this.opcStream.pipe(this.socket);
 
-    if (!process.env.TEST) {
+    if (!process.env.DISABLE_LIGHTING) {
       this.connect();
     }
   }
@@ -55,7 +55,9 @@ import {
     this.store.dispatch({
       type: FADECANDY_CONNECTING
     });
-    this.socket.connect(7890);
+    console.log("process.env.FADECANDY_HOST");
+    console.log(process.env.FADECANDY_HOST);
+    this.socket.connect(7890, process.env.FADECANDY_HOST || 'localhost');
   }
   writePixels (pixels) {
     this.opcStream.writePixels(0, pixels.buffer);

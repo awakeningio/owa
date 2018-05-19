@@ -73,11 +73,11 @@ export function configureStore () {
   });
 
   let sequencers = {
-    '6_0': create_default_sequencer('6_0', 'SamplerSequencer'),
-    '6_1': create_default_sequencer('6_1', 'SimpleSequencer'),
-    '6_2': create_default_sequencer('6_2', 'SimpleSequencer'),
-    '6_3': create_default_sequencer('6_3', 'SimpleSequencer'),
-    '6_4': create_default_sequencer('6_4', 'SimpleSequencer'),
+    '6_0': create_default_sequencer('6_0', 'LazersSequencer'),
+    '6_1': create_default_sequencer('6_1', 'LazersSequencer'),
+    '6_2': create_default_sequencer('6_2', 'LazersSequencer'),
+    '6_3': create_default_sequencer('6_3', 'LazersSequencer'),
+    '6_4': create_default_sequencer('6_4', 'LazersSequencer'),
     '6_5': create_default_sequencer('6_5', 'LazersSequencer'),
     '4_0': create_default_sequencer('4_0', 'ChordProgSequencer'),
     '4_1': create_default_sequencer('4_1', 'ChordProgSequencer'),

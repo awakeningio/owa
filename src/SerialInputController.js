@@ -16,6 +16,8 @@ import { buttonPressed } from './actions'
 import { getEnvOrError } from './utils'
 import { BUTTON_ID_TO_LEVEL_SEGMENT } from './constants'
 
+const DEBUG_INPUT = process.env.DEBUG_INPUT || false;
+
 const INPUT_TYPES = {
   "BUTTON": "B"
 };
@@ -40,9 +42,13 @@ class SerialInputController extends ControllerWithStore {
     this.parser = new ReadLineParser();
     this.arduinoPort.pipe(this.parser);
 
-    this.parser.on("data", (data) => {
-      this.handleIncomingData(data);
-    });
+    if (DEBUG_INPUT) {
+      this.parser.on("data", (data) => {
+        console.log(data);
+      });
+    } else {
+      this.parser.on("data", (data) => this.handleIncomingData(data));
+    }
 
   }
 

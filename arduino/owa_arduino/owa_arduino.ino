@@ -29,9 +29,6 @@ const int selectPins[numSelectPins] = {6, 7, 8, 9};
 // single Arduino analog input
 const int zInput = A0;
 
-// threshold of input voltage
-const int thresh = 10;
-
 // button message for sending button presses
 const int msgLen = strlen("B01\n");
 char msg[msgLen];
@@ -49,20 +46,20 @@ void setup()
 }
 
 bool wasTriggered;
+int inputValue;
 void loop() 
 {
   for (byte pin=0; pin<numMuxerPins; pin++)
   {
     selectMuxPin(pin);
-    wasTriggered = buttons[pin].handleInputValue(analogRead(A0));
+    inputValue = analogRead(A0);
+    /*Serial.println(String(int(pin)) + ": " + String(inputValue));*/
+    wasTriggered = buttons[pin].handleInputValue(inputValue);
     if (wasTriggered) {
       /*Serial.println(String(millis()) + ":\t" + String(int(pin)));*/
       sprintf(msg, "B%02d\n", int(pin));
       Serial.write(msg);
     }
-    /*if (inputValue > thresh) {*/
-      /*Serial.print(String(int(pin)) + ":\t" + String(inputValue) + "\n");*/
-    /*}    */
   }
 }
 

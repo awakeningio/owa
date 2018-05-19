@@ -1,5 +1,7 @@
 #include "PiezoButton.h"
 
+double THRESHOLD = 120;
+
 PiezoButton::PiezoButton () {
   int i;
   for (i = 0; i < NUM_READINGS; ++i) {
@@ -25,7 +27,7 @@ bool PiezoButton::handleInputValue (int inputValue) {
   }
   avg = avg / NUM_READINGS;
 
-  if (avg > 20) {
+  if (abs(avg) > THRESHOLD) {
     if (triggered == false) {
       time = millis();
       // debounce
@@ -36,7 +38,6 @@ bool PiezoButton::handleInputValue (int inputValue) {
         lastTriggerTime = time;
       }
     }
-    //Serial.print(String(avg) + "\n");
     triggered = true;
   } else {
     triggered = false;

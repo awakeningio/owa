@@ -19,30 +19,36 @@ import {
   create_segmentId
 } from './models'
 
+import logger from './logging'
+
 import abletonlinkRedux from 'abletonlink-redux'
 import rootReducer from './reducers'
 import awakeningSequencers from 'awakening-sequencers';
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 
-/**
- *  logging of state-store messages
- **/
-const logger = createLogger({
-  stateTransformer: (state) => {
-    let toPrint = {};
-    //toPrint.sequencers = {
-      //'6_0': state.sequencers['6_0'],
-      //'6_1': state.sequencers['6_1']
-    //};
-    //toPrint.levels = state.levels;
-    return JSON.stringify(toPrint, ' ', 4);
-  }
-});
 const middleware = [
 ];
 
 if (process.env.NODE_ENV === 'development') {
-  middleware.push(logger);
+  /**
+   *  logging of state-store messages
+   **/
+  middleware.push(createLogger({
+    stateTransformer: (state) => {
+      let toPrint = {};
+      //toPrint.sequencers = {
+        //'6_0': state.sequencers['6_0'],
+        //'6_1': state.sequencers['6_1']
+      //};
+      //toPrint.levels = state.levels;
+      return JSON.stringify(toPrint, ' ', 4);
+    },
+      logger: {
+        log: (msg) => {
+          logger.info(msg);
+        }
+      }
+  }));
 }
 
 export function configureStore () {

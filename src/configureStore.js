@@ -79,7 +79,7 @@ export function configureStore () {
   });
 
   let sequencers = {
-    '6_0': create_default_sequencer('6_0', 'LazersSequencer'),
+    '6_0': create_default_sequencer('6_0', 'BassSequencer'),
     '6_1': create_default_sequencer('6_1', 'LazersSequencer'),
     '6_2': create_default_sequencer('6_2', 'LazersSequencer'),
     '6_3': create_default_sequencer('6_3', 'LazersSequencer'),
@@ -130,12 +130,8 @@ export function configureStore () {
     octave: 5
   };
 
-  sequencers['6_0'].numBeats = 12;
-  sequencers['6_0'].releaseTime = 1.2;
-  sequencers['6_0'].pbind = {
-    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 3
-  };
+  sequencers['6_0'].numBeats = 8;
+  
   sequencers['6_1'].numBeats = 12;
   sequencers['6_1'].releaseTime = 1.2;
   sequencers['6_1'].pbind = {

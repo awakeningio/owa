@@ -57,38 +57,27 @@
 
   wideBassTest = ({
     var pat,
-      patch,
-      patchSynth,
       notes;
-    patch = Patch("cs.fm.WideBass", (
-      amp: 0.7,
-      //attackModFreq: "A4".notemidi().midicps(),
-      //toneModulatorGainMultiplier: 7.0,
-      //toneModulatorLFOAmount: 40.0,
-      //toneModulatorLFORate: 0.75
-    ));
-    patch.prepareForPlay();
-    patchSynth = patch.asSynthDef().add();
     
     notes = ["C#0", "D0"].notemidi();
-    "notes:".postln;
-    notes.postln;
 
     pat = Pbind(
       \amp, 0.7,
       \type, \instr,
       \instr, "cs.fm.WideBass",
       \note, Pseq(notes, inf),
+      \octave, 2,
       \dur, 4,
       \sustain, 3.5,
-      \attackModFreq, "A0".notemidi().midicps(),
-      \toneModulatorGainMultiplier, 2.0,
-      \toneModulatorLFOAmount, 4.0,
-      \toneModulatorLFORate, 1.5
+      \attackModFreq, Pseq(12 + notes, inf),
+      \toneModulatorGainMultiplier, 1.0,
+      \toneModulatorLFOAmount, 2.0,
+      \toneModulatorLFORate, 1.5,
+      \sendGate, true
     );
 
     "playing...".postln();
-    pat.play();
+    ~player = pat.play();
   });
 
   "Setting up".postln();
@@ -113,3 +102,7 @@
   s.boot();
 
 }.value());
+
+(
+  ~player.stop();
+)

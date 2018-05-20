@@ -9,8 +9,10 @@
  **/
 
 import TWEEN from '@tweenjs/tween.js';
+import Color from 'color';
 
 import ControllerWithStore from './ControllerWithStore';
+import { setPixelsColors } from './Pixels';
 
 class IdleModeAnimation extends ControllerWithStore {
   init() {
@@ -21,16 +23,18 @@ class IdleModeAnimation extends ControllerWithStore {
   }
   build () {
     var i;
+    var pixels = this.params.pixels;
+    var levelPixels = this.params.levelPixels;
     // turn all pixels to black
-    for (i = 0; i < this.params.pixels.length; i++) {
-      this.params.pixels.setPixel(i, 0, 0, 0);
+    for (i = 0; i < pixels.length; i++) {
+      pixels.setPixel(i, 0, 0, 0);
     }
 
     let initial = {
       brightness: 0
     };
     let dest = {
-      brightness: 1
+      brightness: 100
     };
 
     // all at once
@@ -40,11 +44,10 @@ class IdleModeAnimation extends ControllerWithStore {
       .yoyo(true)
       .repeat(Infinity)
       .onUpdate((props) => {
-        var i;
-        // turn all pixels to black
-        for (i = 0; i < this.params.pixels.length; i++) {
-          this.params.pixels.setPixel(i, props.brightness * 255, props.brightness * 255, props.brightness * 255);
-        }
+        setPixelsColors(
+          pixels,
+          Color.hsv(0, 0, props.brightness)
+        );
       });
 
     this.level6FadeTween = new TWEEN.Tween(Object.assign({}, initial))
@@ -53,11 +56,10 @@ class IdleModeAnimation extends ControllerWithStore {
       .yoyo(true)
       .repeat(Infinity)
       .onUpdate((props) => {
-        var i;
-        // turn all pixels to black
-        for (i = 0; i < this.params.levelPixels.level_6.length; i++) {
-          this.params.levelPixels.level_6.setPixel(i, props.brightness * 255, props.brightness * 255, props.brightness * 255);
-        }
+        setPixelsColors(
+          levelPixels.level_6,
+          Color.hsv(0, 0, props.brightness)
+        );
       });
 
     this.level4FadeTween = new TWEEN.Tween(Object.assign({}, initial))
@@ -67,11 +69,10 @@ class IdleModeAnimation extends ControllerWithStore {
       .yoyo(true)
       .repeat(Infinity)
       .onUpdate((props) => {
-        var i;
-        // turn all pixels to black
-        for (i = 0; i < this.params.levelPixels.level_4.length; i++) {
-          this.params.levelPixels.level_4.setPixel(i, props.brightness * 255, props.brightness * 255, props.brightness * 255);
-        }
+        setPixelsColors(
+          levelPixels.level_4,
+          Color.hsv(0, 0, props.brightness)
+        );
       });
 
     this.level2FadeTween = new TWEEN.Tween(Object.assign({}, initial))
@@ -81,11 +82,10 @@ class IdleModeAnimation extends ControllerWithStore {
       .yoyo(true)
       .repeat(Infinity)
       .onUpdate((props) => {
-        var i;
-        // turn all pixels to black
-        for (i = 0; i < this.params.levelPixels.level_2.length; i++) {
-          this.params.levelPixels.level_2.setPixel(i, props.brightness * 255, props.brightness * 255, props.brightness * 255);
-        }
+        setPixelsColors(
+          levelPixels.level_2,
+          Color.hsv(0, 0, props.brightness)
+        );
       });
 
   }

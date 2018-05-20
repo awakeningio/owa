@@ -9,8 +9,8 @@ import * as actions from '../src/actions'
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
-describe("Sequencer States", function () {
-
+describe("Sequential Sequencer", function () {
+  
   // start testing level 4
   it("should immediately start transition when level4 button is pressed", function () {
     level = state.levels.byId['level_4'];
@@ -118,5 +118,4 @@ describe("Sequencer States", function () {
       done(err);
     });
   });
-
 });

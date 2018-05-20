@@ -11,13 +11,13 @@ const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 describe("Simultaneous Sequencer Playback", function () {
   var store, abletonLinkStateStore, state, segment,
-    sequencer, sessionPhase;
+    sequencer, sessionPhase, owaController;
 
   it("should init properly", function (done) {
     var unsub, soundReady;
     store = configureStore();
     abletonLinkStateStore = configureLinkStore();
-    new OWAController(store, {
+    owaController = new OWAController(store, {
       linkStateStore: abletonLinkStateStore
     });
     state = store.getState();
@@ -153,6 +153,14 @@ describe("Simultaneous Sequencer Playback", function () {
         done();
       }
 
+    });
+  });
+  
+  it("should close down cleanly", function (done) {
+    owaController.quit().then(() => {
+      done();
+    }).catch((err) => {
+      done(err);
     });
   });
 });

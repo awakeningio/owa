@@ -10,18 +10,51 @@ import * as actions from '../src/actions'
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 describe("Sequential Sequencer", function () {
+  var store, abletonLinkStateStore, state, segment,
+    sequencer, level, secondSegment, secondSequencer, owaController;
+
+  it("should init properly", function (done) {
+    var unsub, soundReady;
+    store = configureStore({
+      sessionPhase: SESSION_PHASES.PLAYING_4
+    });
+    abletonLinkStateStore = configureLinkStore();
+    owaController = new OWAController(store, {
+      linkStateStore: abletonLinkStateStore
+    });
+    state = store.getState();
+    soundReady = state.soundReady;
+
+    unsub = store.subscribe(() => {
+      state = store.getState();
+      if (state.soundReady !== soundReady) {
+        soundReady = state.soundReady;
+
+        if (soundReady === OWA_READY_STATES.READY) {
+          unsub();
+          done();
+        }
+      }
+    });
+  });
   
   // start testing level 4
-  it("should immediately start transition when level4 button is pressed", function () {
+  //it("should immediately start transition when level4 button is pressed", function () {
+    //level = state.levels.byId['level_4'];
+    //segment = state.segments.byId[create_segmentId(level.levelId, 0)];
+    //sequencer = state.sequencers[segment.sequencerId];
+    //store.dispatch(actions.buttonPressed(level.levelId, 0));
+    //state = store.getState();
+    //expect(state.sessionPhase).to.equal(SESSION_PHASES.TRANS_4);
+  //});
+  
+  it("level should have updated playback order on button press", function () {
     level = state.levels.byId['level_4'];
     segment = state.segments.byId[create_segmentId(level.levelId, 0)];
     sequencer = state.sequencers[segment.sequencerId];
     store.dispatch(actions.buttonPressed(level.levelId, 0));
     state = store.getState();
-    expect(state.sessionPhase).to.equal(SESSION_PHASES.TRANS_4);
-  });
-  
-  it("level should have updated playback order", function () {
+    level = state.levels.byId['level_4'];
     expect(level).to.have.property('segmentPlaybackOrder');
     expect(level.segmentPlaybackOrder).to.deep.equal([segment.segmentId]);
   });
@@ -30,23 +63,21 @@ describe("Sequential Sequencer", function () {
     expect(level).to.have.property('segmentPlaybackIndex');
     expect(level.segmentPlaybackIndex).to.equal(0);
   });
-  
 
+  //it("should eventually transition to playing", function (done) {
+    //state = store.getState();
+    //sessionPhase = state.sessionPhase;
+    //let unsub = store.subscribe(() => {
+      //state = store.getState();
+      //if (sessionPhase !== state.sessionPhase) {
+        //sessionPhase = state.sessionPhase;
 
-  it("should eventually transition to playing", function (done) {
-    state = store.getState();
-    sessionPhase = state.sessionPhase;
-    let unsub = store.subscribe(() => {
-      state = store.getState();
-      if (sessionPhase !== state.sessionPhase) {
-        sessionPhase = state.sessionPhase;
-
-        expect(sessionPhase).to.equal(SESSION_PHASES.PLAYING_4);
-        unsub();
-        done();
-      }
-    });
-  });
+        //expect(sessionPhase).to.equal(SESSION_PHASES.PLAYING_4);
+        //unsub();
+        //done();
+      //}
+    //});
+  //});
 
   it("should not transition sessionPhase on button press", function () {
     secondSegment = state.segments.byId[create_segmentId(level.levelId, 1)];

@@ -22,13 +22,10 @@ class IdleModeAnimation extends ControllerWithStore {
     this.build();
   }
   build () {
-    var i;
     var pixels = this.params.pixels;
     var levelPixels = this.params.levelPixels;
     // turn all pixels to black
-    for (i = 0; i < pixels.length; i++) {
-      pixels.setPixel(i, 0, 0, 0);
-    }
+    setPixelsColors(pixels, Color.hsv(0, 0, 0));
 
     let initial = {
       brightness: 0

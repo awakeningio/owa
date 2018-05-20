@@ -17,6 +17,9 @@ import { SEGMENTID_TO_PIXEL_RANGE, LEVELID_TO_PIXEL_RANGE } from './constants';
 import TWEEN from '@tweenjs/tween.js';
 
 import createOPCStrand from "opc/strand"
+import { getEnvAsNumber } from './utils';
+
+const DISABLE_LIGHTING = getEnvAsNumber('DISABLE_LIGHTING');
 
 /**
  *  @class        LightingController
@@ -76,7 +79,7 @@ class LightingController extends ControllerWithStore {
     this.fcController = new FadecandyController(this.store);
 
     // start render loop
-    if (!process.env.DISABLE_LIGHTING) {
+    if (!DISABLE_LIGHTING) {
       setInterval(this.tick.bind(this), 50);
     }
   }

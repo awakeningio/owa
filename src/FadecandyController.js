@@ -17,6 +17,10 @@ import {
   FADECANDY_CONNECTING
 } from './actionTypes'
 
+import { getEnvAsNumber } from './utils';
+
+const DISABLE_LIGHTING = getEnvAsNumber('DISABLE_LIGHTING');
+
 /**
  *  @class        FadecandyController
  *
@@ -36,7 +40,7 @@ import {
     this.opcStream = createOPCStream();
     this.opcStream.pipe(this.socket);
 
-    if (!process.env.DISABLE_LIGHTING) {
+    if (!DISABLE_LIGHTING) {
       this.connect();
     }
   }

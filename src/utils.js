@@ -20,3 +20,13 @@ export function getEnvOrError(envName) {
     throw new Error(`env variable '${envName}' not defined`);
   }
 }
+
+export function getEnvAsNumber (envName) {
+  var result = process.env[envName];
+
+  if (result) {
+    return Number(process.env[envName]);
+  } else {
+    return null;
+  }
+}

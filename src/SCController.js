@@ -10,9 +10,10 @@
 
 import sc from 'supercolliderjs';
 import logger from "./logging"
+import { getEnvAsNumber } from './utils'
 
 
-const EXTERNAL_SC = process.env.EXTERNAL_SC;
+const EXTERNAL_SC = getEnvAsNumber('EXTERNAL_SC');
 
 class SCController {
   quit() {

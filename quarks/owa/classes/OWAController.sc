@@ -91,15 +91,13 @@ OWAController {
     
 
     bufManager.load_bufs([
-      ["subtle_kick_01 [2018-04-13 134203].wav", \subtle_kick_01],
-      ["subtle_kick_02 [2018-04-13 134203].wav", \subtle_kick_02],
-      ["subtle_kick_03 [2018-04-13 134203].wav", \subtle_kick_03]
+      ["kick_01 [2018-05-20 115711].wav", \kick_01]
     ], ({
       // when buffers are done loading
       // load midi files
-      bufManager.load_midi([
-        ["subtle_kick.mid", \subtle_kick, 8]
-      ]);
+      //bufManager.load_midi([
+        //["subtle_kick.mid", \subtle_kick, 8]
+      //]);
       // initialize sequencers
       seqFactory.setStore(store);
       // tell main process we are done

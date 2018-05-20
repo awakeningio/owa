@@ -19,23 +19,24 @@
     
     
     bufManager.load_bufs([
-      ["subtle_kick_01 [2018-04-13 134203].wav", \subtle_kick_01]
+      ["kick_01 [2018-05-20 115711].wav", \kick_01]
     ], ({
       var midiFileSequences;
       var pat,
         patch,
         patStream,
-        patchSynth;
+        patchSynth,
+        note;
 
 
-      bufManager.load_midi([
-        ["subtle_kick.mid", \subtle_kick, 8]
-      ]);
+      //bufManager.load_midi([
+        //["subtle_kick.mid", \subtle_kick, 8]
+      //]);
 
-      midiFileSequences = bufManager.midiSequences[\subtle_kick];
+      //midiFileSequences = bufManager.midiSequences[\subtle_kick];
 
       patch = Patch("cs.sfx.PlayBuf", (
-        buf: bufManager.bufs[\subtle_kick_01],
+        buf: bufManager.bufs[\kick_01],
         convertToStereo: 1,
         attackTime: 0.0,
         releaseTime: 0.0,
@@ -44,13 +45,16 @@
       patch.prepareForPlay();
       patchSynth = patch.asSynthDef().add();
 
+      note = "C1".notemidi();
+
       pat = Pbind(
         \instrument, patchSynth.name,
         \gate, 1,
-        [\midinote, \dur], Pseq(midiFileSequences, inf)
+        \midinote, Pseq([note, \rest, note], inf),
+        \dur, Pseq([1], inf)
       );
 
-      pat.play();
+      ~player = pat.play();
 
     }));
   });
@@ -95,8 +99,8 @@
   TempoClock.default.tempo = 140.0 / 60.0;
 
   s.waitForBoot({
-    //samplerPbindTest.value();
-    wideBassTest.value();
+    samplerPbindTest.value();
+    //wideBassTest.value();
   });
 
   s.boot();

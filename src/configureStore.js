@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'development') {
    *  logging of state-store messages
    **/
   middleware.push(createLogger({
-    stateTransformer: (state) => {
+    stateTransformer: () => {
       let toPrint = {};
       //toPrint.sequencers = {
         //'6_0': state.sequencers['6_0'],
@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'development') {
   }));
 }
 
-export function configureStore () {
+export function configureStore (additionalInitialState = {}) {
   let createStoreWithMiddleware = applyMiddleware(
     ...middleware
   )(createStore);
@@ -80,7 +80,7 @@ export function configureStore () {
 
   let sequencers = {
     '6_0': create_default_sequencer('6_0', 'BassSequencer'),
-    '6_1': create_default_sequencer('6_1', 'LazersSequencer'),
+    '6_1': create_default_sequencer('6_1', 'KickSequencer'),
     '6_2': create_default_sequencer('6_2', 'LazersSequencer'),
     '6_3': create_default_sequencer('6_3', 'LazersSequencer'),
     '6_4': create_default_sequencer('6_4', 'LazersSequencer'),
@@ -131,6 +131,8 @@ export function configureStore () {
   };
 
   sequencers['6_0'].numBeats = 8;
+
+  sequencers['6_1'].numBeats = 8;
   
   sequencers['6_1'].numBeats = 12;
   sequencers['6_1'].releaseTime = 1.2;
@@ -171,7 +173,7 @@ export function configureStore () {
   segmentsById[create_segmentId('level_2', 0)].sequencerId = '2_0';
   segmentsById[create_segmentId('level_2', 1)].sequencerId = '2_1';
 
-  let initialState = {
+  let initialState = Object.assign({}, {
     levels: {
       byId: levelsById,
       allIds: Object.keys(levelsById)
@@ -181,7 +183,7 @@ export function configureStore () {
       allIds: Object.keys(segmentsById)
     },
     sequencers
-  };
+  }, additionalInitialState);
 
   return createStoreWithMiddleware(rootReducer, initialState);
 }

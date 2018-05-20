@@ -1,5 +1,5 @@
 /**
- *  @file       SamplerSequencer.sc
+ *  @file       KickSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,13 +8,12 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SamplerSequencer : AwakenedSequencer {
+KickSequencer : AwakenedSequencer {
   var pat,
     patchSynth;
-
   initPatch {
     patch = Patch("cs.sfx.PlayBuf", (
-      buf: bufManager.bufs[\subtle_kick_01],
+      buf: bufManager.bufs[\kick_01],
       convertToStereo: 1,
       attackTime: 0.0,
       releaseTime: 0.0,
@@ -24,12 +23,14 @@ SamplerSequencer : AwakenedSequencer {
     patchSynth = patch.asSynthDef().add();
     ^patch;
   }
-
   initStream {
+    var note = "C1".notemidi();
+
     pat = Pbind(
       \instrument, patchSynth.name,
       \gate, 1,
-      [\midinote, \dur], Pseq(bufManager.midiSequences[\subtle_kick], inf)
+      \midinote, Pseq([note, \rest, \rest, note, note, \rest, \rest, note], inf),
+      \dur, Pseq([1], inf)
     );
     ^pat.asStream();
   }

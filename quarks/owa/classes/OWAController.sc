@@ -91,7 +91,9 @@ OWAController {
     
 
     bufManager.load_bufs([
-      ["kick_01 [2018-05-20 115711].wav", \kick_01]
+      ["kick_01 [2018-05-20 115711].wav", \kick_01],
+      ["hhclosed_96 [2018-05-20 155504].wav", \hhclosed_96],
+      ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83]
     ], ({
       // when buffers are done loading
       // load midi files

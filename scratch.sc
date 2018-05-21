@@ -10,10 +10,51 @@
 
 ({
 
-  var samplerPbindTest, wideBassTest;
+  var samplerPbindTest, wideBassTest, multiSamplerTest;
   var bufManager = BufferManager.new((
     rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
   ));
+
+  multiSamplerTest = ({
+    var midiFileSequences,
+      patch,
+      patchSynth,
+      pat,
+      bufs;
+
+    bufManager.load_bufs([
+      ["hhclosed_96 [2018-05-20 155504].wav", \hhclosed_96],
+      ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83]
+    ], ({
+      bufManager.load_midi([
+        ["spinny-pluck_L6_hats.mid", 'spinny-pluck_L6_hats', 8]
+      ]);
+
+      midiFileSequences = bufManager.midiSequences['spinny-pluck_L6_hats'];
+
+      bufs = (
+        22: bufManager.bufs[\hhclosed_96].bufnum,
+        25: bufManager.bufs[\hhopen_83].bufnum,
+        rest: 0
+      );
+      patch = Patch("owa.HiHatSampler", (
+      ));
+      patch.prepareForPlay();
+      patchSynth = patch.asSynthDef().add();
+      
+      pat = Pbind(
+        \instrument, patchSynth.name,
+        [\midinote, \dur], Pseq(midiFileSequences, inf),
+        \bufnum, Pfunc({
+          arg event;
+         
+          bufs[event[\midinote]];
+        })
+      );
+      ~player = pat.play();
+      
+    }));
+  });
 
   samplerPbindTest = ({
     
@@ -99,8 +140,9 @@
   TempoClock.default.tempo = 140.0 / 60.0;
 
   s.waitForBoot({
-    samplerPbindTest.value();
+    //samplerPbindTest.value();
     //wideBassTest.value();
+    multiSamplerTest.value();
   });
 
   s.boot();

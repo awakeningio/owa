@@ -27,6 +27,8 @@ bool PiezoButton::handleInputValue (int inputValue) {
   }
   avg = avg / NUM_READINGS;
 
+  //Serial.println("avg: " + String(avg));
+
   if (abs(avg) > THRESHOLD) {
     if (triggered == false) {
       time = millis();

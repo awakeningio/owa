@@ -97,15 +97,18 @@ OWAController {
     ], ({
       // when buffers are done loading
       // load midi files
-      //bufManager.load_midi([
-        //["subtle_kick.mid", \subtle_kick, 8]
-      //]);
+      bufManager.load_midi([
+        ["spinny-pluck_L6_hats.mid", 'spinny-pluck_L6_hats', 8]
+      ]);
+
       // initialize sequencers
       seqFactory.setStore(store);
+
       // tell main process we are done
       store.dispatch((
         type: "OWA_SOUND_INIT_DONE"
       ));
+
     }));
 
 

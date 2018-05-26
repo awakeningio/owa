@@ -43,7 +43,7 @@ class SCController {
         return sc.lang.boot(sclangOptions).then((sclang) => {
           logger.debug("sclang booted.");
           this.sclang = sclang;
-          return sclang.interpret(`
+          var scBootScript = `
 MIDIClient.init;
 MIDIIn.connectAll;
 API.mountDuplexOSC();
@@ -51,11 +51,20 @@ s.options.inDevice = "JackRouter";
 s.options.outDevice = "JackRouter";
 s.options.memSize = 8192 * 2 * 2 * 2;
 s.options.blockSize = 8;
+          `;
+          if (process.env.NODE_ENV === 'development') {
+            scBootScript += `
+s.meter();
+s.plotTree();
+            `;
+          }
 
+          scBootScript += `
 s.waitForBoot({
   OWAController.initInstance();
 });
-          `).then(resolve);
+          `
+          return sclang.interpret(scBootScript).then(resolve);
         }).catch(reject);
       }
       

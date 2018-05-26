@@ -20,9 +20,17 @@
       patch,
       patchSynth,
       pat,
-      bufs;
+      bufs,
+      outputChannel;
+
+    outputChannel = MixerChannel.new(
+      "scratch" ,
+      Server.default,
+      2, 2
+    );
 
     bufManager.load_bufs([
+      ["kick_01 [2018-05-20 115711].wav", \kick_01],
       ["hhclosed_96 [2018-05-20 155504].wav", \hhclosed_96],
       ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83]
     ], ({
@@ -32,26 +40,38 @@
 
       midiFileSequences = bufManager.midiSequences['spinny-pluck_L6_hats'];
 
+      //"midiFileSequences:".postln;
+      //midiFileSequences.postln;
+
       bufs = (
         22: bufManager.bufs[\hhclosed_96].bufnum,
         25: bufManager.bufs[\hhopen_83].bufnum,
         rest: 0
       );
-      patch = Patch("owa.HiHatSampler", (
-      ));
-      patch.prepareForPlay();
-      patchSynth = patch.asSynthDef().add();
+      "bufs:".postln;
+      bufs.postln;
       
       pat = Pbind(
-        \instrument, patchSynth.name,
+        //\instrument, patchSynth.name,
+        \type, \instr,
+        \instr, "owa.HiHatSampler",
         [\midinote, \dur], Pseq(midiFileSequences, inf),
+        \legato, Pfunc({
+          arg event;
+          if (event[\midinote] === 25, {
+            0.75;
+          }, {
+            1.0;
+          });
+        }),
         \bufnum, Pfunc({
           arg event;
          
           bufs[event[\midinote]];
-        })
+        }),
       );
-      ~player = pat.play();
+      //~player = pat.play();
+      outputChannel.play(EventStreamPlayer.new(pat.asStream()));
       
     }));
   });

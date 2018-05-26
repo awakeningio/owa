@@ -82,7 +82,7 @@ export function configureStore (additionalInitialState = {}) {
     '6_0': create_default_sequencer('6_0', 'BassSequencer'),
     '6_1': create_default_sequencer('6_1', 'KickSequencer'),
     '6_2': create_default_sequencer('6_2', 'HiHatSequencer'),
-    '6_3': create_default_sequencer('6_3', 'LazersSequencer'),
+    '6_3': create_default_sequencer('6_3', 'LeadPopSequencer'),
     '6_4': create_default_sequencer('6_4', 'LazersSequencer'),
     '6_5': create_default_sequencer('6_5', 'LazersSequencer'),
     '4_0': create_default_sequencer('4_0', 'ChordProgSequencer'),
@@ -136,12 +136,8 @@ export function configureStore (additionalInitialState = {}) {
   
   sequencers['6_2'].numBeats = 8;
   
-  sequencers['6_3'].numBeats = 12;
-  sequencers['6_3'].releaseTime = 1.2;
-  sequencers['6_3'].pbind = {
-    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 6
-  };
+  sequencers['6_3'].numBeats = 16;
+  
   sequencers['6_4'].numBeats = 12;
   sequencers['6_4'].releaseTime = 1.2;
   sequencers['6_4'].pbind = {

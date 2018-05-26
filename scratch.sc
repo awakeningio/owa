@@ -10,10 +10,21 @@
 
 ({
 
-  var samplerPbindTest, wideBassTest, multiSamplerTest;
+  var samplerPbindTest, wideBassTest, multiSamplerTest, leadPopTest;
   var bufManager = BufferManager.new((
     rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
   ));
+
+  leadPopTest = ({
+    var pat;
+    pat = Pbind(
+      \type, \instr,
+      \instr, "cs.percussion.Impulsive",
+      \note, Pseq(["c3".notemidi(), \rest, "c3".notemidi()], inf),
+      \dur, Pseq([1], inf)
+    );
+    ~player = pat.play();
+  });
 
   multiSamplerTest = ({
     var midiFileSequences,
@@ -48,8 +59,6 @@
         25: bufManager.bufs[\hhopen_83].bufnum,
         rest: 0
       );
-      "bufs:".postln;
-      bufs.postln;
       
       pat = Pbind(
         //\instrument, patchSynth.name,
@@ -162,7 +171,8 @@
   s.waitForBoot({
     //samplerPbindTest.value();
     //wideBassTest.value();
-    multiSamplerTest.value();
+    //multiSamplerTest.value();
+    leadPopTest.value();
   });
 
   s.boot();

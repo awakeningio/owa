@@ -93,12 +93,13 @@ OWAController {
     bufManager.load_bufs([
       ["kick_01 [2018-05-20 115711].wav", \kick_01],
       ["hhclosed_96 [2018-05-20 155504].wav", \hhclosed_96],
-      ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83]
+      ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83],
     ], ({
       // when buffers are done loading
       // load midi files
       bufManager.load_midi([
-        ["spinny-pluck_L6_hats.mid", 'spinny-pluck_L6_hats', 8]
+        ["spinny-pluck_L6_hats.mid", 'spinny-pluck_L6_hats', 8],
+        ["spinny-pluck_L6_lead.mid", 'spinny-pluck_L6_lead', 16]
       ]);
 
       // initialize sequencers

@@ -4,6 +4,20 @@
     src: sclang_conf.yaml
     dest: "/home/{{ owa_deploy_user }}/.config/SuperCollider/sclang_conf.yaml"
 
+- name: arduino IDE setup
+  shell: /opt/arduino/arduino-1.8.5/arduino --install-boards "arduino:avr"
+  register: arduino_install_boards
+  failed_when: 'arduino_install_boards.rc != 0 and "Platform is already installed!" not in arduino_install_boards.stderr'
+  tags:
+    - install
+
+- name: arduino upload script
+  template:
+    src: upload_arduino.sh.j2
+    dest: "{{ owa_project_dir }}/upload_arduino.sh"
+  tags:
+    - install
+
 - name: update code
   git:
     repo: https://github.com/awakeningio/owa.git
@@ -50,3 +64,4 @@
     times: yes
     rsync_opts:
       - "--exclude=*.asd"
+

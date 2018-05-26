@@ -10,6 +10,9 @@
         name: geerlingguy.nodejs
     - include_role:
         name: colinsullivan.fadecandy
+    #- include_role:
+        #name: colinsullivan.supercollider
     - include_role:
-        name: colinsullivan.supercollider
+        name: conorsch.arduino
+
 - import_playbook: site_deploy.yml

@@ -1,3 +1,6 @@
+arduino_ide_url: "https://downloads.arduino.cc/arduino-{{ arduino_version }}-linuxarm.tar.xz"
+arduino_port: /dev/ttyACM0
+arduino_version: "1.8.5"
 fadecandy_config:
     listen: ["0.0.0.0", 7890]
     verbose: true

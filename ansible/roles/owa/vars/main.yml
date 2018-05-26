@@ -1,5 +1,4 @@
 owa_deploy_user: "{{ ansible_ssh_user }}"
 owa_project_dir: "/home/{{ owa_deploy_user }}/owa"
 local_owa_sounds_dir: "/Users/colin/Projects/owa/sounds"
-owa_sounds_dir: "{{ owa_project_dir }}/sounds"
 owa_gui_host: csull-mbp

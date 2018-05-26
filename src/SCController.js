@@ -52,7 +52,7 @@ s.options.outDevice = "JackRouter";
 s.options.memSize = 8192 * 2 * 2 * 2;
 s.options.blockSize = 8;
           `;
-          if (process.env.NODE_ENV === 'development') {
+          if (process.env.NODE_ENV === 'development' && process.env.DISABLE_GUI != 1) {
             scBootScript += `
 s.meter();
 s.plotTree();

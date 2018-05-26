@@ -44,7 +44,7 @@ class SerialInputController extends ControllerWithStore {
 
     if (DEBUG_INPUT) {
       this.parser.on("data", (data) => {
-        console.log(data);
+        console.log(`${new Date()} : ${data}`);
       });
     } else {
       this.parser.on("data", (data) => this.handleIncomingData(data));

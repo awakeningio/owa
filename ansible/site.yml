@@ -10,8 +10,8 @@
         name: geerlingguy.nodejs
     - include_role:
         name: colinsullivan.fadecandy
-    #- include_role:
-        #name: colinsullivan.supercollider
+    - include_role:
+        name: colinsullivan.supercollider
     - include_role:
         name: conorsch.arduino
 

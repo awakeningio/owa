@@ -10,10 +10,74 @@
 
 ({
 
-  var samplerPbindTest, wideBassTest, multiSamplerTest, leadPopTest;
+  var samplerPbindTest, wideBassTest, multiSamplerTest, leadPopTest, chimeyRingSequencer;
   var bufManager = BufferManager.new((
     rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
   ));
+
+  chimeyRingSequencer = ({
+    bufManager.load_bufs([
+      ["chime high pitch ring_D.wav", \chime_ring_d]
+    ], ({
+      //bufManager.load_midi([
+        //["spinny-pluck_L6_hats.mid", 'spinny-pluck_L6_hats', 8]
+      //]);
+
+      //midiFileSequences = bufManager.midiSequences['spinny-pluck_L6_hats'];
+
+      //"midiFileSequences:".postln;
+      //midiFileSequences.postln;
+
+      var originalFreq = "C4".notemidi().midicps();
+
+      ~player = Ppar([
+        Pbind(
+          \type, \instr,
+          \instr, "owa.PitchedSampler",
+          \originalFreq, originalFreq,
+          \scale, Scale.minor,
+          \root, 2,
+          \octave, 5,
+          \degree, Pseq([
+            \rest,  0,   \rest
+          ], inf),
+          \dur, Pseq([
+            7,      0.5,  0.5
+          ], inf),
+          \reversed, Pseq([
+            0
+          ], inf),
+          \bufnum, bufManager.bufs[\chime_ring_d].bufnum,
+          \amp, -20.dbamp(),
+          \releaseTime, 5.0,
+          \attackTime, 0.3
+        ),
+        Pbind(
+          \type, \instr,
+          \instr, "owa.PitchedSampler",
+          \originalFreq, originalFreq,
+          \scale, Scale.minor,
+          \root, 2,
+          \octave, 4,
+          \degree, Pseq([
+            \rest,  4,  \rest,
+          ], inf),
+          \dur, Pseq([
+            1,      6,  1
+          ], inf),
+          \reversed, Pseq([
+            1
+          ], inf),
+          \bufnum, bufManager.bufs[\chime_ring_d].bufnum,
+          \amp, -20.dbamp(),
+          \releaseTime, 5.0,
+          \attackTime, 0.3,
+          \startTime, 3.5
+        )
+      ]).play();
+      
+    }));
+  });
 
   leadPopTest = ({
     var pat;
@@ -172,7 +236,8 @@
     //samplerPbindTest.value();
     //wideBassTest.value();
     //multiSamplerTest.value();
-    leadPopTest.value();
+    //leadPopTest.value();
+    chimeyRingSequencer.value();
   });
 
   s.boot();

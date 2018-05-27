@@ -75,7 +75,7 @@ ipcMain.on('dispatchButtonPressed', (event, arg) => {
       },
       {
         type: "s",
-        value: "payload"
+        value: "payloadPairs"
       },
       {
         type: "s",

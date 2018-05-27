@@ -11,6 +11,14 @@ import osc from 'osc'
 
 import ControllerWithStore from "./ControllerWithStore"
 
+function parse_payload_pairs (payloadPairs) {
+  var i, payload = {};
+  for (i = 0; i < payloadPairs.length; i+=2) {
+    payload[payloadPairs[i]] = payloadPairs[i + 1];
+  }
+  return payload;
+}
+
 /**
  *  @class        OSCActionListener
  *
@@ -41,16 +49,18 @@ class OSCActionListener extends ControllerWithStore {
       let action = {
       };
       for (i = 0; i < actionPairs.length - 1; i+=2) {
-        if (actionPairs[i] == 'payload') {
-          parsingPayload = true
-          action.payload = {};
-          i += 1;
-        }
-
-        if (parsingPayload) {
-          action.payload[actionPairs[i]] = actionPairs[i + 1];
+        if (actionPairs[i] == 'payloadString') {
+          action.payload = JSON.parse(actionPairs[i + 1]);
+          break;
+        } else if (actionPairs[i] === 'type') {
+          action.type = actionPairs[i + 1];
+        } else if (actionPairs[i] === 'payloadPairs') {
+          action.payload = parse_payload_pairs(actionPairs.slice(i + 1));
+          break;
         } else {
-          action[actionPairs[i]] = actionPairs[i + 1];
+          throw new Error(
+            `Don't know how to parse action: ${JSON.stringify(msg)}`
+          );
         }
       }
 

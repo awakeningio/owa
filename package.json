@@ -56,7 +56,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "serialport": "^6.2.0",
-    "supercollider-redux": "0.0.8",
+    "supercollider-redux": "0.0.9",
     "supercolliderjs": "^0.14.2",
     "winston": "^2.3.1"
   },

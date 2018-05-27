@@ -10,10 +10,31 @@
 
 ({
 
-  var samplerPbindTest, wideBassTest, multiSamplerTest, leadPopTest, chimeyRingSequencer;
-  var bufManager = BufferManager.new((
+  var samplerPbindTest,
+    wideBassTest,
+    multiSamplerTest,
+    leadPopTest,
+    chimeyRingSequencer,
+    sfxSequencerTest,
+    bufManager = BufferManager.new((
     rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
   ));
+
+  sfxSequencerTest = ({
+    bufManager.load_bufs([
+      ["spinny-pluck_L6_sfx [2018-05-27 133232].wav", 'spinny-pluck_L6_sfx']
+    ], ({
+      ~player = Pbind(
+        \type, \instr,
+        \instr, "cs.sfx.PlayBuf",
+        \buf, bufManager.bufs['spinny-pluck_L6_sfx'],
+        \attackTime, 0.0,
+        \releaseTime, 0.0,
+        \midinote, Pseq(["C3".notemidi()], inf),
+        \dur, 8*4
+      ).play();
+    }));
+  });
 
   chimeyRingSequencer = ({
     bufManager.load_bufs([
@@ -237,7 +258,8 @@
     //wideBassTest.value();
     //multiSamplerTest.value();
     //leadPopTest.value();
-    chimeyRingSequencer.value();
+    //chimeyRingSequencer.value();
+    sfxSequencerTest.value();
   });
 
   s.boot();

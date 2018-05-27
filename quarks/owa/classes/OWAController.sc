@@ -94,7 +94,8 @@ OWAController {
       ["kick_01 [2018-05-20 115711].wav", \kick_01],
       ["hhclosed_96 [2018-05-20 155504].wav", \hhclosed_96],
       ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83],
-      ["chime high pitch ring_D.wav", \chime_ring_d]
+      ["chime high pitch ring_D.wav", \chime_ring_d],
+      ["spinny-pluck_L6_sfx [2018-05-27 133232].wav", 'spinny-pluck_L6_sfx']
     ], ({
       // when buffers are done loading
       // load midi files

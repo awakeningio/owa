@@ -43,6 +43,9 @@ class LightingController extends ControllerWithStore {
     // ranges of pixel buffer for each level
     this.levelPixels = {};
 
+    // all subcontrollers to tick
+    this.controllersToTick = [];
+
     // subcontrollers for each segment
     this.segmentLightingControllers = [];
 
@@ -53,12 +56,12 @@ class LightingController extends ControllerWithStore {
         SEGMENTID_TO_PIXEL_RANGE[segmentId]
       );
       this.segmentPixels[segmentId] = pixels;
-      this.segmentLightingControllers.push(
-        new SegmentLightingController(this.store, {
-          segmentId,
-          pixels
-        })
-      )
+      let controller = new SegmentLightingController(this.store, {
+        segmentId,
+        pixels
+      });
+      this.segmentLightingControllers.push(controller);
+      this.controllersToTick.push(controller);
     });
 
     // for each level get range of pixels for the rings
@@ -87,6 +90,9 @@ class LightingController extends ControllerWithStore {
 
   tick () {
     TWEEN.update();
+    this.controllersToTick.forEach(function(controller) {
+      controller.tick();
+    });
     this.fcController.writePixels(this.pixels);
   }
 

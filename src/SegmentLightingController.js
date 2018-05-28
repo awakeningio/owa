@@ -40,6 +40,13 @@ class SegmentLightingController extends ControllerWithStore {
     };
   }
 
+  tick () {
+    //this.queuedAnimation.tick();
+    if (this.lastState.sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
+      this.playingAnimation.tick();
+    }
+  }
+
   handle_state_change () {
     let state = this.store.getState();
     let segment = state.segments.byId[this.params.segmentId];
@@ -52,14 +59,17 @@ class SegmentLightingController extends ControllerWithStore {
       switch (sequencer.playingState) {
         case awakeningSequencers.PLAYING_STATES.QUEUED:
         case awakeningSequencers.PLAYING_STATES.REQUEUED:
+          this.playingAnimation.stop();
           this.queuedAnimation.start();
           break;
 
         case awakeningSequencers.PLAYING_STATES.PLAYING:
+          this.playingAnimation.start();
           this.queuedAnimation.stop();
           break;
         
         default:
+          this.playingAnimation.stop();
           this.queuedAnimation.stop();
       }
 

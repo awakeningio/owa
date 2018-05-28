@@ -10,13 +10,16 @@
 
 import winston from 'winston'
 
-var logger = new winston.Logger({
-  transports: [
-    new winston.transports.Console({
-      colorize: 'all',
-      level: 'debug'
-    })
-  ]
+var logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json()
 });
+
+if (process.env.NODE_ENV === 'development') {
+  logger.add(new winston.transports.Console({
+    colorize: 'all',
+    format: winston.format.simple()
+  }));
+}
 
 export default logger;

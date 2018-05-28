@@ -19,7 +19,7 @@ import {
   create_segmentId
 } from './models'
 
-import logger from './logging'
+//import logger from './logging'
 
 import abletonlinkRedux from 'abletonlink-redux'
 import rootReducer from './reducers'
@@ -34,20 +34,20 @@ if (process.env.NODE_ENV === 'development') {
    *  logging of state-store messages
    **/
   middleware.push(createLogger({
-    stateTransformer: () => {
+    stateTransformer: (state) => {
       let toPrint = {};
-      //toPrint.sequencers = {
+      toPrint.sequencers = {
         //'6_0': state.sequencers['6_0'],
-        //'6_1': state.sequencers['6_1']
-      //};
+        '6_1': state.sequencers['6_1']
+      };
       //toPrint.levels = state.levels;
       return JSON.stringify(toPrint, ' ', 4);
     },
-      logger: {
-        log: (msg) => {
-          logger.info(msg);
-        }
-      }
+    //logger: {
+      //log: (msg) => {
+        //logger.info(msg);
+      //}
+    //}
   }));
 }
 
@@ -130,11 +130,11 @@ export function configureStore (additionalInitialState = {}) {
     octave: 5
   };
 
-  sequencers['6_0'].numBeats = 8;
-  sequencers['6_1'].numBeats = 8;
-  sequencers['6_2'].numBeats = 8;
-  sequencers['6_3'].numBeats = 16;
-  sequencers['6_4'].numBeats = 8;
+  sequencers['6_0'].numBeats = 2 * 4;
+  sequencers['6_1'].numBeats = 2 * 4;
+  sequencers['6_2'].numBeats = 8 * 4;
+  sequencers['6_3'].numBeats = 4 * 4;
+  sequencers['6_4'].numBeats = 2 * 4;
   sequencers['6_5'].numBeats = 8 * 4;
 
   segmentsById[create_segmentId('level_6', 0)].sequencerId = '6_0';

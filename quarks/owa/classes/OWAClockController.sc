@@ -10,7 +10,8 @@
 
 OWAClockController {
   var <>clock,
-    store;
+    store,
+    lastTempo;
 
   *new {
     arg params;
@@ -21,16 +22,22 @@ OWAClockController {
     var tempo;
     store = params.store;
     
+    tempo = store.getState().tempo;
+    lastTempo = tempo;
+
+    clock = TempoClock.new(tempo: tempo / 60.0);
+    
     store.subscribe({
       this.handle_state_change();
     });
-
-    tempo = store.getState().tempo;
-
-    clock = TempoClock.new(tempo: tempo / 60.0);
   }
   handle_state_change {
-    // TODO: handle queueing tempo changes here
+
+    var tempo = store.getState().tempo;
+    if (tempo != lastTempo, {
+      // TODO: handle queueing tempo changes here
+    });
+    lastTempo = tempo;
   }
   isReady {
     ^(clock != nil);

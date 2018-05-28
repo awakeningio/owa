@@ -1,5 +1,5 @@
 /**
- *  @file       AmbientAlienL6IndependentSegmentsAnimation.js
+ *  @file       PixelandPixelsSegmentsAnimation.js
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -51,7 +51,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_6-segment_0'],
           props.ledIndex,
-          Color.hsv(300, 98, props.brightness).mix(Color.hsv(310, 98, 100), 0.1)
+          Color.hsv(300, 98, props.brightness).mix(Color.hsv(310, 98, 100), 0.3)
         );
       });
 
@@ -75,7 +75,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_6-segment_1'],
           props.ledIndex,
-          Color.hsv(310, 98, props.brightness).mix(Color.hsv(320, 98, 100), 0.1)
+          Color.hsv(310, 98, props.brightness).mix(Color.hsv(320, 98, 100), 0.3)
         );
       });    
 
@@ -99,7 +99,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_6-segment_2'],
           props.ledIndex,
-          Color.hsv(320, 98, props.brightness).mix(Color.hsv(330, 98, 100), 0.1)
+          Color.hsv(320, 98, props.brightness).mix(Color.hsv(330, 98, 100), 0.3)
         );
       });
 
@@ -123,7 +123,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_6-segment_3'],
           props.ledIndex,
-          Color.hsv(330, 98, props.brightness).mix(Color.hsv(340, 98, 100), 0.1)
+          Color.hsv(330, 98, props.brightness).mix(Color.hsv(340, 98, 100), 0.3)
         );
       }); 
 
@@ -147,7 +147,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_6-segment_4'],
           props.ledIndex,
-          Color.hsv(340, 98, props.brightness).mix(Color.hsv(350, 98, 100), 0.1)
+          Color.hsv(340, 98, props.brightness).mix(Color.hsv(350, 98, 100), 0.3)
         );
       }); 
 
@@ -171,7 +171,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_6-segment_5'],
           props.ledIndex,
-          Color.hsv(350, 98, props.brightness).mix(Color.hsv(360, 98, 100), 0.1)
+          Color.hsv(350, 98, props.brightness).mix(Color.hsv(360, 98, 100), 0.3)
         );
       });  
 
@@ -195,7 +195,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_4-segment_0'],
           props.ledIndex,
-          Color.hsv(360, 98, props.brightness).mix(Color.hsv(4, 98, 100), 0.1)
+          Color.hsv(360, 98, props.brightness).mix(Color.hsv(4, 98, 100), 0.3)
         );
       });  
 
@@ -219,7 +219,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_4-segment_1'],
           props.ledIndex,
-          Color.hsv(4, 98, props.brightness).mix(Color.hsv(14, 98, 100), 0.1)
+          Color.hsv(4, 98, props.brightness).mix(Color.hsv(14, 98, 100), 0.3)
         );
       }); 
 
@@ -243,7 +243,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_4-segment_2'],
           props.ledIndex,
-          Color.hsv(14, 98, props.brightness).mix(Color.hsv(24, 98, 100), 0.1)
+          Color.hsv(14, 98, props.brightness).mix(Color.hsv(24, 98, 100), 0.3)
         );
       });  
 
@@ -267,7 +267,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_4-segment_3'],
           props.ledIndex,
-          Color.hsv(24, 98, props.brightness).mix(Color.hsv(34, 98, 100), 0.1)
+          Color.hsv(24, 98, props.brightness).mix(Color.hsv(34, 98, 100), 0.3)
         );
       });  
 
@@ -291,7 +291,7 @@ class IdleModeAnimation extends ControllerWithStore {
         setPixelColors(
           segmentPixels['level_2-segment_0'],
           props.ledIndex,
-          Color.hsv(34, 98, props.brightness).mix(Color.hsv(44, 98, 100), 0.1)
+          Color.hsv(34, 98, props.brightness).mix(Color.hsv(44, 98, 100), 0.3)
         );
       });  
 
@@ -310,12 +310,12 @@ class IdleModeAnimation extends ControllerWithStore {
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_2-segment_1'],
-          Color.hsv(20, 8, props.brightness).mix(Color.hsv(47, 8, 100), 0.1) 
+          Color.hsv(272, 92, props.brightness).mix(Color.hsv(282, 92, 40), 0.3) 
         );
         setPixelColors(
           segmentPixels['level_2-segment_1'],
           props.ledIndex,
-          Color.hsv(56, 9, props.brightness).mix(Color.hsv(56, 84, 100), 0.1)
+          Color.hsv(44, 98, props.brightness).mix(Color.hsv(54, 98, 100), 0.3)
         );
       });  
   }

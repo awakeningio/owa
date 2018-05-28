@@ -11,7 +11,7 @@
 import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
 import SegmentLightingController from './SegmentLightingController';
-import IdleModeAnimation from "./IdleModeAnimation.js";
+import IdleModeAnimation from "./ChimyAwakeningL2-RevealTransitionAnimation.js";
 
 import { SEGMENTID_TO_PIXEL_RANGE, LEVELID_TO_PIXEL_RANGE } from './constants';
 import TWEEN from '@tweenjs/tween.js';
@@ -72,7 +72,8 @@ class LightingController extends ControllerWithStore {
 
     this.idleModeAnimation = new IdleModeAnimation(this.store, {
       pixels: this.pixels,
-      levelPixels: this.levelPixels
+      levelPixels: this.levelPixels,
+      segmentPixels: this.segmentPixels
     });
 
     // create FadecandyController (and initiate connection)

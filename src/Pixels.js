@@ -21,6 +21,6 @@ export function setPixelsColors (pixels, color) {
 export function setPixelColors (pixels, i, color) {
   pixels.setPixel.apply(
     pixels,
-    [i].concat(color.rgb().round().color)
+    [Math.round(i)].concat(color.rgb().round().color)
   );
 }

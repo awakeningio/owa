@@ -11,7 +11,7 @@
 import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
 import SegmentLightingController from './SegmentLightingController';
-import IdleModeAnimation from "./ChimyAwakeningL2-RevealTransitionAnimation.js";
+import IdleModeAnimation from "./SpinnyPluckReadyL2Animation.js";
 
 import { SEGMENTID_TO_PIXEL_RANGE, LEVELID_TO_PIXEL_RANGE } from './constants';
 import TWEEN from '@tweenjs/tween.js';

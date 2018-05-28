@@ -34,7 +34,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level6Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .yoyo(true)
       .repeat(1)
@@ -47,7 +47,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level6Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.InOut)
       .yoyo(true)
       .repeat(1)
@@ -60,7 +60,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level6Seg2Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.Out)
       .yoyo(true)
       .repeat(1)
@@ -73,7 +73,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level6Seg3Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250) 
+      .delay(150) 
       .easing(TWEEN.Easing.Sinusoidal.In)
       .yoyo(true)
       .repeat(1)
@@ -86,7 +86,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level6Seg4Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.InOut)
       .yoyo(true)
       .repeat(1)
@@ -99,7 +99,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level6Seg5Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.Out)
       .yoyo(true)
       .repeat(1)
@@ -112,7 +112,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level4Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .yoyo(true)
       .repeat(1)
@@ -125,7 +125,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level4Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.InOut)
       .yoyo(true)
       .repeat(1)
@@ -138,7 +138,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level4Seg2Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.Out)
       .yoyo(true)
       .repeat(1)
@@ -151,7 +151,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level4Seg3Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .yoyo(true)
       .repeat(1)
@@ -164,7 +164,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level2Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.InOut)
       .yoyo(true)
       .repeat(1)
@@ -177,7 +177,7 @@ class IdleModeAnimation extends ControllerWithStore {
 
     this.level2Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
       .to(Object.assign({}, dest), 1000)
-      .delay(250)
+      .delay(150)
       .easing(TWEEN.Easing.Sinusoidal.Out)
       .yoyo(true)
       .repeat(1)

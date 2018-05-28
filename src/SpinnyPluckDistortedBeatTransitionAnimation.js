@@ -36,7 +36,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.In)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_6-segment_0'],
@@ -49,7 +49,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.InOut)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_6-segment_1'],
@@ -62,7 +62,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.Out)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_6-segment_2'],
@@ -75,7 +75,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10) 
       .easing(TWEEN.Easing.Back.In)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_6-segment_3'],
@@ -88,7 +88,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.InOut)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_6-segment_4'],
@@ -101,7 +101,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.Out)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_6-segment_5'],
@@ -114,7 +114,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.In)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_4-segment_0'],
@@ -127,7 +127,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.InOut)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_4-segment_1'],
@@ -140,7 +140,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.Out)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_4-segment_2'],
@@ -153,7 +153,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.In)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_4-segment_3'],
@@ -166,7 +166,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.InOut)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_2-segment_0'],
@@ -179,7 +179,7 @@ class IdleModeAnimation extends ControllerWithStore {
       .delay(10)
       .easing(TWEEN.Easing.Back.Out)
       .yoyo(true)
-      .repeat(121)
+      .repeat(135)
       .onUpdate((props) => {
         setPixelsColors(
           segmentPixels['level_2-segment_1'],

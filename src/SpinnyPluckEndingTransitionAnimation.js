@@ -1,6 +1,6 @@
 
 /**
- *  @file       SpinnyPluckEnding1TransitionAnimation.js
+ *  @file       SpinnyPluckEndingTransitionAnimation.js
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>

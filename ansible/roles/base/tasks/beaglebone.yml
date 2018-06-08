@@ -8,6 +8,17 @@
     mode: 0644
   register: wificonfig
 
+- name: disable beaglebone services
+  systemd:
+    name: "{{ item }}"
+    enabled: no
+    state: stopped
+  with_items:
+    - bonescript-autorun
+    - bb-wl18xx-bluetooth
+    - apache2
+    - cloud9.socket
+
 - name: reboot and wait
   include_tasks: reboot_and_wait.yml
   when: wificonfig.changed

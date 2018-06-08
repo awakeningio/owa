@@ -1,0 +1,2 @@
+user_default_groups: "adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi"
+raspberrypi: true

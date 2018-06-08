@@ -14,7 +14,7 @@
     append: yes
     generate_ssh_key: yes
     name: colin
-    groups: "adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi"
+    groups: "{{ user_default_groups }}"
     shell: /bin/bash
 - name: colin ssh key
   copy:
@@ -24,3 +24,6 @@
     owner: colin
     group: colin
     mode: 0600
+- name: beaglebone setup
+  include_tasks: beaglebone.yml
+  when: beaglebone

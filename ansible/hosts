@@ -1,1 +1,8 @@
 owapi.local ansible_ssh_user=colin
+owabb.local ansible_ssh_user=debian
+
+[raspberrypi]
+owapi.local
+
+[beaglebone]
+owabb.local

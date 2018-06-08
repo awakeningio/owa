@@ -1,0 +1,13 @@
+---
+- name: beaglebone wifi network config
+  template:
+    src: bb-wl18xx.j2
+    dest: /etc/default/bb-wl18xx
+    owner: root
+    group: root
+    mode: 0644
+  register: wificonfig
+
+- name: reboot and wait
+  include_tasks: reboot_and_wait.yml
+  when: wificonfig.changed

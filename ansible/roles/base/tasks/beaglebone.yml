@@ -1,4 +1,11 @@
 ---
+- name: set timezone
+  file:
+    src: "/usr/share/zoneinfo/{{ timezone }}"
+    dest: /etc/localtime
+    state: link
+  register: timezone
+
 - name: beaglebone wifi network config
   template:
     src: bb-wl18xx.j2
@@ -19,6 +26,16 @@
     - apache2
     - cloud9.socket
 
+- name: admin nopasswd
+  copy:
+    src: sudoersd_admin
+    dest: /etc/sudoers.d/admin
+    owner: root
+    group: root
+    mode: 0440
+    force: yes # replaces when contents differ
+  register: sudoers
+
 - name: reboot and wait
   include_tasks: reboot_and_wait.yml
-  when: wificonfig.changed
+  when: wificonfig.changed or timezone.changed or sudoers.changed

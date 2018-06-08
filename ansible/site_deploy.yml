@@ -1,6 +1,7 @@
 ---
 - hosts: all
-  become: no
+  become: yes
+  become_user: "{{ owa_deploy_user }}"
   tasks:
     - include_role:
         name: owa

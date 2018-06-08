@@ -1,4 +1,10 @@
 ---
+# These tasks are meant to be run as the `owa_deploy_user`.
+- name: sclang conf dir
+  file:
+    path: "/home/{{ owa_deploy_user }}/.config/SuperCollider/"
+    state: directory
+
 - name: sclang conf
   copy:
     src: sclang_conf.yaml
@@ -6,15 +12,10 @@
 
 - name: arduino IDE setup
   shell: /opt/arduino/arduino-1.8.5/arduino --install-boards "arduino:avr"
+  args:
+    creates: "/home/{{ owa_deploy_user }}/.arduino15/packages/arduino/hardware/avr"
   register: arduino_install_boards
   failed_when: 'arduino_install_boards.rc != 0 and "Platform is already installed!" not in arduino_install_boards.stderr'
-  tags:
-    - install
-
-- name: arduino upload script
-  template:
-    src: upload_arduino.sh.j2
-    dest: "{{ owa_project_dir }}/upload_arduino.sh"
   tags:
     - install
 
@@ -28,6 +29,13 @@
   register: owa_git
   tags:
     - deploy_code
+
+- name: arduino upload script
+  template:
+    src: upload_arduino.sh.j2
+    dest: "{{ owa_project_dir }}/upload_arduino.sh"
+  tags:
+    - install
 
 - name: update npm deps
   shell: npm install
@@ -64,4 +72,3 @@
     times: yes
     rsync_opts:
       - "--exclude=*.asd"
-

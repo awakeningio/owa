@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import awakeningSequencers from 'awakening-sequencers';
 import { OWA_READY_STATES, SESSION_PHASES } from '../src/constants'
-import {configureStore, configureLinkStore} from "../src/configureStore"
+import configureStore from "../src/configureStore"
 import OWAController from "../src/OWAController"
 import { create_segmentId } from '../src/models'
 import * as actions from '../src/actions'
@@ -10,15 +10,15 @@ import * as actions from '../src/actions'
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 describe("Simultaneous Sequencer Playback", function () {
-  var store, abletonLinkStateStore, state, segment,
+  var store, state, segment,
     sequencer, sessionPhase, owaController;
 
   it("should init properly", function (done) {
     var unsub, soundReady;
     store = configureStore();
-    abletonLinkStateStore = configureLinkStore();
+    //abletonLinkStateStore = configureLinkStore();
     owaController = new OWAController(store, {
-      linkStateStore: abletonLinkStateStore
+      //linkStateStore: abletonLinkStateStore
     });
     state = store.getState();
     soundReady = state.soundReady;

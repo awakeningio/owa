@@ -12,6 +12,7 @@ import ControllerWithStore from "./ControllerWithStore"
 import OSCActionListener from "./OSCActionListener"
 import { getEnvOrError } from "./utils"
 import * as constants from "./constants"
+import { getSCReplicaState } from './selectors'
 
 import logger from './logging';
 
@@ -28,6 +29,7 @@ class SoundController extends ControllerWithStore {
     this.lastState = {
       soundReady: null
     };
+    this.lastReplicaState = null;
 
     //this.linkStore = this.params.linkStateStore;
     
@@ -79,7 +81,12 @@ class SoundController extends ControllerWithStore {
       
     }
     if (state.soundReady == constants.OWA_READY_STATES.READY) {
-      this.call("owa.setState", [state]);
+      let replicaState = getSCReplicaState(state);
+      if (this.lastReplicaState !== replicaState) {
+        logger.debug('replica state changed.');
+        this.lastReplicaState = replicaState;
+        this.call("owa.setState", [replicaState]);
+      }
     }
   }
   getAPICallIndex () {

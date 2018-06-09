@@ -11,8 +11,8 @@
 import winston from 'winston'
 
 var logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json()
+  level: 'debug',
+  format: winston.format.simple()
 });
 
 if (process.env.NODE_ENV === 'development') {

@@ -46,11 +46,12 @@ class SCController {
           var scBootScript = `
 MIDIClient.init;
 MIDIIn.connectAll;
+Instr.loadAll();
 API.mountDuplexOSC();
 s.options.inDevice = "JackRouter";
 s.options.outDevice = "JackRouter";
 s.options.memSize = 8192 * 2 * 2 * 2;
-s.options.blockSize = 8;
+s.options.blockSize = 128;
           `;
           if (process.env.NODE_ENV === 'development' && process.env.DISABLE_GUI != 1) {
             scBootScript += `

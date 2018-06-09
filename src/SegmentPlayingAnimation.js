@@ -89,7 +89,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
       && sequencer.beat !== this.lastState.sequencer.beat
     ) {
       let event = sequencer.event;
-      if (event.outEvent.midinote !== 'rest') {
+      if (event.midinote !== 'rest') {
         if (this.beatPulseTween) {
           this.beatPulseTween.stop();
         }

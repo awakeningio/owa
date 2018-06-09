@@ -1,5 +1,5 @@
-num_cpu_cores: 1
-beaglebone_wifi_ssid: "owabb"
+num_cpu_cores: 2
+beaglebone_wifi_ssid: "owabbx15"
 beaglebone_wifi_password: "3t^jWQQ^SZ7^"
 arduino_ide_url: "https://downloads.arduino.cc/arduino-{{ arduino_version }}-linuxarm.tar.xz"
 arduino_port: /dev/ttyACM0
@@ -26,5 +26,3 @@ fadecandy_config:
           [ 0, 96, 256, 24 ],
           [ 0, 120, 320, 24 ]
         ]
-
-

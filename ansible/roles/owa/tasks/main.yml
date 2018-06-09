@@ -72,3 +72,11 @@
     times: yes
     rsync_opts:
       - "--exclude=*.asd"
+
+- name: run a build
+  shell: npm run build
+  when: owa_git.changed
+  args:
+    chdir: "{{ owa_project_dir }}"
+  tags:
+    - deploy_code

@@ -16,6 +16,21 @@ excludePaths:
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/SystemOverwrites/flowViewExtensions.sc
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/gui.sc
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/deprecated-3.5.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Crucial.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Sample/SampleGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Editors/NumberEditorGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Editors/EnvEditorGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/UncoupledUsefulThings/KeyResponder.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/SynthConsole.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/CXLabel.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/ActionButton.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/SelectButtonSet.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Gui/CXMenu.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/ServerTools/ServerGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Scheduling/TempoGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Instr/InstrBrowser.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Instr/PatchGui.sc
+  - /home/colin/.local/share/SuperCollider/downloaded-quarks/crucial-library/Instr/InstrGui.sc
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/Document-scanFor.sc
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/cross-platform-recursiveResize.sc
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/ddwGUIEnhancements/QtCollider/qt-recursiveResize.sc
@@ -68,4 +83,5 @@ excludePaths:
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/Main Features/SVGFile
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/Main Features/EQ
   - /home/colin/.local/share/SuperCollider/downloaded-quarks/wslib/wslib-classes/GUI
+  - /usr/local/share/SuperCollider/SCClassLibrary/deprecated/3.9/HistoryGui.sc
 postInlineWarnings: false

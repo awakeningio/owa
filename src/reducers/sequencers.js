@@ -152,6 +152,7 @@ export default function sequencers (
         } else if (level.playbackType === LEVEL_PLAYBACK_TYPE.SIMULTANEOUS) {
           // just queue or stop sequencer associated with button press.
           if (state[sequencerId].playingState === PLAYING_STATES.PLAYING) {
+            state = Object.assign({}, state);
             state[sequencerId] = Object.assign(
               {},
               state[sequencerId],
@@ -182,6 +183,7 @@ export default function sequencers (
 
     case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
       // a sequencer just started playing
+      state = Object.assign({}, state);
       let activeSequencer = state[action.payload.sequencerId];
 
       // get currently active level
@@ -197,7 +199,6 @@ export default function sequencers (
           let nextSegment = segments.byId[nextSegmentId];
 
           // queue next sequencer
-          state = Object.assign({}, state);
           let nextSequencer = state[nextSegment.sequencerId];
 
           state[nextSegment.sequencerId] = Object.assign(

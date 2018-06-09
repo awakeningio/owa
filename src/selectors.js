@@ -7,11 +7,11 @@
  *  @copyright  2018 Colin Sullivan
  *  @license    Licensed under the GPLv3 license.
  **/
-
-import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
+import { createSelectorCreator, defaultMemoize } from 'reselect';
 import isEqual from 'lodash/isEqual';
 
-const getSequencers = state => state.sequencers;
+import awakeningSequencers from 'awakening-sequencers'
+
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
 
@@ -20,27 +20,10 @@ const createDeepEqualSelector = createSelectorCreator(
   isEqual
 );
 
-const getSCReplicaSequencers = createSelector(
-  getSequencers,
-  (sequencers) => {
-    var simplifiedSequencers = {};
-    Object.keys(sequencers).forEach((sequencerId) => {
-      simplifiedSequencers[sequencerId] = Object.assign(
-        {},
-        sequencers[sequencerId]
-      );
-      delete simplifiedSequencers[sequencerId].event;
-      delete simplifiedSequencers[sequencerId].nextBeat;
-      delete simplifiedSequencers[sequencerId].beat;
-    });
-    return simplifiedSequencers;
-  }
-);
-
-export const getSCReplicaState = createDeepEqualSelector(
+export const getSCState = createDeepEqualSelector(
   getTempo,
   getSessionPhase,
-  getSCReplicaSequencers,
+  awakeningSequencers.selectors.getSCSequencers,
   (tempo, sessionPhase, sequencers) => ({
     tempo,
     sessionPhase,

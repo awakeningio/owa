@@ -37,8 +37,8 @@ if (process.env.NODE_ENV === 'development') {
     stateTransformer: (state) => {
       let toPrint = {};
       toPrint.sequencers = {
-        //'6_0': state.sequencers['6_0'],
-        '6_1': state.sequencers['6_1']
+        '6_0': state.sequencers['6_0'],
+        //'6_1': state.sequencers['6_1']
       };
       //toPrint.levels = state.levels;
       return JSON.stringify(toPrint, ' ', 4);
@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'development') {
   }));
 }
 
-export function configureStore (additionalInitialState = {}) {
+export default function configureStore (additionalInitialState = {}) {
   let createStoreWithMiddleware = applyMiddleware(
     ...middleware
   )(createStore);

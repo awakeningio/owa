@@ -9,7 +9,7 @@
  **/
 
 
-import {configureStore} from "./configureStore"
+import configureStore from "./configureStore"
 import LightingController from './LightingController'
 
 const owaStateStore = configureStore();

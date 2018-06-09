@@ -446,4 +446,4 @@ class IdleModeAnimation extends ControllerWithStore {
 
 export default IdleModeAnimation;
 
-
+**/

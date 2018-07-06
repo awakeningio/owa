@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import {configureStore} from "./configureStore"
+import configureStore from "./configureStore"
 
 import OWAController from "./OWAController"
 

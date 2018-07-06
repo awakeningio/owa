@@ -16,4 +16,4 @@ new SerialInputController(owaStateStore);
 
 setInterval(function () {
   console.log("tick");
-}, 1000);
+}, 10000);

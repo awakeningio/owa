@@ -44,7 +44,9 @@ class SerialInputController extends ControllerWithStore {
 
     if (DEBUG_INPUT) {
       this.parser.on("data", (data) => {
-        console.log(`${new Date()} : ${data}`);
+        console.log(
+          `${new Date()} :\n${data}\n${this.buttonDataToLevelSegment(data)}`
+        );
       });
     } else {
       this.parser.on("data", (data) => this.handleIncomingData(data));
@@ -52,11 +54,15 @@ class SerialInputController extends ControllerWithStore {
 
   }
 
-  handleButtonMessage (data) {
+  buttonDataToLevelSegment (data) {
     var buttonId = data.slice(1) + "";
+    return BUTTON_ID_TO_LEVEL_SEGMENT[buttonId];
+  }
+
+  handleButtonMessage (data) {
     this.store.dispatch(
       buttonPressed(
-        ...BUTTON_ID_TO_LEVEL_SEGMENT[buttonId]
+        ...(this.buttonDataToLevelSegment(data))
       )
     );
   }

@@ -82,10 +82,6 @@ class SoundController extends ControllerWithStore {
     }
     if (state.soundReady == constants.OWA_READY_STATES.READY) {
       let scState = getSCState(state);
-      console.log("scState");
-      console.log(scState);
-      console.log("this.lastSCState");
-      console.log(this.lastSCState);
       if (this.lastSCState !== scState) {
         logger.debug('replica state changed.');
         this.lastSCState = scState;

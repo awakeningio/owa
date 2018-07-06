@@ -9,7 +9,7 @@
  **/
 
 
-import {configureStore} from "./configureStore"
+import configureStore from "./configureStore"
 import LightingController from './LightingController'
 import { SEGMENTID_TO_PIXEL_RANGE } from './constants'
 

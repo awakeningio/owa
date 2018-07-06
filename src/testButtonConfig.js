@@ -1,5 +1,5 @@
 /**
- *  @file       testLightingAnimation.js
+ *  @file       testButtonConfig.js
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,11 +8,12 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-
 import configureStore from "./configureStore"
-import LightingController from './LightingController'
+import SerialInputController from './SerialInputController';
 
 const owaStateStore = configureStore();
-const lightingController = new LightingController(owaStateStore);
+new SerialInputController(owaStateStore);
 
-lightingController.idleModeAnimation.start()
+setInterval(function () {
+  console.log("tick");
+}, 1000);

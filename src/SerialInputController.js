@@ -16,7 +16,7 @@ import { buttonPressed } from './actions'
 import { getEnvOrError } from './utils'
 import { BUTTON_ID_TO_LEVEL_SEGMENT } from './constants'
 
-const DEBUG_INPUT = process.env.DEBUG_INPUT || false;
+const DEBUG_INPUT = parseInt(process.env.DEBUG_INPUT, 10) || false;
 
 const INPUT_TYPES = {
   "BUTTON": "B"

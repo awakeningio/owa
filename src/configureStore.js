@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'development') {
     stateTransformer: (state) => {
       let toPrint = {};
       toPrint.sequencers = {
-        '6_0': state.sequencers['6_0'],
+        //'6_0': state.sequencers['6_0'],
         //'6_1': state.sequencers['6_1']
       };
       //toPrint.levels = state.levels;

@@ -35,7 +35,7 @@ class SCController {
   handleBooted () {
     // periodically log scsynth status
     var scsynthGetInfo = `
-		s.queryAllNodes();
+		//s.queryAllNodes();
 		//s.dumpOSC()
     (
       'numSynths': s.numSynths(),

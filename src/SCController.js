@@ -15,6 +15,9 @@ import { getEnvAsNumber } from './utils'
 
 const EXTERNAL_SC = getEnvAsNumber('EXTERNAL_SC');
 
+/**
+ *  Handles starting and stopping the SuperCollider process.
+ **/
 class SCController {
   quit() {
     return new Promise((resolve, reject) => {
@@ -28,6 +31,29 @@ class SCController {
         resolve();
       }
     });
+  }
+  handleBooted () {
+    // periodically log scsynth status
+    var scsynthGetInfo = `
+		s.queryAllNodes();
+		//s.dumpOSC()
+    (
+      'numSynths': s.numSynths(),
+      'numUGens': s.numUGens(),
+      'numGroups': s.numGroups(),
+      'peakCPU': s.peakCPU(),
+      'avgCPU': s.avgCPU()
+    );
+`;
+    if (process.env.NODE_ENV == 'development') {
+      setInterval(() => {
+        this.sclang.interpret(scsynthGetInfo).then((result) => {
+          logger.debug(
+            `${new Date()} : scsynth info\n${JSON.stringify(result, 4, ' ')}`
+          );
+        });
+      }, 5000);
+    }
   }
   boot() {
     logger.debug('SCController.boot');
@@ -64,8 +90,11 @@ s.plotTree();
 s.waitForBoot({
   OWAController.initInstance();
 });
-          `
-          return sclang.interpret(scBootScript).then(resolve);
+          `;
+          return sclang.interpret(scBootScript).then(() => {
+            this.handleBooted();
+            resolve();
+          });
         }).catch(reject);
       }
       

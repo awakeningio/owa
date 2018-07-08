@@ -34,12 +34,14 @@ if (process.env.NODE_ENV === 'development') {
    *  logging of state-store messages
    **/
   middleware.push(createLogger({
+    //stateTransformer: () => {
     stateTransformer: (state) => {
       let toPrint = {};
       toPrint.sequencers = {
         //'6_0': state.sequencers['6_0'],
         //'6_1': state.sequencers['6_1']
       };
+      toPrint.level4Ready = state.level4Ready;
       //toPrint.levels = state.levels;
       return JSON.stringify(toPrint, ' ', 4);
     },
@@ -58,8 +60,6 @@ export default function configureStore (additionalInitialState = {}) {
 
   // create levels
   let levelsById = {
-    //'level_10': create_level('level_10', 3),
-    //'level_8': create_level('level_8', 8),
     'level_6': create_simultaneous_level('level_6', 6),
     'level_4': create_sequential_level('level_4', 4),
     'level_2': create_simultaneous_level('level_2', 2)
@@ -105,30 +105,16 @@ export default function configureStore (additionalInitialState = {}) {
     degree: [8, 4, 4, 8, 4, 4],
     octave: 3
   };
-  sequencers['4_0'].numBeats = 12;
-  sequencers['4_0'].releaseTime = 1.2;
-  sequencers['4_0'].pbind = {
-    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 2
-  };
-  sequencers['4_1'].numBeats = 12;
-  sequencers['4_1'].releaseTime = 1.2;
-  sequencers['4_1'].pbind = {
-    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 3
-  };
-  sequencers['4_2'].numBeats = 12;
-  sequencers['4_2'].releaseTime = 1.2;
-  sequencers['4_2'].pbind = {
-    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 4
-  };
-  sequencers['4_3'].numBeats = 12;
-  sequencers['4_3'].releaseTime = 1.2;
-  sequencers['4_3'].pbind = {
-    degree: [8, 4, 4, 8, 4, 4, 8, 4, 4, 8, 4, 4],
-    octave: 5
-  };
+
+  ['4_0', '4_1', '4_2', '4_3'].forEach(function (seqId) {
+    sequencers[seqId].numBeats = 4 * 4;
+    sequencers[seqId].playQuant = 2 * 4;
+    sequencers[seqId].stopQuant = 2 * 4;
+  });
+  sequencers['4_0'].bufName = 'spinny-pluck_L4_chords-1';
+  sequencers['4_1'].bufName = 'spinny-pluck_L4_chords-2';
+  sequencers['4_2'].bufName = 'spinny-pluck_L4_chords-3';
+  sequencers['4_3'].bufName = 'spinny-pluck_L4_chords-4';
 
   sequencers['6_0'].numBeats = 2 * 4;
   sequencers['6_1'].numBeats = 2 * 4;

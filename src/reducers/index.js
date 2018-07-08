@@ -9,6 +9,8 @@
  **/
 import { combineReducers } from 'redux';
 
+import { getLevel6Sequencers } from '../selectors';
+
 import soundReady from './soundReady';
 import sequencers from './sequencers';
 import levels from './levels';
@@ -16,6 +18,7 @@ import sessionPhase from './sessionPhase';
 import segments from './segments';
 import fadecandyConnection from './fadecandyConnection';
 import tempo from './tempo';
+import level4Ready from './level4Ready';
 
 var combined = combineReducers({
   tempo,
@@ -29,7 +32,8 @@ var prevSessionPhase;
 export default function (state, action) {
   let newState,
     newLevels,
-    newSequencers;
+    newSequencers,
+    newLevel4Ready;
   prevSessionPhase = state.sessionPhase;
   newState = combined(state, action);
   if (state !== newState) {
@@ -39,9 +43,25 @@ export default function (state, action) {
   if (newLevels !== state.levels) {
     state = Object.assign({}, state, {levels: newLevels});
   }
-  newSequencers = sequencers(state.sequencers, action, state.segments, state.levels, state.sessionPhase, prevSessionPhase);
+  newSequencers = sequencers(
+    state.sequencers,
+    action,
+    state.segments,
+    state.levels,
+    state.sessionPhase,
+    prevSessionPhase
+  );
   if (newSequencers !== state.sequencers) {
     state = Object.assign({}, state, {sequencers: newSequencers});
+  }
+  newLevel4Ready = level4Ready(
+    state.level4Ready,
+    action,
+    getLevel6Sequencers(state),
+    state.sessionPhase
+  );
+  if (newLevel4Ready !== state.level4Ready) {
+    state = Object.assign({}, state, {level4Ready: newLevel4Ready});
   }
   return state;
 }

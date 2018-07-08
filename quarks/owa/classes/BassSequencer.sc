@@ -13,7 +13,7 @@ BassSequencer : AwakenedSequencer {
     var pat,
       notes;
     
-    notes =["C#0", "D0"].notemidi();
+    notes = ["C#0", "D0"].notemidi();
 
     pat = Pbind(
       \amp, -28.dbamp(),

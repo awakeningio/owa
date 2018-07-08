@@ -98,6 +98,7 @@ namespace quarks.owa {
     StateStore linkStateStore
     SessionTimingController sessionTimingController
     ReduxAbletonTempoClockController clockController
+    quarks.awakening_sequencers.AwakenedSequencerFactory seqFactory
   }
   OWAController *-- quarks.supercollider_redux.StateStore
   OWAController *-- quarks.supercollider_redux.ReduxAbletonTempoClockController
@@ -115,5 +116,21 @@ namespace quarks.owa {
   SessionTimingController *-- quarks.supercollider_redux.StateStore
 }
 
+namespace quarks.awakening_sequencers {
+  class AwakenedSequencer {
+    currentState
+    quarks.supercollider_redux.ReduxEventStreamPlayer streamPlayer
+  }
+}
+
+namespace quarks.supercollider_redux {
+  class ReduxEventStreamPlayer {
+    StateStore store;
+  }
+
+  class StateStore {
+    
+  }
+}
 
 @enduml

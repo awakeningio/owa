@@ -11,7 +11,7 @@ import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants';
 
 import * as actionTypes from '../actionTypes';
 
-export function action_starts_transition (action, sessionPhase, level4Ready) {
+function action_starts_transition (action, sessionPhase, level4Ready) {
 
   if (action.type === actionTypes.BUTTON_PRESSED) {
     if (
@@ -20,8 +20,7 @@ export function action_starts_transition (action, sessionPhase, level4Ready) {
     ) {
       return true;
     } else if (
-      sessionPhase === SESSION_PHASES.PLAYING_6
-      && level4Ready === true
+      level4Ready === true
       && action.payload.levelId === 'level_4'
     ) {
       return true;

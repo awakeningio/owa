@@ -44,10 +44,13 @@ SessionTimingController {
   handle_state_change {
     var state = store.getState();
     var autoTransitionSessionPhases = OWAConstants.autoTransitionSessionPhases;
-    var nextSessionPhases = OWAConstants.nextSessionPhases;
-    var nextPhase;
 
     //"SessionTimingController.handle_state_change".postln();
+
+    //"state.sessionPhase:".postln;
+    //state.sessionPhase.postln;
+    //"lastState.sessionPhase:".postln;
+    //lastState.sessionPhase.postln;
 
     if (state.sessionPhase != lastState.sessionPhase, {
       lastState.sessionPhase = state.sessionPhase;
@@ -56,41 +59,37 @@ SessionTimingController {
       if (
         autoTransitionSessionPhases.includes(
           state.sessionPhase.asSymbol()
-      ), {
-        nextPhase = nextSessionPhases[state.sessionPhase.asSymbol()];
-        this.schedule_transition_to_phase(nextPhase);
+        ),
+      {
+        this.schedule_transition_to_next_phase();
       });
 
     });
   }
 
-  schedule_transition_to_phase {
-    arg phase;
+  schedule_transition_to_next_phase {
     var phaseDuration,
+      nextPhase,
       state;
 
     state = store.getState();
-    phaseDuration = OWAConstants.transPhaseDurations[
+    nextPhase = OWAConstants.nextSessionPhases[state.sessionPhase.asSymbol()];
+    phaseDuration = state.sessionPhaseDurations[
       state.sessionPhase.asSymbol()
     ];
 
-    "state.sessionPhase:".postln;
-    state.sessionPhase.postln;
-    "OWAConstants.transPhaseDurations:".postln;
-    OWAConstants.transPhaseDurations.postln;
-
     (
       "[SessionTimingController]: Scheduling transition to phase "
-      ++ phase ++ " after duration " ++ phaseDuration
+      ++ nextPhase ++ " after duration " ++ phaseDuration
     ).postln();
 
     clockController.clock.play({
       store.dispatch((
         type: 'SESSION_PHASE_ADVANCED',
         payload: (
-          phase: phase
+          phase: nextPhase
         )
       ));
-    }, [phaseDuration, 0]);
+    }, [4, phaseDuration]);
   }
 }

@@ -26,10 +26,18 @@ OWAClockController {
     lastTempo = tempo;
 
     clock = TempoClock.new(tempo: tempo / 60.0);
-    
+
     store.subscribe({
       this.handle_state_change();
     });
+
+    this.print_bar();
+  }
+  print_bar {
+    post(clock.beats);
+    clock.play({
+      this.print_bar();
+    }, [4, 5]);
   }
   handle_state_change {
 

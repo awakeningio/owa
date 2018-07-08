@@ -11,8 +11,7 @@
 import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
 import { create_segmentId, get_playing_levelId_for_sessionPhase } from '../models'
-import { action_starts_transition } from './sessionPhase'
-import { TRANS_PHASE_DURATIONS, LEVEL_PLAYBACK_TYPE } from '../constants'
+import { LEVEL_PLAYBACK_TYPE, SESSION_PHASES } from '../constants'
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 //function create_initial_state () {
@@ -78,7 +77,8 @@ export default function sequencers (
   segments,
   levels,
   sessionPhase,
-  prevSessionPhase
+  prevSessionPhase,
+  sessionPhaseDurations
 ) {
   state = awakeningSequencers.reducer(state, action);
 
@@ -92,15 +92,23 @@ export default function sequencers (
       let sequencerId = segment.sequencerId;
 
       // if this was the press to transition a scene
-      if (action_starts_transition(action, prevSessionPhase)) {
+      if (
+        sessionPhase !== prevSessionPhase
+        && sessionPhase ===  SESSION_PHASES.QUEUE_TRANS_6
+      ) {
         // button was pressed for segment with this sequencer
         state = Object.assign({}, state);
+        let playQuant = [
+          4,
+          sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_6]
+          + sessionPhaseDurations[SESSION_PHASES.TRANS_6]
+        ];
         state[sequencerId] = Object.assign(
           {},
           state[sequencerId],
           {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: [TRANS_PHASE_DURATIONS[sessionPhase], 1]
+            playQuant
           }
         );
 

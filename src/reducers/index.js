@@ -19,12 +19,14 @@ import segments from './segments';
 import fadecandyConnection from './fadecandyConnection';
 import tempo from './tempo';
 import level4Ready from './level4Ready';
+import sessionPhaseDurations from './sessionPhaseDurations';
 
 var combined = combineReducers({
   tempo,
   fadecandyConnection,
   soundReady,
-  segments
+  segments,
+  sessionPhaseDurations
 });
 
 var prevSessionPhase;
@@ -53,7 +55,8 @@ export default function (state, action) {
     state.segments,
     state.levels,
     state.sessionPhase,
-    prevSessionPhase
+    prevSessionPhase,
+    state.sessionPhaseDurations
   );
   if (newSequencers !== state.sequencers) {
     state = Object.assign({}, state, {sequencers: newSequencers});

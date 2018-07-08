@@ -16,6 +16,7 @@ import awakeningSequencers from 'awakening-sequencers'
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
 const getSequencers = state => state.sequencers;
+const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
@@ -43,10 +44,12 @@ export const getLevel4Sequencers = createSelector(
 export const getSCState = createDeepEqualSelector(
   getTempo,
   getSessionPhase,
+  getSessionPhaseDurations,
   awakeningSequencers.selectors.getSCSequencers,
-  (tempo, sessionPhase, sequencers) => ({
+  (tempo, sessionPhase, sessionPhaseDurations, sequencers) => ({
     tempo,
     sessionPhase,
+    sessionPhaseDurations,
     sequencers
   })
 );

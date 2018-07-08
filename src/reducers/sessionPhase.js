@@ -33,14 +33,14 @@ export function action_starts_transition (action, sessionPhase, level4Ready) {
 function get_initial_state () {
   return SESSION_PHASES.IDLE;
 }
-export default function sessionPhase (state = get_initial_state(), action) {
+export default function sessionPhase (state = get_initial_state(), action, level4Ready) {
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       return action.payload.phase;
 
     case actionTypes.BUTTON_PRESSED:
       if (
-        action_starts_transition(action, state)
+        action_starts_transition(action, state, level4Ready)
       ) {
         return NEXT_SESSION_PHASES[state];
       }

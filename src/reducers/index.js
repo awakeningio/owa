@@ -24,7 +24,6 @@ var combined = combineReducers({
   tempo,
   fadecandyConnection,
   soundReady,
-  sessionPhase,
   segments
 });
 
@@ -33,11 +32,16 @@ export default function (state, action) {
   let newState,
     newLevels,
     newSequencers,
-    newLevel4Ready;
+    newLevel4Ready,
+    newSessionPhase;
   prevSessionPhase = state.sessionPhase;
   newState = combined(state, action);
   if (state !== newState) {
     state = Object.assign({}, state, newState);
+  }
+  newSessionPhase = sessionPhase(state.sessionPhase, action, state.level4Ready);
+  if (newSessionPhase !== state.sessionPhase) {
+    state = Object.assign({}, state, {sessionPhase: newSessionPhase});
   }
   newLevels = levels(state.levels, action, state.segments);
   if (newLevels !== state.levels) {

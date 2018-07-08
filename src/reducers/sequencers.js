@@ -103,6 +103,8 @@ export default function sequencers (
             playQuant: [TRANS_PHASE_DURATIONS[sessionPhase], 1]
           }
         );
+
+        // TODO: stop and requeue previous level sequencers
       } else if (action_starts_playback(action, sessionPhase)) {
         state = Object.assign({}, state);
         let level = levels.byId[action.payload.levelId];

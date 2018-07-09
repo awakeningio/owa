@@ -5,18 +5,28 @@ namespace nodejs.owa {
   class OWAController {
     Top level entity for controlling everything.
     Entry point, starts all sub-controllers.
-    \n
-    Main state store for OWA app
-    redux.Store owaStore
-    \n
-    A separate redux state store for the Ableton Link state.  It changes
-    very frequently and thus does not need to be in the same store.
-    redux.Store linkStore
 
-    inputController
+    Store store
     soundController
+    actionListener
+    scController
+    SerialInputController serialInputController
   }
   OWAController *-- redux.Store
+  OWAController *-- SoundController
+  OWAController *-- LightingController
+  OWAController *-- SCController
+  OWAController *-- SerialInputController
+
+  class SCController {
+    Handles starting and stopping the SuperCollider process.
+  }
+  SCController *-- redux.Store
+
+  class SerialInputController {
+    Takes button inputs from Arduino
+  }
+  SerialInputController *-- redux.Store
 
   class GUIInputController {
     
@@ -47,14 +57,14 @@ namespace nodejs.owa {
   }
   OSCActionListener *-- redux.Store
 
-  class AbletonLinkController {
-    Creates an Ableton Link client and forwards the state to the
-    store.
+  /'class AbletonLinkController {'/
+    /'Creates an Ableton Link client and forwards the state to the'/
+    /'store.'/
 
-    linkStore
-  }
-  OWAController *-- AbletonLinkController
-  AbletonLinkController *-- redux.Store
+    /'linkStore'/
+  /'}'/
+  /'OWAController *-- AbletonLinkController'/
+  /'AbletonLinkController *-- redux.Store'/
 
   class SoundController {
     Forwards state changes to SuperCollider and forwards dispatches from SC
@@ -64,15 +74,43 @@ namespace nodejs.owa {
     store
     linkStore
   }
-  OWAController *-- SoundController
   SoundController *-- OSCActionListener
   SoundController *-- redux.Store
   SoundController "owa.api" -down-> quarks.owa.OWAController
 
   class LightingController {
     Top level controller for lighting.
+
+    pixels
+    segmentPixels
+    levelPixels
+    controllersToTick
+    fcController
   }
-  OWAController *-- LightingController
+  LightingController *-- FadecandyController
+  LightingController *-- SegmentLightingController
+  LightingController *-- redux.Store
+
+  class FadecandyController {
+    Handles Fadecandy connection
+  }
+  FadecandyController *-- redux.Store
+
+  class SegmentLightingController {
+    Manages lighting for a single segment (ring) on the OWA sculpture
+  }
+  SegmentLightingController *-- redux.Store
+  SegmentLightingController *-- SegmentQueuedAnimation
+  SegmentLightingController *-- SegmentPlayingAnimation
+
+  class SegmentQueuedAnimation {
+    Animation for a single segment when it is queued.
+  }
+
+  class SegmentPlayingAnimation {
+    Animation / visualization for a single segment when it is playing.
+  }
+
 
 
 
@@ -97,36 +135,57 @@ namespace quarks.owa {
     StateStore owaStateStore
     StateStore linkStateStore
     SessionTimingController sessionTimingController
-    ReduxAbletonTempoClockController clockController
-    quarks.awakening_sequencers.AwakenedSequencerFactory seqFactory
+    OWAClockController clockController
+    AwakenedSequencerFactory seqFactory
+    BufferManager bufManager
   }
   OWAController *-- quarks.supercollider_redux.StateStore
-  OWAController *-- quarks.supercollider_redux.ReduxAbletonTempoClockController
+  OWAController *-- OWAClockController
+  OWAController *-- quarks.awakening_sequencers.AwakenedSequencerFactory
+  OWAController *-- quarks.cs_supercollider_lib.BufferManager
   /' 'TOOD: get rid of owa.api '/
   owa.api ()- OWAController
 
   class SessionTimingController {
-    Handles scheduling the timing to transition phases (when?, can this be in reducers too ?)
+    Handles scheduling auto transition between session phases
     
-    ReduxAbletonTempoClockController clockController
+    TempoClock clock
     StateStore linkStore
   }
   OWAController *-- SessionTimingController
-  SessionTimingController *-- quarks.supercollider_redux.ReduxAbletonTempoClockController
   SessionTimingController *-- quarks.supercollider_redux.StateStore
+
+  class OWAClockController {
+    StateStore store
+    TempoClock clock
+  }
+  OWAClockController *-- quarks.supercollider_redux.StateStore
+}
+
+namespace quarks.cs_supercollider_lib {
+  class BufferManager
 }
 
 namespace quarks.awakening_sequencers {
   class AwakenedSequencer {
     currentState
-    quarks.supercollider_redux.ReduxEventStreamPlayer streamPlayer
+    clockController
+    ReduxEventStreamPlayer streamPlayer
   }
+  AwakenedSequencer *-- quarks.supercollider_redux.ReduxEventStreamPlayer
+
+
+  class AwakenedSequencerFactory {
+    AwakenedSequencer sequencers[]
+  }
+  AwakenedSequencerFactory *-- AwakenedSequencer
 }
 
 namespace quarks.supercollider_redux {
   class ReduxEventStreamPlayer {
     StateStore store;
   }
+  ReduxEventStreamPlayer *-- StateStore
 
   class StateStore {
     

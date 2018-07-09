@@ -39,6 +39,7 @@ if (process.env.NODE_ENV === 'development') {
       let toPrint = {};
       toPrint.sequencers = {
         '6_0': state.sequencers['6_0'],
+        trans: state.sequencers.trans
         //'6_1': state.sequencers['6_1']
       };
       toPrint.level4Ready = state.level4Ready;

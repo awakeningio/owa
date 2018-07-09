@@ -31,7 +31,7 @@ OWAClockController {
       this.handle_state_change();
     });
 
-    this.print_bar();
+    //this.print_bar();
   }
   print_bar {
     post(clock.beats);

@@ -111,6 +111,12 @@ OWAController {
       [
         "spinny-pluck_L4_chords-4 [2018-07-07 122629].wav",
         'spinny-pluck_L4_chords-4'
+      ], [
+        "eerie_exit_15bars [2018-07-08 173939].wav",
+        'spinny-pluck_idle-L6'
+      ], [
+        "spinny-pluck_L6-L4.wav",
+        'spinny-pluck_L6-L4'
       ]
     ], ({
       // when buffers are done loading

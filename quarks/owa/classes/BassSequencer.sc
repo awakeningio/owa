@@ -16,7 +16,7 @@ BassSequencer : AwakenedSequencer {
     notes = ["C#0", "D0"].notemidi();
 
     pat = Pbind(
-      \amp, -28.dbamp(),
+      \amp, -32.dbamp(),
       \type, \instr,
       \instr, "cs.fm.WideBass",
       \note, Pseq(notes, inf),

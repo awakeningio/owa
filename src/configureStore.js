@@ -10,7 +10,7 @@
 
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { createLogger } from 'redux-logger'
+import _ from 'lodash';
 
 import {
   create_simultaneous_level,
@@ -19,7 +19,7 @@ import {
   create_segmentId
 } from './models'
 
-//import logger from './logging'
+import logger from './logging'
 
 import abletonlinkRedux from 'abletonlink-redux'
 import rootReducer from './reducers'
@@ -33,27 +33,29 @@ if (process.env.NODE_ENV === 'development') {
   /**
    *  logging of state-store messages
    **/
-  middleware.push(createLogger({
-    //stateTransformer: () => {
-    stateTransformer: (state) => {
-      let toPrint = {};
-      toPrint.sequencers = {
-        '6_0': state.sequencers['6_0'],
-        trans: state.sequencers.trans
-        //'6_1': state.sequencers['6_1']
-      };
-      toPrint.level4Ready = state.level4Ready;
-      toPrint.sessionPhase = state.sessionPhase;
-      toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
-      //toPrint.levels = state.levels;
-      return JSON.stringify(toPrint, ' ', 4);
-    },
-    //logger: {
-      //log: (msg) => {
-        //logger.info(msg);
-      //}
-    //}
-  }));
+  const stateTransformer = function (state) {
+    let toPrint = {};
+    toPrint.sequencers = {};
+    Object.keys(state.sequencers).forEach(function (seqId) {
+      toPrint.sequencers[seqId] = _.pick(state.sequencers[seqId], [
+        'type',
+        'playingState',
+        'playQuant',
+        'stopQuant'
+      ])
+    });
+    toPrint.level4Ready = state.level4Ready;
+    toPrint.sessionPhase = state.sessionPhase;
+    toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
+    return toPrint;
+  };
+  const storeLogger = store => next => action => {
+    logger.info(JSON.stringify(action));
+    let result = next(action);
+    logger.info(JSON.stringify(stateTransformer(store.getState()), ' ', 4));
+    return result;
+  };
+  middleware.push(storeLogger);
 }
 
 export default function configureStore (additionalInitialState = {}) {

@@ -162,6 +162,7 @@ export default function sequencers (
     sessionPhaseDurations
   );
 
+  // trans sequencer has its own reducer
   let newTrans = trans(
     state.trans,
     action,
@@ -174,6 +175,29 @@ export default function sequencers (
   }
 
   switch (action.type) {
+    case actionTypes.SESSION_PHASE_ADVANCED:
+      // session phase automatically advanced
+      switch (action.payload.phase) {
+        // queue all sequencers at end of transition
+        case SESSION_PHASES.TRANS_4:
+            let playQuant = [
+              4,
+              sessionPhaseDurations[SESSION_PHASES.TRANS_4]
+            ];
+            state = Object.assign({}, state);
+            l6SequencerIds.forEach(function (sequencerId) {
+              let seq = state[sequencerId];
+              state[sequencerId] = Object.assign({}, seq, {
+                playingState: PLAYING_STATES.QUEUED,
+                playQuant: playQuant
+              });
+            });
+          break;
+        
+        default:
+          break;
+      }
+      break;
     case actionTypes.BUTTON_PRESSED:
       let segmentId = create_segmentId(
         action.payload.levelId,
@@ -230,28 +254,6 @@ export default function sequencers (
                   stopQuant: stopQuant
                 });
               }
-            });
-            break;
-          
-          default:
-            break;
-        }
-
-        // queue all sequencers at end of transition
-        switch (sessionPhase) {
-          case SESSION_PHASES.TRANS_4:
-
-            let playQuant = [
-              4,
-              sessionPhaseDurations[SESSION_PHASES.TRANS_4]
-            ];
-            state = Object.assign({}, state);
-            l6SequencerIds.forEach(function (sequencerId) {
-              let seq = state[sequencerId];
-              state[sequencerId] = Object.assign({}, seq, {
-                playingState: PLAYING_STATES.QUEUED,
-                playQuant: playQuant
-              });
             });
             break;
           

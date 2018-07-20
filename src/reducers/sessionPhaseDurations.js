@@ -21,6 +21,6 @@ const defaultState = {
   [SESSION_PHASES.TRANS_ADVICE]: 16
 };
 
-export default function sessionPhaseDurations (state = defaultState, action) {
+export default function sessionPhaseDurations (state = defaultState) {
   return state;
 }

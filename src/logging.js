@@ -10,16 +10,28 @@
 
 import winston from 'winston'
 
-var logger = winston.createLogger({
-  level: 'debug',
-  format: winston.format.simple()
-});
+var logger;
 
 if (process.env.NODE_ENV === 'development') {
-  logger.add(new winston.transports.Console({
-    colorize: 'all',
+  logger = winston.createLogger({
+    level: 'debug',
     format: winston.format.simple()
+  });
+  logger.add(new winston.transports.File({
+    level: 'info',
+    //format: winston.format.simple(),
+    filename: 'combined.log'
   }));
+  //logger.add(new winston.transports.Console({
+    //colorize: 'all',
+    //format: winston.format.simple()
+  //}));
+} else {
+  logger = winston.createLogger({
+    level: 'error',
+    format: winston.format.simple()
+  });
+
 }
 
 export default logger;

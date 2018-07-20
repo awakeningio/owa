@@ -48,7 +48,7 @@
     "@serialport/parser-readline": "^1.0.5",
     "@tweenjs/tween.js": "^17.2.0",
     "abletonlink-redux": "0.0.6",
-    "awakening-sequencers": "^0.8.4",
+    "awakening-sequencers": "^0.8.5",
     "chai": "^4.1.2",
     "color": "^3.0.0",
     "lodash": "^4.17.10",
@@ -56,12 +56,11 @@
     "opc": "^1.1.3",
     "osc": "^2.2.0",
     "redux": "^3.7.2",
-    "redux-logger": "^3.0.6",
     "reselect": "^3.0.1",
     "serialport": "^6.2.0",
-    "supercollider-redux": "0.0.92",
+    "supercollider-redux": "0.0.93",
     "supercolliderjs": "^0.14.2",
-    "winston": "^3.0.0-rc5"
+    "winston": "^3.0.0"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",

@@ -120,8 +120,8 @@ function trans (
             return Object.assign({}, spinnyPluckIdleTransitionSequencer, {
               playingState: PLAYING_STATES.QUEUED,
               playQuant: [
-                sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_6],
-                1
+                4,
+                1 + sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_6]
               ]
             });
 
@@ -129,8 +129,8 @@ function trans (
             return Object.assign({}, spinnyPluckL4TransitionSequencer, {
               playingState: PLAYING_STATES.QUEUED,
               playQuant: [
-                sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4],
-                1
+                4,
+                1 + sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4]
               ]
             });
           
@@ -182,7 +182,7 @@ export default function sequencers (
         case SESSION_PHASES.TRANS_4:
             let playQuant = [
               4,
-              sessionPhaseDurations[SESSION_PHASES.TRANS_4]
+              1 + sessionPhaseDurations[SESSION_PHASES.TRANS_4]
             ];
             state = Object.assign({}, state);
             l6SequencerIds.forEach(function (sequencerId) {
@@ -218,7 +218,7 @@ export default function sequencers (
             state = Object.assign({}, state);
             let playQuant = [
               4,
-              sessionPhaseDurations[sessionPhase]
+              1 + sessionPhaseDurations[sessionPhase]
               + sessionPhaseDurations[
                 NEXT_SESSION_PHASES[sessionPhase]
               ],
@@ -241,8 +241,8 @@ export default function sequencers (
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_4:
             let stopQuant = [
-              sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4],
-              0
+              4,
+              sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4]
             ];
             state = Object.assign({}, state);
             l6SequencerIds.forEach(function (sequencerId) {
@@ -304,7 +304,7 @@ export default function sequencers (
             state[sequencerId],
             {
               playingState: PLAYING_STATES.QUEUED,
-              playQuant: [currentSequencer.numBeats, 1]
+              playQuant: [4, currentSequencer.numBeats + 1]
             }
           );
         } else if (level.playbackType === LEVEL_PLAYBACK_TYPE.SIMULTANEOUS) {
@@ -317,8 +317,8 @@ export default function sequencers (
               {
                 playingState: PLAYING_STATES.STOP_QUEUED,
                 stopQuant: [
-                  state[sequencerId].numBeats,
-                  0
+                  4,
+                  1 + state[sequencerId].numBeats
                 ]
               }
             );
@@ -328,7 +328,7 @@ export default function sequencers (
               state[sequencerId],
               {
                 playingState: PLAYING_STATES.QUEUED,
-                playQuant: [state[sequencerId].numBeats, 1]
+                playQuant: [4, 1]
               }
             );
           }
@@ -366,7 +366,7 @@ export default function sequencers (
               playingState: (
                 nextSequencer.playingState === PLAYING_STATES.PLAYING
               ) ? PLAYING_STATES.REQUEUED : PLAYING_STATES.QUEUED,
-              playQuant: [activeSequencer.numBeats, 1]
+              playQuant: [4, activeSequencer.numBeats + 1]
             }
           );
         }

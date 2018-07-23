@@ -9,3 +9,5 @@ ansible/roles/*.*
 *.retry
 owa_env
 upload_arduino.sh
+*~.skp
+combined.log

@@ -11,14 +11,18 @@
 Instr("owa.HiHatSampler", {
   arg gate = 1,
     bufnum,
-    sustain = 0;
+    sustainTime = 0;
 
   var out,
     env;
 
-  if (sustain != 0, {
-    gate = Trig.kr(gate, Tempo.beats2secs(sustain)); 
-  });
+  //if (sustainTime != 0, {
+  gate = Trig.kr(gate, sustainTime);
+  //});
+
+  //sustainTime.poll();
+
+  //midinote.poll();
 
   env = Env.adsr(
     attackTime: 0.05,
@@ -26,6 +30,8 @@ Instr("owa.HiHatSampler", {
     sustainLevel: 1.0,
     releaseTime: 0.2
   );
+
+
   
   out = EnvGen.ar(env, gate: gate, doneAction: 2) * PlayBuf.ar(
     2,
@@ -40,5 +46,5 @@ Instr("owa.HiHatSampler", {
 }, [
   \gate,
   \buffer,
-  \sustain
+  \nil
 ]);

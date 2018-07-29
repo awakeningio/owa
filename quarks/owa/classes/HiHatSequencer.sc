@@ -10,17 +10,35 @@
 
 HiHatSequencer : AwakenedSequencer {
   var pat,
-    bufs;
+    bufs,
+    patch,
+    synthdefs;
 
-  //initPatch {
+  initPatch {
+    var patch, openPatch, restPatch;
     
-    //patch = Patch("owa.HiHatSampler", (
-    //));
-    //patch.prepareForPlay();
-    //patchSynth = patch.asSynthDef().add();
-    //^patch;
+    patch = Patch("owa.HiHatSampler", (
+      bufnum: bufManager.bufs[\hhclosed_96].bufnum,
+      gate: 1
+    ));
 
-  //}
+    openPatch = Patch("owa.HiHatSampler", (
+      bufnum: bufManager.bufs[\hhopen_83].bufnum,
+      gate: 1
+    ));
+
+    restPatch = Patch("owa.HiHatSampler", (
+      bufnum: -1,
+      gate: 1
+    ));
+
+    synthdefs = (
+      22: patch.asSynthDef().add(),
+      25: openPatch.asSynthDef().add(),
+      rest: restPatch.asSynthDef().add()
+    );
+
+  }
   initStream {
     bufs = (
       22: bufManager.bufs[\hhclosed_96].bufnum,
@@ -28,24 +46,35 @@ HiHatSequencer : AwakenedSequencer {
       rest: -1
     );
     pat = Pbind(
-      \type, \instr,
-      \instr, "owa.HiHatSampler",
+      //\type, \instr,
+      //\instr, "owa.HiHatSampler",
       [\midinote, \dur], Pseq(
         bufManager.midiSequences['spinny-pluck_L6_hats'],
         inf
       ),
-      \legato, Pfunc({
+      \instrument, Pfunc({
         arg event;
-        if (event[\midinote] === 25, {
-          0.75;
-        }, {
-          1.0;
-        });
+
+        synthdefs[event[\midinote]].name;
       }),
-      \bufnum, Pfunc({
+      \sustainTime, Pfunc({
         arg event;
-        bufs[event[\midinote]];
-      })
+
+        (event[\dur] / clock.tempo);
+      }),
+      //\legato, Pfunc({
+        //arg event;
+        //if (event[\midinote] === 25, {
+          //0.75;
+        //}, {
+          //1.0;
+        //});
+      //}),
+      \sendGate, false
+      //\bufnum, Pfunc({
+        //arg event;
+        //bufs[event[\midinote]];
+      //})
     );
     ^pat.asStream();
   }

@@ -9,11 +9,17 @@
  **/
 
 LeadPopSequencer : AwakenedSequencer {
+  var patch,
+    synthdef;
   initStream {
     var pat;
+
+    patch = Patch("cs.percussion.Impulsive");
+    synthdef = patch.asSynthDef().add();
     pat = Pbind(
-      \type, \instr,
-      \instr, "cs.percussion.Impulsive",
+      //\type, \instr,
+      //\instr, "cs.percussion.Impulsive",
+      \instrument, synthdef,
       [\midinote, \dur], Pseq(
         bufManager.midiSequences['spinny-pluck_L6_lead'],
         inf

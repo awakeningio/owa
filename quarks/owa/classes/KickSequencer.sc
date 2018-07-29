@@ -10,20 +10,30 @@
 
 KickSequencer : AwakenedSequencer {
   initStream {
-    var note = "C1".notemidi();
+    var note = "C1".notemidi(),
+      patch,
+      synthdef;
+
+    patch = Patch("cs.sfx.PlayBuf", (
+      buf: bufManager.bufs[\kick_01],
+      convertToStereo: 1,
+      attackTime: 0.0,
+      releaseTime: 0.0,
+      amp: 3.0.dbamp(),
+      gate: 1
+    ));
+    synthdef = patch.asSynthDef().add();
 
     ^Pbind(
-      \type, \instr,
-      \instr, "cs.sfx.PlayBuf",
-      \buf, bufManager.bufs[\kick_01],
-      \convertToStereo, 1,
-      \attackTime, 0.0,
-      \releaseTime, 0.0,
+      //\type, \instr,
+      //\instr, "cs.sfx.PlayBuf",
+      //\buf, bufManager.bufs[\kick_01],
+      //\convertToStereo, 1,
+      \instrument, synthdef.name,
       \midinote, Pseq([
         note, \rest, \rest, note, note, \rest, \rest, note
       ], inf),
-      \dur, Pseq([1], inf),
-      \amp, 3.0.dbamp()
+      \dur, Pseq([1], inf)
     ).asStream();
   }
 }

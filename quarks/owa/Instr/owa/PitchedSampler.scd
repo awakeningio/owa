@@ -14,21 +14,15 @@ Instr("owa.PitchedSampler", {
     originalFreq,
     amp = 1.0,
     bufnum,
-    // defaults below with specs
-    sustain,
-    releaseTime,
-    attackTime,
-    reversed,
-    startTime;
+    releaseTime = 0.0,
+    attackTime = 0.0,
+    reversed = 0,
+    startTime = 0.0;
 
   var out,
     samplePlayer,
     reverseMult,
     env;
-
-  if (sustain != 0, {
-    gate = Trig.kr(gate, Tempo.beats2secs(sustain)); 
-  });
 
   env = Env.adsr(
     attackTime: attackTime,
@@ -64,7 +58,6 @@ Instr("owa.PitchedSampler", {
   \freq,
   \amp,
   \buffer,
-  \sustain,
   // releaseTime
   ObjectSpec(0.2),
   // attackTime

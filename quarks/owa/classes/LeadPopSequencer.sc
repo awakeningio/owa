@@ -19,7 +19,7 @@ LeadPopSequencer : AwakenedSequencer {
     pat = Pbind(
       //\type, \instr,
       //\instr, "cs.percussion.Impulsive",
-      \instrument, synthdef,
+      \instrument, synthdef.name,
       [\midinote, \dur], Pseq(
         bufManager.midiSequences['spinny-pluck_L6_lead'],
         inf

@@ -41,7 +41,9 @@ if (process.env.NODE_ENV === 'development') {
         'type',
         'playingState',
         'playQuant',
-        'stopQuant'
+        'stopQuant',
+        'event',
+        'bufSequence'
       ])
     });
     toPrint.level4Ready = state.level4Ready;
@@ -121,7 +123,9 @@ export default function configureStore (additionalInitialState = {}) {
     'spinny-pluck_L4_chords-3',
     'spinny-pluck_L4_chords-4',
   ];
-  sequencers.level_4.bufSequence = [];
+  sequencers.level_4.bufSequence = [
+    'spinny-pluck_L4_chords-1'
+  ];
 
   //['4_0', '4_1', '4_2', '4_3'].forEach(function (seqId) {
     //let numBeats = 8;

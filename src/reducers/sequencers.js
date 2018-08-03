@@ -11,7 +11,7 @@
 import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
 import { create_segmentId, get_playing_levelId_for_sessionPhase } from '../models'
-import { LEVEL_PLAYBACK_TYPE, SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants'
+import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants'
 
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -182,12 +182,33 @@ function l6Sequencer (state, action) {
 function l4Sequencer (state, action) {
   switch (action.type) {
     case actionTypes.BUTTON_PRESSED:
+      //let segmentId = create_segmentId(
+        //action.payload.levelId,
+        //action.payload.segmentIndex
+      //);
+      //let segment = segments.byId[segmentId];
+      let bufForButton = state.bufNames[action.payload.segmentIndex];
       if (state.playingState === PLAYING_STATES.STOPPED) {
+        // this is the first time
         return Object.assign({}, state, {
-          playingState: PLAYING_STATES.QUEUED
+          playingState: PLAYING_STATES.QUEUED,
+          bufSequence: [bufForButton]
         });
+      } else {
+        if (state.bufSequence.indexOf(bufForButton) > -1) {
+          return state;
+        } else {
+          let currentBufIndex = state.bufSequence.indexOf(state.event.bufName);
+          let newState = Object.assign({}, state);
+          newState.bufSequence = newState.bufSequence.slice();
+          newState.bufSequence.splice(
+            1+currentBufIndex,
+            0,
+            bufForButton
+          );
+          return newState;
+        }
       }
-      return state;
     default:
       return state;
   }
@@ -204,10 +225,7 @@ export default function sequencers (
 ) {
   state = awakeningSequencers.reducer(
     state,
-    action,
-    sessionPhase,
-    prevSessionPhase,
-    sessionPhaseDurations
+    action
   );
 
   // trans sequencer has its own reducer
@@ -315,6 +333,7 @@ export default function sequencers (
         let seq;
         //state = Object.assign({}, state);
         //let level = levels.byId[action.payload.levelId];
+        //
 
         switch (action.payload.levelId) {
           case 'level_6':
@@ -331,7 +350,7 @@ export default function sequencers (
 
         if (seq !== state[sequencerId]) {
           state = Object.assign({}, state, {
-            sequencerId: seq
+            [sequencerId]: seq
           });
         }
 
@@ -391,37 +410,37 @@ export default function sequencers (
 
     case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
       // a sequencer just started playing
-      state = Object.assign({}, state);
-      let activeSequencer = state[action.payload.sequencerId];
+      //state = Object.assign({}, state);
+      //let activeSequencer = state[action.payload.sequencerId];
 
       // get currently active level
-      let activeLevelId = get_playing_levelId_for_sessionPhase(sessionPhase);
-      if (activeLevelId) {
-        let activeLevel = levels.byId[activeLevelId];
+      //let activeLevelId = get_playing_levelId_for_sessionPhase(sessionPhase);
+      //if (activeLevelId) {
+        //let activeLevel = levels.byId[activeLevelId];
 
-        if (activeLevel.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
-          // get next segment
-          let nextSegmentId = activeLevel.segmentPlaybackOrder[((
-              activeLevel.segmentPlaybackIndex + 1
-          ) % activeLevel.segmentPlaybackOrder.length)];
-          let nextSegment = segments.byId[nextSegmentId];
+        //if (activeLevel.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
+          //// get next segment
+          //let nextSegmentId = activeLevel.segmentPlaybackOrder[((
+              //activeLevel.segmentPlaybackIndex + 1
+          //) % activeLevel.segmentPlaybackOrder.length)];
+          //let nextSegment = segments.byId[nextSegmentId];
 
-          // queue next sequencer
-          let nextSequencer = state[nextSegment.sequencerId];
+          //// queue next sequencer
+          //let nextSequencer = state[nextSegment.sequencerId];
 
-          state[nextSegment.sequencerId] = Object.assign(
-            {},
-            state[nextSegment.sequencerId],
-            {
-              playingState: (
-                nextSequencer.playingState === PLAYING_STATES.PLAYING
-              ) ? PLAYING_STATES.REQUEUED : PLAYING_STATES.QUEUED,
-              playQuant: activeSequencer.playQuant.slice()
-            }
-          );
-        }
+          //state[nextSegment.sequencerId] = Object.assign(
+            //{},
+            //state[nextSegment.sequencerId],
+            //{
+              //playingState: (
+                //nextSequencer.playingState === PLAYING_STATES.PLAYING
+              //) ? PLAYING_STATES.REQUEUED : PLAYING_STATES.QUEUED,
+              //playQuant: activeSequencer.playQuant.slice()
+            //}
+          //);
+        //}
 
-      }
+      //}
       break;
     
     default:

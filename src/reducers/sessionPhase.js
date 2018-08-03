@@ -30,7 +30,7 @@ function action_starts_transition (action, sessionPhase, level4Ready) {
 }
 
 function get_initial_state () {
-  return SESSION_PHASES.QUEUE_TRANS_4;
+  return SESSION_PHASES.PLAYING_4;
 }
 export default function sessionPhase (state = get_initial_state(), action, level4Ready) {
   switch (action.type) {

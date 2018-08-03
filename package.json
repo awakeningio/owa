@@ -49,7 +49,7 @@
     "@serialport/parser-readline": "^1.0.5",
     "@tweenjs/tween.js": "^17.2.0",
     "abletonlink-redux": "0.0.6",
-    "awakening-sequencers": "^0.8.6",
+    "awakening-sequencers": "^0.8.7",
     "chai": "^4.1.2",
     "color": "^3.0.0",
     "lodash": "^4.17.10",
@@ -59,7 +59,7 @@
     "redux": "^3.7.2",
     "reselect": "^3.0.1",
     "serialport": "^6.2.0",
-    "supercollider-redux": "0.0.93",
+    "supercollider-redux": "0.0.94",
     "supercolliderjs": "^0.14.2",
     "winston": "^3.0.0"
   },

@@ -90,10 +90,11 @@ export default function configureStore (additionalInitialState = {}) {
     '6_3': create_default_sequencer('6_3', 'LeadPopSequencer'),
     '6_4': create_default_sequencer('6_4', 'ChimeSequencer'),
     '6_5': create_default_sequencer('6_5', 'SfxSequencer'),
-    '4_0': create_default_sequencer('4_0', 'ChordProgSequencer'),
-    '4_1': create_default_sequencer('4_1', 'ChordProgSequencer'),
-    '4_2': create_default_sequencer('4_2', 'ChordProgSequencer'),
-    '4_3': create_default_sequencer('4_3', 'ChordProgSequencer'),
+    //'4_0': create_default_sequencer('4_0', 'ChordProgSequencer'),
+    //'4_1': create_default_sequencer('4_1', 'ChordProgSequencer'),
+    //'4_2': create_default_sequencer('4_2', 'ChordProgSequencer'),
+    //'4_3': create_default_sequencer('4_3', 'ChordProgSequencer'),
+    'level_4': create_default_sequencer('level_4', 'ChordProgSequencer'),
     '2_0': create_default_sequencer('2_0', 'SimpleSequencer'),
     '2_1': create_default_sequencer('2_1', 'SimpleSequencer')
   };
@@ -110,23 +111,38 @@ export default function configureStore (additionalInitialState = {}) {
     degree: [8, 4, 4, 8, 4, 4],
     octave: 3
   };
+  let numBeats = 8;
+  sequencers.level_4.numBeats = numBeats;
+  sequencers.level_4.playQuant = [8, 1];
+  sequencers.level_4.stopQuant = [numBeats, numBeats];
+  sequencers.level_4.bufNames = [
+    'spinny-pluck_L4_chords-1',
+    'spinny-pluck_L4_chords-2',
+    'spinny-pluck_L4_chords-3',
+    'spinny-pluck_L4_chords-4',
+  ];
+  sequencers.level_4.bufSequence = [];
 
-  ['4_0', '4_1', '4_2', '4_3'].forEach(function (seqId) {
-    sequencers[seqId].numBeats = 4 * 4;
-    sequencers[seqId].playQuant = 2 * 4;
-    sequencers[seqId].stopQuant = 2 * 4;
-  });
-  sequencers['4_0'].bufName = 'spinny-pluck_L4_chords-1';
-  sequencers['4_1'].bufName = 'spinny-pluck_L4_chords-2';
-  sequencers['4_2'].bufName = 'spinny-pluck_L4_chords-3';
-  sequencers['4_3'].bufName = 'spinny-pluck_L4_chords-4';
+  //['4_0', '4_1', '4_2', '4_3'].forEach(function (seqId) {
+    //let numBeats = 8;
+    //sequencers[seqId].numBeats = numBeats;
+    //sequencers[seqId].playQuant = [8, 1];
+    //sequencers[seqId].stopQuant = [numBeats, numBeats];
+  //});
+  //sequencers['4_0'].bufName = 'spinny-pluck_L4_chords-1';
+  //sequencers['4_1'].bufName = 'spinny-pluck_L4_chords-2';
+  //sequencers['4_2'].bufName = 'spinny-pluck_L4_chords-3';
+  //sequencers['4_3'].bufName = 'spinny-pluck_L4_chords-4';
 
   sequencers['6_0'].numBeats = 2 * 4;
   sequencers['6_1'].numBeats = 2 * 4;
   sequencers['6_2'].numBeats = 8 * 4;
   sequencers['6_3'].numBeats = 4 * 4;
   sequencers['6_4'].numBeats = 2 * 4;
+  sequencers['6_5'].playQuant = [4, 1];
   sequencers['6_5'].numBeats = 8 * 4;
+
+  // TODO: set sequencer 6 playQuant and stopQuant
 
   segmentsById[create_segmentId('level_6', 0)].sequencerId = '6_0';
   segmentsById[create_segmentId('level_6', 1)].sequencerId = '6_1';
@@ -134,10 +150,10 @@ export default function configureStore (additionalInitialState = {}) {
   segmentsById[create_segmentId('level_6', 3)].sequencerId = '6_3';
   segmentsById[create_segmentId('level_6', 4)].sequencerId = '6_4';
   segmentsById[create_segmentId('level_6', 5)].sequencerId = '6_5';
-  segmentsById[create_segmentId('level_4', 0)].sequencerId = '4_0';
-  segmentsById[create_segmentId('level_4', 1)].sequencerId = '4_1';
-  segmentsById[create_segmentId('level_4', 2)].sequencerId = '4_2';
-  segmentsById[create_segmentId('level_4', 3)].sequencerId = '4_3';
+  segmentsById[create_segmentId('level_4', 0)].sequencerId = 'level_4';
+  segmentsById[create_segmentId('level_4', 1)].sequencerId = 'level_4';
+  segmentsById[create_segmentId('level_4', 2)].sequencerId = 'level_4';
+  segmentsById[create_segmentId('level_4', 3)].sequencerId = 'level_4';
   segmentsById[create_segmentId('level_2', 0)].sequencerId = '2_0';
   segmentsById[create_segmentId('level_2', 1)].sequencerId = '2_1';
 

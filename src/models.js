@@ -6,10 +6,10 @@ export function create_sequential_level (levelId, numSegments) {
   return {
     playbackType: LEVEL_PLAYBACK_TYPE.SEQUENTIAL,
     levelId,
-    segmentPlaybackOrder: [],
+    //segmentPlaybackOrder: [],
     numSegments,
-    segmentPlaybackIndex: false,
-    activeSegmentId: false
+    //segmentPlaybackIndex: false,
+    //activeSegmentId: false
   };
 }
 /**

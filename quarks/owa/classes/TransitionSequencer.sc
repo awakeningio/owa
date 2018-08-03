@@ -10,13 +10,19 @@
 
 TransitionSequencer : AwakenedSequencer {
   initStream {
-    var bufName = currentState.bufName.asSymbol();
+    var bufName = currentState.bufName.asSymbol(),
+      synthdef;
+
+    patch = Patch("cs.sfx.PlayBuf", (
+      buf: bufManager.bufs[bufName],
+      attackTime: currentState.attackTime,
+      releaseTime: currentState.releaseTime,
+      gate: KrNumberEditor(1, \gate),
+      isSustained: 1
+    ));
+    synthdef = patch.asSynthDef().add();
     ^Pbind(
-      \type, \instr,
-      \instr, "cs.sfx.PlayBuf",
-      \buf, bufManager.bufs[bufName],
-      \attackTime, currentState.attackTime,
-      \releaseTime, currentState.releaseTime,
+      \instrument, synthdef.name,
       \midinote, Pseq(["C3".notemidi()]),
       \dur, currentState.numBeats
     ).asStream();

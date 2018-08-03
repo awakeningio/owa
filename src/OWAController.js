@@ -44,7 +44,7 @@ class OWAController extends ControllerWithStore {
           //stateTreePrefix: 'abletonlink'
         //}
       //);
-      this.lightingController = new LightingController(this.store);
+      //this.lightingController = new LightingController(this.store);
       this.serialInputController = new SerialInputController(this.store);
     }).catch((err) => {
       console.log(`ERROR while booting supercollider: ${err}`);

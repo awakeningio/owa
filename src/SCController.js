@@ -35,8 +35,6 @@ class SCController {
   handleBooted () {
     // periodically log scsynth status
     var scsynthGetInfo = `
-    //s.queryAllNodes();
-    //s.dumpOSC();
     (
       'numSynthDefs': s.numSynthDefs(),
       'numSynths': s.numSynths(),
@@ -79,16 +77,28 @@ s.options.inDevice = "JackRouter";
 s.options.outDevice = "JackRouter";
 s.options.memSize = 8192 * 2 * 2 * 2;
 s.options.blockSize = 128;
+
+
+s.waitForBoot({
           `;
-          if (process.env.NODE_ENV === 'development' && process.env.DISABLE_GUI != 1) {
+          if (process.env.NODE_ENV === 'development') {
+            //scBootScript += `
+//s.meter();
+//s.plotTree();
+            //`;
             scBootScript += `
-s.meter();
-s.plotTree();
+  Routine {
+    loop {
+      s.queryAllNodes();
+      s.dumpOSC();
+
+      5.0.wait();
+    }
+  }.play();
             `;
           }
 
           scBootScript += `
-s.waitForBoot({
   OWAController.initInstance();
 });
           `;

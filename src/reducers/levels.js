@@ -10,8 +10,8 @@
 
 import awakeningSequencers from 'awakening-sequencers';
 import * as actionTypes from '../actionTypes'
-import { create_segmentId } from '../models'
-import { LEVEL_PLAYBACK_TYPE } from '../constants'
+//import { create_segmentId } from '../models'
+//import { LEVEL_PLAYBACK_TYPE } from '../constants'
 
 //import awakeningSequencers from 'awakening-sequencers';
 //const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -226,50 +226,50 @@ import { LEVEL_PLAYBACK_TYPE } from '../constants'
   ////'level_2'
 //];
 
-function level (state, action, segments) {
+function level (state, action) {
   switch (action.type) {
     case actionTypes.BUTTON_PRESSED:
-      state = Object.assign({}, state);
-      if (state.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
-        // assuming top-level controller that filtered only BUTTON_PRESSED
-        // actions for this level
-        let segmentId = create_segmentId(
-          action.payload.levelId,
-          action.payload.segmentIndex
-        );
-        if (state.segmentPlaybackIndex !== false) {
-          state.segmentPlaybackOrder.splice(
-            (state.segmentPlaybackIndex + 1) % state.numSegments,
-            0,
-            segmentId
-          );
-        } else {
-          state.segmentPlaybackOrder.push(segmentId);
-          state.segmentPlaybackIndex = 0;
-        }
-      }
+      //state = Object.assign({}, state);
+      //if (state.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
+        //// assuming top-level controller that filtered only BUTTON_PRESSED
+        //// actions for this level
+        //let segmentId = create_segmentId(
+          //action.payload.levelId,
+          //action.payload.segmentIndex
+        //);
+        //if (state.segmentPlaybackIndex !== false) {
+          //state.segmentPlaybackOrder.splice(
+            //(state.segmentPlaybackIndex + 1) % state.numSegments,
+            //0,
+            //segmentId
+          //);
+        //} else {
+          //state.segmentPlaybackOrder.push(segmentId);
+          //state.segmentPlaybackIndex = 0;
+        //}
+      //}
       break;
 
     case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
-      if (state.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
-        if (state.segmentPlaybackIndex === false) {
-          break;
-        }
-        let nextSegmentPlaybackIndex = (
-          (state.segmentPlaybackIndex + 1) % state.segmentPlaybackOrder.length
-        );
+      //if (state.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
+        //if (state.segmentPlaybackIndex === false) {
+          //break;
+        //}
+        //let nextSegmentPlaybackIndex = (
+          //(state.segmentPlaybackIndex + 1) % state.segmentPlaybackOrder.length
+        //);
 
-        // look at the segment that should be next
-        let nextSegmentId = state.segmentPlaybackOrder[nextSegmentPlaybackIndex];
-        let nextSegment = segments.byId[nextSegmentId];
+        //// look at the segment that should be next
+        //let nextSegmentId = state.segmentPlaybackOrder[nextSegmentPlaybackIndex];
+        //let nextSegment = segments.byId[nextSegmentId];
 
-        // is the sequencer for this segment ?
-        if (nextSegment.sequencerId === action.payload.sequencerId) {
-          // if so, our next segment has started playing
-          state = Object.assign({}, state);
-          state.segmentPlaybackIndex = nextSegmentPlaybackIndex;
-        }
-      }
+        //// is the sequencer for this segment ?
+        //if (nextSegment.sequencerId === action.payload.sequencerId) {
+          //// if so, our next segment has started playing
+          //state = Object.assign({}, state);
+          //state.segmentPlaybackIndex = nextSegmentPlaybackIndex;
+        //}
+      //}
       
       break;
     
@@ -308,7 +308,10 @@ function levelsById (state = {}, action, segments) {
 }
 
 function levelsAllIds (state, action) {
-  return state;
+  switch (action.type) {
+    default:
+      return state;
+  }
 }
 
 export default function (state = {byId: {}, allIds: []}, action, segments) {

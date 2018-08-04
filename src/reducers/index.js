@@ -43,7 +43,7 @@ export default function (state, action) {
   if (state !== newState) {
     state = Object.assign({}, state, newState);
   }
-  newSessionPhase = sessionPhase(state.sessionPhase, action, state.level4Ready);
+  newSessionPhase = sessionPhase(state.sessionPhase, action, state.level4Ready, state.level2Ready);
   if (newSessionPhase !== state.sessionPhase) {
     state = Object.assign({}, state, {sessionPhase: newSessionPhase});
   }

@@ -139,15 +139,21 @@ function l4Sequencer (state, action, segments) {
       let segment = segments.byId[segmentId];
 
       if (state.playingState === PLAYING_STATES.STOPPED) {
-        // this is the first time
+        // this is the first press for level 4
         return Object.assign({}, state, {
           playingState: PLAYING_STATES.QUEUED,
           bufSequence: [segment.sequencerProps.bufName]
         });
       } else {
+        // level 4 is already playing.  If this segment has already been
+        // pressed
         if (state.bufSequence.indexOf(segment.sequencerProps.bufName) > -1) {
+          // do nothing
           return state;
         } else {
+          // this segment hasn't been pressed yet, we will insert this
+          // segment's sequencer params to the sequence
+          // in this case we insert the buffer name
           let currentBufIndex = state.bufSequence.indexOf(state.event.bufName);
           let newState = Object.assign({}, state);
           newState.bufSequence = newState.bufSequence.slice();

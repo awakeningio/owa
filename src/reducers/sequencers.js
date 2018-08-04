@@ -199,25 +199,30 @@ export default function sequencers (
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       // session phase automatically advanced
+      // queue all sequencers at end of transition
+      let playQuant = [
+        4,
+        1 + sessionPhaseDurations[action.payload.phase]
+      ];
+      let sequencersToQueue = [];
       switch (action.payload.phase) {
-        // queue all sequencers at end of transition
         case SESSION_PHASES.TRANS_4:
-            let playQuant = [
-              4,
-              1 + sessionPhaseDurations[SESSION_PHASES.TRANS_4]
-            ];
-            state = Object.assign({}, state);
-            l6SequencerIds.forEach(function (sequencerId) {
-              let seq = state[sequencerId];
-              state[sequencerId] = Object.assign({}, seq, {
-                playingState: PLAYING_STATES.QUEUED,
-                playQuant: playQuant
-              });
-            });
+          sequencersToQueue = l6SequencerIds;
+          break;
+        case SESSION_PHASES.TRANS_2:
+          sequencersToQueue = [].concat(l6SequencerIds, 'level_4');
           break;
         default:
           break;
       }
+      state = Object.assign({}, state);
+      sequencersToQueue.forEach(function (sequencerId) {
+        let seq = state[sequencerId];
+        state[sequencerId] = Object.assign({}, seq, {
+          playingState: PLAYING_STATES.QUEUED,
+          playQuant: playQuant
+        });
+      });
       break;
     case actionTypes.BUTTON_PRESSED:
       let segmentId = create_segmentId(
@@ -235,7 +240,6 @@ export default function sequencers (
           case SESSION_PHASES.QUEUE_TRANS_6:
           case SESSION_PHASES.QUEUE_TRANS_4:
           case SESSION_PHASES.QUEUE_TRANS_2:
-            // button was pressed for segment with this sequencer
             state = Object.assign({}, state);
             let playQuant = [
               4,
@@ -258,27 +262,32 @@ export default function sequencers (
         }
 
         // stop all sequencers for transition
+        let stopQuant = [
+          4,
+          sessionPhaseDurations[sessionPhase]
+        ];
+        let sequencersToStop = [];
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_4:
-            let stopQuant = [
-              4,
-              sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4]
-            ];
-            state = Object.assign({}, state);
-            l6SequencerIds.forEach(function (sequencerId) {
-              let seq = state[sequencerId];
-
-              if (seq.playingState !== PLAYING_STATES.STOPPED) {
-                state[sequencerId] = Object.assign({}, seq, {
-                  playingState: PLAYING_STATES.STOP_QUEUED,
-                  stopQuant: stopQuant
-                });
-              }
-            });
+            sequencersToStop = l6SequencerIds;
+            break;
+          case SESSION_PHASES.QUEUE_TRANS_2:
+            sequencersToStop = [].concat(l6SequencerIds, ['level_4']);
             break;
           default:
             break;
         }
+        state = Object.assign({}, state);
+        sequencersToStop.forEach(function (sequencerId) {
+          let seq = state[sequencerId];
+
+          if (seq.playingState !== PLAYING_STATES.STOPPED) {
+            state[sequencerId] = Object.assign({}, seq, {
+              playingState: PLAYING_STATES.STOP_QUEUED,
+              stopQuant: stopQuant
+            });
+          }
+        });
 
       } else if (is_playing_level(action.payload.levelId, sessionPhase)) {
         // if level with this button press is currently playing, handle button

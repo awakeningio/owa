@@ -18,58 +18,9 @@ const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 const l6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
 
-//function create_initial_state () {
-  //let initialState = {
-    //'level_10-segment_0': awakeningSequencers.create_default_sequencer(
-      //'level_10-segment_0',
-      //'SimpleSequencer'
-    //),
-    //'level_10-segment_1': awakeningSequencers.create_default_sequencer(
-      //'level_10-segment_1',
-      //'SimpleSequencer'
-    //),
-    //'level_10-segment_2': awakeningSequencers.create_default_sequencer(
-      //'level_10-segment_2',
-      //'SimpleSequencer'
-    //)
-  //};
-  //initialState['level_10-segment_0'].numBeats = 10;
-  //initialState['level_10-segment_0'].releaseTime = 1.2;
-  //initialState['level_10-segment_0'].pbind = {
-    //degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
-    //octave: 4
-  //};
-  //initialState['level_10-segment_1'].numBeats = 10;
-  //initialState['level_10-segment_1'].releaseTime = 0.2;
-  //initialState['level_10-segment_1'].pbind = {
-    //degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
-    //octave: 6
-  //};
-  //initialState['level_10-segment_2'].numBeats = 10;
-  //initialState['level_10-segment_2'].releaseTime = 0.2;
-  //initialState['level_10-segment_2'].pbind = {
-    //degree: [8, 4, 4, 4, 4, 8, 4, 4, 4, 4],
-    //octave: 8
-  //};
-  //return initialState;
-//}
-
-//function sequencer (state, action) {
-  //switch (action.type) {
-    //case actionTypes.BUTTON_PRESSED:
-      //// assuming parent sequencer sent only when button is
-      //// pressed for the segment containing this sequencer
-      //// TODO: this will depend on other stuff
-      //state = Object.assign({}, state);
-      //state.playingState = PLAYING_STATES.QUEUED;
-      //break;
-    
-    //default:
-      //break;
-  //}
-  //return state;
-//}
-//
+/**
+ *  Is this level the currently playing level?
+ **/
 function is_playing_level (levelId, sessionPhase) {
   var currentLevelId = get_playing_levelId_for_sessionPhase(sessionPhase);
   return (levelId === currentLevelId);
@@ -133,13 +84,11 @@ function trans (
                 1 + sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4]
               ]
             });
-          
           default:
             break;
         }
       }
       return state;
-    
     default:
       return state;
   }
@@ -173,29 +122,30 @@ function l6Sequencer (state, action) {
       } else {
         return state;
       }
-    
     default:
       return state;
   }
 }
 
-function l4Sequencer (state, action) {
+function l4Sequencer (state, action, segments) {
   switch (action.type) {
     case actionTypes.BUTTON_PRESSED:
-      //let segmentId = create_segmentId(
-        //action.payload.levelId,
-        //action.payload.segmentIndex
-      //);
-      //let segment = segments.byId[segmentId];
-      let bufForButton = state.bufNames[action.payload.segmentIndex];
+
+      // segment corresponding to button pressed
+      let segmentId = create_segmentId(
+        action.payload.levelId,
+        action.payload.segmentIndex
+      );
+      let segment = segments.byId[segmentId];
+
       if (state.playingState === PLAYING_STATES.STOPPED) {
         // this is the first time
         return Object.assign({}, state, {
           playingState: PLAYING_STATES.QUEUED,
-          bufSequence: [bufForButton]
+          bufSequence: [segment.sequencerProps.bufName]
         });
       } else {
-        if (state.bufSequence.indexOf(bufForButton) > -1) {
+        if (state.bufSequence.indexOf(segment.sequencerProps.bufName) > -1) {
           return state;
         } else {
           let currentBufIndex = state.bufSequence.indexOf(state.event.bufName);
@@ -204,7 +154,7 @@ function l4Sequencer (state, action) {
           newState.bufSequence.splice(
             1+currentBufIndex,
             0,
-            bufForButton
+            segment.sequencerProps.bufName
           );
           return newState;
         }
@@ -259,7 +209,6 @@ export default function sequencers (
               });
             });
           break;
-        
         default:
           break;
       }
@@ -298,7 +247,6 @@ export default function sequencers (
               }
             );
             break;
-          
           default:
             break;
         }
@@ -322,7 +270,6 @@ export default function sequencers (
               }
             });
             break;
-          
           default:
             break;
         }
@@ -341,9 +288,8 @@ export default function sequencers (
             break;
 
           case 'level_4':
-            seq = l4Sequencer(state[sequencerId], action);
+            seq = l4Sequencer(state[sequencerId], action, segments);
             break;
-          
           default:
             break;
         }
@@ -442,7 +388,6 @@ export default function sequencers (
 
       //}
       break;
-    
     default:
       break;
   }

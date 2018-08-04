@@ -154,10 +154,28 @@ export default function configureStore (additionalInitialState = {}) {
   segmentsById[create_segmentId('level_6', 3)].sequencerId = '6_3';
   segmentsById[create_segmentId('level_6', 4)].sequencerId = '6_4';
   segmentsById[create_segmentId('level_6', 5)].sequencerId = '6_5';
-  segmentsById[create_segmentId('level_4', 0)].sequencerId = 'level_4';
-  segmentsById[create_segmentId('level_4', 1)].sequencerId = 'level_4';
-  segmentsById[create_segmentId('level_4', 2)].sequencerId = 'level_4';
-  segmentsById[create_segmentId('level_4', 3)].sequencerId = 'level_4';
+
+  let segment = segmentsById[create_segmentId('level_4', 0)];
+  segment.sequencerId = 'level_4';
+  segment.sequencerProps = {
+    bufName: 'spinny-pluck_L4_chords-1'
+  };
+  segment = segmentsById[create_segmentId('level_4', 1)];
+  segment.sequencerId = 'level_4';
+  segment.sequencerProps = {
+    bufName: 'spinny-pluck_L4_chords-2'
+  };
+  segment = segmentsById[create_segmentId('level_4', 2)];
+  segment.sequencerId = 'level_4';
+  segment.sequencerProps = {
+    bufName: 'spinny-pluck_L4_chords-3'
+  };
+  segment = segmentsById[create_segmentId('level_4', 3)];
+  segment.sequencerId = 'level_4';
+  segment.sequencerProps = {
+    bufName: 'spinny-pluck_L4_chords-4'
+  };
+
   segmentsById[create_segmentId('level_2', 0)].sequencerId = '2_0';
   segmentsById[create_segmentId('level_2', 1)].sequencerId = '2_1';
 

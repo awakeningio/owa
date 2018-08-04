@@ -117,6 +117,9 @@ OWAController {
       ], [
         "spinny-pluck_L6-L4.wav",
         'spinny-pluck_L6-L4'
+      ], [
+        "spinny-pluck_L4-L2_5bar [2018-08-03 180721].wav",
+        'spinny-pluck_L4-L2'
       ]
     ], ({
       // when buffers are done loading

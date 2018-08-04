@@ -54,6 +54,17 @@ const spinnyPluckL4TransitionSequencer = Object.assign(
   }
 );
 
+const spinnyPluckL2TransitionSequencer = Object.assign(
+  {},
+  baseTransitionSequencer,
+  {
+    bufName: 'spinny-pluck_L4-L2',
+    attackTime: 0.01,
+    releaseTime: 0.01,
+    numBeats: 5 * 4
+  }
+);
+
 function trans (
   state = spinnyPluckIdleTransitionSequencer,
   action,
@@ -65,24 +76,28 @@ function trans (
     case actionTypes.BUTTON_PRESSED:
       // if this button pressed triggered a sessionPhase change
       if (prevSessionPhase !== sessionPhase) {
+        let playQuant = [
+          4,
+          1 + sessionPhaseDurations[sessionPhase]
+        ];
         // we may need to queue a transition
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_6:
             return Object.assign({}, spinnyPluckIdleTransitionSequencer, {
               playingState: PLAYING_STATES.QUEUED,
-              playQuant: [
-                4,
-                1 + sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_6]
-              ]
+              playQuant
             });
 
           case SESSION_PHASES.QUEUE_TRANS_4:
             return Object.assign({}, spinnyPluckL4TransitionSequencer, {
               playingState: PLAYING_STATES.QUEUED,
-              playQuant: [
-                4,
-                1 + sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4]
-              ]
+              playQuant
+            });
+
+          case SESSION_PHASES.QUEUE_TRANS_2:
+            return Object.assign({}, spinnyPluckL2TransitionSequencer, {
+              playingState: PLAYING_STATES.QUEUED,
+              playQuant
             });
           default:
             break;

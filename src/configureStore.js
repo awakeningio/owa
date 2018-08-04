@@ -47,6 +47,7 @@ if (process.env.NODE_ENV === 'development') {
       ])
     });
     toPrint.level4Ready = state.level4Ready;
+    toPrint.level2Ready = state.level2Ready;
     toPrint.sessionPhase = state.sessionPhase;
     toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
     return toPrint;

@@ -98,8 +98,8 @@ export default function configureStore (additionalInitialState = {}) {
     //'4_2': create_default_sequencer('4_2', 'ChordProgSequencer'),
     //'4_3': create_default_sequencer('4_3', 'ChordProgSequencer'),
     'level_4': create_default_sequencer('level_4', 'ChordProgSequencer'),
-    '2_0': create_default_sequencer('2_0', 'SimpleSequencer'),
-    '2_1': create_default_sequencer('2_1', 'SimpleSequencer')
+    '2_0': create_default_sequencer('2_0', 'KalimbaSequencer'),
+    '2_1': create_default_sequencer('2_1', 'OrganicPercSequencer')
   };
 
   sequencers['2_0'].numBeats = 8;

@@ -44,7 +44,7 @@ class SCController {
       'avgCPU': s.avgCPU()
     );
 `;
-    if (process.env.NODE_ENV == 'development') {
+    if (process.env.DEBUG_SC === "1") {
       setInterval(() => {
         this.sclang.interpret(scsynthGetInfo).then((result) => {
           logger.debug(
@@ -81,7 +81,9 @@ s.options.blockSize = 128;
 
 s.waitForBoot({
           `;
-          if (process.env.NODE_ENV === 'development') {
+          if (process.env.DEBUG_SC === "1") {
+            console.log("process.env.DEBUG_SC");
+            console.log(process.env.DEBUG_SC);
             //scBootScript += `
 //s.meter();
 //s.plotTree();

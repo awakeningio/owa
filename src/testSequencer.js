@@ -24,7 +24,7 @@ scController.boot().then(() => {
   const soundController = new SoundController(store, {});
 
   setTimeout(function () {
-    store.dispatch(awakeningSequencers.actions.sequencerQueued('6_5'));
+    store.dispatch(awakeningSequencers.actions.sequencerQueued('2_1'));
   }, 7000);
 }).catch((err) => {
   console.log(`ERROR while booting supercollider: ${err}`);

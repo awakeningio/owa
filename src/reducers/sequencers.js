@@ -10,21 +10,13 @@
 
 import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
-import { create_segmentId, get_playing_levelId_for_sessionPhase } from '../models'
+import { create_segmentId } from '../models'
 import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants'
 
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 const l6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
-
-/**
- *  Is this level the currently playing level?
- **/
-function is_playing_level (levelId, sessionPhase) {
-  var currentLevelId = get_playing_levelId_for_sessionPhase(sessionPhase);
-  return (levelId === currentLevelId);
-}
 
 const baseTransitionSequencer = create_default_sequencer(
   'trans',
@@ -65,10 +57,27 @@ const spinnyPluckL2TransitionSequencer = Object.assign(
   }
 );
 
-function createAfterPhaseQuant (sessionPhase, sessionPhaseDurations) {
+function createPhaseEndQuant (sessionPhase, sessionPhaseDurations) {
   return [
     4,
     1 + sessionPhaseDurations[sessionPhase]
+  ];
+}
+
+function createPhaseStartQuant (sessionPhase, sessionPhaseDurations) {
+  return [
+    4,
+    sessionPhaseDurations[sessionPhase]
+  ];
+}
+
+function createNextPhaseEndQuant (sessionPhase, sessionPhaseDurations) {
+  return [
+    4,
+    1 + sessionPhaseDurations[sessionPhase]
+    + sessionPhaseDurations[
+      NEXT_SESSION_PHASES[sessionPhase]
+    ],
   ];
 }
 
@@ -83,7 +92,7 @@ function trans (
     case actionTypes.BUTTON_PRESSED:
       // if this button pressed triggered a sessionPhase change
       if (prevSessionPhase !== sessionPhase) {
-        let playQuant = createAfterPhaseQuant(
+        let playQuant = createPhaseEndQuant(
           sessionPhase,
           sessionPhaseDurations
         );
@@ -117,7 +126,14 @@ function trans (
 }
 
 // assumes parent reducer calling this at the right time.
-function l6Sequencer (state, action, sessionPhaseDurations) {
+function l6Sequencer (
+  state,
+  action,
+  segments,
+  sessionPhase,
+  prevSessionPhase,
+  sessionPhaseDurations
+) {
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       // session phase automatically advanced.  If it is a transition
@@ -127,7 +143,7 @@ function l6Sequencer (state, action, sessionPhaseDurations) {
         case SESSION_PHASES.TRANS_2:
           return Object.assign({}, state, {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createAfterPhaseQuant(
+            playQuant: createPhaseEndQuant(
               action.payload.phase,
               sessionPhaseDurations
             )
@@ -137,36 +153,65 @@ function l6Sequencer (state, action, sessionPhaseDurations) {
           return state;
       }
     case actionTypes.BUTTON_PRESSED:
-      if (state.playingState === PLAYING_STATES.PLAYING) {
-        return Object.assign(
-          {},
-          state,
-          {
-            playingState: PLAYING_STATES.STOP_QUEUED,
-            stopQuant: [
-              4,
-              1 + state.numBeats
-            ]
+      let segmentId = create_segmentId(
+        action.payload.levelId,
+        action.payload.segmentIndex
+      );
+      let segment = segments.byId[segmentId];
+      let buttonSequencerId = segment.sequencerId;
+      if (
+          // button press was for this sequencer
+          buttonSequencerId === state.sequencerId
+      ) {
+        if (
+          // session phase just transitioned
+          sessionPhase !== prevSessionPhase
+          // to l6
+          && sessionPhase === SESSION_PHASES.QUEUE_TRANS_6
+        ) {
+          // queue pressed sequencer for post-transition
+          return Object.assign(
+            {},
+            state,
+            {
+              playingState: PLAYING_STATES.QUEUED,
+              playQuant: createNextPhaseEndQuant(
+                sessionPhase,
+                sessionPhaseDurations
+              )
+            }
+          );
+        } else if (
+          // we are currently playing level 6
+          sessionPhase === SESSION_PHASES.PLAYING_6
+        ) {
+          // queue if stopped
+          if (state.playingState === PLAYING_STATES.STOPPED) {
+            return Object.assign(
+              {},
+              state,
+              {
+                playingState: PLAYING_STATES.QUEUED,
+                playQuant: [4, 1]
+              }
+            );
           }
-        );
-      } else if (state.playingState === PLAYING_STATES.STOPPED) {
-        return Object.assign(
-          {},
-          state,
-          {
-            playingState: PLAYING_STATES.QUEUED,
-            playQuant: [4, 1]
-          }
-        );
-      } else {
-        return state;
+        }
       }
+      return state;
     default:
       return state;
   }
 }
 
-function l4Sequencer (state, action, segments, sessionPhaseDurations) {
+function l4Sequencer (
+  state,
+  action,
+  segments,
+  sessionPhase,
+  prevSessionPhase,
+  sessionPhaseDurations
+) {
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       // session phase automatically advanced.  If it is a transition
@@ -175,7 +220,7 @@ function l4Sequencer (state, action, segments, sessionPhaseDurations) {
         case SESSION_PHASES.TRANS_2:
           return Object.assign({}, state, {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createAfterPhaseQuant(
+            playQuant: createPhaseEndQuant(
               action.payload.phase,
               sessionPhaseDurations
             )
@@ -192,34 +237,112 @@ function l4Sequencer (state, action, segments, sessionPhaseDurations) {
         action.payload.segmentIndex
       );
       let segment = segments.byId[segmentId];
+      let buttonSequencerId = segment.sequencerId;
 
-      if (state.playingState === PLAYING_STATES.STOPPED) {
-        // this is the first press for level 4
-        return Object.assign({}, state, {
-          playingState: PLAYING_STATES.QUEUED,
-          bufSequence: [segment.sequencerProps.bufName]
-        });
-      } else {
-        // level 4 is already playing.  If this segment has already been
-        // pressed
-        if (state.bufSequence.indexOf(segment.sequencerProps.bufName) > -1) {
-          // do nothing
-          return state;
-        } else {
-          // this segment hasn't been pressed yet, we will insert this
-          // segment's sequencer params to the sequence
-          // in this case we insert the buffer name
-          let currentBufIndex = state.bufSequence.indexOf(state.event.bufName);
-          let newState = Object.assign({}, state);
-          newState.bufSequence = newState.bufSequence.slice();
-          newState.bufSequence.splice(
-            1+currentBufIndex,
-            0,
-            segment.sequencerProps.bufName
+      if (
+        // button press was for this sequencer
+        buttonSequencerId === state.sequencerId
+      ) {
+
+        if (
+          // session phase just transitioned
+          sessionPhase !== prevSessionPhase
+          && sessionPhase === SESSION_PHASES.QUEUE_TRANS_4
+        ) {
+          // this is the first press for level 4
+          return Object.assign({}, state, {
+            playingState: PLAYING_STATES.QUEUED,
+            bufSequence: [segment.sequencerProps.bufName],
+            playQuant: createNextPhaseEndQuant(
+              sessionPhase,
+              sessionPhaseDurations
+            )
+          });
+        } else if (sessionPhase === SESSION_PHASES.PLAYING_4) {
+          // If this segment has already been pressed
+          if (state.bufSequence.indexOf(segment.sequencerProps.bufName) > -1) {
+            // do nothing
+            return state;
+          } else {
+            // this segment hasn't been pressed yet, we will insert this
+            // segment's sequencer params to the sequence
+            // in this case we insert the buffer name
+            let currentBufIndex = state.bufSequence.indexOf(state.event.bufName);
+            let newState = Object.assign({}, state, {
+              playQuant: state.defaultPlayQuant.slice()
+            });
+            newState.bufSequence = newState.bufSequence.slice();
+            newState.bufSequence.splice(
+              1+currentBufIndex,
+              0,
+              segment.sequencerProps.bufName
+            );
+            return newState;
+          }
+        }
+
+      }
+      return state;
+    default:
+      return state;
+  }
+}
+
+function l2Sequencer (
+  state,
+  action,
+  segments,
+  sessionPhase,
+  prevSessionPhase,
+  sessionPhaseDurations
+) {
+  switch (action.type) {
+    case actionTypes.BUTTON_PRESSED:
+      let segmentId = create_segmentId(
+        action.payload.levelId,
+        action.payload.segmentIndex
+      );
+      let segment = segments.byId[segmentId];
+      let buttonSequencerId = segment.sequencerId;
+      if (
+        // button pressed for this sequencer
+        buttonSequencerId === state.sequencerId
+      ) {
+
+        if (
+          // session phase transitioned
+          sessionPhase !== prevSessionPhase
+          && sessionPhase === SESSION_PHASES.QUEUE_TRANS_2
+        ) {
+          // queue self
+          return Object.assign(
+            {},
+            state,
+            {
+              playingState: PLAYING_STATES.QUEUED,
+              playQuant: createNextPhaseEndQuant(
+                sessionPhase,
+                sessionPhaseDurations
+              )
+            }
           );
-          return newState;
+        } else if (
+          // we are currently playing 2
+          sessionPhase === SESSION_PHASES.PLAYING_2
+        ) {
+          // queue if stopped
+          return Object.assign(
+            {},
+            state,
+            {
+              playingState: PLAYING_STATES.QUEUED,
+              playQuant: [4, 1]
+            }
+          );
         }
       }
+      return state;
+    
     default:
       return state;
   }
@@ -250,77 +373,64 @@ export default function sequencers (
   if (newTrans !== state.trans) {
     state = Object.assign({}, state, {trans: newTrans});
   }
+  
+  l6SequencerIds.forEach(function (sequencerId) {
+    let seq = l6Sequencer(
+      state[sequencerId],
+      action,
+      segments,
+      sessionPhase,
+      prevSessionPhase,
+      sessionPhaseDurations
+    );
+    if (seq !== state[sequencerId]) {
+      state = Object.assign({}, state, {
+        [sequencerId]: seq
+      });
+    }
+  });
+
+  let seq = l4Sequencer(
+    state.level_4,
+    action,
+    segments,
+    sessionPhase,
+    prevSessionPhase,
+    sessionPhaseDurations
+  );
+  if (seq !== state.level_4) {
+    state = Object.assign({}, state, {
+      level_4: seq
+    });
+  }
+
+  ['2_0', '2_1'].forEach(function (sequencerId) {
+    let seq = l2Sequencer(
+      state[sequencerId],
+      action,
+      segments,
+      sessionPhase,
+      prevSessionPhase,
+      sessionPhaseDurations
+    );
+    if (seq !== state[sequencerId]) {
+      state = Object.assign({}, state, {
+        [sequencerId]: seq
+      });
+    }
+  });
 
   switch (action.type) {
-    case actionTypes.SESSION_PHASE_ADVANCED:
-      // session phase automatically advanced
-      l6SequencerIds.forEach(function (sequencerId) {
-        let seq = l6Sequencer(
-          state[sequencerId],
-          action,
-          sessionPhaseDurations
-        );
-        if (seq !== state[sequencerId]) {
-          state = Object.assign({}, state, {
-            [sequencerId]: seq
-          });
-        }
-      });
-
-      let seq = l4Sequencer(
-        state.level_4,
-        action,
-        segments,
-        sessionPhaseDurations
-      );
-      if (seq !== state.level_4) {
-        state = Object.assign({}, state, {
-          level_4: seq
-        });
-      }
-      break;
     case actionTypes.BUTTON_PRESSED:
-      let segmentId = create_segmentId(
-        action.payload.levelId,
-        action.payload.segmentIndex
-      );
-      let segment = segments.byId[segmentId];
-      let sequencerId = segment.sequencerId;
 
       // if this was the press to transition a scene
       if (sessionPhase !== prevSessionPhase) {
 
-        // queue pressed sequencer
-        switch (sessionPhase) {
-          case SESSION_PHASES.QUEUE_TRANS_6:
-          case SESSION_PHASES.QUEUE_TRANS_4:
-          case SESSION_PHASES.QUEUE_TRANS_2:
-            state = Object.assign({}, state);
-            let playQuant = [
-              4,
-              1 + sessionPhaseDurations[sessionPhase]
-              + sessionPhaseDurations[
-                NEXT_SESSION_PHASES[sessionPhase]
-              ],
-            ];
-            state[sequencerId] = Object.assign(
-              {},
-              state[sequencerId],
-              {
-                playingState: PLAYING_STATES.QUEUED,
-                playQuant
-              }
-            );
-            break;
-          default:
-            break;
-        }
-
-        // stop all sequencers for transition
-        let stopQuant = [
-          4,
-          sessionPhaseDurations[sessionPhase]
-        ];
+        // stop sequencers during transition
+        let stopQuant = createPhaseStartQuant(
+          sessionPhase,
+          sessionPhaseDurations
+        );
         let sequencersToStop = [];
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_4:
@@ -344,123 +454,9 @@ export default function sequencers (
           }
         });
 
-      } else if (is_playing_level(action.payload.levelId, sessionPhase)) {
-        let seq;
-        switch (action.payload.levelId) {
-          case 'level_6':
-            seq = l6Sequencer(
-              state[sequencerId],
-              action,
-              sessionPhaseDurations
-            );
-            break;
-
-          case 'level_4':
-            seq = l4Sequencer(
-              state[sequencerId],
-              action,
-              segments,
-              sessionPhaseDurations
-            );
-            break;
-          default:
-            break;
-        }
-
-        if (seq !== state[sequencerId]) {
-          state = Object.assign({}, state, {
-            [sequencerId]: seq
-          });
-        }
-
-        //if (level.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
-          ////  get currently playing segment on this level
-          //let currentSegmentId = level.segmentPlaybackOrder[
-            //level.segmentPlaybackIndex
-          //];
-          //let currentSegment = segments.byId[currentSegmentId];
-
-          //// get currently playing sequencer
-          //let currentSequencer = state[currentSegment.sequencerId];
-
-          // get sequencer for this level
-          //let levelSequencer = state[level.levelId];
-
-          //// dequeue all queued on this level
-          //Object.keys(state).forEach((sequencerId) => {
-            //let seq = state[sequencerId];
-
-            //switch (seq.playingState) {
-              //case PLAYING_STATES.QUEUED:
-                //state[sequencerId] = Object.assign({}, seq, {
-                  //playingState: PLAYING_STATES.STOPPED
-                //});
-                //break;
-
-              //case PLAYING_STATES.REQUEUED:
-                //state[sequencerId] = Object.assign({}, seq, {
-                  //playingState: PLAYING_STATES.PLAYING
-                //});
-                //break;
-              //default:
-                //break;
-            //}
-
-          //});
-
-          // queue sequencer associated with button press for when currently
-          // playing one finishes
-          //state[sequencerId] = Object.assign(
-            //{},
-            //state[sequencerId],
-            //{
-              //playingState: PLAYING_STATES.QUEUED,
-              //playQuant: currentSequencer.playQuant.slice()
-            //}
-          //);
-        //} else if (level.playbackType === LEVEL_PLAYBACK_TYPE.SIMULTANEOUS) {
-          //// queue or stop sequencer associated with button press.
-        //}
-
       }
-
-
       break;
 
-    case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
-      // a sequencer just started playing
-      //state = Object.assign({}, state);
-      //let activeSequencer = state[action.payload.sequencerId];
-
-      // get currently active level
-      //let activeLevelId = get_playing_levelId_for_sessionPhase(sessionPhase);
-      //if (activeLevelId) {
-        //let activeLevel = levels.byId[activeLevelId];
-
-        //if (activeLevel.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
-          //// get next segment
-          //let nextSegmentId = activeLevel.segmentPlaybackOrder[((
-              //activeLevel.segmentPlaybackIndex + 1
-          //) % activeLevel.segmentPlaybackOrder.length)];
-          //let nextSegment = segments.byId[nextSegmentId];
-
-          //// queue next sequencer
-          //let nextSequencer = state[nextSegment.sequencerId];
-
-          //state[nextSegment.sequencerId] = Object.assign(
-            //{},
-            //state[nextSegment.sequencerId],
-            //{
-              //playingState: (
-                //nextSequencer.playingState === PLAYING_STATES.PLAYING
-              //) ? PLAYING_STATES.REQUEUED : PLAYING_STATES.QUEUED,
-              //playQuant: activeSequencer.playQuant.slice()
-            //}
-          //);
-        //}
-
-      //}
-      break;
     default:
       break;
   }

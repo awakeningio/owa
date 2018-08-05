@@ -39,7 +39,7 @@ KalimbaSequencer : AwakenedSequencer {
       \root, 1,
       \octave, 5,
       \legato, Pseq([0.3, 0.15], inf),
-      \amp, -10.0.dbamp()*(2**Pgauss(0, 0.1)),
+      \amp, -24.0.dbamp()*(2**Pgauss(0, 0.1)),
       \mix, Pwhite(0.05, 0.15),
     ).asStream();
   }

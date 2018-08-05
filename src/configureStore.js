@@ -117,6 +117,7 @@ export default function configureStore (additionalInitialState = {}) {
   let numBeats = 8;
   sequencers.level_4.numBeats = numBeats;
   sequencers.level_4.playQuant = [8, 1];
+  sequencers.level_4.defaultPlayQuant = [8, 1];
   sequencers.level_4.stopQuant = [numBeats, numBeats];
   sequencers.level_4.bufNames = [
     'spinny-pluck_L4_chords-1',

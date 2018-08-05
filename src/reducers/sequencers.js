@@ -204,7 +204,7 @@ function l6Sequencer (
   }
 }
 
-function l4Sequencer (
+function chordProgSequencer (
   state,
   action,
   segments,
@@ -223,7 +223,8 @@ function l4Sequencer (
             playQuant: createPhaseEndQuant(
               action.payload.phase,
               sessionPhaseDurations
-            )
+            ),
+            bufSequence: state.level2BufSequence.slice()
           });
         
         default:
@@ -390,7 +391,7 @@ export default function sequencers (
     }
   });
 
-  let seq = l4Sequencer(
+  let seq = chordProgSequencer(
     state.level_4,
     action,
     segments,

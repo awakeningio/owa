@@ -1,4 +1,6 @@
 import { SESSION_PHASES, LEVEL_PLAYBACK_TYPE } from './constants'
+import awakeningSequencers from 'awakening-sequencers';
+const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 /**
  *  a sequential level is one that plays it's segments in sequence.
  **/
@@ -41,4 +43,15 @@ export function get_playing_levelId_for_sessionPhase (sessionPhase) {
     [SESSION_PHASES.PLAYING_4]: 'level_4',
     [SESSION_PHASES.PLAYING_2]: 'level_2'
   }[sessionPhase] || null;
+}
+
+export function create_owa_sequencer (sequencerId, sequencerClass) {
+  let seq = create_default_sequencer(sequencerId, sequencerClass);
+
+  // automatically change these properties of the sequencer when the
+  // sessionPhase changes.
+  seq.level4Props = {};
+  seq.level2Props = {};
+
+  return seq;
 }

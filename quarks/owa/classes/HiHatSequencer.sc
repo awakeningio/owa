@@ -45,13 +45,15 @@ HiHatSequencer : AwakenedSequencer {
       25: bufManager.bufs[\hhopen_83].bufnum,
       rest: -1
     );
+    Pdefn('HiHatNotes').quant = currentState.playQuant;
+    Pdefn('HiHatNotes', Pseq(
+      bufManager.midiSequences[currentState.midiName.asSymbol()],
+      inf
+    ));
     pat = Pbind(
       //\type, \instr,
       //\instr, "owa.HiHatSampler",
-      [\midinote, \dur], Pseq(
-        bufManager.midiSequences['spinny-pluck_L6_hats'],
-        inf
-      ),
+      [\midinote, \dur], Pdefn('HiHatNotes'),
       \instrument, Pfunc({
         arg event;
 
@@ -77,5 +79,12 @@ HiHatSequencer : AwakenedSequencer {
       //})
     );
     ^pat.asStream();
+  }
+  handleStateChange {
+    super.handleStateChange();
+    Pdefn('HiHatNotes', Pseq(
+      bufManager.midiSequences[currentState.midiName.asSymbol()],
+      inf
+    ));
   }
 }

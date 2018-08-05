@@ -138,20 +138,24 @@ function l6Sequencer (
     case actionTypes.SESSION_PHASE_ADVANCED:
       // session phase automatically advanced.  If it is a transition
       // we may need to re-queue
+      let newProps;
       switch (action.payload.phase) {
         case SESSION_PHASES.TRANS_4:
+          newProps = state.level4Props;
+          break;
         case SESSION_PHASES.TRANS_2:
-          return Object.assign({}, state, {
-            playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseEndQuant(
-              action.payload.phase,
-              sessionPhaseDurations
-            )
-          });
-        
+          newProps = state.level2Props;
+          break;
         default:
           return state;
       }
+      return Object.assign({}, state, {
+        playingState: PLAYING_STATES.QUEUED,
+        playQuant: createPhaseEndQuant(
+          action.payload.phase,
+          sessionPhaseDurations
+        )
+      }, newProps);
     case actionTypes.BUTTON_PRESSED:
       let segmentId = create_segmentId(
         action.payload.levelId,
@@ -223,9 +227,8 @@ function chordProgSequencer (
             playQuant: createPhaseEndQuant(
               action.payload.phase,
               sessionPhaseDurations
-            ),
-            bufSequence: state.level2BufSequence.slice()
-          });
+            )
+          }, state.level2Props);
         
         default:
           return state;
@@ -258,7 +261,7 @@ function chordProgSequencer (
               sessionPhase,
               sessionPhaseDurations
             )
-          });
+          }, state.level4Props);
         } else if (sessionPhase === SESSION_PHASES.PLAYING_4) {
           // If this segment has already been pressed
           if (state.bufSequence.indexOf(segment.sequencerProps.bufName) > -1) {

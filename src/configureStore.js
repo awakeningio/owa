@@ -16,16 +16,14 @@ import {
   create_simultaneous_level,
   create_sequential_level,
   create_segment,
-  create_segmentId
+  create_segmentId,
+  create_owa_sequencer
 } from './models'
 
 import logger from './logging'
 
 import abletonlinkRedux from 'abletonlink-redux'
 import rootReducer from './reducers'
-import awakeningSequencers from 'awakening-sequencers';
-const create_default_sequencer = awakeningSequencers.create_default_sequencer;
-
 const middleware = [
 ];
 
@@ -87,19 +85,24 @@ export default function configureStore (additionalInitialState = {}) {
   });
 
   let sequencers = {
-    '6_0': create_default_sequencer('6_0', 'BassSequencer'),
-    '6_1': create_default_sequencer('6_1', 'KickSequencer'),
-    '6_2': create_default_sequencer('6_2', 'HiHatSequencer'),
-    '6_3': create_default_sequencer('6_3', 'LeadPopSequencer'),
-    '6_4': create_default_sequencer('6_4', 'ChimeSequencer'),
-    '6_5': create_default_sequencer('6_5', 'SfxSequencer'),
-    //'4_0': create_default_sequencer('4_0', 'ChordProgSequencer'),
-    //'4_1': create_default_sequencer('4_1', 'ChordProgSequencer'),
-    //'4_2': create_default_sequencer('4_2', 'ChordProgSequencer'),
-    //'4_3': create_default_sequencer('4_3', 'ChordProgSequencer'),
-    'level_4': create_default_sequencer('level_4', 'ChordProgSequencer'),
-    '2_0': create_default_sequencer('2_0', 'KalimbaSequencer'),
-    '2_1': create_default_sequencer('2_1', 'OrganicPercSequencer')
+    '6_0': create_owa_sequencer('6_0', 'BassSequencer'),
+    '6_1': create_owa_sequencer('6_1', 'KickSequencer'),
+    '6_2': create_owa_sequencer('6_2', 'HiHatSequencer'),
+    '6_3': create_owa_sequencer('6_3', 'LeadPopSequencer'),
+    '6_4': create_owa_sequencer('6_4', 'ChimeSequencer'),
+    '6_5': create_owa_sequencer('6_5', 'SfxSequencer'),
+    //'4_0': create_owa_sequencer('4_0', 'ChordProgSequencer'),
+    //'4_1': create_owa_sequencer('4_1', 'ChordProgSequencer'),
+    //'4_2': create_owa_sequencer('4_2', 'ChordProgSequencer'),
+    //'4_3': create_owa_sequencer('4_3', 'ChordProgSequencer'),
+    'level_4': create_owa_sequencer('level_4', 'ChordProgSequencer'),
+    '2_0': create_owa_sequencer('2_0', 'KalimbaSequencer'),
+    '2_1': create_owa_sequencer('2_1', 'OrganicPercSequencer')
+  };
+
+  sequencers['6_2'].midiName = 'spinny-pluck_L6_hats';
+  sequencers['6_2'].level2Props = {
+    'midiName': 'spinny-pluck_L2_hats'
   };
 
   sequencers['2_0'].numBeats = 8;
@@ -132,12 +135,14 @@ export default function configureStore (additionalInitialState = {}) {
   sequencers.level_4.bufSequence = [
     'spinny-pluck_L4_chords-1'
   ];
-  sequencers.level_4.level2BufSequence = [
-    'spinny-pluck_L2_chords-1',
-    'spinny-pluck_L2_chords-2',
-    'spinny-pluck_L2_chords-3',
-    'spinny-pluck_L2_chords-4',
-  ];
+  sequencers.level_4.level2Props = {
+    bufSequence: [
+      'spinny-pluck_L2_chords-1',
+      'spinny-pluck_L2_chords-2',
+      'spinny-pluck_L2_chords-3',
+      'spinny-pluck_L2_chords-4',
+    ]
+  };
 
   //['4_0', '4_1', '4_2', '4_3'].forEach(function (seqId) {
     //let numBeats = 8;

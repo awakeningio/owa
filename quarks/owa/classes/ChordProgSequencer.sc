@@ -49,7 +49,7 @@ ChordProgSequencer : AwakenedSequencer {
 
   handleStateChange {
     super.handleStateChange();
-    Pdefn('ChordProgBufName').quant = currentState.playQuant;
+    //Pdefn('ChordProgBufName').quant = currentState.playQuant;
     Pdefn('ChordProgBufName', Pseq(currentState.bufSequence, inf));
   }
 }

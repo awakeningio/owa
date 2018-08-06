@@ -5,3 +5,17 @@ html, body {
 body {
   font-family: sans-serif;
 }
+
+.images {
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+    box-sizing: inherit;
+    margin-right: 1em;
+    @media (min-width: 40em) {
+    main {
+    width: 80%;
+  }
+}
+}
+

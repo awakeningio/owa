@@ -128,7 +128,14 @@ OWAController {
       ["spinny-pluck_L2_chords-3 [2018-08-03 182410].wav",
       'spinny-pluck_L2_chords-3'],
       ["spinny-pluck_L2_chords-4 [2018-08-03 182410].wav",
-      'spinny-pluck_L2_chords-4']
+      'spinny-pluck_L2_chords-4'],
+      [
+        "spinny-pluck_L2-reveal.wav",
+        'spinny-pluck_L2-reveal'
+      ], [
+        "spinny-pluck_reveal-55bar.wav",
+        'spinny-pluck_reveal'
+      ]
     ], ({
       // when buffers are done loading
       // load midi files

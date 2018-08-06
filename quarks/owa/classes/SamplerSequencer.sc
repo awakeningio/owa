@@ -9,28 +9,41 @@
  **/
 
 SamplerSequencer : AwakenedSequencer {
-  var pat,
-    patchSynth;
+  var synthdefsForBufNames;
 
   initPatch {
-    patch = Patch("cs.sfx.PlayBuf", (
-      buf: bufManager.bufs[\subtle_kick_01],
-      convertToStereo: 1,
-      attackTime: 0.0,
-      releaseTime: 0.0,
-      gate: 0
-    ));
-    patch.prepareForPlay();
-    patchSynth = patch.asSynthDef().add();
-    ^patch;
+    synthdefsForBufNames = ();
+
+    // create a synthdef for each possible buf
+    currentState.bufNames.do({
+      arg bufName;
+      var bufSym = bufName.asSymbol();
+
+      synthdefsForBufNames[bufSym] = Patch("cs.sfx.PlayBuf", (
+        buf: bufManager.bufs[bufSym],
+        gate: KrNumberEditor(1, \gate),
+        attackTime: KrNumberEditor(0.0, [0.0, 200.0]),
+        releaseTime: KrNumberEditor(0.0, [0.0, 20.0]),
+        isSustained: 1
+      )).asSynthDef().add();
+    });
+
   }
 
   initStream {
-    pat = Pbind(
-      \instrument, patchSynth.name,
-      \gate, 1,
-      [\midinote, \dur], Pseq(bufManager.midiSequences[\subtle_kick], inf)
-    );
-    ^pat.asStream();
+
+    // when the stream is created, use the current `bufName` to select
+    // the proper synthdef.
+
+    ^Pbind(
+      \attackTime, currentState.attackTime,
+      \releaseTime, currentState.releaseTime,
+      \amp, currentState.amp,
+      \instrument, synthdefsForBufNames[currentState.bufName.asSymbol()].name,
+      \midinote, Pseq(["C3".notemidi()]),
+      \dur, currentState.numBeats,
+      \sendGate, true
+    ).asStream();
   }
+
 }

@@ -20,8 +20,15 @@ const l6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
 
 const baseTransitionSequencer = create_default_sequencer(
   'trans',
-  'TransitionSequencer'
+  'SamplerSequencer'
 );
+
+baseTransitionSequencer.bufNames = [
+  'spinny-pluck_idle-L6',
+  'spinny-pluck_L6-L4',
+  'spinny-pluck_L4-L2',
+  'spinny-pluck_L2-reveal'
+];
 
 const spinnyPluckIdleTransitionSequencer = Object.assign(
   {},
@@ -29,7 +36,7 @@ const spinnyPluckIdleTransitionSequencer = Object.assign(
   {
     bufName: 'spinny-pluck_idle-L6',
     attackTime: 120.0/60.0 * 6,
-    releaseTime: 0.0,
+    releaseTime: 4.0,
     numBeats: 15 * 4,
     amp: 1.5
   }
@@ -42,7 +49,8 @@ const spinnyPluckL4TransitionSequencer = Object.assign(
     bufName: 'spinny-pluck_L6-L4',
     attackTime: 0.01,
     releaseTime: 0.01,
-    numBeats: 5 * 4
+    numBeats: 5 * 4,
+    amp: 1.0
   }
 );
 
@@ -53,7 +61,20 @@ const spinnyPluckL2TransitionSequencer = Object.assign(
     bufName: 'spinny-pluck_L4-L2',
     attackTime: 0.01,
     releaseTime: 0.01,
-    numBeats: 5 * 4
+    numBeats: 5 * 4,
+    amp: 1.0
+  }
+);
+
+const spinnyPluckRevealTransitionSequencer = Object.assign(
+  {},
+  baseTransitionSequencer,
+  {
+    bufName: 'spinny-pluck_L2-reveal',
+    attackTime: 0.01,
+    releaseTime: 0.01,
+    numBeats: 7 * 4,
+    amp: 1.0
   }
 );
 

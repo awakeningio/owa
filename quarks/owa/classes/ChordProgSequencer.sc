@@ -9,7 +9,9 @@
  **/
 
 ChordProgSequencer : AwakenedSequencer {
-  var synthdefsForBufNames;
+  var synthdefsForBufNames,
+    bufNameProxy;
+
   initPatch {
     synthdefsForBufNames = ();
     currentState.bufNames.do({
@@ -26,14 +28,16 @@ ChordProgSequencer : AwakenedSequencer {
       synthdefsForBufNames[bufSym] = patch.asSynthDef().add();
     });
 
+    bufNameProxy = PatternProxy.new;
+    bufNameProxy.quant = currentState.playQuant;
+
   }
   initStream {
 
-    Pdefn('ChordProgBufName').quant = currentState.playQuant;
-    Pdefn('ChordProgBufName', Pseq(currentState.bufSequence, inf));
+    bufNameProxy.source = Pseq(currentState.bufSequence, inf);
 
     ^Pbind(
-      \bufName, Pdefn('ChordProgBufName'),
+      \bufName, bufNameProxy,
       \instrument, Pfunc({
         arg event;
 
@@ -49,7 +53,6 @@ ChordProgSequencer : AwakenedSequencer {
 
   handleStateChange {
     super.handleStateChange();
-    //Pdefn('ChordProgBufName').quant = currentState.playQuant;
-    Pdefn('ChordProgBufName', Pseq(currentState.bufSequence, inf));
+    bufNameProxy.source = Pseq(currentState.bufSequence, inf);
   }
 }

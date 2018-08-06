@@ -17,6 +17,7 @@ const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
 const getSequencers = state => state.sequencers;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
+const getRevealReady = state => state.revealReady;
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
@@ -39,17 +40,28 @@ export const getLevel4Sequencers = createSelector(
     let level4SequencersById = _.pick(sequencers, level4SequencerIds);
     return _.values(level4SequencersById);
   }
-)
+);
+
+export const getLevel2Sequencers = createSelector(
+  getSequencers,
+  function (sequencers) {
+    let level2SequencerIds = ['2_0', '2_1'];
+    let level2SequencersById = _.pick(sequencers, level2SequencerIds);
+    return _.values(level2SequencersById);
+  }
+);
 
 export const getSCState = createDeepEqualSelector(
   getTempo,
   getSessionPhase,
   getSessionPhaseDurations,
   awakeningSequencers.selectors.getSCSequencers,
-  (tempo, sessionPhase, sessionPhaseDurations, sequencers) => ({
+  getRevealReady,
+  (tempo, sessionPhase, sessionPhaseDurations, sequencers, revealReady) => ({
     tempo,
     sessionPhase,
     sessionPhaseDurations,
-    sequencers
+    sequencers,
+    revealReady
   })
 );

@@ -9,7 +9,7 @@
  **/
 import { combineReducers } from 'redux';
 
-import { getLevel6Sequencers } from '../selectors';
+import { getLevel6Sequencers, getLevel2Sequencers } from '../selectors';
 
 import soundReady from './soundReady';
 import sequencers from './sequencers';
@@ -20,6 +20,7 @@ import fadecandyConnection from './fadecandyConnection';
 import tempo from './tempo';
 import level4Ready from './level4Ready';
 import level2Ready from './level2Ready';
+import revealReady from './revealReady';
 import sessionPhaseDurations from './sessionPhaseDurations';
 
 var combined = combineReducers({
@@ -37,13 +38,19 @@ export default function (state, action) {
     newSequencers,
     newLevel4Ready,
     newLevel2Ready,
+    newRevealReady,
     newSessionPhase;
   prevSessionPhase = state.sessionPhase;
   newState = combined(state, action);
   if (state !== newState) {
     state = Object.assign({}, state, newState);
   }
-  newSessionPhase = sessionPhase(state.sessionPhase, action, state.level4Ready, state.level2Ready);
+  newSessionPhase = sessionPhase(
+    state.sessionPhase,
+    action,
+    state.level4Ready,
+    state.level2Ready
+  );
   if (newSessionPhase !== state.sessionPhase) {
     state = Object.assign({}, state, {sessionPhase: newSessionPhase});
   }
@@ -80,6 +87,15 @@ export default function (state, action) {
   );
   if (newLevel2Ready !== state.level2Ready) {
     state = Object.assign({}, state, {level2Ready: newLevel2Ready});
+  }
+  newRevealReady = revealReady(
+    state.revealReady,
+    action,
+    getLevel2Sequencers(state),
+    state.sessionPhase
+  );
+  if (newRevealReady !== state.revealReady) {
+    state = Object.assign({}, state, { revealReady: newRevealReady });
   }
   return state;
 }

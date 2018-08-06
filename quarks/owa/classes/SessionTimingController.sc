@@ -31,7 +31,8 @@ SessionTimingController {
     clockController = params.clockController;
 
     lastState = (
-      sessionPhase: nil
+      sessionPhase: nil,
+      revealReady: false
     );
 
     store.subscribe({
@@ -52,13 +53,23 @@ SessionTimingController {
     //"lastState.sessionPhase:".postln;
     //lastState.sessionPhase.postln;
 
-    if (state.sessionPhase != lastState.sessionPhase, {
+    if (
+      (
+        state.sessionPhase != lastState.sessionPhase
+      ).or(
+        state.revealReady != lastState.revealReady
+      ), {
       lastState.sessionPhase = state.sessionPhase;
+      lastState.revealReady = state.revealReady;
 
       // if we should automatically transition
       if (
         autoTransitionSessionPhases.includes(
           state.sessionPhase.asSymbol()
+        ).or(
+          (
+            state.sessionPhase == "PLAYING_2"
+          ).and(state.revealReady == true)
         ),
       {
         this.schedule_transition_to_next_phase();

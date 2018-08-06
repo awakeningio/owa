@@ -1,4 +1,8 @@
-import { SESSION_PHASES, LEVEL_PLAYBACK_TYPE } from './constants'
+import {
+  SESSION_PHASES,
+  NEXT_SESSION_PHASES,
+  LEVEL_PLAYBACK_TYPE
+} from './constants'
 import awakeningSequencers from 'awakening-sequencers';
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 /**
@@ -55,3 +59,28 @@ export function create_owa_sequencer (sequencerId, sequencerClass) {
 
   return seq;
 }
+
+export function createPhaseEndQuant (sessionPhase, sessionPhaseDurations) {
+  return [
+    4,
+    1 + sessionPhaseDurations[sessionPhase]
+  ];
+}
+
+export function createPhaseStartQuant (sessionPhase, sessionPhaseDurations) {
+  return [
+    4,
+    sessionPhaseDurations[sessionPhase]
+  ];
+}
+
+export function createNextPhaseEndQuant (sessionPhase, sessionPhaseDurations) {
+  return [
+    4,
+    1 + sessionPhaseDurations[sessionPhase]
+    + sessionPhaseDurations[
+      NEXT_SESSION_PHASES[sessionPhase]
+    ],
+  ];
+}
+

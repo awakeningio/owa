@@ -10,13 +10,63 @@
 
 import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
-import { create_segmentId } from '../models'
-import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants'
+import {
+  create_segmentId,
+  createPhaseEndQuant,
+  createPhaseStartQuant,
+  createNextPhaseEndQuant
+} from '../models'
+import { SESSION_PHASES } from '../constants'
 
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 const l6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
+
+const baseRevealSequencer = create_default_sequencer(
+  'reveal',
+  'SamplerSequencer'
+);
+
+baseRevealSequencer.bufNames = [
+  'spinny-pluck_reveal'
+];
+
+const spinnyPluckRevealSequencer = Object.assign(
+  {},
+  baseRevealSequencer,
+  {
+    bufName: 'spinny-pluck_reveal',
+    attackTime: 0.0,
+    releaseTime: 0.0,
+    numBeats: 55 * 4,
+    amp: 1.0
+  }
+);
+
+function reveal (
+  state = spinnyPluckRevealSequencer,
+  action,
+  sessionPhase,
+  sessionPhaseDurations
+) {
+  switch (action.type) {
+    case actionTypes.SESSION_PHASE_ADVANCED:
+      if (action.payload.phase === SESSION_PHASES.TRANS_ADVICE) {
+        return Object.assign({}, state, {
+          playingState: PLAYING_STATES.QUEUED,
+          playQuant: createPhaseEndQuant(
+            action.payload.phase,
+            sessionPhaseDurations
+          )
+        });
+      }
+      return state;
+    
+    default:
+      return state;
+  }
+}
 
 const baseTransitionSequencer = create_default_sequencer(
   'trans',
@@ -78,30 +128,6 @@ const spinnyPluckRevealTransitionSequencer = Object.assign(
   }
 );
 
-function createPhaseEndQuant (sessionPhase, sessionPhaseDurations) {
-  return [
-    4,
-    1 + sessionPhaseDurations[sessionPhase]
-  ];
-}
-
-function createPhaseStartQuant (sessionPhase, sessionPhaseDurations) {
-  return [
-    4,
-    sessionPhaseDurations[sessionPhase]
-  ];
-}
-
-function createNextPhaseEndQuant (sessionPhase, sessionPhaseDurations) {
-  return [
-    4,
-    1 + sessionPhaseDurations[sessionPhase]
-    + sessionPhaseDurations[
-      NEXT_SESSION_PHASES[sessionPhase]
-    ],
-  ];
-}
-
 function trans (
   state = spinnyPluckIdleTransitionSequencer,
   action,
@@ -133,6 +159,12 @@ function trans (
 
           case SESSION_PHASES.QUEUE_TRANS_2:
             return Object.assign({}, spinnyPluckL2TransitionSequencer, {
+              playingState: PLAYING_STATES.QUEUED,
+              playQuant
+            });
+
+          case SESSION_PHASES.QUEUE_TRANS_ADVICE:
+            return Object.assign({}, spinnyPluckRevealTransitionSequencer, {
               playingState: PLAYING_STATES.QUEUED,
               playQuant
             });
@@ -387,7 +419,16 @@ export default function sequencers (
     action
   );
 
-  // trans sequencer has its own reducer
+  let newReveal = reveal(
+    state.reveal,
+    action,
+    sessionPhase,
+    sessionPhaseDurations
+  );
+  if (newReveal !== state.reveal) {
+    state = Object.assign({}, state, {reveal: newReveal});
+  }
+
   let newTrans = trans(
     state.trans,
     action,

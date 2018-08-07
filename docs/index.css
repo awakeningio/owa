@@ -5,3 +5,34 @@ html, body {
 body {
   font-family: sans-serif;
 }
+
+h1 {
+  text-align: center;
+}
+
+img {
+    height: auto;
+    width: 100%;
+    vertical-align: middle;
+    box-sizing: inherit;
+}
+
+.column {
+  float: left;
+  width: 33%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+ @media (min-width: 40em) {
+    main {
+    width: 100%;
+  }
+}
+

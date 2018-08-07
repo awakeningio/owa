@@ -14,7 +14,9 @@ LeadPopSequencer : AwakenedSequencer {
   initStream {
     var pat;
 
-    patch = Patch("cs.percussion.Impulsive");
+    patch = Patch("cs.percussion.Impulsive", (
+      makeStereo: 1
+    ));
     synthdef = patch.asSynthDef().add();
     pat = Pbind(
       //\type, \instr,

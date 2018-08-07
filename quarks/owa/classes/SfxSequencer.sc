@@ -27,7 +27,8 @@ SfxSequencer : AwakenedSequencer {
       \instrument, synthdef.name,
       \midinote, Pseq(["C3".notemidi()], inf),
       \dur, Pseq([currentState.numBeats], inf),
-      \legato, 1.0
+      \legato, 1.0,
+      \amp, 3.0.dbamp()
     ).asStream();
   }
 }

@@ -11,9 +11,14 @@
 import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
 import SegmentLightingController from './SegmentLightingController';
-import IdleModeAnimation from "./SpinnyPluckEndingTransitionAnimation.js";
+import IdleModeAnimation from "./SpinnyPluck_EerieIdleModeAnimation.js";
+import Trans6Animation from "./SpinnyPluckIdle-L6TransitionAnimation";
 
-import { SEGMENTID_TO_PIXEL_RANGE, LEVELID_TO_PIXEL_RANGE } from './constants';
+import {
+  SEGMENTID_TO_PIXEL_RANGE,
+  LEVELID_TO_PIXEL_RANGE,
+  SESSION_PHASES
+} from './constants';
 import TWEEN from '@tweenjs/tween.js';
 
 import createOPCStrand from "opc/strand"
@@ -73,11 +78,13 @@ class LightingController extends ControllerWithStore {
       this.levelPixels[levelId] = pixels;
     });
 
-    this.idleModeAnimation = new IdleModeAnimation(this.store, {
+    let params = {
       pixels: this.pixels,
       levelPixels: this.levelPixels,
       segmentPixels: this.segmentPixels
-    });
+    };
+
+    this.idleModeAnimation = new IdleModeAnimation(this.store, params);
 
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);
@@ -86,7 +93,10 @@ class LightingController extends ControllerWithStore {
     if (!DISABLE_LIGHTING) {
       setInterval(this.tick.bind(this), 50);
     }
+
+
   }
+
 
   tick () {
     TWEEN.update();

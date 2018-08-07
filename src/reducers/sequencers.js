@@ -100,7 +100,7 @@ const spinnyPluckL4TransitionSequencer = Object.assign(
     attackTime: 0.01,
     releaseTime: 0.01,
     numBeats: 5 * 4,
-    amp: 1.0
+    amp: 0.7
   }
 );
 
@@ -112,7 +112,7 @@ const spinnyPluckL2TransitionSequencer = Object.assign(
     attackTime: 0.01,
     releaseTime: 0.01,
     numBeats: 5 * 4,
-    amp: 1.0
+    amp: 0.7
   }
 );
 
@@ -124,7 +124,7 @@ const spinnyPluckRevealTransitionSequencer = Object.assign(
     attackTime: 0.01,
     releaseTime: 0.01,
     numBeats: 7 * 4,
-    amp: 1.0
+    amp: 0.7
   }
 );
 

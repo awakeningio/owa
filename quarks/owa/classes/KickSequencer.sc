@@ -19,7 +19,7 @@ KickSequencer : AwakenedSequencer {
       convertToStereo: 1,
       attackTime: 0.0,
       releaseTime: 0.0,
-      amp: 3.0.dbamp(),
+      amp: 1.0.dbamp(),
       gate: 1
     ));
     synthdef = patch.asSynthDef().add();

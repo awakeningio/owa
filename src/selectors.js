@@ -19,10 +19,51 @@ const getSequencers = state => state.sequencers;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getRevealReady = state => state.revealReady;
 
+//const getSegments = state => state.segments;
+
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
   isEqual
 );
+//const level6SegmentIds = [];
+//var i;
+//for (i = 0; i < 6; i++) {
+  //level6SegmentIds.push(create_segmentId('level_6', i));
+//}
+
+//const level4SegmentIds = [];
+//for (i = 0; i < 4; i++) {
+  //level4SegmentIds.push(create_segmentId('level_4', i));
+//}
+
+//const level2SegmentIds = [];
+//for (i = 0; i < 2; i++) {
+  //level2SegmentIds.push(create_segmentId('level_2', i));
+//}
+
+//export const getLevel6Segments = createSelector(
+  //getSegments,
+  //function (segments) {
+    //let level6SegmentsById = _.pick(segments.byId, level6SegmentIds);
+    //return _.values(level6SegmentsById);
+  //}
+//);
+
+//export const getLevel4Segments = createSelector(
+  //getSegments,
+  //function (segments) {
+    //let level4SegmentsById = _.pick(segments.byId, level4SegmentIds);
+    //return _.values(level4SegmentsById);
+  //}
+//)
+
+//export const getLevel2Segments = createSelector(
+  //getSegments,
+  //function (segments) {
+    //let level2SegmentsById = _.pick(segments.byId, level2SegmentIds);
+    //return _.values(level2SegmentsById);
+  //}
+//);
 
 export const getLevel6Sequencers = createSelector(
   getSequencers,

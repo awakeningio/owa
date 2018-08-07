@@ -178,20 +178,32 @@ export default function configureStore (additionalInitialState = {}) {
   segment.sequencerProps = {
     bufName: 'spinny-pluck_L4_chords-1'
   };
+  segment.level2SequencerProps = {
+    bufName: 'spinny-pluck_L2_chords-1'
+  };
   segment = segmentsById[create_segmentId('level_4', 1)];
   segment.sequencerId = 'level_4';
   segment.sequencerProps = {
     bufName: 'spinny-pluck_L4_chords-2'
+  };
+  segment.level2SequencerProps = {
+    bufName: 'spinny-pluck_L2_chords-2'
   };
   segment = segmentsById[create_segmentId('level_4', 2)];
   segment.sequencerId = 'level_4';
   segment.sequencerProps = {
     bufName: 'spinny-pluck_L4_chords-3'
   };
+  segment.level2SequencerProps = {
+    bufName: 'spinny-pluck_L2_chords-3'
+  };
   segment = segmentsById[create_segmentId('level_4', 3)];
   segment.sequencerId = 'level_4';
   segment.sequencerProps = {
     bufName: 'spinny-pluck_L4_chords-4'
+  };
+  segment.level2SequencerProps = {
+    bufName: 'spinny-pluck_L2_chords-4'
   };
 
   segmentsById[create_segmentId('level_2', 0)].sequencerId = '2_0';

@@ -86,7 +86,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
 
     if (
       sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
-      && sequencer.beat !== this.lastState.sequencer.beat
+      && sequencer.event !== this.lastState.sequencer.event
     ) {
       let event = sequencer.event;
       if (event.midinote !== 'rest') {

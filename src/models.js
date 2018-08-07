@@ -49,8 +49,8 @@ export function get_playing_levelId_for_sessionPhase (sessionPhase) {
   }[sessionPhase] || null;
 }
 
-export function create_owa_sequencer (sequencerId, sequencerClass) {
-  let seq = create_default_sequencer(sequencerId, sequencerClass);
+export function create_owa_sequencer (sequencerId, type) {
+  let seq = create_default_sequencer(sequencerId, type);
 
   // automatically change these properties of the sequencer when the
   // sessionPhase changes.

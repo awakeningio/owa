@@ -240,6 +240,7 @@ function l6Sequencer (
           );
         } else if (
           // we are currently playing level 6
+          // TODO: when just queued, second button will not respond.
           sessionPhase === SESSION_PHASES.PLAYING_6
         ) {
           // queue if stopped

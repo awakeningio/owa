@@ -14,6 +14,7 @@ import awakeningSequencers from 'awakening-sequencers';
 import ControllerWithStore from './ControllerWithStore';
 import SegmentQueuedAnimation from './SegmentQueuedAnimation';
 import SegmentPlayingAnimation from './SegmentPlayingAnimation';
+import { SESSION_PHASES } from './constants';
 
 /**
  *  @class        SegmentLightingController
@@ -36,44 +37,113 @@ class SegmentLightingController extends ControllerWithStore {
     });
     
     this.lastState = {
-      sequencer
+      sequencer,
+      segment
     };
   }
 
   tick () {
-    //this.queuedAnimation.tick();
-    if (this.lastState.sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
-      this.playingAnimation.tick();
+    let sequencer = this.lastState.sequencer;
+    let segment = this.lastState.segment;
+
+    if (sequencer.sequencerId === 'level_4') {
+      if (
+        sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
+        && sequencer.event.bufName === segment.sequencerProps.bufName
+      ) {
+        this.playingAnimation.tick();
+      }
+    } else {
+      if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
+        this.playingAnimation.tick();
+      }
     }
+
   }
 
   handle_state_change () {
     let state = this.store.getState();
     let segment = state.segments.byId[this.params.segmentId];
     let sequencer = state.sequencers[segment.sequencerId];
+    let sessionPhase = state.sessionPhase;
 
-    if (sequencer.playingState !== this.lastState.sequencer.playingState) {
-      this.lastState.sequencer = sequencer;
+    if (sequencer.sequencerId === 'level_4') {
+      if (
+        sequencer.playingState !== this.lastState.sequencer.playingState
+        || sequencer.event.bufName !== this.lastState.sequencer.event.bufName
+        || sequencer.bufSequence !== this.lastState.sequencer.bufSequence
+      ) {
+        this.lastState.sequencer = sequencer;
+        let ourSequencerProps;
+        switch (sessionPhase) {
+          case SESSION_PHASES.QUEUE_TRANS_4:
+          case SESSION_PHASES.TRANS_4:
+          case SESSION_PHASES.PLAYING_4:
+            ourSequencerProps = segment.sequencerProps;
+            break;
 
-      // playing state changed, animation should change
-      switch (sequencer.playingState) {
-        case awakeningSequencers.PLAYING_STATES.QUEUED:
-        case awakeningSequencers.PLAYING_STATES.REQUEUED:
-          this.playingAnimation.stop();
-          this.queuedAnimation.start();
-          break;
+          case SESSION_PHASES.QUEUE_TRANS_2:
+          case SESSION_PHASES.TRANS_2:
+          case SESSION_PHASES.PLAYING_2:
+            ourSequencerProps = segment.level2SequencerProps;
+            break;
+          
+          default:
+            ourSequencerProps = {bufName: null};
+            break;
+        }
+        let ourBufNameIndex = sequencer.bufSequence.indexOf(
+          ourSequencerProps.bufName
+        );
+        let currentBufNameIndex = sequencer.bufSequence.indexOf(
+          sequencer.event.bufName
+        );
 
-        case awakeningSequencers.PLAYING_STATES.PLAYING:
+        // TODO: playback animations don't work on l2
+
+        // if our portion of the chord prog is playing
+        if (sequencer.event.bufName === ourSequencerProps.bufName) {
           this.playingAnimation.start();
           this.queuedAnimation.stop();
-          break;
-        
-        default:
+        } else if (
+          // our portion of the chord prog is next
+          ourBufNameIndex > -1
+          && ourBufNameIndex === (
+            (currentBufNameIndex + 1) % sequencer.bufSequence.length
+          )
+        ) {
+          this.playingAnimation.stop();
+          this.queuedAnimation.start();
+        } else {
           this.playingAnimation.stop();
           this.queuedAnimation.stop();
+        }
       }
+    } else {
+      if (sequencer.playingState !== this.lastState.sequencer.playingState) {
+        this.lastState.sequencer = sequencer;
 
+        // playing state changed, animation should change
+        switch (sequencer.playingState) {
+          case awakeningSequencers.PLAYING_STATES.QUEUED:
+          case awakeningSequencers.PLAYING_STATES.REQUEUED:
+            this.playingAnimation.stop();
+            this.queuedAnimation.start();
+            break;
+
+          case awakeningSequencers.PLAYING_STATES.PLAYING:
+            this.playingAnimation.start();
+            this.queuedAnimation.stop();
+            break;
+          
+          default:
+            this.playingAnimation.stop();
+            this.queuedAnimation.stop();
+        }
+
+      }
     }
+
   }
 }
 

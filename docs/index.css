@@ -4,6 +4,7 @@ html, body {
 
 body {
   font-family: sans-serif;
+  padding-top: 4rem;
 }
 
 h1 {
@@ -24,21 +25,36 @@ video {
     box-sizing: inherit;
 }
 
-.column {
-  float: left;
-  width: 33%;
-  padding: 5px;
+div.person-with-model img {
+  display: inline;
+  /*width: 48%;*/
+}
+img.owa-model {
+  width: 24%;
+}
+img.person {
+  width: 24%;
 }
 
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
+.row {
+  margin-bottom: 4rem;
 }
 
- @media (min-width: 40em) {
-    main {
-    width: 100%;
-  }
-}
+/*.column {*/
+  /*float: left;*/
+  /*width: 33%;*/
+  /*padding: 5px;*/
+/*}*/
+
+/*.row::after {*/
+  /*content: "";*/
+  /*clear: both;*/
+  /*display: table;*/
+/*}*/
+
+ /*@media (min-width: 40em) {*/
+    /*main {*/
+    /*width: 100%;*/
+  /*}*/
+/*}*/
 

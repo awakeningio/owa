@@ -20,6 +20,8 @@ import {
   create_owa_sequencer
 } from './models'
 
+import { SESSION_PHASES } from './constants';
+
 import logger from './logging'
 
 import abletonlinkRedux from 'abletonlink-redux'
@@ -33,17 +35,17 @@ if (process.env.NODE_ENV === 'development') {
    **/
   const stateTransformer = function (state) {
     let toPrint = {};
-    toPrint.sequencers = {};
-    Object.keys(state.sequencers).forEach(function (seqId) {
-      toPrint.sequencers[seqId] = _.pick(state.sequencers[seqId], [
-        'type',
-        'playingState',
-        'playQuant',
-        'stopQuant',
-        'event',
-        'bufSequence'
-      ])
-    });
+    toPrint.sequencers = state.sequencers;
+    //Object.keys(state.sequencers).forEach(function (seqId) {
+      //toPrint.sequencers[seqId] = _.pick(state.sequencers[seqId], [
+        //'type',
+        //'playingState',
+        //'playQuant',
+        //'stopQuant',
+        //'event',
+        //'bufSequence'
+      //])
+    //});
     toPrint.level4Ready = state.level4Ready;
     toPrint.level2Ready = state.level2Ready;
     toPrint.revealReady = state.revealReady;
@@ -102,8 +104,8 @@ export default function configureStore (additionalInitialState = {}) {
   };
 
   sequencers['6_2'].midiName = 'spinny-pluck_L6_hats';
-  sequencers['6_2'].level2Props = {
-    'midiName': 'spinny-pluck_L2_hats'
+  sequencers['6_2'].phaseProps[SESSION_PHASES.PLAYING_2] = {
+    midiName: 'spinny-pluck_L2_hats'
   };
 
   sequencers['2_0'].numBeats = 8;
@@ -136,7 +138,7 @@ export default function configureStore (additionalInitialState = {}) {
   sequencers.level_4.bufSequence = [
     'spinny-pluck_L4_chords-1'
   ];
-  sequencers.level_4.level2Props = {
+  sequencers.level_4.phaseProps[SESSION_PHASES.PLAYING_2] = {
     bufSequence: [
       'spinny-pluck_L2_chords-1',
       'spinny-pluck_L2_chords-2',
@@ -175,36 +177,20 @@ export default function configureStore (additionalInitialState = {}) {
 
   let segment = segmentsById[create_segmentId('level_4', 0)];
   segment.sequencerId = 'level_4';
-  segment.sequencerProps = {
-    bufName: 'spinny-pluck_L4_chords-1'
-  };
-  segment.level2SequencerProps = {
-    bufName: 'spinny-pluck_L2_chords-1'
-  };
+  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName = 'spinny-pluck_L4_chords-1';
+  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_2].bufName = 'spinny-pluck_L2_chords-1';
   segment = segmentsById[create_segmentId('level_4', 1)];
   segment.sequencerId = 'level_4';
-  segment.sequencerProps = {
-    bufName: 'spinny-pluck_L4_chords-2'
-  };
-  segment.level2SequencerProps = {
-    bufName: 'spinny-pluck_L2_chords-2'
-  };
+  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName = 'spinny-pluck_L4_chords-2';
+  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_2].bufName = 'spinny-pluck_L2_chords-2';
   segment = segmentsById[create_segmentId('level_4', 2)];
   segment.sequencerId = 'level_4';
-  segment.sequencerProps = {
-    bufName: 'spinny-pluck_L4_chords-3'
-  };
-  segment.level2SequencerProps = {
-    bufName: 'spinny-pluck_L2_chords-3'
-  };
+  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName = 'spinny-pluck_L4_chords-3';
+  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_2].bufName = 'spinny-pluck_L2_chords-3';
   segment = segmentsById[create_segmentId('level_4', 3)];
   segment.sequencerId = 'level_4';
-  segment.sequencerProps = {
-    bufName: 'spinny-pluck_L4_chords-4'
-  };
-  segment.level2SequencerProps = {
-    bufName: 'spinny-pluck_L2_chords-4'
-  };
+  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName = 'spinny-pluck_L4_chords-4';
+  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_2].bufName = 'spinny-pluck_L2_chords-4';
 
   segmentsById[create_segmentId('level_2', 0)].sequencerId = '2_0';
   segmentsById[create_segmentId('level_2', 1)].sequencerId = '2_1';

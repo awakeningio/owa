@@ -33,10 +33,21 @@ export function create_segmentId (levelId, segmentIndex) {
   return `${levelId}-segment_${segmentIndex}`;
 }
 
+function createPhaseProps () {
+  let phaseProps = {};
+  Object.keys(SESSION_PHASES).forEach(function (sessionPhase) {
+    phaseProps[sessionPhase] = {};
+  });
+  return phaseProps;
+}
+
 export function create_segment (levelId, segmentIndex) {
   let segment = {
     segmentId: create_segmentId(levelId, segmentIndex),
-    sequencerId: false
+    sequencerId: false,
+    // when associating this segment with some properties of its seq
+    sequencerProps: {},
+    phaseSequencerProps: createPhaseProps()
   };
   return segment;
 }
@@ -54,8 +65,7 @@ export function create_owa_sequencer (sequencerId, type) {
 
   // automatically change these properties of the sequencer when the
   // sessionPhase changes.
-  seq.level4Props = {};
-  seq.level2Props = {};
+  seq.phaseProps = createPhaseProps();
 
   return seq;
 }

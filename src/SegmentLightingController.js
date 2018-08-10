@@ -67,6 +67,10 @@ class SegmentLightingController extends ControllerWithStore {
     let sequencer = state.sequencers[segment.sequencerId];
     let sessionPhase = state.sessionPhase;
 
+    if (segment !== this.lastState.segment) {
+      this.lastState.segment = segment;
+    }
+
     if (sequencer.sequencerId === 'level_4') {
       if (
         sequencer.playingState !== this.lastState.sequencer.playingState
@@ -74,35 +78,15 @@ class SegmentLightingController extends ControllerWithStore {
         || sequencer.bufSequence !== this.lastState.sequencer.bufSequence
       ) {
         this.lastState.sequencer = sequencer;
-        let ourSequencerProps;
-        switch (sessionPhase) {
-          case SESSION_PHASES.QUEUE_TRANS_4:
-          case SESSION_PHASES.TRANS_4:
-          case SESSION_PHASES.PLAYING_4:
-            ourSequencerProps = segment.sequencerProps;
-            break;
-
-          case SESSION_PHASES.QUEUE_TRANS_2:
-          case SESSION_PHASES.TRANS_2:
-          case SESSION_PHASES.PLAYING_2:
-            ourSequencerProps = segment.level2SequencerProps;
-            break;
-          
-          default:
-            ourSequencerProps = {bufName: null};
-            break;
-        }
         let ourBufNameIndex = sequencer.bufSequence.indexOf(
-          ourSequencerProps.bufName
+          segment.sequencerProps.bufName
         );
         let currentBufNameIndex = sequencer.bufSequence.indexOf(
           sequencer.event.bufName
         );
 
-        // TODO: playback animations don't work on l2
-
         // if our portion of the chord prog is playing
-        if (sequencer.event.bufName === ourSequencerProps.bufName) {
+        if (sequencer.event.bufName === segment.sequencerProps.bufName) {
           this.playingAnimation.start();
           this.queuedAnimation.stop();
         } else if (

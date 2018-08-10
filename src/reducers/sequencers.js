@@ -136,6 +136,19 @@ function trans (
   sessionPhaseDurations
 ) {
   switch (action.type) {
+    case actionTypes.SESSION_PHASE_ADVANCED:
+      switch (action.payload.phase) {
+        case SESSION_PHASES.QUEUE_TRANS_ADVICE:
+          return Object.assign({}, spinnyPluckRevealTransitionSequencer, {
+            playingState: PLAYING_STATES.QUEUED,
+            playQuant: createPhaseEndQuant(
+              action.payload.phase,
+              sessionPhaseDurations
+            )
+          });
+        default:
+          return state;
+      }
     case actionTypes.BUTTON_PRESSED:
       // if this button pressed triggered a sessionPhase change
       if (prevSessionPhase !== sessionPhase) {
@@ -163,11 +176,6 @@ function trans (
               playQuant
             });
 
-          case SESSION_PHASES.QUEUE_TRANS_ADVICE:
-            return Object.assign({}, spinnyPluckRevealTransitionSequencer, {
-              playingState: PLAYING_STATES.QUEUED,
-              playQuant
-            });
           default:
             break;
         }
@@ -199,6 +207,13 @@ function l6Sequencer (
           sessionPhaseDurations
         )
       };
+      let queueStopProps = {
+        playingState: PLAYING_STATES.STOP_QUEUED,
+        stopQuant: createPhaseEndQuant(
+          action.payload.phase,
+          sessionPhaseDurations
+        )
+      };
 
       switch (action.payload.phase) {
         case SESSION_PHASES.TRANS_6:
@@ -224,6 +239,8 @@ function l6Sequencer (
             queueProps,
             state.phaseProps[SESSION_PHASES.PLAYING_2]
           );
+        case SESSION_PHASES.QUEUE_TRANS_ADVICE:
+          return Object.assign({}, state, queueStopProps);
         default:
           return state;
       }
@@ -290,7 +307,6 @@ function l6Sequencer (
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_4:
           case SESSION_PHASES.QUEUE_TRANS_2:
-          case SESSION_PHASES.QUEUE_TRANS_ADVICE:
             return Object.assign({}, state, queueStopProps);
           default:
             return state;
@@ -331,7 +347,14 @@ function chordProgSequencer (
               sessionPhaseDurations
             )
           }, state.phaseProps[SESSION_PHASES.PLAYING_2]);
-        
+        case SESSION_PHASES.QUEUE_TRANS_ADVICE:
+          return Object.assign({}, state, {
+            playingState: PLAYING_STATES.STOP_QUEUED,
+            stopQuant: createPhaseEndQuant(
+              action.payload.phase,
+              sessionPhaseDurations
+            )
+          });
         default:
           return state;
       }
@@ -397,7 +420,6 @@ function chordProgSequencer (
         };
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_2:
-          case SESSION_PHASES.QUEUE_TRANS_ADVICE:
             return Object.assign({}, state, queueStopProps);
           
           default:
@@ -419,6 +441,17 @@ function l2Sequencer (
   sessionPhaseDurations
 ) {
   switch (action.type) {
+    case actionTypes.SESSION_PHASE_ADVANCED:
+      switch (action.payload.phase) {
+        case SESSION_PHASES.QUEUE_TRANS_ADVICE:
+          // queue seq to stop for trans advice
+          return Object.assign({}, state, {
+            playingState: PLAYING_STATES.STOP_QUEUED,
+            stopQuant: createPhaseEndQuant(sessionPhase, sessionPhaseDurations)
+          });
+        default:
+          return state;
+      }
     case actionTypes.BUTTON_PRESSED:
       let segmentId = create_segmentId(
         action.payload.levelId,
@@ -453,29 +486,16 @@ function l2Sequencer (
           sessionPhase === SESSION_PHASES.PLAYING_2
         ) {
           // queue if stopped
-          return Object.assign(
-            {},
-            state,
-            {
-              playingState: PLAYING_STATES.QUEUED,
-              playQuant: [4, 1]
-            }
-          );
-        }
-      } else if (
-        // button was not for this sequencer but sessionPhase changed
-        sessionPhase !== prevSessionPhase
-      ) {
-        switch (sessionPhase) {
-          case SESSION_PHASES.QUEUE_TRANS_ADVICE:
-            // queue seq to stop for trans advice
-            return Object.assign({}, state, {
-              playingState: PLAYING_STATES.STOP_QUEUED,
-              stopQuant: createPhaseEndQuant(sessionPhase, sessionPhaseDurations)
-            });
-          
-          default:
-            return state;
+          if (state.playingState === PLAYING_STATES.STOPPED) {
+            return Object.assign(
+              {},
+              state,
+              {
+                playingState: PLAYING_STATES.QUEUED,
+                playQuant: [4, 1]
+              }
+            );
+          }
         }
       }
       return state;

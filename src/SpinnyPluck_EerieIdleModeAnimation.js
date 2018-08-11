@@ -258,6 +258,7 @@ class IdleModeAnimation extends ControllerWithStore {
           break;
         
         default:
+          this.stop();
           break;
       }
     }

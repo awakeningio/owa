@@ -8,16 +8,18 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
+import { performance } from 'perf_hooks';
+import logger from './logging';
 import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
 import SegmentLightingController from './SegmentLightingController';
 import IdleModeAnimation from "./SpinnyPluck_EerieIdleModeAnimation.js";
-import Trans6Animation from "./SpinnyPluckIdle-L6TransitionAnimation";
+//import Trans6Animation from "./SpinnyPluckIdle-L6TransitionAnimation";
 
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
-  SESSION_PHASES
+  //SESSION_PHASES
 } from './constants';
 import TWEEN from '@tweenjs/tween.js';
 
@@ -25,6 +27,7 @@ import createOPCStrand from "opc/strand"
 import { getEnvAsNumber } from './utils';
 
 const DISABLE_LIGHTING = getEnvAsNumber('DISABLE_LIGHTING');
+const DEBUG_LIGHTING_PERFORMANCE = getEnvAsNumber('DEBUG_LIGHTING_PERFORMANCE');
 
 /**
  *  @class        LightingController
@@ -91,19 +94,44 @@ class LightingController extends ControllerWithStore {
 
     // start render loop
     if (!DISABLE_LIGHTING) {
-      setInterval(this.tick.bind(this), 50);
+      if (DEBUG_LIGHTING_PERFORMANCE) {
+        this.numTickMeasurements = 0;
+        this.tickCompletionTimeAvg = 0;
+        this.tickCompletionTimeSum = 0;
+        
+        this.render = () => this.tickDebug();
+
+        setInterval(() => {
+          logger.debug(
+            `LightingController: tickCompletionTimeAvg = ${this.tickCompletionTimeAvg}`
+          );
+        }, 5000);
+      } else {
+        this.render = () => this.tick();
+        
+      }
+      this.render();
     }
+
 
 
   }
 
-
   tick () {
-    TWEEN.update();
-    this.controllersToTick.forEach(function(controller) {
-      controller.tick();
-    });
+    TWEEN.update(performance.now());
     this.fcController.writePixels(this.pixels);
+    setImmediate(this.render);
+  }
+
+  tickDebug () {
+    let start = performance.now();
+    TWEEN.update(start);
+    this.fcController.writePixels(this.pixels);
+    let end = performance.now();
+    this.tickCompletionTimeSum += end - start;
+    this.numTickMeasurements += 1;
+    this.tickCompletionTimeAvg = this.tickCompletionTimeSum / this.numTickMeasurements;
+    setImmediate(this.render);
   }
 
   quit () {

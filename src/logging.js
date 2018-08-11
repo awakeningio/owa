@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
     format: winston.format.simple()
   });
   logger.add(new winston.transports.File({
-    level: 'info',
+    level: 'debug',
     //format: winston.format.simple(),
     filename: 'combined.log'
   }));

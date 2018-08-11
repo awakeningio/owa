@@ -10,7 +10,9 @@
 
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import _ from 'lodash';
+//import _ from 'lodash';
+//import awakeningSequencers from 'awakening-sequencers';
+//const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 import {
   create_simultaneous_level,
@@ -206,6 +208,9 @@ export default function configureStore (additionalInitialState = {}) {
     },
     sequencers
   }, additionalInitialState);
+
+  //initialState.sessionPhase = SESSION_PHASES.PLAYING_6;
+  //initialState.sequencers['6_1'].playingState = PLAYING_STATES.QUEUED;
 
   return createStoreWithMiddleware(rootReducer, initialState);
 }

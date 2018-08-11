@@ -23,4 +23,4 @@ fadecandy_config:
           [ 0, 96, 256, 24 ],
           [ 0, 120, 320, 24 ]
         ]
-
+nodejs_version: "8.x"

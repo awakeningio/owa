@@ -42,24 +42,24 @@ class SegmentLightingController extends ControllerWithStore {
     };
   }
 
-  tick () {
-    let sequencer = this.lastState.sequencer;
-    let segment = this.lastState.segment;
+  //tick () {
+    //let sequencer = this.lastState.sequencer;
+    //let segment = this.lastState.segment;
 
-    if (sequencer.sequencerId === 'level_4') {
-      if (
-        sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
-        && sequencer.event.bufName === segment.sequencerProps.bufName
-      ) {
-        this.playingAnimation.tick();
-      }
-    } else {
-      if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
-        this.playingAnimation.tick();
-      }
-    }
+    //if (sequencer.sequencerId === 'level_4') {
+      //if (
+        //sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
+        //&& sequencer.event.bufName === segment.sequencerProps.bufName
+      //) {
+        //this.playingAnimation.tick();
+      //}
+    //} else {
+      //if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
+        //this.playingAnimation.tick();
+      //}
+    //}
 
-  }
+  //}
 
   handle_state_change () {
     let state = this.store.getState();

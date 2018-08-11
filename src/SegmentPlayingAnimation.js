@@ -8,12 +8,13 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
+import { performance } from 'perf_hooks';
 import Color from 'color';
 import TWEEN from '@tweenjs/tween.js';
 
 import awakeningSequencers from 'awakening-sequencers';
 import ControllerWithStore from './ControllerWithStore';
-import { setPixelsColors, setPixelColors } from './Pixels';
+import { setPixelColors } from './Pixels';
 
 const dimLayerColor = Color.hsv([0.72 * 360, 20, 20]);
 const playingLayerColor = Color.hsv([0.72 * 360, 50, 50]);
@@ -48,11 +49,36 @@ class SegmentPlayingAnimation extends ControllerWithStore {
     let segment = state.segments.byId[this.params.segmentId];
     let sequencer = state.sequencers[segment.sequencerId];
     let duration = sequencer.numBeats / tempo * 60000.0;
+    let pixels = this.params.pixels;
 
+    this.animationState = {
+      pulseBrightness: 0.0
+    };
+
+    let i, progressPixel;
     this.phaseTween = new TWEEN.Tween({phase: 0.0})
       .to({phase: 1.0}, duration)
       .onUpdate((props) => {
-        this.animationState.phase = props.phase;
+        progressPixel = Math.round(props.phase * pixels.length);
+        // display progress phase
+        for (i = 0; i < progressPixel; i++) {
+          setPixelColors(
+            pixels,
+            i,
+            playingLayerColor.value(
+              50 + 50 * this.animationState.pulseBrightness
+            )
+          );
+        }
+        // fill remaining LEDs to same dim color
+        for (i = progressPixel; i < pixels.length; i++) {
+          setPixelColors(
+            pixels,
+            i,
+            dimLayerColor.value(20 + 80 * this.animationState.pulseBrightness)
+          );
+        }
+
       })
       .repeat(Infinity)
       .start();
@@ -98,7 +124,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
           .to({pulseBrightness: 0.0}, pulseDuration)
           .onUpdate((props) => {
             this.animationState.pulseBrightness = props.pulseBrightness;
-          }).start();
+          }).start(performance.now());
       }
 
 
@@ -127,18 +153,8 @@ class SegmentPlayingAnimation extends ControllerWithStore {
     }
     this.lastState.sequencer = sequencer;
   }
-  tick () {
-    var i,
-      pixels = this.params.pixels;
-
-    // fill all LEDs to same dim color
-    setPixelsColors(pixels, dimLayerColor.value(20 + 80 * this.animationState.pulseBrightness));
-
-    // display progress phase
-    for (i = 0; i < Math.round(this.animationState.phase * pixels.length); i++) {
-      setPixelColors(pixels, i, playingLayerColor.value(50 + 50 * this.animationState.pulseBrightness));
-    }
-  }
+  //tick () {
+  //}
 }
 
 export default SegmentPlayingAnimation;

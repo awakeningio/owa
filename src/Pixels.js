@@ -10,11 +10,9 @@
 
 export function setPixelsColors (pixels, color) {
   var i;
+  var colorArray = color.rgb().round().color;
   for (i = 0; i < pixels.length; i++) {
-    pixels.setPixel.apply(
-      pixels,
-      [i].concat(color.rgb().round().color)
-    );
+    pixels.setPixel(i, colorArray[0], colorArray[1], colorArray[2]);
   }
 }
 

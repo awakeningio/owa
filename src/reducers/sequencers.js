@@ -13,7 +13,6 @@ import * as actionTypes from '../actionTypes'
 import {
   create_segmentId,
   createPhaseEndQuant,
-  //createPhaseStartQuant,
   createNextPhaseEndQuant
 } from '../models'
 import { SESSION_PHASES } from '../constants'

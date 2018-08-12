@@ -11,21 +11,29 @@
 import configureStore from './configureStore'
 import SCController from './SCController'
 import * as actionTypes from "./actionTypes"
+import { sessionPhaseAdvanced } from './actions'
 import SoundController from "./SoundController"
+import { SESSION_PHASES } from './constants'
 
-import awakeningSequencers from 'awakening-sequencers'
+//import awakeningSequencers from 'awakening-sequencers'
 
 const store = configureStore();
 const scController = new SCController();
 store.dispatch({
   type: actionTypes.OWA_SOUND_BOOT_STARTED
 });
+let soundController;
 scController.boot().then(() => {
-  const soundController = new SoundController(store, {});
+  soundController = new SoundController(store, {});
 
   setTimeout(function () {
-    store.dispatch(awakeningSequencers.actions.sequencerQueued('2_1'));
+    store.dispatch(sessionPhaseAdvanced(
+        SESSION_PHASES.QUEUE_TRANS_ADVICE
+    ));
+    //store.dispatch(awakeningSequencers.actions.sequencerQueued('trans'));
   }, 7000);
 }).catch((err) => {
-  console.log(`ERROR while booting supercollider: ${err}`);
+  console.log(`ERROR while booting supercollider: ${err.stack}`);
+  soundController.quit();
+  scController.quit();
 });

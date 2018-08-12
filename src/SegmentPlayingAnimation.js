@@ -8,7 +8,6 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import { performance } from 'perf_hooks';
 import Color from 'color';
 import TWEEN from '@tweenjs/tween.js';
 
@@ -124,7 +123,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
           .to({pulseBrightness: 0.0}, pulseDuration)
           .onUpdate((props) => {
             this.animationState.pulseBrightness = props.pulseBrightness;
-          }).start(performance.now());
+          }).start();
       }
 
 

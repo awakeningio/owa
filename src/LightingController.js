@@ -118,14 +118,14 @@ class LightingController extends ControllerWithStore {
   }
 
   tick () {
-    TWEEN.update(performance.now());
+    TWEEN.update();
     this.fcController.writePixels(this.pixels);
     setImmediate(this.render);
   }
 
   tickDebug () {
     let start = performance.now();
-    TWEEN.update(start);
+    TWEEN.update();
     this.fcController.writePixels(this.pixels);
     let end = performance.now();
     this.tickCompletionTimeSum += end - start;

@@ -1,4 +1,5 @@
 /**
+ *
  *  @file       OWAController.js
  *
  *
@@ -47,8 +48,9 @@ class OWAController extends ControllerWithStore {
       this.lightingController = new LightingController(this.store);
       this.serialInputController = new SerialInputController(this.store);
     }).catch((err) => {
-      console.log(`ERROR while booting supercollider: ${err}`);
-    })
+      console.log(`ERROR while booting: ${err}`);
+      console.log(err.stack);
+    });
 
   }
 

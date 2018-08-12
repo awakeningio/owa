@@ -24,6 +24,13 @@
     owner: colin
     group: colin
     mode: 0600
+
 - name: beaglebone setup
   include_tasks: beaglebone.yml
   when: beaglebone
+
+- name: yarn installed
+  npm:
+    name: yarn
+    global: yes
+

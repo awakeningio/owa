@@ -38,12 +38,9 @@
     - install
 
 - name: update npm deps
-  shell: npm install
-  register: npm_finished
-  failed_when: '"ERR!" in npm_finished.stderr'
+  yarn:
+    path: "{{ owa_project_dir }}"
   when: owa_git.changed
-  args:
-    chdir: "{{owa_project_dir}}"
   tags:
     - deploy_code
 

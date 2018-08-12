@@ -13,6 +13,7 @@ import * as actionTypes from '../actionTypes'
 import {
   create_segmentId,
   createPhaseEndQuant,
+  createPhaseStartQuant,
   createNextPhaseEndQuant
 } from '../models'
 import { SESSION_PHASES } from '../constants'
@@ -54,7 +55,7 @@ function reveal (
       if (action.payload.phase === SESSION_PHASES.TRANS_ADVICE) {
         return Object.assign({}, state, {
           playingState: PLAYING_STATES.QUEUED,
-          playQuant: createPhaseEndQuant(
+          playQuant: createPhaseStartQuant(
             action.payload.phase,
             sessionPhaseDurations
           )
@@ -140,7 +141,7 @@ function trans (
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:
           return Object.assign({}, spinnyPluckRevealTransitionSequencer, {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseEndQuant(
+            playQuant: createPhaseStartQuant(
               action.payload.phase,
               sessionPhaseDurations
             )
@@ -151,7 +152,7 @@ function trans (
     case actionTypes.BUTTON_PRESSED:
       // if this button pressed triggered a sessionPhase change
       if (prevSessionPhase !== sessionPhase) {
-        let playQuant = createPhaseEndQuant(
+        let playQuant = createPhaseStartQuant(
           sessionPhase,
           sessionPhaseDurations
         );
@@ -201,7 +202,7 @@ function l6Sequencer (
       // props to queue this sequencer after transition (if needed)
       let queueProps = {
         playingState: PLAYING_STATES.QUEUED,
-        playQuant: createPhaseEndQuant(
+        playQuant: createPhaseStartQuant(
           action.payload.phase,
           sessionPhaseDurations
         )
@@ -341,7 +342,7 @@ function chordProgSequencer (
         case SESSION_PHASES.TRANS_2:
           return Object.assign({}, state, {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseEndQuant(
+            playQuant: createPhaseStartQuant(
               action.payload.phase,
               sessionPhaseDurations
             )

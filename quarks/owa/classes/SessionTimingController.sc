@@ -101,6 +101,6 @@ SessionTimingController {
           phase: nextPhase
         )
       ));
-    }, [4, phaseDuration - 1]);
+    }, [4, phaseDuration]);
   }
 }

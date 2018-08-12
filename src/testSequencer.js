@@ -11,13 +11,16 @@
 import configureStore from './configureStore'
 import SCController from './SCController'
 import * as actionTypes from "./actionTypes"
-import { sessionPhaseAdvanced } from './actions'
+import { buttonPressed } from './actions'
 import SoundController from "./SoundController"
 import { SESSION_PHASES } from './constants'
 
-//import awakeningSequencers from 'awakening-sequencers'
+import awakeningSequencers from 'awakening-sequencers'
 
-const store = configureStore();
+const store = configureStore({
+  level4Ready: true,
+  sessionPhase: SESSION_PHASES.PLAYING_6
+});
 const scController = new SCController();
 store.dispatch({
   type: actionTypes.OWA_SOUND_BOOT_STARTED
@@ -27,13 +30,17 @@ scController.boot().then(() => {
   soundController = new SoundController(store, {});
 
   setTimeout(function () {
-    store.dispatch(sessionPhaseAdvanced(
-        SESSION_PHASES.QUEUE_TRANS_ADVICE
-    ));
+    store.dispatch(awakeningSequencers.actions.sequencerQueued('6_5'));
+
+    setTimeout(function () {
+      store.dispatch(buttonPressed('level_4', 0));
+    }, 5000);
     //store.dispatch(awakeningSequencers.actions.sequencerQueued('trans'));
   }, 7000);
 }).catch((err) => {
   console.log(`ERROR while booting supercollider: ${err.stack}`);
-  soundController.quit();
+  if (soundController) {
+    soundController.quit();
+  }
   scController.quit();
 });

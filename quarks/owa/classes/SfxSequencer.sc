@@ -9,9 +9,9 @@
  **/
 
 SfxSequencer : AwakenedSequencer {
-  initStream {
-    var patch,
-      synthdef;
+  var patch,
+    synthdef;
+  initPatch {
 
     patch = Patch("cs.sfx.PlayBuf", (
       buf: bufManager.bufs['spinny-pluck_L6_sfx'],
@@ -21,6 +21,8 @@ SfxSequencer : AwakenedSequencer {
       isSustained: 1
     ));
     synthdef = patch.asSynthDef().add();
+  }
+  initStream {
     // TODO: break this out into multiple streams, currently it's all together
     // in a single loop
     ^Pbind(
@@ -28,7 +30,7 @@ SfxSequencer : AwakenedSequencer {
       \midinote, Pseq(["C3".notemidi()], inf),
       \dur, Pseq([currentState.numBeats], inf),
       \legato, 1.0,
-      \amp, 3.0.dbamp()
+      \amp, 3.0.dbamp(),
     ).asStream();
   }
 }

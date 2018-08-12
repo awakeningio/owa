@@ -73,7 +73,14 @@ export function create_owa_sequencer (sequencerId, type) {
 export function createPhaseEndQuant (sessionPhase, sessionPhaseDurations) {
   return [
     4,
-    sessionPhaseDurations[sessionPhase] - 1
+    sessionPhaseDurations[sessionPhase] - 3
+  ];
+}
+
+export function createPhaseStartQuant (sessionPhase, sessionPhaseDurations) {
+  return [
+    4,
+    sessionPhaseDurations[sessionPhase]
   ];
 }
 
@@ -83,7 +90,7 @@ export function createNextPhaseEndQuant (sessionPhase, sessionPhaseDurations) {
     sessionPhaseDurations[sessionPhase]
     + sessionPhaseDurations[
       NEXT_SESSION_PHASES[sessionPhase]
-    ] - 1,
+    ] - 3,
   ];
 }
 

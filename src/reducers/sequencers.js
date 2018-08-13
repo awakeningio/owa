@@ -12,11 +12,9 @@ import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
 import {
   create_segmentId,
-  createPhaseEndQuant,
-  createPhaseStartQuant,
-  createNextPhaseEndQuant
+  createPhaseEndQuant
 } from '../models'
-import { SESSION_PHASES } from '../constants'
+import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants'
 
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -55,7 +53,7 @@ function reveal (
       if (action.payload.phase === SESSION_PHASES.TRANS_ADVICE) {
         return Object.assign({}, state, {
           playingState: PLAYING_STATES.QUEUED,
-          playQuant: createPhaseStartQuant(
+          playQuant: createPhaseEndQuant(
             action.payload.phase,
             sessionPhaseDurations
           )
@@ -99,7 +97,7 @@ const spinnyPluckL4TransitionSequencer = Object.assign(
     bufName: 'spinny-pluck_L6-L4',
     attackTime: 0.01,
     releaseTime: 0.01,
-    numBeats: 5 * 4,
+    numBeats: 6 * 4,
     amp: 0.7
   }
 );
@@ -141,7 +139,7 @@ function trans (
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:
           return Object.assign({}, spinnyPluckRevealTransitionSequencer, {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseStartQuant(
+            playQuant: createPhaseEndQuant(
               action.payload.phase,
               sessionPhaseDurations
             )
@@ -152,11 +150,8 @@ function trans (
     case actionTypes.BUTTON_PRESSED:
       // if this button pressed triggered a sessionPhase change
       if (prevSessionPhase !== sessionPhase) {
-        let playQuant = createPhaseStartQuant(
-          sessionPhase,
-          sessionPhaseDurations
-        );
-        // we may need to queue a transition
+        let playQuant = [4, 4];
+        // we may need to queue a transition now
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_6:
             return Object.assign({}, spinnyPluckIdleTransitionSequencer, {
@@ -202,7 +197,7 @@ function l6Sequencer (
       // props to queue this sequencer after transition (if needed)
       let queueProps = {
         playingState: PLAYING_STATES.QUEUED,
-        playQuant: createPhaseStartQuant(
+        playQuant: createPhaseEndQuant(
           action.payload.phase,
           sessionPhaseDurations
         )
@@ -267,10 +262,7 @@ function l6Sequencer (
             state,
             {
               playingState: PLAYING_STATES.QUEUED,
-              playQuant: createNextPhaseEndQuant(
-                sessionPhase,
-                sessionPhaseDurations
-              )
+              playQuant: [4, 4 + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]]
             }
           );
         } else if (
@@ -285,7 +277,7 @@ function l6Sequencer (
               state,
               {
                 playingState: PLAYING_STATES.QUEUED,
-                playQuant: [4, 1]
+                playQuant: [4, 4]
               }
             );
           }
@@ -298,10 +290,7 @@ function l6Sequencer (
         // props if we want to stop this sequencer when this phase ends
         let queueStopProps = {
           playingState: PLAYING_STATES.STOP_QUEUED,
-          stopQuant: createPhaseEndQuant(
-            sessionPhase,
-            sessionPhaseDurations
-          )
+          stopQuant: [4, 4]
         };
 
         switch (sessionPhase) {
@@ -342,7 +331,7 @@ function chordProgSequencer (
         case SESSION_PHASES.TRANS_2:
           return Object.assign({}, state, {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseStartQuant(
+            playQuant: createPhaseEndQuant(
               action.payload.phase,
               sessionPhaseDurations
             )
@@ -382,10 +371,10 @@ function chordProgSequencer (
           return Object.assign({}, state, {
             playingState: PLAYING_STATES.QUEUED,
             bufSequence: [segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName],
-            playQuant: createNextPhaseEndQuant(
-              sessionPhase,
-              sessionPhaseDurations
-            )
+            playQuant: [
+              8,
+              8 + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]
+            ]
           });
         } else if (sessionPhase === SESSION_PHASES.PLAYING_4) {
           // If this segment has already been pressed
@@ -416,7 +405,7 @@ function chordProgSequencer (
       ) {
         let queueStopProps = {
           playingState: PLAYING_STATES.STOP_QUEUED,
-          stopQuant: createPhaseEndQuant(sessionPhase, sessionPhaseDurations)
+          stopQuant: [4, 4]
         };
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_2:
@@ -469,16 +458,16 @@ function l2Sequencer (
           sessionPhase !== prevSessionPhase
           && sessionPhase === SESSION_PHASES.QUEUE_TRANS_2
         ) {
-          // queue self
+          // queue self post-transition
           return Object.assign(
             {},
             state,
             {
               playingState: PLAYING_STATES.QUEUED,
-              playQuant: createNextPhaseEndQuant(
-                sessionPhase,
-                sessionPhaseDurations
-              )
+              playQuant: [
+                4,
+                4 + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]
+              ]
             }
           );
         } else if (
@@ -492,7 +481,7 @@ function l2Sequencer (
               state,
               {
                 playingState: PLAYING_STATES.QUEUED,
-                playQuant: [4, 1]
+                playQuant: [4, 4]
               }
             );
           }

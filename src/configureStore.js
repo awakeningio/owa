@@ -105,6 +105,13 @@ export default function configureStore (additionalInitialState = {}) {
     '2_1': create_owa_sequencer('2_1', 'OrganicPercSequencer')
   };
 
+  sequencers['6_0'].playQuant = [4, 4];
+  sequencers['6_1'].playQuant = [4, 4];
+  sequencers['6_2'].playQuant = [4, 4];
+  sequencers['6_3'].playQuant = [4, 4];
+  sequencers['6_4'].playQuant = [4, 4];
+  sequencers['6_5'].playQuant = [4, 4];
+
   sequencers['6_2'].midiName = 'spinny-pluck_L6_hats';
   sequencers['6_2'].phaseProps[SESSION_PHASES.PLAYING_2] = {
     midiName: 'spinny-pluck_L2_hats'
@@ -124,8 +131,8 @@ export default function configureStore (additionalInitialState = {}) {
   };
   let numBeats = 8;
   sequencers.level_4.numBeats = numBeats;
-  sequencers.level_4.playQuant = [8, 1];
-  sequencers.level_4.defaultPlayQuant = [8, 1];
+  sequencers.level_4.playQuant = [8, 8];
+  sequencers.level_4.defaultPlayQuant = [8, 8];
   sequencers.level_4.stopQuant = [numBeats, numBeats];
   sequencers.level_4.bufNames = [
     'spinny-pluck_L4_chords-1',
@@ -165,7 +172,8 @@ export default function configureStore (additionalInitialState = {}) {
   sequencers['6_2'].numBeats = 8 * 4;
   sequencers['6_3'].numBeats = 4 * 4;
   sequencers['6_4'].numBeats = 2 * 4;
-  sequencers['6_5'].playQuant = [4, 1];
+  sequencers['6_5'].playQuant = [4, 4];
+  sequencers['6_5'].stopQuant = [4, 4];
   sequencers['6_5'].numBeats = 8 * 4;
 
   // TODO: set sequencer 6 playQuant and stopQuant

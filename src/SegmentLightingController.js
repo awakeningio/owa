@@ -14,7 +14,9 @@ import awakeningSequencers from 'awakening-sequencers';
 import ControllerWithStore from './ControllerWithStore';
 import SegmentQueuedAnimation from './SegmentQueuedAnimation';
 import SegmentPlayingAnimation from './SegmentPlayingAnimation';
-import { SESSION_PHASES } from './constants';
+//import { SESSION_PHASES } from './constants';
+
+const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 /**
  *  @class        SegmentLightingController
@@ -65,7 +67,7 @@ class SegmentLightingController extends ControllerWithStore {
     let state = this.store.getState();
     let segment = state.segments.byId[this.params.segmentId];
     let sequencer = state.sequencers[segment.sequencerId];
-    let sessionPhase = state.sessionPhase;
+    //let sessionPhase = state.sessionPhase;
 
     if (segment !== this.lastState.segment) {
       this.lastState.segment = segment;
@@ -85,19 +87,27 @@ class SegmentLightingController extends ControllerWithStore {
           sequencer.event.bufName
         );
 
-        // if our portion of the chord prog is playing
-        if (sequencer.event.bufName === segment.sequencerProps.bufName) {
-          this.playingAnimation.start();
-          this.queuedAnimation.stop();
-        } else if (
-          // our portion of the chord prog is next
-          ourBufNameIndex > -1
-          && ourBufNameIndex === (
-            (currentBufNameIndex + 1) % sequencer.bufSequence.length
-          )
-        ) {
-          this.playingAnimation.stop();
-          this.queuedAnimation.start();
+        if (sequencer.playingState == PLAYING_STATES.PLAYING) {
+          
+          // if our portion of the chord prog is playing
+          if (
+            sequencer.event.bufName === segment.sequencerProps.bufName
+          ) {
+            this.playingAnimation.start();
+            this.queuedAnimation.stop();
+          } else if (
+            // our portion of the chord prog is next
+            ourBufNameIndex > -1
+            && ourBufNameIndex === (
+              (currentBufNameIndex + 1) % sequencer.bufSequence.length
+            )
+          ) {
+            this.playingAnimation.stop();
+            this.queuedAnimation.start();
+          } else {
+            this.playingAnimation.stop();
+            this.queuedAnimation.stop();
+          }
         } else {
           this.playingAnimation.stop();
           this.queuedAnimation.stop();
@@ -123,8 +133,8 @@ class SegmentLightingController extends ControllerWithStore {
           default:
             this.playingAnimation.stop();
             this.queuedAnimation.stop();
+            break;
         }
-
       }
     }
 

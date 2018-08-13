@@ -50,6 +50,8 @@ class SegmentPlayingAnimation extends ControllerWithStore {
     let duration = sequencer.numBeats / tempo * 60000.0;
     let pixels = this.params.pixels;
 
+    this.stop();
+
     this.animationState = {
       pulseBrightness: 0.0
     };

@@ -19,12 +19,12 @@ import { SESSION_PHASES } from './constants';
 class IdleModeAnimation extends ControllerWithStore {
   init() {
 
-    this.state = {
-      masterBrightness: 1.0
-    };
     this.build();
   }
   build () {
+    this.state = {
+      masterBrightness: 1.0
+    };
 
     let initial = {
       brightness: 0.02

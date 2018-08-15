@@ -44,8 +44,14 @@ class SerialInputController extends ControllerWithStore {
 
     if (DEBUG_INPUT) {
       this.parser.on("data", (data) => {
+        let levelSegment;
+        try {
+          levelSegment = this.buttonDataToLevelSegment(data);
+        } catch (err) {
+          levelSegment = null;
+        }
         console.log(
-          `${new Date()} :\n${data}\n${this.buttonDataToLevelSegment(data)}`
+          `${new Date()} :\n${data}\n${levelSegment}`
         );
       });
     } else {

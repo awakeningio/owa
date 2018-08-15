@@ -12,11 +12,15 @@ public:
   ~PiezoButton() {}
 
   bool handleInputValue (int inputValue);
+  void setId(int id) { this->id = id; }
+  void setTriggerThreshold(double thresh) { this->triggerThreshold = thresh; }
 private:
   int lastReadings[NUM_READINGS];
   int currentReading;
   bool triggered;
   unsigned long lastTriggerTime;
+  int id;
+  double triggerThreshold;
 };
 
 #endif

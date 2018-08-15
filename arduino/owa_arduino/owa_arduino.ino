@@ -42,7 +42,21 @@ void setup()
     pinMode(selectPins[i], OUTPUT);
     digitalWrite(selectPins[i], HIGH);
   }
+
+  // our analog in to read piezo values
   pinMode(zInput, INPUT);
+
+  // set id of the piezo button for debugging
+  for (int i = 0; i < numMuxerPins; i++) {
+    buttons[i].setId(i);
+    // seems to work for most of the piezos
+    buttons[i].setTriggerThreshold(90.0);
+  }
+
+  // not all piezos are created equal
+  buttons[11].setTriggerThreshold(50.0);
+  buttons[10].setTriggerThreshold(60.0);
+  buttons[9].setTriggerThreshold(50.0);
 }
 
 bool wasTriggered;

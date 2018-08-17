@@ -14,16 +14,16 @@ import Color from 'color';
 
 import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors } from './Pixels';
+import { SESSION_PHASES } from './constants';
 
 class Level4TransitionAnimation extends ControllerWithStore {
   init() {
-
+    this.prevState = {
+      sessionPhase: null
+    };
     this.build();
   }
   build () {
-    var pixels = this.params.pixels;
-    setPixelsColors(pixels, Color.hsv(0, 0, 0));
-
     let initial = {
       brightness: 0
     }; 
@@ -137,6 +137,24 @@ class Level4TransitionAnimation extends ControllerWithStore {
     Object.keys(this.segmentTweens).forEach((segmentId) => {
       this.segmentTweens[segmentId].stop();
     });
+  }
+  handle_state_change () {
+    let state = this.store.getState();
+
+    if (this.prevState.sessionPhase !== state.sessionPhase) {
+      this.prevState.sessionPhase = state.sessionPhase;
+
+      switch (state.sessionPhase) {
+        case SESSION_PHASES.TRANS_4:
+          this.start();
+          break;
+
+        default:
+          this.stop();
+          break;
+      }
+    }
+
   }
 }
 

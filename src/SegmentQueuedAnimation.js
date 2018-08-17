@@ -38,11 +38,11 @@ class SegmentQueuedAnimation {
     });
   }
   start () {
+    this.build();
     this.tween.start();
   }
   stop () {
     this.tween.stop();
-    this.build();
   }
 }
 

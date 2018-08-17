@@ -14,7 +14,7 @@ import awakeningSequencers from 'awakening-sequencers';
 import ControllerWithStore from './ControllerWithStore';
 import SegmentQueuedAnimation from './SegmentQueuedAnimation';
 import SegmentPlayingAnimation from './SegmentPlayingAnimation';
-//import { SESSION_PHASES } from './constants';
+import { SESSION_PHASES } from './constants';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
@@ -122,7 +122,17 @@ class SegmentLightingController extends ControllerWithStore {
           case awakeningSequencers.PLAYING_STATES.QUEUED:
           case awakeningSequencers.PLAYING_STATES.REQUEUED:
             this.playingAnimation.stop();
-            this.queuedAnimation.start();
+            switch (state.sessionPhase) {
+              case SESSION_PHASES.PLAYING_6:
+              case SESSION_PHASES.PLAYING_4:
+              case SESSION_PHASES.PLAYING_2:
+                this.queuedAnimation.start();
+                break;
+              
+              default:
+                this.queuedAnimation.stop();
+                break;
+            }
             break;
 
           case awakeningSequencers.PLAYING_STATES.PLAYING:

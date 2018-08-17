@@ -14,17 +14,13 @@ import Color from 'color';
 
 import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors } from './Pixels';
+import { SESSION_PHASES } from './constants';
 
-class IdleModeAnimation extends ControllerWithStore {
+class Level2TransitionAnimation extends ControllerWithStore {
   init() {
-
     this.build();
   }
   build () {
-    var pixels = this.params.pixels;
-    var segmentPixels = this.params.segmentPixels;
-    setPixelsColors(pixels, Color.hsv(0, 0, 0));
-
     let initial = {
       brightness: 0
     }; 
@@ -32,191 +28,177 @@ class IdleModeAnimation extends ControllerWithStore {
       brightness: 100
     };
 
-    this.level6Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2020)
-      .delay(1780)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_6-segment_0'],
-          Color.hsv(26, 100, props.brightness).mix(Color.hsv(22, 82, 100), 0.1)
-        );
-      });
+		this.segmentColors = {
+			'level_6-segment_0': Color.hsv(26, 100, 255).mix(
+				Color.hsv(22, 82, 100),
+				0.1
+			),
+			'level_6-segment_1': Color.hsv(27, 100, 255).mix(
+				Color.hsv(32, 100, 100),
+				0.1
+			),
+			'level_6-segment_2': Color.hsv(28, 100, 255).mix(
+				Color.hsv(33, 100, 100),
+				0.1
+			),
+			'level_6-segment_3': Color.hsv(29, 100, 255).mix(
+				Color.hsv(34, 100, 100),
+				0.1
+			),
+			'level_6-segment_4': Color.hsv(30, 100, 255).mix(
+				Color.hsv(35, 100, 100),
+				0.1
+			),
+			'level_6-segment_5': Color.hsv(31, 100, 255).mix(
+				Color.hsv(36, 100, 100),
+				0.1
+			),
+			'level_4-segment_0': Color.hsv(32, 100, 255).mix(
+				Color.hsv(37, 100, 100),
+				0.1
+			),
+			'level_4-segment_1': Color.hsv(33, 100, 255).mix(
+				Color.hsv(38, 100, 100),
+				0.1
+			),
+			'level_4-segment_2': Color.hsv(34, 100, 255).mix(
+				Color.hsv(39, 100, 100),
+				0.1
+			),
+			'level_4-segment_3': Color.hsv(35, 100, 255).mix(
+				Color.hsv(40, 100, 100),
+				0.1
+			),
+			'level_2-segment_0': Color.hsv(36, 100, 255).mix(
+				Color.hsv(41, 100, 100),
+				0.1
+			),
+			'level_2-segment_1': Color.hsv(37, 100, 255).mix(
+				Color.hsv(42, 100, 100),
+				0.1
+			)
+		};
 
-    this.level6Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2100)
-      .delay(2000)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_6-segment_1'],
-          Color.hsv(27, 100, props.brightness).mix(Color.hsv(32, 100, 100), 0.1)
-        );
-      });    
+    let createSegmentTween = (
+      segmentId,
+      duration,
+      delay
+    ) => {
+      let pixels = this.params.segmentPixels[segmentId];
+      let color = this.segmentColors[segmentId];
+      return new TWEEN.Tween(Object.assign({}, initial))
+        .to(Object.assign({}, dest), duration)
+        .delay(delay)
+        .easing(TWEEN.Easing.Sinusoidal.InOut)
+        .yoyo(true)
+        .repeat(1)
+        .onUpdate(function (props) {
+          setPixelsColors(
+            pixels,
+            color.value(
+              props.brightness
+            )
+          )
+        });
+    }
 
-    this.level6Seg2Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2180)
-      .delay(2200)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_6-segment_2'],
-          Color.hsv(28, 100, props.brightness).mix(Color.hsv(33, 100, 100), 0.1)
-        );
-      });    
+    this.segmentTweens = {
+      'level_6-segment_0': createSegmentTween(
+        'level_6-segment_0',
+        2020,
+        1780
+      ),
+      'level_6-segment_1': createSegmentTween(
+        'level_6-segment_1',
+        2100,
+        2000
+      ),
+      'level_6-segment_2': createSegmentTween(
+        'level_6-segment_2',
+        2180,
+        2200
+      ),
+      'level_6-segment_3': createSegmentTween(
+        'level_6-segment_3',
+        2260,
+        2380
+      ),
+      'level_6-segment_4': createSegmentTween(
+        'level_6-segment_4',
+        2380,
+        2740
+      ),
+      'level_6-segment_5': createSegmentTween(
+        'level_6-segment_5',
+        2420,
+        2680
+      ),
+      'level_4-segment_0': createSegmentTween(
+        'level_4-segment_0',
+        2500,
+        2800
+      ),
+      'level_4-segment_1': createSegmentTween(
+        'level_4-segment_1',
+        2580,
+        2900
+      ),
+      'level_4-segment_2': createSegmentTween(
+        'level_4-segment_2',
+        2660,
+        2980
+      ),
+      'level_4-segment_3': createSegmentTween(
+        'level_4-segment_3',
+        2740,
+        3040
+      ),
+      'level_2-segment_0': createSegmentTween(
+        'level_2-segment_0',
+        2820,
+        3080
+      ),
+      'level_2-segment_1': createSegmentTween(
+        'level_2-segment_1',
+        2900,
+        3100
+      ),
+    };
+    
+    this.prevState = {
+      sessionPhase: null
+    };
 
-    this.level6Seg3Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2260)
-      .delay(2380) 
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_6-segment_3'],
-          Color.hsv(29, 100, props.brightness).mix(Color.hsv(34, 100, 100), 0.1)
-        );
-      }); 
-
-    this.level6Seg4Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2340)
-      .delay(2740)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_6-segment_4'],
-          Color.hsv(30, 100, props.brightness).mix(Color.hsv(35, 100, 100), 0.1)
-        );
-      }); 
-
-    this.level6Seg5Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2420)
-      .delay(2680)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_6-segment_5'],
-          Color.hsv(31, 100, props.brightness).mix(Color.hsv(36, 100, 100), 0.1)
-        );
-      }); 
-
-    this.level4Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2500)
-      .delay(2800)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_4-segment_0'],
-          Color.hsv(32, 100, props.brightness).mix(Color.hsv(37, 100, 100), 0.1)
-        );
-      }); 
-
-    this.level4Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2580)
-      .delay(2900)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_4-segment_1'],
-          Color.hsv(33, 100, props.brightness).mix(Color.hsv(38, 100, 100), 0.1)
-        );
-      }); 
-
-    this.level4Seg2Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2660)
-      .delay(2980)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_4-segment_2'],
-          Color.hsv(34, 100, props.brightness).mix(Color.hsv(39, 100, 100), 0.1)
-        );
-      }); 
-
-    this.level4Seg3Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2740)
-      .delay(3040)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_4-segment_3'],
-          Color.hsv(35, 100, props.brightness).mix(Color.hsv(40, 100, 100), 0.1)
-        );
-      }); 
-
-    this.level2Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2820)
-      .delay(3080)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_2-segment_0'],
-          Color.hsv(36, 100, props.brightness).mix(Color.hsv(41, 100, 100), 0.1)
-        );
-      }); 
-
-    this.level2Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
-      .to(Object.assign({}, dest), 2900)
-      .delay(3100)
-      .easing(TWEEN.Easing.Sinusoidal.InOut)
-      .yoyo(true)
-      .repeat(1)
-      .onUpdate((props) => {
-        setPixelsColors(
-          segmentPixels['level_2-segment_1'],
-          Color.hsv(37, 100, props.brightness).mix(Color.hsv(42, 100, 100), 0.1)
-        );
-      }); 
   }
   start () {
-    this.level6Seg0Tween.start();
-    this.level6Seg1Tween.start();
-    this.level6Seg2Tween.start();
-    this.level6Seg3Tween.start();
-    this.level6Seg4Tween.start();
-    this.level6Seg5Tween.start();
-    this.level4Seg0Tween.start();
-    this.level4Seg1Tween.start();
-    this.level4Seg2Tween.start();
-    this.level4Seg3Tween.start();
-    this.level2Seg0Tween.start();
-    this.level2Seg1Tween.start();
+    this.build();
+    Object.keys(this.segmentTweens).forEach((segmentId) => {
+      this.segmentTweens[segmentId].start();
+    });
   }
   stop () {
-    this.level6Seg0Tween.stop();
-    this.level6Seg1Tween.stop();
-    this.level6Seg2Tween.stop();
-    this.level6Seg3Tween.stop();
-    this.level6Seg4Tween.stop();
-    this.level6Seg5Tween.stop();
-    this.level4Seg0Tween.stop();
-    this.level4Seg1Tween.stop();
-    this.level4Seg2Tween.stop();
-    this.level4Seg3Tween.stop();
-    this.level2Seg0Tween.stop();
-    this.level2Seg1Tween.stop();
-    this.build();
+    Object.keys(this.segmentTweens).forEach((segmentId) => {
+      this.segmentTweens[segmentId].stop();
+    });
+  }
+  handle_state_change () {
+    let state = this.store.getState();
+
+    if (this.prevState.sessionPhase !== state.sessionPhase) {
+      this.prevState.sessionPhase = state.sessionPhase;
+
+      switch (state.sessionPhase) {
+        case SESSION_PHASES.TRANS_2:
+          this.start();
+          break;
+
+        default:
+          this.stop();
+          break;
+      }
+    }
+
   }
 }
 
-export default IdleModeAnimation;
+export default Level2TransitionAnimation;

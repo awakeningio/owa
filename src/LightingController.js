@@ -14,6 +14,7 @@ import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
 import SegmentLightingController from './SegmentLightingController';
 import IdleModeAnimation from "./SpinnyPluck_EerieIdleModeAnimation.js";
+import Level4TransitionAnimation from './SpinnyPluckL6-L4TransitionAnimation.js';
 //import Trans6Animation from "./SpinnyPluckIdle-L6TransitionAnimation";
 
 import {
@@ -88,6 +89,7 @@ class LightingController extends ControllerWithStore {
     };
 
     this.idleModeAnimation = new IdleModeAnimation(this.store, params);
+    this.level4TransitionAnimation = new Level4TransitionAnimation(this.store, params);
 
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);

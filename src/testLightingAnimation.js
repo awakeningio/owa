@@ -15,4 +15,5 @@ import LightingController from './LightingController'
 const owaStateStore = configureStore();
 const lightingController = new LightingController(owaStateStore);
 
-lightingController.idleModeAnimation.start()
+//lightingController.idleModeAnimation.start()
+lightingController.level4TransitionAnimation.start();

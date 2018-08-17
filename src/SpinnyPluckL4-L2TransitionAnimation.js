@@ -19,6 +19,9 @@ import { SESSION_PHASES } from './constants';
 
 class Level2TransitionAnimation extends ControllerWithStore {
   init() {
+    this.prevState = {
+      sessionPhase: null
+    };
     this.build();
   }
   build () {
@@ -166,9 +169,6 @@ class Level2TransitionAnimation extends ControllerWithStore {
       ),
     };
     
-    this.prevState = {
-      sessionPhase: null
-    };
 
   }
   start () {

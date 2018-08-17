@@ -11,9 +11,19 @@
 
 import configureStore from "./configureStore"
 import LightingController from './LightingController'
+import { sessionPhaseAdvanced } from './actions';
+import { SESSION_PHASES } from './constants';
 
-const owaStateStore = configureStore();
-const lightingController = new LightingController(owaStateStore);
+const store = configureStore();
+const lightingController = new LightingController(store);
 
 //lightingController.idleModeAnimation.start()
-lightingController.level4TransitionAnimation.start();
+//lightingController.levelTransitionAnimation.start();
+lightingController.revealAnimation.start();
+
+let state = store.getState();
+setTimeout(function () {
+  store.dispatch(
+    sessionPhaseAdvanced(SESSION_PHASES.PLAYING_ADVICE)
+  );
+}, state.sessionPhaseDurations[SESSION_PHASES.TRANS_ADVICE] / state.tempo * 60000.0);

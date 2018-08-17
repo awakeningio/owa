@@ -3,6 +3,7 @@
  *  @file       SpinnyPluckL6-L4TransitionAnimation.js
  *
  *
+ *  @author     Emma Lefley
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
  *
  *  @copyright  2018 Colin Sullivan

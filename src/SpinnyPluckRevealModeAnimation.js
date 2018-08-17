@@ -4,6 +4,7 @@
  *  @file       SpinnyPluckRevealModeAnimation.js
  *
  *
+ *  @author     Emma Lefley
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
  *
  *  @copyright  2018 Colin Sullivan

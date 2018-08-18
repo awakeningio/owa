@@ -23,12 +23,14 @@ import level2Ready from './level2Ready';
 import revealReady from './revealReady';
 import sessionPhaseDurations from './sessionPhaseDurations';
 import idlePlayer from './idlePlayer';
+import lastButtonPressTime from './lastButtonPressTime';
 
 var combined = combineReducers({
   tempo,
   fadecandyConnection,
   soundReady,
-  sessionPhaseDurations
+  sessionPhaseDurations,
+  lastButtonPressTime
 });
 
 var prevSessionPhase;

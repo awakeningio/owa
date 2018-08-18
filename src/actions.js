@@ -29,3 +29,9 @@ export function buttonPressed (levelId, segmentIndex) {
     }
   };
 }
+
+export function inactivityTimeoutExceeded () {
+  return {
+    type: actionTypes.INACTIVITY_TIMEOUT_EXCEEDED
+  };
+}

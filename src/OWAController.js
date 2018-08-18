@@ -19,6 +19,7 @@ import logger from "./logging"
 import * as actionTypes from "./actionTypes"
 //import AbletonLinkController from "./AbletonLinkController"
 import SerialInputController from './SerialInputController'
+import InactivityTimeoutController from './InactivityTimeoutController';
 
 //import awakeningSequencers from "awakening-sequencers"
 //import * as actions from './actions'
@@ -35,6 +36,9 @@ class OWAController extends ControllerWithStore {
     this.store.dispatch({
       type: actionTypes.OWA_SOUND_BOOT_STARTED
     });
+    this.inactivityTimeoutController = new InactivityTimeoutController(
+      this.store
+    );
     this.scController.boot().then(() => {
       this.soundController = new SoundController(this.store, {
         //linkStateStore: this.params.linkStateStore
@@ -67,6 +71,7 @@ class OWAController extends ControllerWithStore {
         this.soundController.quit();
         //this.abletonLinkController.quit();
         this.lightingController.quit();
+        //this.inactivityTimeoutController.quit();
         resolve();
         
       }).catch(reject);

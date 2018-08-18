@@ -22,6 +22,7 @@ import level4Ready from './level4Ready';
 import level2Ready from './level2Ready';
 import revealReady from './revealReady';
 import sessionPhaseDurations from './sessionPhaseDurations';
+import idlePlayer from './idlePlayer';
 
 var combined = combineReducers({
   tempo,
@@ -39,7 +40,8 @@ export default function (state, action) {
     newLevel2Ready,
     newRevealReady,
     newSessionPhase,
-    newSegments;
+    newSegments,
+    newIdlePlayer;
   prevSessionPhase = state.sessionPhase;
   newState = combined(state, action);
   if (state !== newState) {
@@ -78,6 +80,15 @@ export default function (state, action) {
   );
   if (newSequencers !== state.sequencers) {
     state = Object.assign({}, state, {sequencers: newSequencers});
+  }
+  newIdlePlayer = idlePlayer(
+    state.idlePlayer,
+    action,
+    state.sessionPhase,
+    prevSessionPhase
+  );
+  if (newIdlePlayer !== state.idlePlayer) {
+    state = Object.assign({}, state, {idlePlayer: newIdlePlayer});
   }
   newLevel4Ready = level4Ready(
     state.level4Ready,

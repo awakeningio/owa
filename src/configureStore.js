@@ -53,6 +53,7 @@ if (process.env.NODE_ENV === 'development') {
     toPrint.revealReady = state.revealReady;
     toPrint.sessionPhase = state.sessionPhase;
     toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
+    toPrint.idlePlayer = state.idlePlayer;
     return toPrint;
   };
   const storeLogger = store => next => action => {
@@ -102,7 +103,7 @@ export default function configureStore (additionalInitialState = {}) {
     //'4_3': create_owa_sequencer('4_3', 'ChordProgSequencer'),
     'level_4': create_owa_sequencer('level_4', 'ChordProgSequencer'),
     '2_0': create_owa_sequencer('2_0', 'KalimbaSequencer'),
-    '2_1': create_owa_sequencer('2_1', 'OrganicPercSequencer')
+    '2_1': create_owa_sequencer('2_1', 'OrganicPercSequencer'),
   };
 
   sequencers['6_0'].playQuant = [4, 4];

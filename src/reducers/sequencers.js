@@ -21,6 +21,7 @@ const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 const l6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
 
+
 const baseRevealSequencer = create_default_sequencer(
   'reveal',
   'SamplerSequencer'
@@ -517,6 +518,16 @@ export default function sequencers (
   if (newReveal !== state.reveal) {
     state = Object.assign({}, state, {reveal: newReveal});
   }
+
+  //let newIdle = idle(
+    //state.idle,
+    //action,
+    //sessionPhase,
+    //prevSessionPhase
+  //);
+  //if (newIdle !== state.idle) {
+    //state = Object.assign({}, state, {idle: newIdle});
+  //}
 
   let newTrans = trans(
     state.trans,

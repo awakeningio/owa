@@ -19,7 +19,8 @@ OWAController {
     sounds,
     bufManager,
     clockController,
-    seqFactory;
+    seqFactory,
+    idlePlayer;
 
 
   *new {
@@ -135,6 +136,10 @@ OWAController {
       ], [
         "spinny-pluck_reveal-55bar.wav",
         'spinny-pluck_reveal'
+      ],
+      [
+        "eerie_idle_loop.wav",
+        'eerie_idle_loop'
       ]
     ], ({
       // when buffers are done loading
@@ -148,6 +153,13 @@ OWAController {
 
       // initialize sequencers
       seqFactory.setStore(store);
+
+      // initialize idle player
+      idlePlayer = IdlePlayer.new((
+        store: store,
+        bufManager: bufManager,
+        clock: clockController.clock
+      ));
 
       // tell main process we are done
       store.dispatch((

@@ -18,6 +18,7 @@ const getSessionPhase = state => state.sessionPhase;
 const getSequencers = state => state.sequencers;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getRevealReady = state => state.revealReady;
+const getIdlePlayer = state => state.idlePlayer;
 
 //const getSegments = state => state.segments;
 
@@ -98,11 +99,13 @@ export const getSCState = createDeepEqualSelector(
   getSessionPhaseDurations,
   awakeningSequencers.selectors.getSCSequencers,
   getRevealReady,
-  (tempo, sessionPhase, sessionPhaseDurations, sequencers, revealReady) => ({
+  getIdlePlayer,
+  (tempo, sessionPhase, sessionPhaseDurations, sequencers, revealReady, idlePlayer) => ({
     tempo,
     sessionPhase,
     sessionPhaseDurations,
     sequencers,
-    revealReady
+    revealReady,
+    idlePlayer
   })
 );

@@ -24,7 +24,8 @@ class IdleModeAnimation extends ControllerWithStore {
   }
   build () {
     this.state = {
-      masterBrightness: 1.0
+      masterBrightness: 1.0,
+      masterHueOffset: 0.0
     };
 
     let initial = {
@@ -124,6 +125,8 @@ class IdleModeAnimation extends ControllerWithStore {
             segmentPixels[segmentId],
             segmentColors[segmentId].value(
               255 * props.brightness * this.state.masterBrightness
+            ).hue(
+              segmentColors[segmentId].hue() + this.state.masterHueOffset
             )
           );
         });
@@ -161,7 +164,7 @@ class IdleModeAnimation extends ControllerWithStore {
       / state.tempo * 60.0 * 1000.0
     );
 
-    this.transTween = new TWEEN.Tween({masterBrightness: 1.0})
+    this.transBrightnessTween = new TWEEN.Tween({masterBrightness: 1.0})
       .to({
         masterBrightness: 0.0
       }, transDur)
@@ -169,6 +172,16 @@ class IdleModeAnimation extends ControllerWithStore {
       .onUpdate((props) => {
         this.state.masterBrightness = props.masterBrightness;
       });
+
+    this.transHueTween = new TWEEN.Tween({masterHueOffset: 0.0})
+      .to({
+        masterHueOffset: 30.0
+      }, 500)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+      .onUpdate((props) => {
+        this.state.masterHueOffset = props.masterHueOffset
+      });
+    
 
     this.prevState = {
       sessionPhase: null
@@ -182,14 +195,12 @@ class IdleModeAnimation extends ControllerWithStore {
       this.segmentTweens[segmentId].start();
     });
   }
-  startTrans () {
-    this.transTween.start();
-  }
   stop () {
     Object.keys(this.segmentTweens).forEach((segmentId) => {
       this.segmentTweens[segmentId].stop();
     });
-    this.transTween.stop();
+    this.transBrightnessTween.stop();
+    this.transHueTween.stop();
   }
   handle_state_change () {
     let state = this.store.getState();
@@ -203,7 +214,11 @@ class IdleModeAnimation extends ControllerWithStore {
           break;
 
         case SESSION_PHASES.TRANS_6:
-          this.startTrans();
+          this.transBrightnessTween.start();
+          break;
+
+        case SESSION_PHASES.QUEUE_TRANS_6:
+          this.transHueTween.start();
           break;
         
         default:

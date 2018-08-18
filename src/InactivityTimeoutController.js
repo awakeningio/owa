@@ -14,8 +14,8 @@ import { SESSION_PHASES } from './constants';
 import { inactivityTimeoutExceeded } from './actions';
 
 const CHECK_INTERVAL_MS = 5000;
-//const INACTIVE_THRESHOLD_MS = 60000;
-const INACTIVE_THRESHOLD_MS = 5000;
+const INACTIVE_THRESHOLD_MS = 120000;
+//const INACTIVE_THRESHOLD_MS = 10000;
 
 class InactivityTimeoutController extends ControllerWithStore {
   init () {
@@ -28,15 +28,13 @@ class InactivityTimeoutController extends ControllerWithStore {
     let state = this.store.getState();
 
     let now = (new Date()).getTime();
-    let timeSinceLastButtonPress;
+    let timeSinceInactivityTimeoutStart = now - state.inactivityTimeoutStartTime;
 
     switch (state.sessionPhase) {
       case SESSION_PHASES.PLAYING_6:
       case SESSION_PHASES.PLAYING_4:
       case SESSION_PHASES.PLAYING_2:
-        timeSinceLastButtonPress = now - state.lastButtonPressTime;
-
-        if (timeSinceLastButtonPress > INACTIVE_THRESHOLD_MS) {
+        if (timeSinceInactivityTimeoutStart > INACTIVE_THRESHOLD_MS) {
           this.store.dispatch(inactivityTimeoutExceeded());
         }
         break;

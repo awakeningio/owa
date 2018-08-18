@@ -23,14 +23,14 @@ import level2Ready from './level2Ready';
 import revealReady from './revealReady';
 import sessionPhaseDurations from './sessionPhaseDurations';
 import idlePlayer from './idlePlayer';
-import lastButtonPressTime from './lastButtonPressTime';
+import inactivityTimeoutStartTime from './inactivityTimeoutStartTime';
 
 var combined = combineReducers({
   tempo,
   fadecandyConnection,
   soundReady,
   sessionPhaseDurations,
-  lastButtonPressTime
+  inactivityTimeoutStartTime
 });
 
 var prevSessionPhase;

@@ -60,7 +60,7 @@
     }
     initPatch {
       var bufSym = currentState.bufName.asSymbol();
-      patch = Patch("cs.sfx.LoopBuf", (
+      patch = Patch("owa.IdleLooper", (
         buf: bufManager.bufs[bufSym],
         gate: gateEditor,
         attackTime: 0.0,
@@ -82,6 +82,7 @@
       });
 
       if (prevState.gate != currentState.gate, {
+        "IdlePlayer setting gate to 1".postln();
         gateEditor.value = currentState.gate;
       });
     }

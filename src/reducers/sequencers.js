@@ -192,6 +192,11 @@ function l6Sequencer (
   sessionPhaseDurations
 ) {
   switch (action.type) {
+    case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
+      return Object.assign({}, state, {
+        playingState: PLAYING_STATES.STOP_QUEUED,
+        stopQuant: [4, 4]
+      });
     case actionTypes.SESSION_PHASE_ADVANCED:
       // session phase automatically advanced.
       
@@ -318,6 +323,11 @@ function chordProgSequencer (
   sessionPhaseDurations
 ) {
   switch (action.type) {
+    case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
+      return Object.assign({}, state, {
+        playingState: PLAYING_STATES.STOP_QUEUED,
+        stopQuant: [4, 4]
+      });
     case actionTypes.SESSION_PHASE_ADVANCED:
       // session phase automatically advanced.  If it is a transition
       // we may need to re-queue
@@ -431,6 +441,11 @@ function l2Sequencer (
   sessionPhaseDurations
 ) {
   switch (action.type) {
+    case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
+      return Object.assign({}, state, {
+        playingState: PLAYING_STATES.STOP_QUEUED,
+        stopQuant: [4, 4]
+      });
     case actionTypes.SESSION_PHASE_ADVANCED:
       switch (action.payload.phase) {
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:

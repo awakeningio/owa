@@ -10,7 +10,11 @@
 
 import awakeningSequencers from 'awakening-sequencers';
 
-import { OWA_SOUND_INIT_DONE, SESSION_PHASE_ADVANCED } from '../actionTypes';
+import {
+  OWA_SOUND_INIT_DONE,
+  SESSION_PHASE_ADVANCED,
+  INACTIVITY_TIMEOUT_EXCEEDED
+} from '../actionTypes';
 import { SESSION_PHASES } from '../constants';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -26,6 +30,10 @@ export default function idlePlayer (
   action
 ) {
   switch (action.type) {
+    case INACTIVITY_TIMEOUT_EXCEEDED:
+      return Object.assign({}, state, {
+        gate: 1
+      });
     case OWA_SOUND_INIT_DONE:
       return Object.assign({}, state, {
         playingState: PLAYING_STATES.PLAYING,

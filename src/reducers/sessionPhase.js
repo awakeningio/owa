@@ -46,7 +46,8 @@ export default function sessionPhase (state = get_initial_state(), action, level
         return NEXT_SESSION_PHASES[state];
       }
       break;
-    
+    case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
+      return SESSION_PHASES.IDLE;
     default:
       return state;
   }

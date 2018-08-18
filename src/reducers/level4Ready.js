@@ -12,11 +12,14 @@ import _ from 'lodash';
 
 import awakeningSequencers from 'awakening-sequencers';
 import { SESSION_PHASES } from '../constants';
+import { INACTIVITY_TIMEOUT_EXCEEDED } from '../actionTypes';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 export default function level4Ready (state = false, action, level6Sequencers, sessionPhase) {
   switch (action.type) {
+    case INACTIVITY_TIMEOUT_EXCEEDED:
+      return false;
     case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
       
       // a sequencer just started playing.

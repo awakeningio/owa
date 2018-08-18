@@ -13,12 +13,14 @@ import _ from 'lodash';
 import awakeningSequencers from 'awakening-sequencers';
 
 import { SESSION_PHASES } from '../constants';
-import { SESSION_PHASE_ADVANCED } from '../actionTypes';
+import { SESSION_PHASE_ADVANCED, INACTIVITY_TIMEOUT_EXCEEDED } from '../actionTypes';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 export default function revealReady (state = false, action, level2Sequencers, sessionPhase) {
   switch (action.type) {
+    case INACTIVITY_TIMEOUT_EXCEEDED:
+      return false;
     case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
     case SESSION_PHASE_ADVANCED:
       return (

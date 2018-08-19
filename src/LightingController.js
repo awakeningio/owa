@@ -17,6 +17,7 @@ import IdleModeAnimation from "./SpinnyPluck_EerieIdleModeAnimation.js";
 import Level4TransitionAnimation from './SpinnyPluckL6-L4TransitionAnimation.js';
 import Level2TransitionAnimation from './SpinnyPluckL4-L2TransitionAnimation.js';
 import RevealAnimation from './SpinnyPluckRevealModeAnimation';
+import LevelReadyAnimation from './LevelReadyAnimation';
 
 import {
   SEGMENTID_TO_PIXEL_RANGE,
@@ -89,10 +90,16 @@ class LightingController extends ControllerWithStore {
       segmentPixels: this.segmentPixels
     };
 
-    this.idleModeAnimation = new IdleModeAnimation(this.store, params);
+    //this.idleModeAnimation = new IdleModeAnimation(this.store, params);
     this.level4TransitionAnimation = new Level4TransitionAnimation(this.store, params);
     this.level2TransitionAnimation = new Level2TransitionAnimation(this.store, params);
     this.revealAnimation = new RevealAnimation(this.store, params);
+    this.level4ReadyAnimation = new LevelReadyAnimation(
+      this.store,
+      Object.assign({}, params, {
+        levelId: 'level_4'
+      })
+    );
 
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);

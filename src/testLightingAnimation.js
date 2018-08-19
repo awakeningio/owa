@@ -17,16 +17,17 @@ import { SESSION_PHASES } from './constants';
 const store = configureStore();
 const lightingController = new LightingController(store);
 
-lightingController.idleModeAnimation.start()
 //lightingController.levelTransitionAnimation.start();
 //lightingController.revealAnimation.start();
 
-let state = store.getState();
+lightingController.level4ReadyAnimation.start();
+
+//let state = store.getState();
+////setTimeout(function () {
+  ////store.dispatch(
+    ////sessionPhaseAdvanced(SESSION_PHASES.IDLE)
+  ////);
+////}, state.sessionPhaseDurations[SESSION_PHASES.TRANS_ADVICE] / state.tempo * 60000.0);
 //setTimeout(function () {
-  //store.dispatch(
-    //sessionPhaseAdvanced(SESSION_PHASES.IDLE)
-  //);
-//}, state.sessionPhaseDurations[SESSION_PHASES.TRANS_ADVICE] / state.tempo * 60000.0);
-setTimeout(function () {
-  store.dispatch(buttonPressed('level_6', 0))
-}, 8000);
+  //store.dispatch(buttonPressed('level_6', 0))
+//}, 8000);

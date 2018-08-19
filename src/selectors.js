@@ -13,6 +13,8 @@ import _ from 'lodash';
 
 import awakeningSequencers from 'awakening-sequencers'
 
+import { create_segmentId } from './models';
+
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
 const getSequencers = state => state.sequencers;
@@ -26,21 +28,26 @@ const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
   isEqual
 );
-//const level6SegmentIds = [];
-//var i;
-//for (i = 0; i < 6; i++) {
-  //level6SegmentIds.push(create_segmentId('level_6', i));
-//}
+const segmentIdsByLevelId = {
+  'level_6': [],
+  'level_4': [],
+  'level_2': []
+};
+var i;
+for (i = 0; i < 6; i++) {
+  segmentIdsByLevelId['level_6'].push(create_segmentId('level_6', i));
+}
 
-//const level4SegmentIds = [];
-//for (i = 0; i < 4; i++) {
-  //level4SegmentIds.push(create_segmentId('level_4', i));
-//}
+for (i = 0; i < 4; i++) {
+  segmentIdsByLevelId['level_4'].push(create_segmentId('level_4', i));
+}
 
-//const level2SegmentIds = [];
-//for (i = 0; i < 2; i++) {
-  //level2SegmentIds.push(create_segmentId('level_2', i));
-//}
+for (i = 0; i < 2; i++) {
+  segmentIdsByLevelId['level_2'].push(create_segmentId('level_2', i));
+}
+export function getSegmentIdsForLevel (levelId) {
+  return segmentIdsByLevelId[levelId];
+}
 
 //export const getLevel6Segments = createSelector(
   //getSegments,

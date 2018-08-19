@@ -16,6 +16,7 @@ import { INACTIVITY_TIMEOUT_EXCEEDED } from '../actionTypes';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
+// TODO: this should really be a selector
 export default function level4Ready (state = false, action, level6Sequencers, sessionPhase) {
   switch (action.type) {
     case INACTIVITY_TIMEOUT_EXCEEDED:

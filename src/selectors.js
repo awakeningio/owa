@@ -14,6 +14,7 @@ import _ from 'lodash';
 import awakeningSequencers from 'awakening-sequencers'
 
 import { create_segmentId } from './models';
+import { SESSION_PHASES } from './constants';
 
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
@@ -21,6 +22,10 @@ const getSequencers = state => state.sequencers;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getRevealReady = state => state.revealReady;
 const getIdlePlayer = state => state.idlePlayer;
+const getLevel4Sequencer = state => state.sequencers['level_4'];
+
+
+const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 //const getSegments = state => state.segments;
 
@@ -82,15 +87,6 @@ export const getLevel6Sequencers = createSelector(
   }
 );
 
-export const getLevel4Sequencers = createSelector(
-  getSequencers,
-  function (sequencers) {
-    let level4SequencerIds = ['4_0', '4_1', '4_2', '4_3'];
-    let level4SequencersById = _.pick(sequencers, level4SequencerIds);
-    return _.values(level4SequencersById);
-  }
-);
-
 export const getLevel2Sequencers = createSelector(
   getSequencers,
   function (sequencers) {
@@ -115,4 +111,42 @@ export const getSCState = createDeepEqualSelector(
     revealReady,
     idlePlayer
   })
+);
+
+export const getLevel4Ready = createSelector(
+  getSessionPhase,
+  getLevel6Sequencers,
+  (sessionPhase, level6Sequencers) => {
+      if (sessionPhase === SESSION_PHASES.PLAYING_6) {
+        // we are in playing_6
+
+        let allLevel6SequencersPlaying = _.every(
+          level6Sequencers,
+          ['playingState', PLAYING_STATES.PLAYING]
+        );
+
+        return allLevel6SequencersPlaying;
+      } else {
+        // we aren't on PLAYING_6, so level4 is not ready.
+        return false;
+      }
+  }
+);
+
+export const getLevel2Ready = createSelector(
+  getSessionPhase,
+  getLevel4Sequencer,
+  (sessionPhase, level4Sequencer) => {
+    if (sessionPhase === SESSION_PHASES.PLAYING_4) {
+      // we are in level 4 playback
+
+      let allLevel4SegmentsTouched = (
+        level4Sequencer.bufSequence.length === 4
+      );
+      return allLevel4SegmentsTouched;
+    } else {
+      // only if we are on PLAYING_4
+      return false;
+    }
+  }
 );

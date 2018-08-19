@@ -20,14 +20,14 @@ const lightingController = new LightingController(store);
 //lightingController.levelTransitionAnimation.start();
 //lightingController.revealAnimation.start();
 
-lightingController.level4ReadyAnimation.start();
 
 //let state = store.getState();
-////setTimeout(function () {
-  ////store.dispatch(
-    ////sessionPhaseAdvanced(SESSION_PHASES.IDLE)
-  ////);
-////}, state.sessionPhaseDurations[SESSION_PHASES.TRANS_ADVICE] / state.tempo * 60000.0);
 //setTimeout(function () {
-  //store.dispatch(buttonPressed('level_6', 0))
+  //store.dispatch(
+    //sessionPhaseAdvanced(SESSION_PHASES.IDLE)
+  //);
+//}, state.sessionPhaseDurations[SESSION_PHASES.TRANS_ADVICE] / state.tempo * 60000.0);
+//setTimeout(function () {
+  //store.dispatch(buttonPressed('level_6', 0));
+  //store.dispatch(buttonPressed('level_6', 1));
 //}, 8000);

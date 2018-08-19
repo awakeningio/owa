@@ -11,6 +11,7 @@
 import { BUTTON_PRESSED, INACTIVITY_TIMEOUT_EXCEEDED } from '../actionTypes';
 import { SESSION_PHASES } from '../constants';
 
+// TODO: this should be a selector
 export default function level2Ready (state = false, action, level4Sequencer, sessionPhase) {
   switch (action.type) {
     case INACTIVITY_TIMEOUT_EXCEEDED:

@@ -16,7 +16,6 @@ import { getSegmentIdsForLevel } from './selectors';
 
 class LevelReadyAnimation extends ControllerWithStore {
   init () {
-    
     this.segmentIds = getSegmentIdsForLevel(this.params.levelId);
   }
   build () {

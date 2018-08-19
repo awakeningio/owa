@@ -38,31 +38,17 @@ class LevelReadyAnimation extends ControllerWithStore {
 
       let periodLength = 2000;
 
-      let onUpdate = function (props) {
-        setPixelsColors(
-          pixels,
-          color.value(props.value)
-        )
-      };
-
-      let inTween = new TWEEN.Tween({value: 0})
+      return new TWEEN.Tween({value: 0})
         .to({value: 255}, periodLength)
         .easing(TWEEN.Easing.Circular.In)
-        .onUpdate(onUpdate)
-        .onComplete(function (props) {
-          props.value = 0;
+        .repeat(Infinity)
+        .yoyo(true)
+        .onUpdate(function (props) {
+          setPixelsColors(
+            pixels,
+            color.value(props.value)
+          )
         });
-
-      let outTween = new TWEEN.Tween({value: 255})
-        .to({value: 0}, periodLength)
-        .easing(TWEEN.Easing.Circular.Out)
-        .onUpdate(onUpdate)
-        .onComplete(function (props) {
-          props.value = 255;
-        });
-      inTween.chain(outTween);
-      outTween.chain(inTween);
-      return inTween;
     };
 
     this.segmentColors = {};
@@ -81,9 +67,11 @@ class LevelReadyAnimation extends ControllerWithStore {
   }
 
   stop () {
-    this.segmentIds.forEach((segmentId) => {
-      this.segmentTweens[segmentId].stop();
-    });
+    if (this.segmentTweens) {
+      this.segmentIds.forEach((segmentId) => {
+        this.segmentTweens[segmentId].stop();
+      });
+    }
   }
 }
 

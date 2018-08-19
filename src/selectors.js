@@ -22,7 +22,13 @@ const getSequencers = state => state.sequencers;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getRevealReady = state => state.revealReady;
 const getIdlePlayer = state => state.idlePlayer;
-const getLevel4Sequencer = state => state.sequencers['level_4'];
+
+const getLevel4Sequencer = createSelector(
+  getSequencers,
+  (sequencers) => {
+    return sequencers['level_4'];
+  }
+);
 
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -111,42 +117,4 @@ export const getSCState = createDeepEqualSelector(
     revealReady,
     idlePlayer
   })
-);
-
-export const getLevel4Ready = createSelector(
-  getSessionPhase,
-  getLevel6Sequencers,
-  (sessionPhase, level6Sequencers) => {
-      if (sessionPhase === SESSION_PHASES.PLAYING_6) {
-        // we are in playing_6
-
-        let allLevel6SequencersPlaying = _.every(
-          level6Sequencers,
-          ['playingState', PLAYING_STATES.PLAYING]
-        );
-
-        return allLevel6SequencersPlaying;
-      } else {
-        // we aren't on PLAYING_6, so level4 is not ready.
-        return false;
-      }
-  }
-);
-
-export const getLevel2Ready = createSelector(
-  getSessionPhase,
-  getLevel4Sequencer,
-  (sessionPhase, level4Sequencer) => {
-    if (sessionPhase === SESSION_PHASES.PLAYING_4) {
-      // we are in level 4 playback
-
-      let allLevel4SegmentsTouched = (
-        level4Sequencer.bufSequence.length === 4
-      );
-      return allLevel4SegmentsTouched;
-    } else {
-      // only if we are on PLAYING_4
-      return false;
-    }
-  }
 );

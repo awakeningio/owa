@@ -10,11 +10,10 @@
 
 import LevelReadyAnimation from './LevelReadyAnimation';
 import ControllerWithStore from './ControllerWithStore';
-import { getLevel4Ready } from './selectors';
 
 class Level4ReadyAnimationController extends ControllerWithStore {
   init () {
-    this.level4Ready = getLevel4Ready(this.store.getState());
+    this.level4Ready = null;
     this.animation = new LevelReadyAnimation(
       this.store,
       Object.assign({}, this.params, {
@@ -25,11 +24,15 @@ class Level4ReadyAnimationController extends ControllerWithStore {
 
   handle_state_change () {
     let state = this.store.getState();
-    let level4Ready = getLevel4Ready(state);
+    let level4Ready = state.level4Ready;
 
     if (level4Ready !== this.level4Ready) {
+      console.log("level4Ready");
+      console.log(level4Ready);
       if (level4Ready) {
-        setTimeout(() => this.animation.start(), 8 / state.tempo * 60000.0);
+        setTimeout(() => {
+          this.animation.start()
+        }, 8 / state.tempo * 60000.0);
       } else {
         this.animation.stop();
       }

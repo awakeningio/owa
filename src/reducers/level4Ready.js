@@ -21,6 +21,7 @@ export default function level4Ready (state = false, action, level6Sequencers, se
   switch (action.type) {
     case INACTIVITY_TIMEOUT_EXCEEDED:
       return false;
+    case awakeningSequencers.actionTypes.SESSION_PHASE_ADVANCED:
     case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
       
       // a sequencer just started playing.

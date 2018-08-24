@@ -31,6 +31,10 @@ if (process.env.NODE_ENV === 'development') {
     level: 'error',
     format: winston.format.simple()
   });
+  logger.add(new winston.transports.File({
+      level: 'error',
+      filename: 'error.log'
+  }));
 
 }
 

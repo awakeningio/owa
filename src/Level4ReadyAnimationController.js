@@ -27,8 +27,6 @@ class Level4ReadyAnimationController extends ControllerWithStore {
     let level4Ready = state.level4Ready;
 
     if (level4Ready !== this.level4Ready) {
-      console.log("level4Ready");
-      console.log(level4Ready);
       if (level4Ready) {
         setTimeout(() => {
           this.animation.start()

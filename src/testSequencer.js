@@ -29,12 +29,12 @@ scController.boot().then(() => {
   soundController = new SoundController(store, {});
 
   setTimeout(function () {
-    ////store.dispatch(awakeningSequencers.actions.sequencerQueued('6_5'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_0'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_1'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_2'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_3'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_4'));
+    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_5'));
+    store.dispatch(awakeningSequencers.actions.sequencerQueued('6_0'));
+    store.dispatch(awakeningSequencers.actions.sequencerQueued('6_1'));
+    store.dispatch(awakeningSequencers.actions.sequencerQueued('6_2'));
+    store.dispatch(awakeningSequencers.actions.sequencerQueued('6_3'));
+    store.dispatch(awakeningSequencers.actions.sequencerQueued('6_4'));
     store.dispatch(buttonPressed('level_6', 5));
 
     //setTimeout(function () {

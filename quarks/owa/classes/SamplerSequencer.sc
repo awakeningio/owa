@@ -9,7 +9,9 @@
  **/
 
 SamplerSequencer : AwakenedSequencer {
-  var synthdefsForBufNames;
+  var synthdefsForBufNames,
+    lastAmp = false,
+    ampProxy;
 
   initPatch {
     synthdefsForBufNames = ();
@@ -24,10 +26,15 @@ SamplerSequencer : AwakenedSequencer {
         gate: KrNumberEditor(1, \gate),
         attackTime: KrNumberEditor(0.0, [0.0, 200.0]),
         releaseTime: KrNumberEditor(0.0, [0.0, 20.0]),
+        amp: KrNumberEditor(1.0, \amp),
         isSustained: 1
       )).asSynthDef().add();
     });
 
+    ampProxy = PatternProxy.new;
+
+    ampProxy.quant = currentState.playQuant;
+    ampProxy.source = currentState.amp;
   }
 
   initStream {
@@ -38,13 +45,23 @@ SamplerSequencer : AwakenedSequencer {
     ^Pbind(
       \attackTime, currentState.attackTime,
       \releaseTime, currentState.releaseTime,
-      \amp, currentState.amp,
+      \amp, ampProxy,
       \instrument, synthdefsForBufNames[currentState.bufName.asSymbol()].name,
       \midinote, Pseq(["C3".notemidi()]),
       \dur, Pseq([currentState.numBeats]),
       \legato, 1.0,
       \sendGate, true
     ).asStream();
+  }
+
+  handleStateChange {
+    super.handleStateChange();
+
+    if (lastAmp != currentState.amp, {
+      lastAmp = currentState.amp;
+      ampProxy.quant = currentState.playQuant;
+      ampProxy.source = currentState.amp;
+    });
   }
 
 }

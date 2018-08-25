@@ -84,10 +84,9 @@ s.waitForBoot({
           if (process.env.DEBUG_SC === "1") {
             console.log("process.env.DEBUG_SC");
             console.log(process.env.DEBUG_SC);
-            //scBootScript += `
-//s.meter();
-//s.plotTree();
-            //`;
+            scBootScript += `
+s.meter();
+            `;
             scBootScript += `
   Routine {
     loop {

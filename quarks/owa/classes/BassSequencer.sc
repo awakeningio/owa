@@ -16,7 +16,7 @@ BassSequencer : AwakenedSequencer {
       synthdef;
 
     patch = Patch("cs.fm.WideBass", (
-      amp: -32.dbamp(),
+      amp: -24.dbamp(),
       gate: 1,
       useSustain: 1
     ));

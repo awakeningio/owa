@@ -26,7 +26,7 @@ LeadPopSequencer : AwakenedSequencer {
         bufManager.midiSequences['spinny-pluck_L6_lead'],
         inf
       ),
-      \amp, 2.0.dbamp()
+      \amp, 1.0.dbamp()
     );
     ^pat.asStream();
   }

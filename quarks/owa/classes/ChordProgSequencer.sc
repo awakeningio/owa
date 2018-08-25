@@ -10,7 +10,8 @@
 
 ChordProgSequencer : AwakenedSequencer {
   var synthdefsForBufNames,
-    bufNameProxy;
+    bufNameProxy,
+    lastBufSequence = nil;
 
   initPatch {
     synthdefsForBufNames = ();
@@ -46,13 +47,17 @@ ChordProgSequencer : AwakenedSequencer {
       \midinote, "C3".notemidi(),
       \dur, Pseq([currentState.numBeats], inf),
       \legato, 2.0,
-      \amp, 6.0.dbamp(),
+      \amp, 8.0.dbamp(),
       \sendGate, true
     ).asStream();
   }
 
   handleStateChange {
     super.handleStateChange();
-    bufNameProxy.source = Pseq(currentState.bufSequence, inf);
+    if (lastBufSequence != currentState.bufSequence, {
+      lastBufSequence = currentState.bufSequence;
+      bufNameProxy.source = Pseq(currentState.bufSequence, inf);
+      bufNameProxy.quant = currentState.playQuant;
+    });
   }
 }

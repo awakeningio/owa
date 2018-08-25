@@ -33,14 +33,24 @@ KalimbaSequencer : AwakenedSequencer {
   initStream {
     ^Pbind(
       \instrument, synthdef.name,
-      \degree, Pseq([0, 3, 5, 8], inf),
-      \dur, Pseq([0.5], inf),
+      \degree, Prand([
+        Pseq([\rest, 8, 2, 3, 7]),
+        Pseq([\rest, 8, 5, 7, 0]),
+        Pseq([\rest, 7, 7, 7, 7])
+      ], inf),
+      \dur, Prand([
+        Pseq([0.5, 4, 4, 4, 3.5]),
+        Pseq([0.5, 2, 2, 2, 2.5])
+      ], inf),
       \scale, Scale.major,
       \root, 1,
-      \octave, 5,
-      \legato, Pseq([0.3, 0.15], inf),
-      \amp, -24.0.dbamp()*(2**Pgauss(0, 0.1)),
-      \mix, Pwhite(0.05, 0.15),
+      \octave, Prand([
+        Pseq([5, 5, 5, 5, 5]),
+        Pseq([6, 6, 6, 6, 6]),
+      ], inf),
+      \legato, Prand([0.3, 0.15], inf),
+      \amp, -21.0.dbamp()*(2**Pgauss(0, 0.1)),
+      \mix, Pwhite(0.05, 0.35),
     ).asStream();
   }
 }

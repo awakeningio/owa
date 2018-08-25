@@ -21,23 +21,25 @@ OrganicPercSequencer : AwakenedSequencer {
   initStream {
     ^Pbind(
       \instrument, synthdef.name,
-      \amp, -48.0.dbamp(),
+      \amp, -30.0.dbamp(),
       \degree, Prand([
-        Pseq([0, 3, 5, 8]),
-        Pseq([8, 5, 3, 0]),
-        Pseq([\rest, 9, 9]),
-        Pseq([10, 12, 13, 14])
+        Pseq([8, 2, 3, 7]),
+        Pseq([8, 5, 7, 0]),
+        Pseq([7, 7, 7, 7])
       ], inf),
       \dur, Prand([
-        Pseq([0.5, 0.33, 0.33, 0.33, 0.33, 0.33, 0.33]),
-        Pseq([0.5, 0.5, 0.5, 0.5])
+        Pseq([4, 4, 4, 4]),
+        Pseq([2, 2, 2, 2])
       ], inf),
       \scale, Scale.major,
       \root, 1,
-      \octave, 5,
+      \octave, Prand([
+        Pseq([5, 5, 5, 5, 5]),
+        Pseq([6, 6, 6, 6, 6]),
+      ], inf),
       \legato, Pseq([0.3, 0.15], inf),
       \doFreqSweep, Pwrand([0, 1], [0.75, 0.25], inf),
-      \freqSweepTargetMultiplier, Prand([2.0, 0.5], inf),
+      \freqSweepTargetMultiplier, Prand([4.0, 2.0, 0.5], inf),
       \noteDuration, Pfunc({
         arg event;
         event[\legato] * event[\dur] * clock.tempo;

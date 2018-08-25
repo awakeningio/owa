@@ -99,7 +99,7 @@ const spinnyPluckL4TransitionSequencer = Object.assign(
     attackTime: 0.01,
     releaseTime: 0.01,
     numBeats: 6 * 4,
-    amp: 0.5
+    amp: 0.4
   }
 );
 
@@ -381,10 +381,16 @@ function chordProgSequencer (
           // this is the first press for level 4
           return Object.assign({}, state, {
             playingState: PLAYING_STATES.QUEUED,
-            bufSequence: [segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName],
+            bufSequence: [
+              segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName
+            ],
+            //playQuant: createPhaseEndQuant(
+              //sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]],
+              //sessionPhaseDurations
+            //)
             playQuant: [
-              8,
-              8 + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]
+              4,
+              4 + sessionPhaseDurations[sessionPhase] + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]
             ]
           });
         } else if (sessionPhase === SESSION_PHASES.PLAYING_4) {

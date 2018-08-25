@@ -488,7 +488,7 @@ function l2Sequencer (
               playingState: PLAYING_STATES.QUEUED,
               playQuant: [
                 4,
-                4 + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]
+                4 + sessionPhaseDurations[sessionPhase] + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]
               ]
             }
           );

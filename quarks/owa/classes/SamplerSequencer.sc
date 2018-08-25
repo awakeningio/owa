@@ -11,7 +11,11 @@
 SamplerSequencer : AwakenedSequencer {
   var synthdefsForBufNames,
     lastAmp = false,
-    ampProxy;
+    lastAttackTime = false,
+    lastReleaseTime = false,
+    ampProxy,
+    attackTimeProxy,
+    releaseTimeProxy;
 
   initPatch {
     synthdefsForBufNames = ();
@@ -32,9 +36,15 @@ SamplerSequencer : AwakenedSequencer {
     });
 
     ampProxy = PatternProxy.new;
+    attackTimeProxy = PatternProxy.new;
+    releaseTimeProxy = PatternProxy.new;
 
     ampProxy.quant = currentState.playQuant;
+    attackTimeProxy.quant = currentState.playQuant;
+    releaseTimeProxy.quant = currentState.playQuant;
     ampProxy.source = currentState.amp;
+    attackTimeProxy.source = currentState.attackTime;
+    releaseTimeProxy.source = currentState.releaseTime;
   }
 
   initStream {
@@ -43,8 +53,8 @@ SamplerSequencer : AwakenedSequencer {
     // the proper synthdef.
 
     ^Pbind(
-      \attackTime, currentState.attackTime,
-      \releaseTime, currentState.releaseTime,
+      \attackTime, attackTimeProxy,
+      \releaseTime, releaseTimeProxy,
       \amp, ampProxy,
       \instrument, synthdefsForBufNames[currentState.bufName.asSymbol()].name,
       \midinote, Pseq(["C3".notemidi()]),
@@ -61,6 +71,18 @@ SamplerSequencer : AwakenedSequencer {
       lastAmp = currentState.amp;
       ampProxy.quant = currentState.playQuant;
       ampProxy.source = currentState.amp;
+    });
+
+    if (lastReleaseTime != currentState.releaseTime, {
+      lastReleaseTime = currentState.releaseTime;
+      releaseTimeProxy.quant = currentState.playQuant;
+      releaseTimeProxy.source = currentState.releaseTime;
+    });
+
+    if (lastAttackTime != currentState.attackTime, {
+      lastAttackTime = currentState.attackTime;
+      attackTimeProxy.quant = currentState.playQuant;
+      attackTimeProxy.source = currentState.attackTime;
     });
   }
 

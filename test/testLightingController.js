@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import LightingController from '../src/LightingController.js'
 
-import {configureStore} from "../src/configureStore"
+import configureStore from "../src/configureStore"
 
 import awakeningSequencers from 'awakening-sequencers'
 

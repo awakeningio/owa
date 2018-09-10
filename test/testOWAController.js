@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 
-import {configureStore, configureLinkStore} from "../src/configureStore"
+import configureStore from "../src/configureStore"
 import { OWA_READY_STATES } from "../src/constants"
 import OWAController from "../src/OWAController"
 
 describe("OWAController", function () {
   var store = configureStore();
-  var abletonLinkStateStore = configureLinkStore();
+  //var abletonLinkStateStore = configureLinkStore();
   var owaController;
 
   it("should initialize without failure", function (done) {
@@ -15,7 +15,7 @@ describe("OWAController", function () {
     var unsub;
 
     owaController = new OWAController(store, {
-      linkStateStore: abletonLinkStateStore
+      //linkStateStore: abletonLinkStateStore
     });
     
     unsub = store.subscribe(() => {

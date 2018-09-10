@@ -24,6 +24,7 @@ import revealReady from './revealReady';
 import sessionPhaseDurations from './sessionPhaseDurations';
 import idlePlayer from './idlePlayer';
 import inactivityTimeoutStartTime from './inactivityTimeoutStartTime';
+import firstSegmentPressed from './firstSegmentPressed';
 
 var combined = combineReducers({
   tempo,
@@ -43,7 +44,8 @@ export default function (state, action) {
     newRevealReady,
     newSessionPhase,
     newSegments,
-    newIdlePlayer;
+    newIdlePlayer,
+    newFirstSegmentPressed;
   prevSessionPhase = state.sessionPhase;
   newState = combined(state, action);
   if (state !== newState) {
@@ -118,6 +120,18 @@ export default function (state, action) {
   );
   if (newRevealReady !== state.revealReady) {
     state = Object.assign({}, state, { revealReady: newRevealReady });
+  }
+  newFirstSegmentPressed = firstSegmentPressed(
+    state.firstSegmentPressed,
+    action,
+    state.sessionPhase
+  );
+  if (newFirstSegmentPressed !== state.firstSegmentPressed) {
+    state = Object.assign(
+      {},
+      state,
+      { firstSegmentPressed: newFirstSegmentPressed }
+    );
   }
   return state;
 }

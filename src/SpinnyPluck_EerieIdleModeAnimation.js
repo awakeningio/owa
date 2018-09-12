@@ -14,13 +14,17 @@ import TWEEN from '@tweenjs/tween.js';
 import Color from 'color';
 
 import ControllerWithStore from './ControllerWithStore';
-import { setPixelsColors } from './Pixels';
+import { setPixelsColors, setPixelColors } from './Pixels';
 import { SESSION_PHASES } from './constants';
 
 class IdleModeAnimation extends ControllerWithStore {
   init() {
 
-    this.build();
+    this.prevState = {
+      sessionPhase: null,
+      firstSegmentPressed: false
+    };
+
   }
   build () {
     this.state = {
@@ -181,11 +185,42 @@ class IdleModeAnimation extends ControllerWithStore {
       .onUpdate((props) => {
         this.state.masterHueOffset = props.masterHueOffset
       });
-    
 
-    this.prevState = {
-      sessionPhase: null
-    };
+    this.firstSegmentColor = Color.hsv(280, 100, 255);
+
+    this.firstSegmentPulsingTween = new TWEEN.Tween({brightness: 0.8})
+      .to({brightness: 0.9}, 1500)
+      .easing(TWEEN.Easing.Cubic.InOut)
+      .yoyo(true)
+      .repeat(Infinity)
+      .onUpdate((props) => {
+        this.state.firstSegmentBrightness = props.brightness;
+      });
+
+    let i;
+    this.firstSegmentCountdownTween = new TWEEN.Tween({remaining: 1.0})
+      .to({
+        remaining: 0.0
+      }, transDur)
+      .onUpdate((props) => {
+        let lastLit = Math.round(props.remaining * 12);
+        for (i = 0; i < lastLit; i++) {
+          setPixelColors(
+            this.params.segmentPixels[this.prevState.firstSegmentPressed],
+            i,
+            this.firstSegmentColor.value(
+              255 * this.state.firstSegmentBrightness
+            )
+          );
+        }
+        for (i = lastLit; i < 12; i++) {
+          setPixelColors(
+            this.params.segmentPixels[this.prevState.firstSegmentPressed],
+            i,
+            this.firstSegmentColor.value(25)
+          );
+        }
+      });
 
   }
 
@@ -201,12 +236,15 @@ class IdleModeAnimation extends ControllerWithStore {
     });
     this.transBrightnessTween.stop();
     this.transHueTween.stop();
+    this.firstSegmentPulsingTween.stop();
+    this.firstSegmentCountdownTween.stop();
   }
   handle_state_change () {
     let state = this.store.getState();
 
     if (this.prevState.sessionPhase !== state.sessionPhase) {
       this.prevState.sessionPhase = state.sessionPhase;
+      this.prevState.firstSegmentPressed = state.firstSegmentPressed;
 
       switch (state.sessionPhase) {
         case SESSION_PHASES.IDLE:
@@ -219,6 +257,9 @@ class IdleModeAnimation extends ControllerWithStore {
 
         case SESSION_PHASES.QUEUE_TRANS_6:
           this.transHueTween.start();
+          this.segmentTweens[state.firstSegmentPressed].stop();
+          this.firstSegmentPulsingTween.start();
+          this.firstSegmentCountdownTween.start();
           break;
         
         default:

@@ -14,6 +14,19 @@ import { SESSION_PHASES } from '../constants';
 
 function segment (state, action, prevSessionPhase, sessionPhase) {
   switch (action.type) {
+    case actionTypes.BUTTON_PRESSED:
+      // if button press was for this segment
+      if (
+        action.payload.levelId === state.levelId
+        && action.payload.segmentIndex === state.segmentIndex
+      ) {
+        // update lastButtonPressTime
+        return Object.assign({}, state, {
+          lastButtonPressTime: (new Date()).getTime()
+        });
+      } else {
+        return state;
+      }
     case actionTypes.SESSION_PHASE_ADVANCED:
 
       switch (sessionPhase) {

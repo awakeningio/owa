@@ -43,11 +43,14 @@ function createPhaseProps () {
 
 export function create_segment (levelId, segmentIndex) {
   let segment = {
+    levelId,
+    segmentIndex,
     segmentId: create_segmentId(levelId, segmentIndex),
     sequencerId: false,
     // when associating this segment with some properties of its seq
     sequencerProps: {},
-    phaseSequencerProps: createPhaseProps()
+    phaseSequencerProps: createPhaseProps(),
+    lastButtonPressTime: 0
   };
   return segment;
 }

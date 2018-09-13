@@ -14,6 +14,7 @@ import awakeningSequencers from 'awakening-sequencers';
 import ControllerWithStore from './ControllerWithStore';
 import SegmentQueuedAnimation from './SegmentQueuedAnimation';
 import SegmentPlayingAnimation from './SegmentPlayingAnimation';
+import SegmentNoopAnimation from './SegmentNoopAnimation';
 import { SESSION_PHASES } from './constants';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -36,6 +37,9 @@ class SegmentLightingController extends ControllerWithStore {
     this.playingAnimation = new SegmentPlayingAnimation(this.store, {
       pixels: this.params.pixels,
       segmentId: this.params.segmentId
+    });
+    this.noopAnimation = new SegmentNoopAnimation({
+      pixels: this.params.pixels
     });
     
     this.lastState = {
@@ -67,13 +71,26 @@ class SegmentLightingController extends ControllerWithStore {
     let state = this.store.getState();
     let segment = state.segments.byId[this.params.segmentId];
     let sequencer = state.sequencers[segment.sequencerId];
-    //let sessionPhase = state.sessionPhase;
+    let sessionPhase = state.sessionPhase;
 
     if (segment !== this.lastState.segment) {
+
+      if (
+        segment.lastButtonPressTime
+        !== this.lastState.segment.lastButtonPressTime
+        && sequencer.playingState === PLAYING_STATES.STOPPED
+        && [SESSION_PHASES.PLAYING_6, SESSION_PHASES.PLAYING_4].includes(sessionPhase)
+      ) {
+        // segment button was pressed and sequencer is still stopped,
+        // means this was a no-op
+        this.noopAnimation.start();
+      }
+      
       this.lastState.segment = segment;
     }
 
     if (sequencer.sequencerId === 'level_4') {
+
       if (
         sequencer.playingState !== this.lastState.sequencer.playingState
         || sequencer.event.bufName !== this.lastState.sequencer.event.bufName
@@ -113,6 +130,7 @@ class SegmentLightingController extends ControllerWithStore {
           this.queuedAnimation.stop();
         }
       }
+
     } else {
       if (sequencer.playingState !== this.lastState.sequencer.playingState) {
         this.lastState.sequencer = sequencer;

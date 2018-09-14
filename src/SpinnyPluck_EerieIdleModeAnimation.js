@@ -29,7 +29,7 @@ class IdleModeAnimation extends ControllerWithStore {
   build () {
     this.state = {
       masterBrightness: 1.0,
-      masterHueOffset: 0.0
+      transHueOffset: 0.0
     };
 
     let initial = {
@@ -116,50 +116,69 @@ class IdleModeAnimation extends ControllerWithStore {
       )
     };
 
-    let createSegmentTween = (segmentId) => {
+    let createSegmentTween = (segmentId, levelId) => {
       let segmentPixels = this.params.segmentPixels;
       let segmentColors = this.segmentColors;
-      return new TWEEN.Tween(Object.assign({}, initial))
-        .to(Object.assign({}, dest), 8000)
-        .delay(Math.random() * 500 + 2000)
-        .yoyo(true)
-        .repeat(Infinity)
-        .onUpdate((props) => {
+      let onUpdate;
+
+      // only level6 turns green during trans
+      // TODO: refactor
+      if (levelId === 'level_6') {
+        onUpdate = (props) => {
           setPixelsColors(
             segmentPixels[segmentId],
             segmentColors[segmentId].value(
               255 * props.brightness * this.state.masterBrightness
             ).hue(
-              segmentColors[segmentId].hue() + this.state.masterHueOffset
+              segmentColors[segmentId].hue() + this.state.transHueOffset
             )
           );
-        });
+        };
+      } else {
+        onUpdate = (props) => {
+          setPixelsColors(
+            segmentPixels[segmentId],
+            segmentColors[segmentId].value(
+              255 * props.brightness * this.state.masterBrightness
+            ).hue(
+              segmentColors[segmentId].hue()
+            )
+          );
+        };
+      }
+
+      return new TWEEN.Tween(Object.assign({}, initial))
+        .to(Object.assign({}, dest), 8000)
+        .delay(Math.random() * 500 + 2000)
+        .yoyo(true)
+        .repeat(Infinity)
+        .onUpdate(onUpdate);
     };
 
     this.segmentTweens = {
-      'level_6-segment_0': createSegmentTween('level_6-segment_0')
+      'level_6-segment_0': createSegmentTween('level_6-segment_0', 'level_6')
       .easing(TWEEN.Easing.Sinusoidal.In),
-      'level_6-segment_1': createSegmentTween('level_6-segment_1')
+      'level_6-segment_1': createSegmentTween('level_6-segment_1', 'level_6')
       .easing(TWEEN.Easing.Sinusoidal.InOut),
-      'level_6-segment_2': createSegmentTween('level_6-segment_2')
+      'level_6-segment_2': createSegmentTween('level_6-segment_2', 'level_6')
       .easing(TWEEN.Easing.Sinusoidal.Out),
-      'level_6-segment_3': createSegmentTween('level_6-segment_3')
+      'level_6-segment_3': createSegmentTween('level_6-segment_3', 'level_6')
       .easing(TWEEN.Easing.Sinusoidal.In),
-      'level_6-segment_4': createSegmentTween('level_6-segment_4')
+      'level_6-segment_4': createSegmentTween('level_6-segment_4', 'level_6')
       .easing(TWEEN.Easing.Sinusoidal.InOut),
-      'level_6-segment_5': createSegmentTween('level_6-segment_5')
+      'level_6-segment_5': createSegmentTween('level_6-segment_5', 'level_6')
       .easing(TWEEN.Easing.Sinusoidal.Out),
-      'level_4-segment_0': createSegmentTween('level_4-segment_0')
+      'level_4-segment_0': createSegmentTween('level_4-segment_0', 'level_4')
       .easing(TWEEN.Easing.Sinusoidal.In),
-      'level_4-segment_1': createSegmentTween('level_4-segment_1')
+      'level_4-segment_1': createSegmentTween('level_4-segment_1', 'level_4')
       .easing(TWEEN.Easing.Sinusoidal.InOut),
-      'level_4-segment_2': createSegmentTween('level_4-segment_2')
+      'level_4-segment_2': createSegmentTween('level_4-segment_2', 'level_4')
       .easing(TWEEN.Easing.Sinusoidal.Out),
-      'level_4-segment_3': createSegmentTween('level_4-segment_3')
+      'level_4-segment_3': createSegmentTween('level_4-segment_3', 'level_4')
       .easing(TWEEN.Easing.Sinusoidal.In),
-      'level_2-segment_0': createSegmentTween('level_2-segment_0')
+      'level_2-segment_0': createSegmentTween('level_2-segment_0', 'level_2')
       .easing(TWEEN.Easing.Sinusoidal.InOut),
-      'level_2-segment_1': createSegmentTween('level_2-segment_1')
+      'level_2-segment_1': createSegmentTween('level_2-segment_1', 'level_2')
       .easing(TWEEN.Easing.Sinusoidal.Out)
     };
 
@@ -177,13 +196,13 @@ class IdleModeAnimation extends ControllerWithStore {
         this.state.masterBrightness = props.masterBrightness;
       });
 
-    this.transHueTween = new TWEEN.Tween({masterHueOffset: 0.0})
+    this.transHueTween = new TWEEN.Tween({transHueOffset: 0.0})
       .to({
-        masterHueOffset: 30.0
+        transHueOffset: 30.0
       }, 500)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onUpdate((props) => {
-        this.state.masterHueOffset = props.masterHueOffset
+        this.state.transHueOffset = props.transHueOffset
       });
 
     this.firstSegmentColor = Color.hsv(280, 100, 255);

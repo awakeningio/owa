@@ -8,7 +8,11 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import { BUTTON_PRESSED, SESSION_PHASE_ADVANCED } from '../actionTypes';
+import {
+  BUTTON_PRESSED,
+  SESSION_PHASE_ADVANCED,
+  INACTIVITY_TIMEOUT_EXCEEDED
+} from '../actionTypes';
 import { SESSION_PHASES } from '../constants';
 import { create_segmentId } from '../models';
 
@@ -35,6 +39,9 @@ export default function firstSegmentPressed (state = false, action, sessionPhase
         default:
           return state;
       }
+
+    case INACTIVITY_TIMEOUT_EXCEEDED:
+      return false;
     
     default:
       return state;

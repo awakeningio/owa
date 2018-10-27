@@ -39,7 +39,7 @@ class IdleModeAnimation extends ControllerWithStore {
       brightness: 1.0
     };
 
-    let initialBrightness = 255;
+    let initialBrightness = 100;
 
     this.segmentColors = {
       'level_6-segment_0': Color.hsv(
@@ -128,7 +128,7 @@ class IdleModeAnimation extends ControllerWithStore {
           setPixelsColors(
             segmentPixels[segmentId],
             segmentColors[segmentId].value(
-              255 * props.brightness * this.state.masterBrightness
+              100 * props.brightness * this.state.masterBrightness
             ).hue(
               segmentColors[segmentId].hue() + this.state.transHueOffset
             )
@@ -139,7 +139,7 @@ class IdleModeAnimation extends ControllerWithStore {
           setPixelsColors(
             segmentPixels[segmentId],
             segmentColors[segmentId].value(
-              255 * props.brightness * this.state.masterBrightness
+              100 * props.brightness * this.state.masterBrightness
             ).hue(
               segmentColors[segmentId].hue()
             )
@@ -205,7 +205,7 @@ class IdleModeAnimation extends ControllerWithStore {
         this.state.transHueOffset = props.transHueOffset
       });
 
-    this.firstSegmentColor = Color.hsv(280, 100, 255);
+    this.firstSegmentColor = Color.hsv(280, 100, 100);
 
     this.firstSegmentPulsingTween = new TWEEN.Tween({brightness: 0.8})
       .to({brightness: 0.9}, 1500)

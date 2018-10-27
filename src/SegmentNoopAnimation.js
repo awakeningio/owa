@@ -19,11 +19,11 @@ class SegmentNoopAnimation {
 
     this.tween = null;
 
-    this.color = Color.hsv(5, 255, 255);
+    this.color = Color.hsv(5, 100, 100);
     this.onUpdate = (props) => {
       setPixelsColors(
         this.props.pixels,
-        this.color.value(props.brightness * 255)
+        this.color.value(props.brightness * 100)
       );
     };
     

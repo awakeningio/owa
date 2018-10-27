@@ -27,7 +27,7 @@ class LevelReadyAnimation extends ControllerWithStore {
       return Color.hsv(
         hue,
         100,
-        255
+        100
       );
     };
 
@@ -39,7 +39,7 @@ class LevelReadyAnimation extends ControllerWithStore {
       let periodLength = 2000;
 
       return new TWEEN.Tween({value: 0})
-        .to({value: 255}, periodLength)
+        .to({value: 100}, periodLength)
         .easing(TWEEN.Easing.Circular.In)
         .repeat(Infinity)
         .yoyo(true)

@@ -33,51 +33,51 @@ class Level4TransitionAnimation extends ControllerWithStore {
     };
 
     this.segmentColors = {
-      'level_6-segment_0': Color.hsv(26, 100, 255).mix(
+      'level_6-segment_0': Color.hsv(26, 100, 100).mix(
         Color.hsv(22, 82, 100),
         0.1
       ),
-      'level_6-segment_1': Color.hsv(27, 100, 255).mix(
+      'level_6-segment_1': Color.hsv(27, 100, 100).mix(
         Color.hsv(32, 100, 100),
         0.1
       ),
-      'level_6-segment_2': Color.hsv(28, 100, 255).mix(
+      'level_6-segment_2': Color.hsv(28, 100, 100).mix(
         Color.hsv(33, 100, 100),
         0.1
       ),
-      'level_6-segment_3': Color.hsv(29, 100, 255).mix(
+      'level_6-segment_3': Color.hsv(29, 100, 100).mix(
         Color.hsv(34, 100, 100),
         0.1
       ),
-      'level_6-segment_4': Color.hsv(30, 100, 255).mix(
+      'level_6-segment_4': Color.hsv(30, 100, 100).mix(
         Color.hsv(35, 100, 100),
         0.1
       ),
-      'level_6-segment_5': Color.hsv(31, 100, 255).mix(
+      'level_6-segment_5': Color.hsv(31, 100, 100).mix(
         Color.hsv(36, 100, 100),
         0.1
       ),
-      'level_4-segment_0': Color.hsv(32, 100, 255).mix(
+      'level_4-segment_0': Color.hsv(32, 100, 100).mix(
         Color.hsv(37, 100, 100),
         0.1
       ),
-      'level_4-segment_1': Color.hsv(33, 100, 255).mix(
+      'level_4-segment_1': Color.hsv(33, 100, 100).mix(
         Color.hsv(38, 100, 100),
         0.1
       ),
-      'level_4-segment_2': Color.hsv(34, 100, 255).mix(
+      'level_4-segment_2': Color.hsv(34, 100, 100).mix(
         Color.hsv(39, 100, 100),
         0.1
       ),
-      'level_4-segment_3': Color.hsv(35, 100, 255).mix(
+      'level_4-segment_3': Color.hsv(35, 100, 100).mix(
         Color.hsv(40, 100, 100),
         0.1
       ),
-      'level_2-segment_0': Color.hsv(36, 100, 255).mix(
+      'level_2-segment_0': Color.hsv(36, 100, 100).mix(
         Color.hsv(41, 100, 100),
         0.1
       ),
-      'level_2-segment_1': Color.hsv(37, 100, 255).mix(
+      'level_2-segment_1': Color.hsv(37, 100, 100).mix(
         Color.hsv(42, 100, 100),
         0.1
       )

@@ -27,9 +27,9 @@ bool PiezoButton::handleInputValue (int inputValue) {
   }
   avg = avg / NUM_READINGS;
 
-  //if (avg > DEBUG_THRESHOLD) {
-    //Serial.println("button: " + String(this->id) + "; avg: " + String(avg));
-  //}
+  if (avg > DEBUG_THRESHOLD) {
+    Serial.println("button: " + String(this->id) + "; avg: " + String(avg));
+  }
 
   if (abs(avg) > this->triggerThreshold) {
     if (triggered == false) {

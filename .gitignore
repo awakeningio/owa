@@ -11,3 +11,5 @@ owa_env
 upload_arduino.sh
 *~.skp
 combined.log
+error.log
+owa_env_*

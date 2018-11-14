@@ -25,7 +25,7 @@ export function getEnvAsNumber (envName) {
   var result = process.env[envName];
 
   if (result) {
-    return Number(process.env[envName]);
+    return Number(result);
   } else {
     return null;
   }

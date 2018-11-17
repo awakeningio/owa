@@ -7,7 +7,6 @@
     "test": "nyc mocha --require babel-register --exit --timeout 10000 --slow 4000",
     "build_docs": "plantuml -tsvg docs/*.puml",
     "watch_docs": "npm-watch build_docs",
-    "deploy_docs": "rsync -rvt docs/ owa.awakening.io:owa.awakening.io/",
     "build": "babel src -d build",
     "watch": "npm-watch build",
     "start": "node build/main.js",

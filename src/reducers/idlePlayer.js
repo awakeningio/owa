@@ -15,13 +15,13 @@ import {
   SESSION_PHASE_ADVANCED,
   INACTIVITY_TIMEOUT_EXCEEDED
 } from '../actionTypes';
-import { SESSION_PHASES } from '../constants';
+import { SESSION_PHASES } from 'owa/constants';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 const defaultIdlePlayer = {
   bufName: 'eerie_idle_loop',
-  gate: 1,
+  gate: 0,
   playingState: PLAYING_STATES.STOPPED
 };
 
@@ -32,6 +32,7 @@ export default function idlePlayer (
   switch (action.type) {
     case INACTIVITY_TIMEOUT_EXCEEDED:
       return Object.assign({}, state, {
+        playingState: PLAYING_STATES.PLAYING,
         gate: 1
       });
     case OWA_SOUND_INIT_DONE:
@@ -47,8 +48,14 @@ export default function idlePlayer (
             gate: 0
           });
 
+        case SESSION_PHASES.PLAYING_6:
+          return {...state, ...{
+            playingState: PLAYING_STATES.STOPPED
+          }};
+
         case SESSION_PHASES.IDLE:
           return Object.assign({}, state, {
+            playingState: PLAYING_STATES.PLAYING,
             gate: 1
           });
 

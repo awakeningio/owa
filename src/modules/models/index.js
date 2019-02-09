@@ -1,48 +1,28 @@
 import {
   SESSION_PHASES,
   NEXT_SESSION_PHASES,
-  LEVEL_PLAYBACK_TYPE
-} from './constants'
+} from 'owa/constants'
 import awakeningSequencers from 'awakening-sequencers';
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
-/**
- *  a sequential level is one that plays it's segments in sequence.
- **/
-export function create_sequential_level (levelId, numSegments) {
-  return {
-    playbackType: LEVEL_PLAYBACK_TYPE.SEQUENTIAL,
-    levelId,
-    //segmentPlaybackOrder: [],
-    numSegments,
-    //segmentPlaybackIndex: false,
-    //activeSegmentId: false
-  };
-}
-/**
- *  A simultaneous level plays all its sequencers simultaneously.
- **/
-export function create_simultaneous_level (levelId, numSegments) {
-  return {
-    playbackType: LEVEL_PLAYBACK_TYPE.SIMULTANEOUS,
-    levelId,
-    numSegments
-  };
-}
+
+export * from './level';
 
 export function create_segmentId (levelId, segmentIndex) {
   return `${levelId}-segment_${segmentIndex}`;
 }
 
 function createPhaseProps () {
-  let phaseProps = {};
-  Object.keys(SESSION_PHASES).forEach(function (sessionPhase) {
-    phaseProps[sessionPhase] = {};
-  });
-  return phaseProps;
+  return Object.keys(SESSION_PHASES).reduce(
+    function (phaseProps, sessionPhase) {
+      phaseProps[sessionPhase] = {};
+      return phaseProps
+    },
+    {}
+  );
 }
 
 export function create_segment (levelId, segmentIndex) {
-  let segment = {
+  return {
     levelId,
     segmentIndex,
     segmentId: create_segmentId(levelId, segmentIndex),
@@ -52,7 +32,6 @@ export function create_segment (levelId, segmentIndex) {
     phaseSequencerProps: createPhaseProps(),
     lastButtonPressTime: 0
   };
-  return segment;
 }
 
 export function get_playing_levelId_for_sessionPhase (sessionPhase) {
@@ -64,13 +43,14 @@ export function get_playing_levelId_for_sessionPhase (sessionPhase) {
 }
 
 export function create_owa_sequencer (sequencerId, type) {
-  let seq = create_default_sequencer(sequencerId, type);
-
-  // automatically change these properties of the sequencer when the
-  // sessionPhase changes.
-  seq.phaseProps = createPhaseProps();
-
-  return seq;
+  return {
+    ...create_default_sequencer(sequencerId, type),
+    ...{
+      // automatically change these properties of the sequencer when the
+      // sessionPhase changes.
+      phaseProps: createPhaseProps()
+    }
+  };
 }
 
 export function createPhaseEndQuant (sessionPhase, sessionPhaseDurations) {

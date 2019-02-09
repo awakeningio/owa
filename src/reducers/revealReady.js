@@ -12,7 +12,7 @@ import _ from 'lodash';
 
 import awakeningSequencers from 'awakening-sequencers';
 
-import { SESSION_PHASES } from '../constants';
+import { SESSION_PHASES } from 'owa/constants';
 import { SESSION_PHASE_ADVANCED, INACTIVITY_TIMEOUT_EXCEEDED } from '../actionTypes';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;

@@ -13,8 +13,8 @@ import * as actionTypes from '../actionTypes'
 import {
   create_segmentId,
   createPhaseEndQuant
-} from '../models'
-import { SESSION_PHASES, NEXT_SESSION_PHASES } from '../constants'
+} from 'owa/models'
+import { SESSION_PHASES, NEXT_SESSION_PHASES } from 'owa/constants'
 
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;

@@ -9,7 +9,7 @@
  **/
 
 import * as actionTypes from "../actionTypes"
-import {OWA_READY_STATES} from "../constants"
+import {OWA_READY_STATES} from "owa/constants"
 
 export default function soundReady (state = OWA_READY_STATES.NOT_BOOTED, action) {
   

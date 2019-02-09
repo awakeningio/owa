@@ -13,8 +13,8 @@ import {
   SESSION_PHASE_ADVANCED,
   INACTIVITY_TIMEOUT_EXCEEDED
 } from '../actionTypes';
-import { SESSION_PHASES } from '../constants';
-import { create_segmentId } from '../models';
+import { SESSION_PHASES } from 'owa/constants';
+import { create_segmentId } from 'owa/models';
 
 export default function firstSegmentPressed (state = false, action, sessionPhase) {
   switch (action.type) {

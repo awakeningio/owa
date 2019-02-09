@@ -82,8 +82,6 @@ s.options.blockSize = 128;
 s.waitForBoot({
           `;
           if (process.env.DEBUG_SC === "1") {
-            console.log("process.env.DEBUG_SC");
-            console.log(process.env.DEBUG_SC);
             scBootScript += `
 s.meter();
             `;
@@ -91,9 +89,9 @@ s.meter();
   Routine {
     loop {
       s.queryAllNodes();
-      s.dumpOSC();
+      //s.dumpOSC();
 
-      5.0.wait();
+      10.0.wait();
     }
   }.play();
             `;

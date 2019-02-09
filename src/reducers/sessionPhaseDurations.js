@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import { SESSION_PHASES } from '../constants';
+import { SESSION_PHASES } from 'owa/constants';
 
 const defaultState = {
   [SESSION_PHASES.QUEUE_TRANS_6]: 4,

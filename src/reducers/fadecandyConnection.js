@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import { CONNECTION_STATUS } from '../constants';
+import { CONNECTION_STATUS } from 'owa/constants';
 import * as actionTypes from '../actionTypes';
 
 export default function fadecandyConnection (state = CONNECTION_STATUS.DISCONNECTED, action) {

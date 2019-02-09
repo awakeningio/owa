@@ -9,7 +9,7 @@
  **/
 
 
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 //import _ from 'lodash';
 //import awakeningSequencers from 'awakening-sequencers';
 //const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -20,13 +20,13 @@ import {
   create_segment,
   create_segmentId,
   create_owa_sequencer
-} from './models'
+} from 'owa/models'
 
-import { SESSION_PHASES } from './constants';
+import { SESSION_PHASES } from 'owa/constants';
 
 import logger from './logging'
 
-import abletonlinkRedux from 'abletonlink-redux'
+//import abletonlinkRedux from 'abletonlink-redux'
 import rootReducer from './reducers'
 const middleware = [
 ];
@@ -36,8 +36,8 @@ if (process.env.NODE_ENV === 'development') {
    *  logging of state-store messages
    **/
   const stateTransformer = function (state) {
-    let toPrint = {};
-    toPrint.sequencers = state.sequencers;
+    const toPrint = {};
+    //toPrint.sequencers = state.sequencers;
     //Object.keys(state.sequencers).forEach(function (seqId) {
       //toPrint.sequencers[seqId] = _.pick(state.sequencers[seqId], [
         //'type',
@@ -48,49 +48,49 @@ if (process.env.NODE_ENV === 'development') {
         //'bufSequence'
       //])
     //});
-    toPrint.level4Ready = state.level4Ready;
-    toPrint.level2Ready = state.level2Ready;
-    toPrint.revealReady = state.revealReady;
+    //toPrint.level4Ready = state.level4Ready;
+    //toPrint.level2Ready = state.level2Ready;
+    //toPrint.revealReady = state.revealReady;
     toPrint.sessionPhase = state.sessionPhase;
     toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
     toPrint.idlePlayer = state.idlePlayer;
     return toPrint;
   };
   const storeLogger = store => next => action => {
-    logger.info(JSON.stringify(action));
-    let result = next(action);
-    logger.info(JSON.stringify(stateTransformer(store.getState()), ' ', 4));
+    logger.info('action: ' + JSON.stringify(action));
+    const result = next(action);
+    logger.info('next state: ' + JSON.stringify(stateTransformer(store.getState()), ' ', 4));
     return result;
   };
   middleware.push(storeLogger);
 }
 
 export default function configureStore (additionalInitialState = {}) {
-  let createStoreWithMiddleware = applyMiddleware(
+  const createStoreWithMiddleware = applyMiddleware(
     ...middleware
   )(createStore);
 
   // create levels
-  let levelsById = {
+  const levelsById = {
     'level_6': create_simultaneous_level('level_6', 6),
     'level_4': create_sequential_level('level_4', 4),
     'level_2': create_simultaneous_level('level_2', 2)
   };
 
   // create segments for each level
-  let segmentsById = {};
+  const segmentsById = {};
 
   Object.keys(levelsById).forEach((levelId) => {
-    let level = levelsById[levelId];
+    const level = levelsById[levelId];
 
     let i;
     for (i = 0; i < level.numSegments; i++) {
-      let newSegment = create_segment(level.levelId, i);
+      const newSegment = create_segment(level.levelId, i);
       segmentsById[newSegment.segmentId] = newSegment;
     }
   });
 
-  let sequencers = {
+  const sequencers = {
     '6_0': create_owa_sequencer('6_0', 'BassSequencer'),
     '6_1': create_owa_sequencer('6_1', 'KickSequencer'),
     '6_2': create_owa_sequencer('6_2', 'HiHatSequencer'),
@@ -106,12 +106,20 @@ export default function configureStore (additionalInitialState = {}) {
     '2_1': create_owa_sequencer('2_1', 'OrganicPercSequencer'),
   };
 
+  sequencers['6_0'].numBeats = 2 * 4;
+  sequencers['6_1'].numBeats = 2 * 4;
+  sequencers['6_2'].numBeats = 8 * 4;
+  sequencers['6_3'].numBeats = 4 * 4;
+  sequencers['6_4'].numBeats = 2 * 4;
+  sequencers['6_5'].numBeats = 8 * 4;
+
   sequencers['6_0'].playQuant = [4, 4];
   sequencers['6_1'].playQuant = [4, 4];
   sequencers['6_2'].playQuant = [4, 4];
   sequencers['6_3'].playQuant = [4, 4];
   sequencers['6_4'].playQuant = [4, 4];
   sequencers['6_5'].playQuant = [4, 4];
+  sequencers['6_5'].stopQuant = [4, 4];
 
   sequencers['6_2'].midiName = 'spinny-pluck_L6_hats';
   sequencers['6_2'].phaseProps[SESSION_PHASES.PLAYING_2] = {
@@ -130,7 +138,7 @@ export default function configureStore (additionalInitialState = {}) {
     degree: [8, 4, 4, 8, 4, 4],
     octave: 3
   };
-  let numBeats = 8;
+  const numBeats = 8;
   sequencers.level_4.numBeats = numBeats;
   sequencers.level_4.playQuant = [8, 8];
   sequencers.level_4.defaultPlayQuant = [8, 8];
@@ -168,15 +176,6 @@ export default function configureStore (additionalInitialState = {}) {
   //sequencers['4_2'].bufName = 'spinny-pluck_L4_chords-3';
   //sequencers['4_3'].bufName = 'spinny-pluck_L4_chords-4';
 
-  sequencers['6_0'].numBeats = 2 * 4;
-  sequencers['6_1'].numBeats = 2 * 4;
-  sequencers['6_2'].numBeats = 8 * 4;
-  sequencers['6_3'].numBeats = 4 * 4;
-  sequencers['6_4'].numBeats = 2 * 4;
-  sequencers['6_5'].playQuant = [4, 4];
-  sequencers['6_5'].stopQuant = [4, 4];
-  sequencers['6_5'].numBeats = 8 * 4;
-
   // TODO: set sequencer 6 playQuant and stopQuant
 
   segmentsById[create_segmentId('level_6', 0)].sequencerId = '6_0';
@@ -206,7 +205,7 @@ export default function configureStore (additionalInitialState = {}) {
   segmentsById[create_segmentId('level_2', 0)].sequencerId = '2_0';
   segmentsById[create_segmentId('level_2', 1)].sequencerId = '2_1';
 
-  let initialState = Object.assign({}, {
+  const initialState = Object.assign({}, {
     levels: {
       byId: levelsById,
       allIds: Object.keys(levelsById)
@@ -224,13 +223,13 @@ export default function configureStore (additionalInitialState = {}) {
   return createStoreWithMiddleware(rootReducer, initialState);
 }
 
-export function configureLinkStore () {
-  let rootReducer = combineReducers({
-    abletonlink: abletonlinkRedux.reducer
-  });
-  let middleware = [];
-  //if (process.env.NODE_ENV === 'development') {
-    //middleware.push(createLogger());
-  //}
-  return createStore(rootReducer, applyMiddleware(...middleware));
-}
+//export function configureLinkStore () {
+  //const rootReducer = combineReducers({
+    //abletonlink: abletonlinkRedux.reducer
+  //});
+  //const middleware = [];
+  ////if (process.env.NODE_ENV === 'development') {
+    ////middleware.push(createLogger());
+  ////}
+  //return createStore(rootReducer, applyMiddleware(...middleware));
+//}

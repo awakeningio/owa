@@ -9,8 +9,7 @@
  **/
 
 import * as actionTypes from '../actionTypes';
-//import { create_segmentId } from '../models';
-import { SESSION_PHASES } from '../constants';
+import { SESSION_PHASES } from 'owa/constants';
 
 function segment (state, action, prevSessionPhase, sessionPhase) {
   switch (action.type) {

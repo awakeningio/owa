@@ -9,7 +9,7 @@
  **/
 
 import { BUTTON_PRESSED, INACTIVITY_TIMEOUT_EXCEEDED } from '../actionTypes';
-import { SESSION_PHASES } from '../constants';
+import { SESSION_PHASES } from 'owa/constants';
 import awakeningSequencers from 'awakening-sequencers';
 
 // TODO: this should be a selector

@@ -12,9 +12,9 @@ import { expect } from 'chai';
 
 import configureStore from "../src/configureStore"
 
-import { SESSION_PHASES } from '../src/constants';
+import { SESSION_PHASES } from 'owa/constants';
 import { buttonPressed, sessionPhaseAdvanced } from '../src/actions';
-import { create_segmentId } from '../src/models';
+import { create_segmentId } from 'owa/models';
 
 describe('firstSegmentPressed', function () {
   var store = configureStore(),

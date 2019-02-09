@@ -13,8 +13,8 @@ import _ from 'lodash';
 
 import awakeningSequencers from 'awakening-sequencers'
 
-import { create_segmentId } from './models';
-import { SESSION_PHASES } from './constants';
+import { create_segmentId } from 'owa/models';
+import { SESSION_PHASES } from 'owa/constants';
 
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;

@@ -1,16 +1,24 @@
 @startuml
 
-!include styles.puml
+!include styles.iuml
 
 object state {  
   bool soundReady
   bool lightsReady
+  tempo
+  fadecandyConnection
   Enum SESSION_PHASES sessionPhase
+  sessionPhaseDurations
+  inactivityTimeoutStartTime
   \n
   levels levels{}
   segments segments{}
-
   SequencerState sequencers{}
+  IdlePlayerState idlePlayer{}
+  bool level4Ready
+  bool level2Ready
+  bool revealReady
+  bool firstSegmentPressed
 }
 
 object levels {
@@ -67,12 +75,6 @@ object LevelState {
   string activeSegmentId
 }
 
-object linkStateStore {
-  abletonlink.tempo
-  abletonlink.beat
-  abletonlink.bar
-}
-
 object SequencerState {
   Awakening sequencers object
   
@@ -83,9 +85,17 @@ object SequencerState {
   numBeats
   playingState
   isReady
-  playQuant: [4, 0]
-  stopQuant: [8, 0]
+  playQuant
+  stopQuant
 }
 state *-- SequencerState
+
+object IdlePlayerState {
+  bufName,
+  playingState,
+  gate
+}
+state *-- IdlePlayerState
+
 
 @enduml

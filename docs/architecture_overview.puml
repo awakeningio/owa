@@ -1,5 +1,5 @@
 @startuml
-!include styles.puml
+!include styles.iuml
 
 namespace nodejs.owa {
   class OWAController {

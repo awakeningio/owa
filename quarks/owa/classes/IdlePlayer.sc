@@ -48,11 +48,9 @@
 
       currentState = this.getStateSlice();
       gateEditor = KrNumberEditor(0, \gate);
-
       this.initPatch();
-      outputChannel.play(patch);
 
-      this.handle_state_change();
+      //this.handle_state_change();
       store.subscribe({
         this.handle_state_change();
       });
@@ -60,6 +58,7 @@
     }
     initPatch {
       var bufSym = currentState.bufName.asSymbol();
+      //"IdlePlayer.initPatch".postln();
       patch = Patch("owa.IdleLooper", (
         buf: bufManager.bufs[bufSym],
         gate: gateEditor,
@@ -70,20 +69,21 @@
     }
     handle_state_change {
       var player;
+      //"IdlePlayer.handle_state_change".postln();
       prevState = currentState;
       currentState = this.getStateSlice();
 
+      if (prevState.gate != currentState.gate, {
+        ("IdlePlayer: setting gate to " ++ currentState.gate).postln();
+        gateEditor.value = currentState.gate;
+      });
+
       if (prevState.playingState != currentState.playingState, {
         if (currentState.playingState == "PLAYING", {
-          this.initPatch();
-          gateEditor.value = currentState.gate;
+          //"IdlePlayer.playing...".postln();
           player = outputChannel.play(patch);    
         });    
       });
 
-      if (prevState.gate != currentState.gate, {
-        "IdlePlayer setting gate to 1".postln();
-        gateEditor.value = currentState.gate;
-      });
     }
  }

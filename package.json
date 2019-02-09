@@ -33,7 +33,14 @@
   },
   "babel": {
     "presets": [
-      "@babel/preset-env"
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ]
     ]
   },
   "author": "Colin Sullivan <colin@colin-sullivan.net>",
@@ -43,6 +50,7 @@
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
+    "babel-eslint": "^10.0.1",
     "eslint": "^4.3.0",
     "npm-watch": "^0.2.0",
     "nyc": "^11.6.0"
@@ -67,13 +75,7 @@
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "impliedStrict": true
-      }
-    },
+    "parser": "babel-eslint",
     "env": {
       "browser": false,
       "node": true,
@@ -84,7 +86,8 @@
       "no-console": 0,
       "no-use-before-define": "error",
       "block-scoped-var": "error",
-      "no-case-declarations": 0
+      "no-case-declarations": 0,
+      "prefer-const": "error"
     }
   }
 }

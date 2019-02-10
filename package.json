@@ -44,10 +44,7 @@
     ],
     "plugins": [
       ["module-resolver", {
-        "root": ["./src"],
-        "alias": {
-          "owa": "./src/modules"
-        }
+        "root": ["./src"]
       }]
     ]
   },

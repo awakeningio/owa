@@ -15,7 +15,7 @@ import Color from 'color';
 
 import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors, setPixelColors } from './Pixels';
-import { SESSION_PHASES } from './constants';
+import { SESSION_PHASES } from 'owa/constants';
 
 class IdleModeAnimation extends ControllerWithStore {
   init() {
@@ -24,6 +24,7 @@ class IdleModeAnimation extends ControllerWithStore {
       sessionPhase: null,
       firstSegmentPressed: false
     };
+    this.build();
 
   }
   build () {

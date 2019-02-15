@@ -8,34 +8,43 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import winston from 'winston'
+import { createLogger, format, transports } from 'winston'
+
+const logFormat = format.combine(
+  format.timestamp(),
+  format.printf(({level, message, timestamp}) => (
+      `${timestamp} ${level}: ${message}`
+  ))
+);
 
 var logger;
 
 if (process.env.NODE_ENV === 'development') {
-  logger = winston.createLogger({
+  logger = createLogger({
     level: 'debug',
-    format: winston.format.simple()
+    format: logFormat,
+    transports: [
+      new transports.File({
+        level: 'debug',
+        filename: 'combined.log'
+      })
+    ]
   });
-  logger.add(new winston.transports.File({
-    level: 'debug',
-    //format: winston.format.simple(),
-    filename: 'combined.log'
-  }));
-  //logger.add(new winston.transports.Console({
+  //logger.add(new transports.Console({
     //colorize: 'all',
-    //format: winston.format.simple()
+    //format: format.simple()
   //}));
 } else {
-  logger = winston.createLogger({
+  logger = createLogger({
     level: 'error',
-    format: winston.format.simple()
+    format: logFormat,
+    transports: [
+      new transports.File({
+        level: 'error',
+        filename: 'error.log'
+      })
+    ]
   });
-  logger.add(new winston.transports.File({
-      level: 'error',
-      filename: 'error.log'
-  }));
-
 }
 
 export default logger;

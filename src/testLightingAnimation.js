@@ -12,7 +12,7 @@
 import configureStore from "./configureStore"
 import LightingController from './LightingController'
 import { sessionPhaseAdvanced, buttonPressed } from './actions';
-import { SESSION_PHASES } from './constants';
+import { SESSION_PHASES } from 'owa/constants';
 
 const store = configureStore();
 const lightingController = new LightingController(store);

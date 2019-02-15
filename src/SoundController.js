@@ -11,7 +11,7 @@
 import ControllerWithStore from "./ControllerWithStore"
 import OSCActionListener from "./OSCActionListener"
 import { getEnvOrError } from "./utils"
-import * as constants from "./constants"
+import * as constants from "owa/constants"
 import { getSCState } from './selectors'
 
 import logger from './logging';

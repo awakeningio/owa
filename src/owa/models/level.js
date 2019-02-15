@@ -2,7 +2,7 @@ import {
   SESSION_PHASES,
   NEXT_SESSION_PHASES,
   LEVEL_PLAYBACK_TYPE
-} from '../constants'
+} from 'owa/constants'
 /**
  *  a sequential level is one that plays it's segments in sequence.
  **/

@@ -14,7 +14,6 @@ import _ from 'lodash';
 import awakeningSequencers from 'awakening-sequencers'
 
 import { create_segmentId } from 'owa/models';
-import { SESSION_PHASES } from 'owa/constants';
 
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
@@ -23,15 +22,13 @@ const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getRevealReady = state => state.revealReady;
 const getIdlePlayer = state => state.idlePlayer;
 
-const getLevel4Sequencer = createSelector(
+export const getLevel4Sequencer = createSelector(
   getSequencers,
   (sequencers) => {
     return sequencers['level_4'];
   }
 );
 
-
-const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 //const getSegments = state => state.segments;
 
@@ -87,8 +84,8 @@ export function getSegmentIdsForLevel (levelId) {
 export const getLevel6Sequencers = createSelector(
   getSequencers,
   function (sequencers) {
-    let level6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
-    let level6SequencersById = _.pick(sequencers, level6SequencerIds);
+    const level6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
+    const level6SequencersById = _.pick(sequencers, level6SequencerIds);
     return _.values(level6SequencersById);
   }
 );
@@ -96,8 +93,8 @@ export const getLevel6Sequencers = createSelector(
 export const getLevel2Sequencers = createSelector(
   getSequencers,
   function (sequencers) {
-    let level2SequencerIds = ['2_0', '2_1'];
-    let level2SequencersById = _.pick(sequencers, level2SequencerIds);
+    const level2SequencerIds = ['2_0', '2_1'];
+    const level2SequencersById = _.pick(sequencers, level2SequencerIds);
     return _.values(level2SequencersById);
   }
 );

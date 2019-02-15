@@ -15,7 +15,7 @@ import Color from 'color';
 
 import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors } from './Pixels';
-import { SESSION_PHASES } from './constants';
+import { SESSION_PHASES } from 'owa/constants';
 
 class Level4TransitionAnimation extends ControllerWithStore {
   init() {

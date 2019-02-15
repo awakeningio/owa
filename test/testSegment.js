@@ -13,7 +13,7 @@ import { expect } from 'chai';
 import configureStore from '../src/configureStore';
 
 import { buttonPressed } from '../src/actions';
-import { create_segmentId } from '../src/models';
+import { create_segmentId } from 'owa/models';
 
 describe('segment', function () {
   var store = configureStore(),

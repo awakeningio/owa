@@ -15,7 +15,7 @@ import ControllerWithStore from './ControllerWithStore';
 import SegmentQueuedAnimation from './SegmentQueuedAnimation';
 import SegmentPlayingAnimation from './SegmentPlayingAnimation';
 import SegmentNoopAnimation from './SegmentNoopAnimation';
-import { SESSION_PHASES } from './constants';
+import { SESSION_PHASES } from 'owa/constants';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 

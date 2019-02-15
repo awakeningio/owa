@@ -14,7 +14,7 @@ import ReadLineParser from '@serialport/parser-readline'
 import ControllerWithStore from './ControllerWithStore'
 import { buttonPressed } from './actions'
 import { getEnvOrError } from './utils'
-import { BUTTON_ID_TO_LEVEL_SEGMENT } from './constants'
+import { BUTTON_ID_TO_LEVEL_SEGMENT } from 'owa/constants'
 
 const DEBUG_INPUT = parseInt(process.env.DEBUG_INPUT, 10) || false;
 

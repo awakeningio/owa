@@ -23,7 +23,7 @@ import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
   //SESSION_PHASES
-} from './constants';
+} from 'owa/constants';
 import TWEEN from '@tweenjs/tween.js';
 
 import createOPCStrand from "opc/strand"

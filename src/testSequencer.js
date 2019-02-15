@@ -13,7 +13,7 @@ import SCController from './SCController'
 import * as actionTypes from "./actionTypes"
 import { buttonPressed } from './actions'
 import SoundController from "./SoundController"
-import { SESSION_PHASES } from './constants'
+import { SESSION_PHASES } from 'owa/constants'
 
 import awakeningSequencers from 'awakening-sequencers'
 

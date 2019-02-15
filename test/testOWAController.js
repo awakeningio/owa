@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import configureStore from "../src/configureStore"
-import { OWA_READY_STATES } from "../src/constants"
+import { OWA_READY_STATES } from "owa/constants"
 import OWAController from "../src/OWAController"
 
 describe("OWAController", function () {
@@ -10,31 +10,28 @@ describe("OWAController", function () {
   var owaController;
 
   it("should initialize without failure", function (done) {
+    const soundReadySequence = [
+      OWA_READY_STATES.BOOTED,
+      OWA_READY_STATES.READY
+    ];
+
+    var i = 0;
     var state = store.getState();
     var soundReady = state.soundReady;
-    var unsub;
-
+    
     owaController = new OWAController(store, {
       //linkStateStore: abletonLinkStateStore
     });
     
-    unsub = store.subscribe(() => {
+    store.subscribe(() => {
       state = store.getState();
 
       if (state.soundReady !== soundReady) {
         soundReady = state.soundReady;
-       
-        if (state.soundReady === OWA_READY_STATES.BOOTED) {
-          expect(state.soundReady).to.equal(OWA_READY_STATES.BOOTED);
-          unsub();
-
-          unsub = store.subscribe(() => {
-            if (state.soundReady !== soundReady) {
-              expect(state.soundReady).to.equal(OWA_READY_STATES.READY);
-              unsub();
-              done();
-            }
-          });
+        expect(state.soundReady).to.equal(soundReadySequence[i]);
+        i += 1;
+        if (i === soundReadySequence.length) {
+          done();
         }
       }
     });

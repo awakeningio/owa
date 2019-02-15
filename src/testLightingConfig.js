@@ -11,7 +11,7 @@
 
 import configureStore from "./configureStore"
 import LightingController from './LightingController'
-import { SEGMENTID_TO_PIXEL_RANGE } from './constants'
+import { SEGMENTID_TO_PIXEL_RANGE } from 'owa/constants'
 
 const owaStateStore = configureStore();
 const lightingController = new LightingController(owaStateStore);

@@ -10,7 +10,7 @@
 
 import ControllerWithStore from './ControllerWithStore';
 
-import { SESSION_PHASES } from './constants';
+import { SESSION_PHASES } from 'owa/constants';
 import { inactivityTimeoutExceeded } from './actions';
 
 const CHECK_INTERVAL_MS = 5000;

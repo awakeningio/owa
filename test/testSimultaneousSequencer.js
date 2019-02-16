@@ -20,9 +20,8 @@ describe("Simultaneous Sequencer Playback", function () {
     initialState.sessionPhaseDurations[SESSION_PHASES.TRANS_6] = 2;
     store = configureStore(initialState);
     //abletonLinkStateStore = configureLinkStore();
-    owaController = new OWAController(store, {
-      //linkStateStore: abletonLinkStateStore
-    });
+    owaController = new OWAController(store, {});
+    this.owaController = owaController;
     state = store.getState();
     soundReady = state.soundReady;
 
@@ -143,33 +142,7 @@ describe("Simultaneous Sequencer Playback", function () {
     expect(sequencer.playingState).to.equal(PLAYING_STATES.PLAYING);
   });
   
-  //it("should stop sequencer when level6 button is pressed again", function () {
-    //store.dispatch(actions.buttonPressed('level_6', 0));
-    //state = store.getState();
-    //segment = state.segments.byId[create_segmentId('level_6', 0)];
-    //sequencer = state.sequencers[segment.sequencerId];
-    //expect(sequencer.playingState).to.equal(PLAYING_STATES.STOP_QUEUED);
-  //});
-
-  //it("should stop first segment", function (done) {
-    //var unsub = store.subscribe(() => {
-      //state = store.getState();
-      
-      //if (sequencer.playingState !== state.sequencers[segment.sequencerId].playingState) {
-        //sequencer = state.sequencers[segment.sequencerId];
-        //expect(sequencer.playingState).to.equal(PLAYING_STATES.STOPPED);
-        //unsub();
-        //done();
-      //}
-
-    //});
-  //});
-  
   it("should close down cleanly", function (done) {
-    owaController.quit().then(() => {
-      done();
-    }).catch((err) => {
-      done(err);
-    });
+    this.owaController.quit().then(() => done()).catch(done);
   });
 });

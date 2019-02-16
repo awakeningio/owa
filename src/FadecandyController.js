@@ -8,8 +8,8 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import net from "net"
-import createOPCStream from "opc"
+import net from 'net'
+import createOPCStream from 'opc'
 
 import {
   FADECANDY_DISCONNECTED,
@@ -32,9 +32,12 @@ const DISABLE_LIGHTING = getEnvAsNumber('DISABLE_LIGHTING');
     // connecting directly to Fadecandy with this socket
     this.socket = new net.Socket();
     this.socket.setNoDelay();
-    this.socket.on("close", this.handleSocketClosed.bind(this));
-    this.socket.on("error", this.handleSocketClosed.bind(this));
-    this.socket.on("connect", this.handleSocketConnected.bind(this));
+    this.onClose = this.handleSocketClosed.bind(this);
+    this.onError = this.handleSocketClosed.bind(this);
+    this.onConnect = this.handleSocketConnected.bind(this);
+    this.socket.on('close', this.onClose);
+    this.socket.on('error', this.onError);
+    this.socket.on('connect', this.onConnect);
     
     // We will stream OPC data to the fadecandy over the socket
     this.opcStream = createOPCStream();
@@ -63,6 +66,13 @@ const DISABLE_LIGHTING = getEnvAsNumber('DISABLE_LIGHTING');
   }
   writePixels (pixels) {
     this.opcStream.writePixels(0, pixels.buffer);
+  }
+  quit () {
+    this.socket.off('close', this.onClose);
+    this.socket.off('error', this.onError);
+    this.socket.off('connect', this.onConnect);
+    this.opcStream.unpipe(this.socket);
+    this.socket.end();
   }
 }
 

@@ -65,16 +65,11 @@ class OWAController extends ControllerWithStore {
   quit () {
     return new Promise((resolve, reject) => {
       // quit SC
-      this.scController.quit().then(() => {
-
-        this.actionListener.quit();
-        this.soundController.quit();
-        //this.abletonLinkController.quit();
-        this.lightingController.quit();
-        //this.inactivityTimeoutController.quit();
-        resolve();
-        
-      }).catch(reject);
+      this.soundController.quit();
+      this.actionListener.quit();
+      this.lightingController.quit();
+      this.inactivityTimeoutController.quit();
+      this.scController.quit().then(() => resolve()).catch(reject);
     });
   }
 }

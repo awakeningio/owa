@@ -45,6 +45,8 @@ class LightingController extends ControllerWithStore {
     let segmentIds = state.segments.allIds;
     let levelIds = state.levels.allIds;
 
+    this.hasQuit = false;
+
     // create our pixel buffer
     this.pixels = createOPCStrand(144);
 
@@ -149,6 +151,8 @@ class LightingController extends ControllerWithStore {
   }
 
   quit () {
+    this.fcController.quit();
+    this.hasQuit = true;
   }
 }
 

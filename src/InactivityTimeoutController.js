@@ -19,16 +19,16 @@ const INACTIVE_THRESHOLD_MS = 120000;
 
 class InactivityTimeoutController extends ControllerWithStore {
   init () {
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.checkInactivityTimeout();
     }, CHECK_INTERVAL_MS);
   }
 
   checkInactivityTimeout () {
-    let state = this.store.getState();
+    const state = this.store.getState();
 
-    let now = (new Date()).getTime();
-    let timeSinceInactivityTimeoutStart = now - state.inactivityTimeoutStartTime;
+    const now = (new Date()).getTime();
+    const timeSinceInactivityTimeoutStart = now - state.inactivityTimeoutStartTime;
 
     switch (state.sessionPhase) {
       case SESSION_PHASES.PLAYING_6:
@@ -43,6 +43,12 @@ class InactivityTimeoutController extends ControllerWithStore {
         break;
     }
 
+  }
+
+  quit () {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 }
 

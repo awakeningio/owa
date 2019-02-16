@@ -19,13 +19,21 @@ const EXTERNAL_SC = getEnvAsNumber('EXTERNAL_SC');
  *  Handles starting and stopping the SuperCollider process.
  **/
 class SCController {
+  constructor () {
+    this.debugSCInterval = null;
+  }
   quit() {
     return new Promise((resolve, reject) => {
+      if (this.debugSCInterval) {
+        clearInterval(this.debugSCInterval);
+      }
       if (this.sclang) {
-        this.sclang.interpret('s.quit();').then(() => {
-          return this.sclang.quit().then(() => {
-            setTimeout(resolve, 1000);
-          }).catch(reject);
+        this.sclang.interpret(
+          'Server.freeAll(); Server.quitAll();'
+        ).then(() => {
+          setTimeout(() => {
+            this.sclang.quit().then(resolve).catch(reject);
+          }, 1000);
         }).catch(reject);
       } else {
         resolve();
@@ -45,7 +53,7 @@ class SCController {
     );
 `;
     if (process.env.DEBUG_SC === "1") {
-      setInterval(() => {
+      this.debugSCInterval = setInterval(() => {
         this.sclang.interpret(scsynthGetInfo).then((result) => {
           logger.debug(
             `${new Date()} : scsynth info\n${JSON.stringify(result, 4, ' ')}`
@@ -85,16 +93,16 @@ s.waitForBoot({
             scBootScript += `
 s.meter();
             `;
-            scBootScript += `
-  Routine {
-    loop {
-      s.queryAllNodes();
-      //s.dumpOSC();
+            //scBootScript += `
+  //Routine {
+    //loop {
+      //s.queryAllNodes();
+      ////s.dumpOSC();
 
-      10.0.wait();
-    }
-  }.play();
-            `;
+      //10.0.wait();
+    //}
+  //}.play();
+            //`;
           }
 
           scBootScript += `

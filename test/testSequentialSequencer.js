@@ -12,7 +12,7 @@ import * as actions from '../src/actions'
 //const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 describe("Sequential Sequencer", function () {
-  var store, state, segment, sequencer, level, secondSegment, owaController;
+  var store, state, segment, sequencer, level, secondSegment;
 
   it("should init properly", function (done) {
     var unsub, soundReady;
@@ -37,9 +37,6 @@ describe("Sequential Sequencer", function () {
       //}
     }});
     //abletonLinkStateStore = configureLinkStore();
-    owaController = new OWAController(store, {
-      //linkStateStore: abletonLinkStateStore
-    });
     state = store.getState();
     soundReady = state.soundReady;
 
@@ -53,6 +50,9 @@ describe("Sequential Sequencer", function () {
           done();
         }
       }
+    });
+    this.owaController = new OWAController(store, {
+      //linkStateStore: abletonLinkStateStore
     });
   });
   
@@ -120,10 +120,6 @@ describe("Sequential Sequencer", function () {
   });
 
   it("should close down cleanly", function (done) {
-    owaController.quit().then(() => {
-      done();
-    }).catch((err) => {
-      done(err);
-    });
+    this.owaController.quit().then(() => done()).catch(done);
   });
 });

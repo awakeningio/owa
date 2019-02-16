@@ -108,6 +108,7 @@ class SoundController extends ControllerWithStore {
   }
   quit () {
     this.actionListener.quit();
+    this.owaAPI.disconnect();
   }
 }
 

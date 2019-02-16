@@ -6,11 +6,10 @@ import OWAController from "../src/OWAController"
 
 describe("OWAController", function () {
   var store = configureStore();
-  //var abletonLinkStateStore = configureLinkStore();
-  var owaController;
 
   it("should initialize without failure", function (done) {
     const soundReadySequence = [
+      OWA_READY_STATES.BOOTING,
       OWA_READY_STATES.BOOTED,
       OWA_READY_STATES.READY
     ];
@@ -18,10 +17,6 @@ describe("OWAController", function () {
     var i = 0;
     var state = store.getState();
     var soundReady = state.soundReady;
-    
-    owaController = new OWAController(store, {
-      //linkStateStore: abletonLinkStateStore
-    });
     
     store.subscribe(() => {
       state = store.getState();
@@ -35,14 +30,13 @@ describe("OWAController", function () {
         }
       }
     });
+    this.owaController = new OWAController(store, {
+    });
+
   });
 
   it("should close down cleanly", function (done) {
-    owaController.quit().then(() => {
-      done();
-    }).catch((err) => {
-      done(err);
-    });
+    this.owaController.quit().then(done).catch(done);
   });
 
 });

@@ -10,9 +10,8 @@ describe("LightingController", function () {
   var store = configureStore();
   var lightingController;
 
-  it("should init", function (done) {
+  it("should init", function () {
     lightingController = new LightingController(store);
-    done();
   });
 
   it("should have a SegmentLightingController for each segment", function (done) {
@@ -43,5 +42,9 @@ describe("LightingController", function () {
     store.dispatch(awakeningSequencers.actions.sequencerQueued(sequencerId));
 
     setTimeout(done, 4000);
+  });
+
+  it('should quit', function () {
+    lightingController.quit();
   });
 });

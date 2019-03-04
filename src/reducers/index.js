@@ -34,24 +34,13 @@ var combined = combineReducers({
   inactivityTimeoutStartTime
 });
 
-var prevSessionPhase;
 export default function (state, action) {
-  let newState,
-    newLevels,
-    newSequencers,
-    newLevel4Ready,
-    newLevel2Ready,
-    newRevealReady,
-    newSessionPhase,
-    newSegments,
-    newIdlePlayer,
-    newFirstSegmentPressed;
-  prevSessionPhase = state.sessionPhase;
-  newState = combined(state, action);
+  const prevSessionPhase = state.sessionPhase;
+  const newState = combined(state, action);
   if (state !== newState) {
     state = Object.assign({}, state, newState);
   }
-  newSessionPhase = sessionPhase(
+  const newSessionPhase = sessionPhase(
     state.sessionPhase,
     action,
     state.level4Ready,
@@ -60,7 +49,7 @@ export default function (state, action) {
   if (newSessionPhase !== state.sessionPhase) {
     state = Object.assign({}, state, {sessionPhase: newSessionPhase});
   }
-  newSegments = segments(
+  const newSegments = segments(
     state.segments,
     action,
     prevSessionPhase,
@@ -69,23 +58,20 @@ export default function (state, action) {
   if (newSegments !== state.segments) {
     state = Object.assign({}, state, { segments: newSegments });
   }
-  newLevels = levels(state.levels, action, state.segments);
+  const newLevels = levels(state.levels, action, state.segments);
   if (newLevels !== state.levels) {
     state = Object.assign({}, state, {levels: newLevels});
   }
-  newSequencers = sequencers(
+  const newSequencers = sequencers(
     state.sequencers,
     action,
-    state.segments,
-    state.levels,
-    state.sessionPhase,
-    prevSessionPhase,
-    state.sessionPhaseDurations
+    state,
+    prevSessionPhase
   );
   if (newSequencers !== state.sequencers) {
     state = Object.assign({}, state, {sequencers: newSequencers});
   }
-  newIdlePlayer = idlePlayer(
+  const newIdlePlayer = idlePlayer(
     state.idlePlayer,
     action,
     state.sessionPhase,
@@ -94,7 +80,7 @@ export default function (state, action) {
   if (newIdlePlayer !== state.idlePlayer) {
     state = Object.assign({}, state, {idlePlayer: newIdlePlayer});
   }
-  newLevel4Ready = level4Ready(
+  const newLevel4Ready = level4Ready(
     state.level4Ready,
     action,
     getLevel6Sequencers(state),
@@ -103,16 +89,15 @@ export default function (state, action) {
   if (newLevel4Ready !== state.level4Ready) {
     state = Object.assign({}, state, {level4Ready: newLevel4Ready});
   }
-  newLevel2Ready = level2Ready(
+  const newLevel2Ready = level2Ready(
     state.level2Ready,
     action,
-    state.sequencers.level_4,
-    state.sessionPhase
+    state
   );
   if (newLevel2Ready !== state.level2Ready) {
     state = Object.assign({}, state, {level2Ready: newLevel2Ready});
   }
-  newRevealReady = revealReady(
+  const newRevealReady = revealReady(
     state.revealReady,
     action,
     getLevel2Sequencers(state),
@@ -121,7 +106,7 @@ export default function (state, action) {
   if (newRevealReady !== state.revealReady) {
     state = Object.assign({}, state, { revealReady: newRevealReady });
   }
-  newFirstSegmentPressed = firstSegmentPressed(
+  const newFirstSegmentPressed = firstSegmentPressed(
     state.firstSegmentPressed,
     action,
     state.sessionPhase

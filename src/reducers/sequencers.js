@@ -15,12 +15,14 @@ import {
   createPhaseEndQuant
 } from 'owa/models'
 import { SESSION_PHASES, NEXT_SESSION_PHASES } from 'owa/constants'
+import {
+  getLevel6Sequencers,
+  getLevel4Sequencer,
+  getLevel2Sequencers
+} from '../selectors';
 
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
-
-const l6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
-
 
 const baseRevealSequencer = create_default_sequencer(
   'reveal',
@@ -151,7 +153,7 @@ function trans (
     case actionTypes.BUTTON_PRESSED:
       // if this button pressed triggered a sessionPhase change
       if (prevSessionPhase !== sessionPhase) {
-        let playQuant = [4, 4];
+        const playQuant = [4, 4];
         // we may need to queue a transition now
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_6:
@@ -201,14 +203,14 @@ function l6Sequencer (
       // session phase automatically advanced.
       
       // props to queue this sequencer after transition (if needed)
-      let queueProps = {
+      const queueProps = {
         playingState: PLAYING_STATES.QUEUED,
         playQuant: createPhaseEndQuant(
           action.payload.phase,
           sessionPhaseDurations
         )
       };
-      let queueStopProps = {
+      const queueStopProps = {
         playingState: PLAYING_STATES.STOP_QUEUED,
         stopQuant: createPhaseEndQuant(
           action.payload.phase,
@@ -246,12 +248,12 @@ function l6Sequencer (
           return state;
       }
     case actionTypes.BUTTON_PRESSED:
-      let segmentId = create_segmentId(
+      const segmentId = create_segmentId(
         action.payload.levelId,
         action.payload.segmentIndex
       );
-      let segment = segments.byId[segmentId];
-      let buttonSequencerId = segment.sequencerId;
+      const segment = segments.byId[segmentId];
+      const buttonSequencerId = segment.sequencerId;
       if (
           // button press was for this sequencer
           buttonSequencerId === state.sequencerId
@@ -294,7 +296,7 @@ function l6Sequencer (
         sessionPhase !== prevSessionPhase
       ) {
         // props if we want to stop this sequencer when this phase ends
-        let queueStopProps = {
+        const queueStopProps = {
           playingState: PLAYING_STATES.STOP_QUEUED,
           stopQuant: [4, 4]
         };
@@ -361,12 +363,12 @@ function chordProgSequencer (
     case actionTypes.BUTTON_PRESSED:
 
       // segment corresponding to button pressed
-      let segmentId = create_segmentId(
+      const segmentId = create_segmentId(
         action.payload.levelId,
         action.payload.segmentIndex
       );
-      let segment = segments.byId[segmentId];
-      let buttonSequencerId = segment.sequencerId;
+      const segment = segments.byId[segmentId];
+      const buttonSequencerId = segment.sequencerId;
 
       if (
         // button press was for this sequencer
@@ -402,8 +404,8 @@ function chordProgSequencer (
             // this segment hasn't been pressed yet, we will insert this
             // segment's sequencer params to the sequence
             // in this case we insert the buffer name
-            let currentBufIndex = state.bufSequence.indexOf(state.event.bufName);
-            let newState = Object.assign({}, state, {
+            const currentBufIndex = state.bufSequence.indexOf(state.event.bufName);
+            const newState = Object.assign({}, state, {
               playQuant: state.defaultPlayQuant.slice()
             });
             newState.bufSequence = newState.bufSequence.slice();
@@ -420,7 +422,7 @@ function chordProgSequencer (
         // press was for another sequencer that transitioned
         sessionPhase !== prevSessionPhase
       ) {
-        let queueStopProps = {
+        const queueStopProps = {
           playingState: PLAYING_STATES.STOP_QUEUED,
           stopQuant: [4, 4]
         };
@@ -464,12 +466,12 @@ function l2Sequencer (
           return state;
       }
     case actionTypes.BUTTON_PRESSED:
-      let segmentId = create_segmentId(
+      const segmentId = create_segmentId(
         action.payload.levelId,
         action.payload.segmentIndex
       );
-      let segment = segments.byId[segmentId];
-      let buttonSequencerId = segment.sequencerId;
+      const segment = segments.byId[segmentId];
+      const buttonSequencerId = segment.sequencerId;
       if (
         // button pressed for this sequencer
         buttonSequencerId === state.sequencerId
@@ -519,18 +521,19 @@ function l2Sequencer (
 export default function sequencers (
   state = {},
   action,
-  segments,
-  levels,
-  sessionPhase,
-  prevSessionPhase,
-  sessionPhaseDurations
+  parentState,
+  prevSessionPhase
 ) {
+  const segments = parentState.segments;
+  const sessionPhase = parentState.sessionPhase;
+  const sessionPhaseDurations = parentState.sessionPhaseDurations;
+
   state = awakeningSequencers.reducer(
     state,
     action
   );
 
-  let newReveal = reveal(
+  const newReveal = reveal(
     state.reveal,
     action,
     sessionPhase,
@@ -540,17 +543,7 @@ export default function sequencers (
     state = Object.assign({}, state, {reveal: newReveal});
   }
 
-  //let newIdle = idle(
-    //state.idle,
-    //action,
-    //sessionPhase,
-    //prevSessionPhase
-  //);
-  //if (newIdle !== state.idle) {
-    //state = Object.assign({}, state, {idle: newIdle});
-  //}
-
-  let newTrans = trans(
+  const newTrans = trans(
     state.trans,
     action,
     sessionPhase,
@@ -560,52 +553,55 @@ export default function sequencers (
   if (newTrans !== state.trans) {
     state = Object.assign({}, state, {trans: newTrans});
   }
-  
-  l6SequencerIds.forEach(function (sequencerId) {
-    let seq = l6Sequencer(
-      state[sequencerId],
+
+  const l6Sequencers = getLevel6Sequencers(parentState);
+  l6Sequencers.forEach(function (seq) {
+    const newSeq = l6Sequencer(
+      seq,
       action,
       segments,
       sessionPhase,
       prevSessionPhase,
       sessionPhaseDurations
     );
-    if (seq !== state[sequencerId]) {
+    if (newSeq !== seq) {
       state = Object.assign({}, state, {
-        [sequencerId]: seq
+        [seq.sequencerId]: newSeq
       });
     }
-  });
+  })
 
-  let seq = chordProgSequencer(
-    state.level_4,
+  const level4Sequencer = getLevel4Sequencer(parentState);
+  const newLevel4Sequencer = chordProgSequencer(
+    level4Sequencer,
     action,
     segments,
     sessionPhase,
     prevSessionPhase,
     sessionPhaseDurations
   );
-  if (seq !== state.level_4) {
+  if (level4Sequencer !== newLevel4Sequencer) {
     state = Object.assign({}, state, {
-      level_4: seq
+      [level4Sequencer.sequencerId]: newLevel4Sequencer
     });
   }
 
-  ['2_0', '2_1'].forEach(function (sequencerId) {
-    let seq = l2Sequencer(
-      state[sequencerId],
+  const level2Sequencers = getLevel2Sequencers(parentState);
+  level2Sequencers.forEach(function (seq) {
+    const newSeq = l2Sequencer(
+      seq,
       action,
       segments,
       sessionPhase,
       prevSessionPhase,
       sessionPhaseDurations
     );
-    if (seq !== state[sequencerId]) {
+    if (seq !== newSeq) {
       state = Object.assign({}, state, {
-        [sequencerId]: seq
+        [seq.sequencerId]: newSeq
       });
     }
-  });
+  })
 
   //switch (action.type) {
     //case actionTypes.BUTTON_PRESSED:

@@ -12,7 +12,7 @@ import awakeningSequencers from 'awakening-sequencers';
 import supercolliderRedux from 'supercollider-redux';
 
 import configureStore from "../src/configureStore";
-import { getSCState } from '../src/selectors'
+import { getSCState, getLevel6Sequencers } from '../src/selectors'
 
 describe('SCState', function () {
   var store,
@@ -30,23 +30,30 @@ describe('SCState', function () {
 
   it("should change when a sequencer is queued", function () {
     let prevSCState = scState;
-    let prevState = state;
+    const prevState = state;
+    const prevLevel6Sequencers = getLevel6Sequencers(state);
 
-    store.dispatch(awakeningSequencers.actions.sequencerQueued('6_0'));
+    store.dispatch(
+      awakeningSequencers.actions.sequencerQueued(
+        prevLevel6Sequencers[0].sequencerId
+      )
+    );
     
     state = store.getState();
     scState = getSCState(state);
+    const level6Sequencers = getLevel6Sequencers(state);
 
     expect(state).to.not.equal(prevState);
     expect(state.sequencers).to.not.equal(prevState.sequencers);
-    expect(state.sequencers['6_0']).to.not.equal(prevState.sequencers['6_0']);
-    expect(state.sequencers).to.not.equal(prevState.sequencers);
+    expect(prevLevel6Sequencers[0]).to.not.equal(level6Sequencers[0]);
 
     expect(scState).to.not.equal(prevSCState);
 
     prevSCState = scState;
     store.dispatch(
-      awakeningSequencers.actions.sequencerPlaying('6_0')
+      awakeningSequencers.actions.sequencerPlaying(
+        prevLevel6Sequencers[0].sequencerId
+      )
     );
     state = store.getState();
     scState = getSCState(state);
@@ -56,13 +63,14 @@ describe('SCState', function () {
   });
 
   it("should remain the same on sequencer playback", function () {
-    let prevSCState = scState;
-    let prevState = state;
+    const prevSCState = scState;
+    const prevState = state;
+    const level6Sequencers = getLevel6Sequencers(state);
     
     store.dispatch({
       type: supercolliderRedux.actionTypes.SUPERCOLLIDER_EVENTSTREAMPLAYER_NEXTBEAT,
       payload: {
-        id: '6_0',
+        id: level6Sequencers[0].sequencerId,
         nextTime: 1,
         nextBeat: 1,
         midinote: 44

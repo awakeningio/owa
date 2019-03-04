@@ -1,9 +1,11 @@
 import { SESSION_PHASES, NEXT_SESSION_PHASES } from 'owa/constants';
 
-export function createPhaseProps () {
+// A mapping of session phase to properties which are to be applied
+// when the session phase occurs.
+export function createPhaseProps (defaults = {}) {
   return Object.keys(SESSION_PHASES).reduce(
     function (phaseProps, sessionPhase) {
-      phaseProps[sessionPhase] = {};
+      phaseProps[sessionPhase] = defaults[sessionPhase] || {};
       return phaseProps
     },
     {}

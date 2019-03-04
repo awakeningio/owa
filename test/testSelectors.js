@@ -11,64 +11,108 @@
 import { expect } from 'chai';
 
 import configureStore from "../src/configureStore";
-import { getLevel6Sequencers, getLevel4Sequencer } from '../src/selectors';
+import {
+  getLevel6Sequencers,
+  getLevel4Sequencer,
+  getLevel2Sequencers,
+  getLevel6Segments,
+  getLevel4Segments,
+  getLevel2Segments
+} from '../src/selectors';
 
-describe('getLevel6Sequencers', function () {
-  var store,
-    state,
-    level6Sequencers;
-
-  it("should select a subset of state", function () {
+describe('getLevel6Segments', function () {
+  var store, state;
+  before(function () {
     store = configureStore();
     state = store.getState();
+  });
+
+  it('should select 6 segments', function () {
+    var level6Segments = getLevel6Segments(state);
+
+    expect(level6Segments).to.be.an('array');
+    expect(level6Segments).to.have.lengthOf(6);
+  });
+});
+
+describe('getLevel6Sequencers', function () {
+  var store, state;
+  before(function () {
+    store = configureStore();
+    state = store.getState();
+  });
+
+  it("should select a 6 sequencers", function () {
+    var level6Sequencers;
     level6Sequencers = getLevel6Sequencers(state);
 
-    expect(state).to.have.property('sequencers');
-    expect(state.sequencers).to.be.an('object');
-    expect(state.sequencers).to.have.all.keys(
-      '6_0',
-      '6_1',
-      '6_2',
-      '6_3',
-      '6_4',
-      '6_5',
-      'level_4',
-      '2_0',
-      '2_1',
-      'reveal',
-      'trans'
-    );
     expect(level6Sequencers).to.be.an('array');
-    expect(level6Sequencers.length).to.equal(6);
+    expect(level6Sequencers).to.have.lengthOf(6);
+  });
+
+  it('should have chosen right sequencers', function () {
+    var level6Sequencers, level6Segments;
+    level6Sequencers = getLevel6Sequencers(state);
+    level6Segments = getLevel6Segments(state);
+
+    level6Segments.forEach(function (segment) {
+      expect(level6Sequencers.find(
+          sequencer => sequencer.sequencerId === segment.sequencerId
+      )).to.not.be.undefined;
+    });
   });
 });
 
 describe('getLevel4Sequencer', function () {
   var store,
-    state,
-    level4Sequencers;
+    state;
 
-  it("should select a subset of state tree", function () {
+  before(function () {
     store = configureStore();
     state = store.getState();
-    level4Sequencers = getLevel4Sequencer(state);
-
-    expect(state).to.have.property('sequencers');
-    expect(state.sequencers).to.be.an('object');
-    expect(state.sequencers).to.have.all.keys(
-      '6_0',
-      '6_1',
-      '6_2',
-      '6_3',
-      '6_4',
-      '6_5',
-      'level_4',
-      '2_0',
-      '2_1',
-      'reveal',
-      'trans'
-    );
-    expect(level4Sequencers).to.be.an('object');
-    //expect(level4Sequencers.length).to.equal(1);
   });
-})
+
+  it("should select a subset of state tree", function () {
+    var level4Sequencer = getLevel4Sequencer(state);
+    expect(level4Sequencer).to.be.an('object');
+  });
+
+  // TODO: This isn't really testing the selector, more the integrity of 
+  // expected structure of our state...
+  it('should be sequencer pointed at by level4 segments', function () {
+    var level4Segments = getLevel4Segments(state),
+      level4Sequencer = getLevel4Sequencer(state);
+
+    level4Segments.forEach(function (segment) {
+      expect(segment.sequencerId).to.equal(level4Sequencer.sequencerId);
+    });
+  });
+});
+
+describe('getLevel2Sequencer', function () {
+  var store,
+    state;
+
+  before(function () {
+    store = configureStore();
+    state = store.getState();
+  })
+
+  it('should select 2 sequencers', function () {
+    var level2Sequencers = getLevel2Sequencers(state);
+
+    expect(level2Sequencers).to.be.an('array');
+    expect(level2Sequencers.length).to.equal(2);
+  });
+
+  it('should be sequencers pointed at by segments', function () {
+    var level2Segments = getLevel2Segments(state),
+      level2Sequencers = getLevel2Sequencers(state);
+
+    level2Segments.forEach(function (segment) {
+      expect(level2Sequencers.find(
+          sequencer => sequencer.sequencerId === segment.sequencerId
+      )).to.not.be.undefined;
+    });
+  });
+});

@@ -9,7 +9,6 @@
  **/
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import isEqual from 'lodash/isEqual';
-import _ from 'lodash';
 
 import awakeningSequencers from 'awakening-sequencers'
 
@@ -18,19 +17,10 @@ import { create_segmentId } from 'owa/models';
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
 const getSequencers = state => state.sequencers;
+const getSegmentsById = state => state.segments.byId;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getRevealReady = state => state.revealReady;
 const getIdlePlayer = state => state.idlePlayer;
-
-export const getLevel4Sequencer = createSelector(
-  getSequencers,
-  (sequencers) => {
-    return sequencers['level_4'];
-  }
-);
-
-
-//const getSegments = state => state.segments;
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
@@ -57,45 +47,46 @@ export function getSegmentIdsForLevel (levelId) {
   return segmentIdsByLevelId[levelId];
 }
 
-//export const getLevel6Segments = createSelector(
-  //getSegments,
-  //function (segments) {
-    //let level6SegmentsById = _.pick(segments.byId, level6SegmentIds);
-    //return _.values(level6SegmentsById);
-  //}
-//);
+const createGetLevelSegmentsSelector = function (levelId) {
+  return createSelector(
+    getSegmentsById,
+    function (segmentsById) {
+      return getSegmentIdsForLevel(levelId).map(
+        segmentId => segmentsById[segmentId]
+      );
+    }
+  );
+}
 
-//export const getLevel4Segments = createSelector(
-  //getSegments,
-  //function (segments) {
-    //let level4SegmentsById = _.pick(segments.byId, level4SegmentIds);
-    //return _.values(level4SegmentsById);
-  //}
-//)
-
-//export const getLevel2Segments = createSelector(
-  //getSegments,
-  //function (segments) {
-    //let level2SegmentsById = _.pick(segments.byId, level2SegmentIds);
-    //return _.values(level2SegmentsById);
-  //}
-//);
+export const getLevel6Segments = createGetLevelSegmentsSelector('level_6');
+export const getLevel4Segments = createGetLevelSegmentsSelector('level_4');
+export const getLevel2Segments = createGetLevelSegmentsSelector('level_2');
 
 export const getLevel6Sequencers = createSelector(
+  getLevel6Segments,
   getSequencers,
-  function (sequencers) {
-    const level6SequencerIds = ['6_0', '6_1', '6_2', '6_3', '6_4', '6_5'];
-    const level6SequencersById = _.pick(sequencers, level6SequencerIds);
-    return _.values(level6SequencersById);
+  function (level6Segments, sequencers) {
+    return level6Segments.map(
+      segment => sequencers[segment.sequencerId]
+    );
+  }
+);
+
+export const getLevel4Sequencer = createSelector(
+  getLevel4Segments,
+  getSequencers,
+  (level4Segments, sequencers) => {
+    return sequencers[level4Segments[0].sequencerId];
   }
 );
 
 export const getLevel2Sequencers = createSelector(
+  getLevel2Segments,
   getSequencers,
-  function (sequencers) {
-    const level2SequencerIds = ['2_0', '2_1'];
-    const level2SequencersById = _.pick(sequencers, level2SequencerIds);
-    return _.values(level2SequencersById);
+  function (level2Segments, sequencers) {
+    return level2Segments.map(
+      segment => sequencers[segment.sequencerId]
+    );
   }
 );
 

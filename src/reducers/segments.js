@@ -9,9 +9,8 @@
  **/
 
 import * as actionTypes from '../actionTypes';
-import { SESSION_PHASES } from 'owa/constants';
 
-function segment (state, action, prevSessionPhase, sessionPhase) {
+function segment (state, action) {
   switch (action.type) {
     case actionTypes.BUTTON_PRESSED:
       // if button press was for this segment
@@ -26,52 +25,6 @@ function segment (state, action, prevSessionPhase, sessionPhase) {
       } else {
         return state;
       }
-    case actionTypes.SESSION_PHASE_ADVANCED:
-
-      switch (sessionPhase) {
-        case SESSION_PHASES.TRANS_6:
-          return Object.assign(
-            {},
-            state,
-            {
-              sequencerProps: Object.assign(
-                {},
-                state.sequencerProps,
-                state.phaseSequencerProps[SESSION_PHASES.PLAYING_6]
-              )
-            }
-          );
-        case SESSION_PHASES.TRANS_4:
-          return Object.assign(
-            {},
-            state,
-            {
-              sequencerProps: Object.assign(
-                {},
-                state.sequencerProps,
-                state.phaseSequencerProps[SESSION_PHASES.PLAYING_4]
-              )
-            }
-          );
-        case SESSION_PHASES.TRANS_2:
-          return Object.assign(
-            {},
-            state,
-            {
-              sequencerProps: Object.assign(
-                {},
-                state.sequencerProps,
-                state.phaseSequencerProps[SESSION_PHASES.PLAYING_2]
-              )
-            }
-          );
-        default:
-          return state;
-      }
-      // assuming sent from parent sequencer when button for this segment
-      // is pressed
-      //state = Object.assign({}, state);
-      
     default:
       break;
   }
@@ -98,13 +51,11 @@ function segment (state, action, prevSessionPhase, sessionPhase) {
   //return state;
 //}
 
-export default function (state = {byId: {}, allIds: []}, action, prevSessionPhase, sessionPhase) {
+export default function (state = {byId: {}, allIds: []}, action) {
   state.allIds.forEach(function (segmentId) {
-    let seg = segment(
+    const seg = segment(
       state.byId[segmentId],
-      action,
-      prevSessionPhase,
-      sessionPhase
+      action
     );
     if (seg !== state.byId[segmentId]) {
       state = {

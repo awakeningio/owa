@@ -51,9 +51,7 @@ export default function (state, action) {
   }
   const newSegments = segments(
     state.segments,
-    action,
-    prevSessionPhase,
-    state.sessionPhase
+    action
   );
   if (newSegments !== state.segments) {
     state = Object.assign({}, state, { segments: newSegments });

@@ -18,7 +18,8 @@ import { SESSION_PHASES, NEXT_SESSION_PHASES } from 'owa/constants'
 import {
   getLevel6Sequencers,
   getLevel4Sequencer,
-  getLevel2Sequencers
+  getLevel2Sequencers,
+  getSegmentIdToBufName
 } from '../selectors';
 
 const create_default_sequencer = awakeningSequencers.create_default_sequencer;
@@ -319,11 +320,13 @@ function l6Sequencer (
 function chordProgSequencer (
   state,
   action,
-  segments,
-  sessionPhase,
+  fullState,
   prevSessionPhase,
-  sessionPhaseDurations
 ) {
+  const segmentIdToBufName = getSegmentIdToBufName(fullState);
+  const sessionPhaseDurations = fullState.sessionPhaseDurations;
+  const segments = fullState.segments;
+  const sessionPhase = fullState.sessionPhase;
   switch (action.type) {
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
       return Object.assign({}, state, {
@@ -383,9 +386,7 @@ function chordProgSequencer (
           // this is the first press for level 4
           return Object.assign({}, state, {
             playingState: PLAYING_STATES.QUEUED,
-            bufSequence: [
-              segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName
-            ],
+            bufSequence: [segmentIdToBufName[segmentId]],
             //playQuant: createPhaseEndQuant(
               //sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]],
               //sessionPhaseDurations
@@ -397,7 +398,11 @@ function chordProgSequencer (
           });
         } else if (sessionPhase === SESSION_PHASES.PLAYING_4) {
           // If this segment has already been pressed
-          if (state.bufSequence.indexOf(segment.sequencerProps.bufName) > -1) {
+          if (
+            state.bufSequence.indexOf(
+              segmentIdToBufName[segment.segmentId]
+            ) > -1
+          ) {
             // do nothing
             return state;
           } else {
@@ -412,7 +417,7 @@ function chordProgSequencer (
             newState.bufSequence.splice(
               1+currentBufIndex,
               0,
-              segment.sequencerProps.bufName
+              segmentIdToBufName[segment.segmentId]
             );
             return newState;
           }
@@ -521,12 +526,12 @@ function l2Sequencer (
 export default function sequencers (
   state = {},
   action,
-  parentState,
+  fullState,
   prevSessionPhase
 ) {
-  const segments = parentState.segments;
-  const sessionPhase = parentState.sessionPhase;
-  const sessionPhaseDurations = parentState.sessionPhaseDurations;
+  const segments = fullState.segments;
+  const sessionPhase = fullState.sessionPhase;
+  const sessionPhaseDurations = fullState.sessionPhaseDurations;
 
   state = awakeningSequencers.reducer(
     state,
@@ -554,7 +559,7 @@ export default function sequencers (
     state = Object.assign({}, state, {trans: newTrans});
   }
 
-  const l6Sequencers = getLevel6Sequencers(parentState);
+  const l6Sequencers = getLevel6Sequencers(fullState);
   l6Sequencers.forEach(function (seq) {
     const newSeq = l6Sequencer(
       seq,
@@ -571,14 +576,12 @@ export default function sequencers (
     }
   })
 
-  const level4Sequencer = getLevel4Sequencer(parentState);
+  const level4Sequencer = getLevel4Sequencer(fullState);
   const newLevel4Sequencer = chordProgSequencer(
     level4Sequencer,
     action,
-    segments,
-    sessionPhase,
-    prevSessionPhase,
-    sessionPhaseDurations
+    fullState,
+    prevSessionPhase
   );
   if (level4Sequencer !== newLevel4Sequencer) {
     state = Object.assign({}, state, {
@@ -586,7 +589,7 @@ export default function sequencers (
     });
   }
 
-  const level2Sequencers = getLevel2Sequencers(parentState);
+  const level2Sequencers = getLevel2Sequencers(fullState);
   level2Sequencers.forEach(function (seq) {
     const newSeq = l2Sequencer(
       seq,

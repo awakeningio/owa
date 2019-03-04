@@ -6,37 +6,29 @@ import configureStore from "../src/configureStore"
 import OWAController from "../src/OWAController"
 import { create_segmentId } from 'owa/models'
 import { createInitialState } from 'owa/state';
-//import { getLevel6Sequencers } from '../src/selectors';
+import { getSegmentIdToBufName } from '../src/selectors';
 import * as actions from '../src/actions'
 
-//const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
-
 describe("Sequential Sequencer", function () {
-  var store, state, segment, sequencer, level, secondSegment;
+  var store,
+    state,
+    segment,
+    sequencer,
+    level,
+    secondSegment,
+    segmentIdToBufName;
 
   it("should init properly", function (done) {
     var unsub, soundReady;
     const initialState = createInitialState()
     
-
-    //const level6Sequencers = getLevel6Sequencers(initialState);
-    //level6Sequencers.forEach(seq => seq.playingState = PLAYING_STATES.PLAYING);
-
     initialState.sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4] = 2;
     initialState.sessionPhaseDurations[SESSION_PHASES.TRANS_4] = 2;
     
     store = configureStore({...initialState, ...{
       sessionPhase: SESSION_PHASES.PLAYING_6,
       level4Ready: true,
-      //sequencers: {
-        //...initialState.sequencers,
-        //...level6Sequencers.reduce((acc, seq) => {
-          //acc[seq.sequencerId] = seq;
-          //return acc
-        //}, {})
-      //}
     }});
-    //abletonLinkStateStore = configureLinkStore();
     state = store.getState();
     soundReady = state.soundReady;
 
@@ -51,9 +43,7 @@ describe("Sequential Sequencer", function () {
         }
       }
     });
-    this.owaController = new OWAController(store, {
-      //linkStateStore: abletonLinkStateStore
-    });
+    this.owaController = new OWAController(store);
   });
   
   // start testing level 4
@@ -61,6 +51,7 @@ describe("Sequential Sequencer", function () {
     level = state.levels.byId['level_4'];
     store.dispatch(actions.buttonPressed(level.levelId, 0));
     state = store.getState();
+    segmentIdToBufName = getSegmentIdToBufName(state);
     segment = state.segments.byId[create_segmentId(level.levelId, 0)];
     sequencer = state.sequencers[segment.sequencerId];
     expect(state.sessionPhase).to.equal(SESSION_PHASES.QUEUE_TRANS_4);
@@ -74,7 +65,7 @@ describe("Sequential Sequencer", function () {
     expect(sequencer.bufSequence).to.be.a('array');
     expect(sequencer.bufSequence).to.have.lengthOf(1);
     expect(sequencer.bufSequence[0]).to.equal(
-      segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName
+      segmentIdToBufName[segment.segmentId]
     );
   });
 
@@ -103,6 +94,7 @@ describe("Sequential Sequencer", function () {
     secondSegment = state.segments.byId[create_segmentId(level.levelId, 1)];
     store.dispatch(actions.buttonPressed(level.levelId, 1));
     state = store.getState();
+    segmentIdToBufName = getSegmentIdToBufName(state);
     level = state.levels.byId['level_4'];
     sequencer = state.sequencers[segment.sequencerId];
     expect(secondSegment.sequencerId).to.equal(segment.sequencerId);
@@ -112,10 +104,10 @@ describe("Sequential Sequencer", function () {
   it("should have updated playback order because button press", function () {
     expect(sequencer.bufSequence).to.have.lengthOf(2);
     expect(sequencer.bufSequence[0]).to.equal(
-      secondSegment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName
+      segmentIdToBufName[secondSegment.segmentId]
     );
     expect(sequencer.bufSequence[1]).to.equal(
-      segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName
+      segmentIdToBufName[segment.segmentId]
     );
   });
 

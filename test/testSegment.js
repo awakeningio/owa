@@ -37,15 +37,18 @@ describe('segment', function () {
     expect(lastButtonPressTime).to.not.equal(0);
   });
 
-  it('should update again when button is pressed', function () {
-    store.dispatch(buttonPressed('level_6', 0));
-    state = store.getState();
-    let oldLastButtonPressTime = lastButtonPressTime;
-    expect(state.segments.byId[segmentId]).to.not.equal(segment);
-    segment = state.segments.byId[segmentId];
-    lastButtonPressTime = segment.lastButtonPressTime;
+  it('should update again when button is pressed', function (done) {
+    const oldLastButtonPressTime = lastButtonPressTime;
+    setTimeout(function () {
+      store.dispatch(buttonPressed('level_6', 0));
+      state = store.getState();
+      expect(state.segments.byId[segmentId]).to.not.equal(segment);
+      segment = state.segments.byId[segmentId];
+      lastButtonPressTime = segment.lastButtonPressTime;
 
-    expect(lastButtonPressTime).to.not.equal(oldLastButtonPressTime);
+      expect(lastButtonPressTime).to.not.equal(oldLastButtonPressTime);
+      done();
+    }, 100);
   });
 
   it('should not update when another button is pressed', function () {

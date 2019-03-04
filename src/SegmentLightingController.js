@@ -16,6 +16,7 @@ import SegmentQueuedAnimation from './SegmentQueuedAnimation';
 import SegmentPlayingAnimation from './SegmentPlayingAnimation';
 import SegmentNoopAnimation from './SegmentNoopAnimation';
 import { SESSION_PHASES } from 'owa/constants';
+import { getSegmentIdToBufName } from './selectors';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
@@ -27,9 +28,9 @@ const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
  **/
 class SegmentLightingController extends ControllerWithStore {
   init () {
-    let state = this.store.getState();
-    let segment = state.segments.byId[this.params.segmentId];
-    let sequencer = state.sequencers[segment.sequencerId];
+    const state = this.store.getState();
+    const segment = state.segments.byId[this.params.segmentId];
+    const sequencer = state.sequencers[segment.sequencerId];
 
     this.queuedAnimation = new SegmentQueuedAnimation({
       pixels: this.params.pixels
@@ -49,13 +50,14 @@ class SegmentLightingController extends ControllerWithStore {
   }
 
   //tick () {
+    //const segmentIdToBufName = getSegmentIdToBufName(this.lastState);
     //let sequencer = this.lastState.sequencer;
     //let segment = this.lastState.segment;
 
     //if (sequencer.sequencerId === 'level_4') {
       //if (
         //sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
-        //&& sequencer.event.bufName === segment.sequencerProps.bufName
+        //&& sequencer.event.bufName === segmentIdToBufName[segment.segmentId]
       //) {
         //this.playingAnimation.tick();
       //}
@@ -68,10 +70,11 @@ class SegmentLightingController extends ControllerWithStore {
   //}
 
   handle_state_change () {
-    let state = this.store.getState();
-    let segment = state.segments.byId[this.params.segmentId];
-    let sequencer = state.sequencers[segment.sequencerId];
-    let sessionPhase = state.sessionPhase;
+    const state = this.store.getState();
+    const segmentIdToBufName = getSegmentIdToBufName(state);
+    const segment = state.segments.byId[this.params.segmentId];
+    const sequencer = state.sequencers[segment.sequencerId];
+    const sessionPhase = state.sessionPhase;
 
     if (segment !== this.lastState.segment) {
 
@@ -97,10 +100,10 @@ class SegmentLightingController extends ControllerWithStore {
         || sequencer.bufSequence !== this.lastState.sequencer.bufSequence
       ) {
         this.lastState.sequencer = sequencer;
-        let ourBufNameIndex = sequencer.bufSequence.indexOf(
-          segment.sequencerProps.bufName
+        const ourBufNameIndex = sequencer.bufSequence.indexOf(
+          segmentIdToBufName[segment.segmentId]
         );
-        let currentBufNameIndex = sequencer.bufSequence.indexOf(
+        const currentBufNameIndex = sequencer.bufSequence.indexOf(
           sequencer.event.bufName
         );
 
@@ -108,7 +111,7 @@ class SegmentLightingController extends ControllerWithStore {
           
           // if our portion of the chord prog is playing
           if (
-            sequencer.event.bufName === segment.sequencerProps.bufName
+            sequencer.event.bufName === segmentIdToBufName[segment.segmentId]
           ) {
             this.playingAnimation.start();
             this.queuedAnimation.stop();

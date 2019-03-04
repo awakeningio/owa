@@ -87,6 +87,19 @@ export function createInitialState () {
     })
   };
 
+  const playingLevel4SegmentToBufName = {
+    [create_segmentId('level_4', 0)]: 'spinny-pluck_L4_chords-1',
+    [create_segmentId('level_4', 1)]: 'spinny-pluck_L4_chords-2',
+    [create_segmentId('level_4', 2)]: 'spinny-pluck_L4_chords-3',
+    [create_segmentId('level_4', 3)]: 'spinny-pluck_L4_chords-4'
+  };
+  const playingLevel2SegmentToBufName = {
+    [create_segmentId('level_4', 0)]: 'spinny-pluck_L2_chords-1',
+    [create_segmentId('level_4', 1)]: 'spinny-pluck_L2_chords-2',
+    [create_segmentId('level_4', 2)]: 'spinny-pluck_L2_chords-3',
+    [create_segmentId('level_4', 3)]: 'spinny-pluck_L2_chords-4'
+  };
+
   const numBeats = 8;
   sequencers['spinny_pluck-level_4'] = create_owa_sequencer(
     'spinny_pluck-level_4',
@@ -116,7 +129,14 @@ export function createInitialState () {
             'spinny-pluck_L2_chords-2',
             'spinny-pluck_L2_chords-3',
             'spinny-pluck_L2_chords-4'
-          ]
+          ],
+          segmentIdToBufName: playingLevel2SegmentToBufName
+        },
+        [SESSION_PHASES.PLAYING_4]: {
+          segmentIdToBufName: playingLevel4SegmentToBufName
+        },
+        [SESSION_PHASES.QUEUE_TRANS_4]: {
+          segmentIdToBufName: playingLevel4SegmentToBufName
         }
       }
     }
@@ -141,22 +161,6 @@ export function createInitialState () {
       segmentsById[newSegment.segmentId] = newSegment;
     }
   });
-
-  let segment = segmentsById[create_segmentId('level_4', 0)];
-  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName = 'spinny-pluck_L4_chords-1';
-  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_2].bufName = 'spinny-pluck_L2_chords-1';
-
-  segment = segmentsById[create_segmentId('level_4', 1)];
-  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName = 'spinny-pluck_L4_chords-2';
-  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_2].bufName = 'spinny-pluck_L2_chords-2';
-
-  segment = segmentsById[create_segmentId('level_4', 2)];
-  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName = 'spinny-pluck_L4_chords-3';
-  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_2].bufName = 'spinny-pluck_L2_chords-3';
-
-  segment = segmentsById[create_segmentId('level_4', 3)];
-  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_4].bufName = 'spinny-pluck_L4_chords-4';
-  segment.phaseSequencerProps[SESSION_PHASES.PLAYING_2].bufName = 'spinny-pluck_L2_chords-4';
 
   segmentsById[create_segmentId('level_6', 0)].sequencerId = 'spinny_pluck-6_0';
   segmentsById[create_segmentId('level_6', 1)].sequencerId = 'spinny_pluck-6_1';

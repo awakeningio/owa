@@ -90,6 +90,14 @@ export const getLevel2Sequencers = createSelector(
   }
 );
 
+export const getSegmentIdToBufName = createSelector(
+  getLevel4Sequencer,
+  getSessionPhase,
+  function (level4Sequencer, sessionPhase) {
+    return level4Sequencer.phaseProps[sessionPhase].segmentIdToBufName;
+  }
+);
+
 export const getSCState = createDeepEqualSelector(
   getTempo,
   getSessionPhase,

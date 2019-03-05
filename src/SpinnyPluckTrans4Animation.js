@@ -13,22 +13,15 @@
 import TWEEN from '@tweenjs/tween.js';
 import Color from 'color';
 
-import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors } from './Pixels';
-import { SESSION_PHASES } from 'owa/constants';
+import Trans4Animation from './Trans4Animation';
 
-class SpinnyPluckTrans4Animation extends ControllerWithStore {
-  init() {
-    this.prevState = {
-      sessionPhase: null
-    };
-    this.build();
-  }
+class SpinnyPluckTrans4Animation extends Trans4Animation {
   build () {
-    let initial = {
+    const initial = {
       brightness: 0
     }; 
-    let dest = {
+    const dest = {
       brightness: 100
     };
 
@@ -83,9 +76,9 @@ class SpinnyPluckTrans4Animation extends ControllerWithStore {
       )
     };
 
-    let createSegmentTween = (segmentId) => {
-      let segmentPixels = this.params.segmentPixels;
-      let segmentColors = this.segmentColors;
+    const createSegmentTween = (segmentId) => {
+      const segmentPixels = this.params.segmentPixels;
+      const segmentColors = this.segmentColors;
       return new TWEEN.Tween(Object.assign({}, initial))
         .to(Object.assign({}, dest), 3000)
         .delay(1000)
@@ -129,7 +122,6 @@ class SpinnyPluckTrans4Animation extends ControllerWithStore {
 
   }
   start () {
-    this.build();
     Object.keys(this.segmentTweens).forEach((segmentId) => {
       this.segmentTweens[segmentId].start();
     });
@@ -138,24 +130,6 @@ class SpinnyPluckTrans4Animation extends ControllerWithStore {
     Object.keys(this.segmentTweens).forEach((segmentId) => {
       this.segmentTweens[segmentId].stop();
     });
-  }
-  handle_state_change () {
-    let state = this.store.getState();
-
-    if (this.prevState.sessionPhase !== state.sessionPhase) {
-      this.prevState.sessionPhase = state.sessionPhase;
-
-      switch (state.sessionPhase) {
-        case SESSION_PHASES.TRANS_4:
-          this.start();
-          break;
-
-        default:
-          this.stop();
-          break;
-      }
-    }
-
   }
 }
 

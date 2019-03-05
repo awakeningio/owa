@@ -51,10 +51,10 @@ class LightingController extends ControllerWithStore {
     this.pixels = createOPCStrand(144);
 
     // ranges of pixel buffer for each segment
-    this.segmentPixels = {};
+    const segmentPixels = {};
 
     // ranges of pixel buffer for each level
-    this.levelPixels = {};
+    const levelPixels = {};
 
     // all subcontrollers to tick
     this.controllersToTick = [];
@@ -68,7 +68,7 @@ class LightingController extends ControllerWithStore {
         this.pixels,
         SEGMENTID_TO_PIXEL_RANGE[segmentId]
       );
-      this.segmentPixels[segmentId] = pixels;
+      segmentPixels[segmentId] = pixels;
       const controller = new SegmentLightingController(this.store, {
         segmentId,
         pixels
@@ -83,13 +83,13 @@ class LightingController extends ControllerWithStore {
         this.pixels,
         LEVELID_TO_PIXEL_RANGE[levelId]
       );
-      this.levelPixels[levelId] = pixels;
+      levelPixels[levelId] = pixels;
     });
 
     const params = {
       pixels: this.pixels,
-      levelPixels: this.levelPixels,
-      segmentPixels: this.segmentPixels
+      levelPixels: levelPixels,
+      segmentPixels: segmentPixels
     };
 
     this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);

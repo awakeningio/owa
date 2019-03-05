@@ -13,22 +13,13 @@
 import TWEEN from '@tweenjs/tween.js';
 import Color from 'color';
 
-import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors, setPixelColors } from './Pixels';
 import { SESSION_PHASES } from 'owa/constants';
+import IdleAnimation from './IdleAnimation';
 
-class SpinnyPluckIdleAnimation extends ControllerWithStore {
-  init() {
-
-    this.prevState = {
-      sessionPhase: null,
-      firstSegmentPressed: false
-    };
-    this.build();
-
-  }
+class SpinnyPluckIdleAnimation extends IdleAnimation {
   build () {
-    this.state = {
+    this.animationState = {
       masterBrightness: 1.0,
       transHueOffset: 0.0
     };
@@ -121,11 +112,10 @@ class SpinnyPluckIdleAnimation extends ControllerWithStore {
       const segmentPixels = this.params.segmentPixels;
       const segmentColors = this.segmentColors;
       let transHueOffset = 0;
-      let onUpdate;
 
       // only level6 turns green during trans
       if (levelId === 'level_6') {
-        transHueOffset = this.state.transHueOffset;
+        transHueOffset = this.animationState.transHueOffset;
       }
 
       return new TWEEN.Tween(Object.assign({}, initial))
@@ -137,7 +127,7 @@ class SpinnyPluckIdleAnimation extends ControllerWithStore {
           setPixelsColors(
             segmentPixels[segmentId],
             segmentColors[segmentId].value(
-              100 * props.brightness * this.state.masterBrightness
+              100 * props.brightness * this.animationState.masterBrightness
             ).hue(
               segmentColors[segmentId].hue() + transHueOffset
             )
@@ -183,7 +173,7 @@ class SpinnyPluckIdleAnimation extends ControllerWithStore {
       }, transDur)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onUpdate((props) => {
-        this.state.masterBrightness = props.masterBrightness;
+        this.animationState.masterBrightness = props.masterBrightness;
       });
 
     this.transHueTween = new TWEEN.Tween({transHueOffset: 0.0})
@@ -192,7 +182,7 @@ class SpinnyPluckIdleAnimation extends ControllerWithStore {
       }, 500)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onUpdate((props) => {
-        this.state.transHueOffset = props.transHueOffset
+        this.animationState.transHueOffset = props.transHueOffset
       });
 
     this.firstSegmentColor = Color.hsv(280, 100, 100);
@@ -203,7 +193,7 @@ class SpinnyPluckIdleAnimation extends ControllerWithStore {
       .yoyo(true)
       .repeat(Infinity)
       .onUpdate((props) => {
-        this.state.firstSegmentBrightness = props.brightness;
+        this.animationState.firstSegmentBrightness = props.brightness;
       });
 
     let i;
@@ -215,16 +205,16 @@ class SpinnyPluckIdleAnimation extends ControllerWithStore {
         const lastLit = Math.round(props.remaining * 12);
         for (i = 0; i < lastLit; i++) {
           setPixelColors(
-            this.params.segmentPixels[this.prevState.firstSegmentPressed],
+            this.params.segmentPixels[this.state.firstSegmentPressed],
             i,
             this.firstSegmentColor.value(
-              255 * this.state.firstSegmentBrightness
+              255 * this.animationState.firstSegmentBrightness
             )
           );
         }
         for (i = lastLit; i < 12; i++) {
           setPixelColors(
-            this.params.segmentPixels[this.prevState.firstSegmentPressed],
+            this.params.segmentPixels[this.state.firstSegmentPressed],
             i,
             this.firstSegmentColor.value(25)
           );
@@ -233,11 +223,19 @@ class SpinnyPluckIdleAnimation extends ControllerWithStore {
 
   }
 
-  start () {
-    this.build();
+  startIdle () {
     Object.keys(this.segmentTweens).forEach((segmentId) => {
-      this.segmentTweens[segmentId].start();
+      this.segmentTweens[segmentId].startIdle();
     });
+  }
+  startQueueTrans6 () {
+    this.transHueTween.startIdle();
+    this.segmentTweens[this.state.firstSegmentPressed].stop();
+    this.firstSegmentPulsingTween.startIdle();
+    this.firstSegmentCountdownTween.startIdle();
+  }
+  startTrans6 () {
+    this.transBrightnessTween.startIdle();
   }
   stop () {
     Object.keys(this.segmentTweens).forEach((segmentId) => {
@@ -247,36 +245,6 @@ class SpinnyPluckIdleAnimation extends ControllerWithStore {
     this.transHueTween.stop();
     this.firstSegmentPulsingTween.stop();
     this.firstSegmentCountdownTween.stop();
-  }
-  handle_state_change () {
-    const state = this.store.getState();
-
-    if (this.prevState.sessionPhase !== state.sessionPhase) {
-      this.prevState.sessionPhase = state.sessionPhase;
-      this.prevState.firstSegmentPressed = state.firstSegmentPressed;
-
-      switch (state.sessionPhase) {
-        case SESSION_PHASES.IDLE:
-          this.start();
-          break;
-
-        case SESSION_PHASES.TRANS_6:
-          this.transBrightnessTween.start();
-          break;
-
-        case SESSION_PHASES.QUEUE_TRANS_6:
-          this.transHueTween.start();
-          this.segmentTweens[state.firstSegmentPressed].stop();
-          this.firstSegmentPulsingTween.start();
-          this.firstSegmentCountdownTween.start();
-          break;
-        
-        default:
-          this.stop();
-          break;
-      }
-    }
-
   }
 }
 

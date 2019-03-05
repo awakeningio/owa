@@ -9,17 +9,20 @@
  **/
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import isEqual from 'lodash/isEqual';
+import every from 'lodash/every';
 
 import awakeningSequencers from 'awakening-sequencers'
 
 import { create_segmentId } from 'owa/models';
+import { SESSION_PHASES } from 'owa/constants';
+
+const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
 const getSequencers = state => state.sequencers;
 const getSegmentsById = state => state.segments.byId;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
-const getRevealReady = state => state.revealReady;
 const getIdlePlayer = state => state.idlePlayer;
 
 const createDeepEqualSelector = createSelectorCreator(
@@ -95,6 +98,51 @@ export const getSegmentIdToBufName = createSelector(
   getSessionPhase,
   function (level4Sequencer, sessionPhase) {
     return level4Sequencer.phaseProps[sessionPhase].segmentIdToBufName;
+  }
+);
+
+export const getLevel4Ready = createSelector(
+  getLevel6Sequencers,
+  getSessionPhase,
+  function (level6Sequencers, sessionPhase) {
+    if (sessionPhase === SESSION_PHASES.PLAYING_6) {
+      // Returns true if all level 6 sequencers are playing.
+      return every(
+        level6Sequencers,
+        ['playingState', PLAYING_STATES.PLAYING]
+      );
+    } else {
+      // we aren't on PLAYING_6, so level 4 cannot be ready.
+      return false;
+    }
+  }
+);
+export const getLevel2Ready = createSelector(
+  getLevel4Sequencer,
+  getSessionPhase,
+  function (level4Sequencer, sessionPhase) {
+    if (sessionPhase === SESSION_PHASES.PLAYING_4) {
+      // Checks to see if all level 4 segments were touched, i.e. the full
+      // chord progression is playing.
+      return level4Sequencer.bufSequence.length === 4;
+    } else {
+      // Level 2 can only be ready if we are on PLAYING_4
+      return false;
+    }
+  }
+);
+
+export const getRevealReady = createSelector(
+  getLevel2Sequencers,
+  getSessionPhase,
+  function (level2Sequencers, sessionPhase) {
+    return (
+      sessionPhase === SESSION_PHASES.PLAYING_2
+      && every(
+        level2Sequencers,
+        ['playingState', PLAYING_STATES.PLAYING]
+      )
+    );
   }
 );
 

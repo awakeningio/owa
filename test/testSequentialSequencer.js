@@ -1,13 +1,18 @@
 import { expect } from 'chai';
 
-//import awakeningSequencers from 'awakening-sequencers';
+import awakeningSequencers from 'awakening-sequencers';
 import { OWA_READY_STATES, SESSION_PHASES } from 'owa/constants'
 import configureStore from "../src/configureStore"
 import OWAController from "../src/OWAController"
 import { create_segmentId } from 'owa/models'
 import { createInitialState } from 'owa/state';
-import { getSegmentIdToBufName } from '../src/selectors';
+import {
+  getSegmentIdToBufName,
+  getLevel6Sequencers
+} from '../src/selectors';
 import * as actions from '../src/actions'
+
+const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 describe("Sequential Sequencer", function () {
   var store,
@@ -24,11 +29,12 @@ describe("Sequential Sequencer", function () {
     
     initialState.sessionPhaseDurations[SESSION_PHASES.QUEUE_TRANS_4] = 2;
     initialState.sessionPhaseDurations[SESSION_PHASES.TRANS_4] = 2;
+    initialState.sessionPhase = SESSION_PHASES.PLAYING_6;
+    getLevel6Sequencers(initialState).forEach(function (seq) {
+      seq.playingState = PLAYING_STATES.PLAYING;
+    });
     
-    store = configureStore({...initialState, ...{
-      sessionPhase: SESSION_PHASES.PLAYING_6,
-      level4Ready: true,
-    }});
+    store = configureStore(initialState);
     state = store.getState();
     soundReady = state.soundReady;
 

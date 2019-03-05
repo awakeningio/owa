@@ -9,9 +9,16 @@
  **/
 import { SESSION_PHASES, NEXT_SESSION_PHASES } from 'owa/constants';
 
+import {
+  getLevel4Ready,
+  getLevel2Ready
+} from '../selectors';
 import * as actionTypes from '../actionTypes';
 
-function action_starts_transition (action, sessionPhase, level4Ready, level2Ready) {
+function action_starts_transition (action, sessionPhase, fullState) {
+
+  const level4Ready = getLevel4Ready(fullState);
+  const level2Ready = getLevel2Ready(fullState);
 
   if (action.type === actionTypes.BUTTON_PRESSED) {
     if (
@@ -34,14 +41,18 @@ function get_initial_state () {
   return SESSION_PHASES.IDLE;
 }
 
-export default function sessionPhase (state = get_initial_state(), action, level4Ready, level2Ready) {
+export default function sessionPhase (
+  state = get_initial_state(),
+  action,
+  fullState
+) {
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       return action.payload.phase;
 
     case actionTypes.BUTTON_PRESSED:
       if (
-        action_starts_transition(action, state, level4Ready, level2Ready)
+        action_starts_transition(action, state, fullState)
       ) {
         return NEXT_SESSION_PHASES[state];
       }

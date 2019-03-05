@@ -9,8 +9,6 @@
  **/
 import { combineReducers } from 'redux';
 
-import { getLevel6Sequencers, getLevel2Sequencers } from '../selectors';
-
 import soundReady from './soundReady';
 import sequencers from './sequencers';
 import levels from './levels';
@@ -18,9 +16,6 @@ import sessionPhase from './sessionPhase';
 import segments from './segments';
 import fadecandyConnection from './fadecandyConnection';
 import tempo from './tempo';
-import level4Ready from './level4Ready';
-import level2Ready from './level2Ready';
-import revealReady from './revealReady';
 import sessionPhaseDurations from './sessionPhaseDurations';
 import idlePlayer from './idlePlayer';
 import inactivityTimeoutStartTime from './inactivityTimeoutStartTime';
@@ -43,8 +38,7 @@ export default function (state, action) {
   const newSessionPhase = sessionPhase(
     state.sessionPhase,
     action,
-    state.level4Ready,
-    state.level2Ready
+    state
   );
   if (newSessionPhase !== state.sessionPhase) {
     state = Object.assign({}, state, {sessionPhase: newSessionPhase});
@@ -77,32 +71,6 @@ export default function (state, action) {
   );
   if (newIdlePlayer !== state.idlePlayer) {
     state = Object.assign({}, state, {idlePlayer: newIdlePlayer});
-  }
-  const newLevel4Ready = level4Ready(
-    state.level4Ready,
-    action,
-    getLevel6Sequencers(state),
-    state.sessionPhase
-  );
-  if (newLevel4Ready !== state.level4Ready) {
-    state = Object.assign({}, state, {level4Ready: newLevel4Ready});
-  }
-  const newLevel2Ready = level2Ready(
-    state.level2Ready,
-    action,
-    state
-  );
-  if (newLevel2Ready !== state.level2Ready) {
-    state = Object.assign({}, state, {level2Ready: newLevel2Ready});
-  }
-  const newRevealReady = revealReady(
-    state.revealReady,
-    action,
-    getLevel2Sequencers(state),
-    state.sessionPhase
-  );
-  if (newRevealReady !== state.revealReady) {
-    state = Object.assign({}, state, { revealReady: newRevealReady });
   }
   const newFirstSegmentPressed = firstSegmentPressed(
     state.firstSegmentPressed,

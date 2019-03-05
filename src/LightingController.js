@@ -17,13 +17,16 @@ import SpinnyPluckIdleAnimation from "./SpinnyPluckIdleAnimation";
 import SpinnyPluckTrans4Animation from './SpinnyPluckTrans4Animation';
 import SpinnyPluckTrans2Animation from './SpinnyPluckTrans2Animation';
 import SpinnyPluckRevealAnimation from './SpinnyPluckRevealAnimation';
-import Level4ReadyAnimationController from './Level4ReadyAnimationController';
-import Level2ReadyAnimationController from './Level2ReadyAnimationController';
+import LevelReadyAnimation from './LevelReadyAnimation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
   //SESSION_PHASES
 } from 'owa/constants';
+import {
+  getLevel2Ready,
+  getLevel4Ready
+} from './selectors';
 import TWEEN from '@tweenjs/tween.js';
 
 import createOPCStrand from "opc/strand"
@@ -96,14 +99,22 @@ class LightingController extends ControllerWithStore {
     this.trans4Animation = new SpinnyPluckTrans4Animation(this.store, params);
     this.trans2Animation = new SpinnyPluckTrans2Animation(this.store, params);
     this.revealAnimation = new SpinnyPluckRevealAnimation(this.store, params);
-    this.level4ReadyAnimationController = new Level4ReadyAnimationController(
-      this.store,
-      params
-    );
-    this.level2ReadyAnimationController = new Level2ReadyAnimationController(
-      this.store,
-      params
-    );
+    this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {
+      ...params,
+      ...{
+        levelId: 'level_4',
+        delayBeats: 8,
+        levelReadySelector: getLevel4Ready
+      }
+    });
+    this.level2ReadyAnimation = new LevelReadyAnimation(this.store, {
+      ...params,
+      ...{
+        levelId: 'level_2',
+        delayBeats: 16,
+        levelReadySelector: getLevel2Ready
+      }
+    })
 
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);

@@ -37,9 +37,6 @@ if (process.env.NODE_ENV === 'development') {
         //'bufSequence'
       //])
     //});
-    //toPrint.level4Ready = state.level4Ready;
-    //toPrint.level2Ready = state.level2Ready;
-    //toPrint.revealReady = state.revealReady;
     toPrint.sessionPhase = state.sessionPhase;
     toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
     toPrint.idlePlayer = state.idlePlayer;

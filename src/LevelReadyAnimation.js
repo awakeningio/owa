@@ -17,11 +17,14 @@ import { getSegmentIdsForLevel } from './selectors';
 class LevelReadyAnimation extends ControllerWithStore {
   init () {
     this.segmentIds = getSegmentIdsForLevel(this.params.levelId);
+    this.levelReadyState = this.params.levelReadySelector(
+      this.store.getState()
+    );
   }
   build () {
 
-    let createSegmentColor = function () {
-      let hue = (
+    const createSegmentColor = function () {
+      const hue = (
         32 + ((Math.random() - 0.5) * 8)
       );
       return Color.hsv(
@@ -31,18 +34,21 @@ class LevelReadyAnimation extends ControllerWithStore {
       );
     };
 
-    let createSegmentTween = (segmentId) => {
+    const createSegmentTween = (segmentId) => {
 
-      let pixels = this.params.segmentPixels[segmentId];
-      let color = this.segmentColors[segmentId];
+      const state = this.store.getState();
+      const pixels = this.params.segmentPixels[segmentId];
+      const color = this.segmentColors[segmentId];
+      const tempo = state.tempo;
 
-      let periodLength = 2000;
+      const periodMs = 2000;
 
       return new TWEEN.Tween({value: 0})
-        .to({value: 100}, periodLength)
+        .to({value: 100}, periodMs)
         .easing(TWEEN.Easing.Circular.In)
         .repeat(Infinity)
         .yoyo(true)
+        .delay(this.params.delayBeats / tempo * 60000.0)
         .onUpdate(function (props) {
           setPixelsColors(
             pixels,
@@ -71,6 +77,23 @@ class LevelReadyAnimation extends ControllerWithStore {
       this.segmentIds.forEach((segmentId) => {
         this.segmentTweens[segmentId].stop();
       });
+    }
+  }
+
+  handle_state_change () {
+    const state = this.store.getState();
+    const levelReadySelector = this.params.levelReadySelector;
+    const levelReadyState = levelReadySelector(state);
+
+    if (levelReadyState !== this.levelReadyState) {
+      this.levelReadyState = levelReadyState;
+
+      if (levelReadyState) {
+        this.build();
+        this.start();
+      } else {
+        this.stop();
+      }
     }
   }
 }

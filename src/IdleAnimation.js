@@ -13,10 +13,15 @@ import { SESSION_PHASES } from 'owa/constants';
 class IdleAnimation extends ControllerWithStore {
   init() {
 
-    this.state = this.store.getState();
+    this.state = {sessionPhase: null};
     this.build();
 
   }
+  build() {}
+  startIdle() {}
+  startQueueTrans6() {}
+  startTrans6() {}
+  stop() {}
   handle_state_change () {
     const state = this.store.getState();
 

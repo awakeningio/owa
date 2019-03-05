@@ -225,17 +225,17 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
 
   startIdle () {
     Object.keys(this.segmentTweens).forEach((segmentId) => {
-      this.segmentTweens[segmentId].startIdle();
+      this.segmentTweens[segmentId].start();
     });
   }
   startQueueTrans6 () {
-    this.transHueTween.startIdle();
+    this.transHueTween.start();
     this.segmentTweens[this.state.firstSegmentPressed].stop();
-    this.firstSegmentPulsingTween.startIdle();
-    this.firstSegmentCountdownTween.startIdle();
+    this.firstSegmentPulsingTween.start();
+    this.firstSegmentCountdownTween.start();
   }
   startTrans6 () {
-    this.transBrightnessTween.startIdle();
+    this.transBrightnessTween.start();
   }
   stop () {
     Object.keys(this.segmentTweens).forEach((segmentId) => {

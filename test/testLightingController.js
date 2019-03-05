@@ -1,15 +1,19 @@
 import { expect } from 'chai';
-
-import LightingController from '../src/LightingController.js'
-
-import configureStore from "../src/configureStore"
+import sinon from 'sinon';
 
 import awakeningSequencers from 'awakening-sequencers'
+
+import LightingController from '../src/LightingController.js'
+import configureStore from "../src/configureStore"
+import { SESSION_PHASES } from 'owa/constants';
+import {
+  sessionPhaseAdvanced,
+} from '../src/actions';
+
 
 describe("LightingController", function () {
   const store = configureStore();
   const state = store.getState();
-  const sequencerId = Object.keys(state.sequencers)[0];
   var lightingController;
 
   it("should init", function () {
@@ -24,22 +28,22 @@ describe("LightingController", function () {
     done();
   });
 
-  it("should switch to queued animation when sequencer is queued", function (done) {
-    store.dispatch(awakeningSequencers.actions.sequencerQueued(sequencerId));
+  it("should switch to queued animation when next sequencer is queued", function () {
+    const segmentTwo = state.segments.byId[state.segments.allIds[1]];
+    const segmentLightingController = (
+      lightingController.segmentLightingControllers.find(function (controller) {
+        return controller.params.segmentId == segmentTwo.segmentId;
+      })
+    );
+    segmentLightingController.queuedAnimation.start = sinon.fake();
+    store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
+    store.dispatch(awakeningSequencers.actions.sequencerQueued(
+        segmentTwo.sequencerId
+    ));
 
-    setTimeout(done, 4000);
-  });
-
-  it("should switch to playing animation when sequencer is playing", function (done) {
-    store.dispatch(awakeningSequencers.actions.sequencerPlaying(sequencerId));
-
-    setTimeout(done, 4000);
-  });
-  
-  it("should switch to queued animation when sequencer is queued again", function (done) {
-    store.dispatch(awakeningSequencers.actions.sequencerQueued(sequencerId));
-
-    setTimeout(done, 4000);
+    expect(
+      segmentLightingController.queuedAnimation.start.callCount
+    ).to.equal(1);
   });
 
   it('should quit', function () {

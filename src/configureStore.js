@@ -44,10 +44,8 @@ if (process.env.NODE_ENV === 'development') {
     toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
     toPrint.idlePlayer = state.idlePlayer;
     toPrint.soundReady = state.soundReady;
-    toPrint.sequencers = {
-      level_4: state.sequencers.level_4
-    };
-    toPrint.segments = state.segments;
+    toPrint.sequencers = state.sequencers;
+    //toPrint.segments = state.segments;
     return toPrint;
   };
   const storeLogger = store => next => action => {

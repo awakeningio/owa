@@ -35,3 +35,9 @@ export function inactivityTimeoutExceeded () {
     type: actionTypes.INACTIVITY_TIMEOUT_EXCEEDED
   };
 }
+
+export function owaSoundInitDone () {
+  return {
+    type: actionTypes.OWA_SOUND_INIT_DONE
+  };
+}

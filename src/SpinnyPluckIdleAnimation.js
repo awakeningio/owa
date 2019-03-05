@@ -17,7 +17,7 @@ import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors, setPixelColors } from './Pixels';
 import { SESSION_PHASES } from 'owa/constants';
 
-class IdleModeAnimation extends ControllerWithStore {
+class SpinnyPluckIdleAnimation extends ControllerWithStore {
   init() {
 
     this.prevState = {
@@ -33,14 +33,14 @@ class IdleModeAnimation extends ControllerWithStore {
       transHueOffset: 0.0
     };
 
-    let initial = {
+    const initial = {
       brightness: 0.02
     }; 
-    let dest = {
+    const dest = {
       brightness: 1.0
     };
 
-    let initialBrightness = 100;
+    const initialBrightness = 100;
 
     this.segmentColors = {
       'level_6-segment_0': Color.hsv(
@@ -117,35 +117,15 @@ class IdleModeAnimation extends ControllerWithStore {
       )
     };
 
-    let createSegmentTween = (segmentId, levelId) => {
-      let segmentPixels = this.params.segmentPixels;
-      let segmentColors = this.segmentColors;
+    const createSegmentTween = (segmentId, levelId) => {
+      const segmentPixels = this.params.segmentPixels;
+      const segmentColors = this.segmentColors;
+      let transHueOffset = 0;
       let onUpdate;
 
       // only level6 turns green during trans
-      // TODO: refactor
       if (levelId === 'level_6') {
-        onUpdate = (props) => {
-          setPixelsColors(
-            segmentPixels[segmentId],
-            segmentColors[segmentId].value(
-              100 * props.brightness * this.state.masterBrightness
-            ).hue(
-              segmentColors[segmentId].hue() + this.state.transHueOffset
-            )
-          );
-        };
-      } else {
-        onUpdate = (props) => {
-          setPixelsColors(
-            segmentPixels[segmentId],
-            segmentColors[segmentId].value(
-              100 * props.brightness * this.state.masterBrightness
-            ).hue(
-              segmentColors[segmentId].hue()
-            )
-          );
-        };
+        transHueOffset = this.state.transHueOffset;
       }
 
       return new TWEEN.Tween(Object.assign({}, initial))
@@ -153,7 +133,16 @@ class IdleModeAnimation extends ControllerWithStore {
         .delay(Math.random() * 500 + 2000)
         .yoyo(true)
         .repeat(Infinity)
-        .onUpdate(onUpdate);
+        .onUpdate((props) => {
+          setPixelsColors(
+            segmentPixels[segmentId],
+            segmentColors[segmentId].value(
+              100 * props.brightness * this.state.masterBrightness
+            ).hue(
+              segmentColors[segmentId].hue() + transHueOffset
+            )
+          );
+        });
     };
 
     this.segmentTweens = {
@@ -183,8 +172,8 @@ class IdleModeAnimation extends ControllerWithStore {
       .easing(TWEEN.Easing.Sinusoidal.Out)
     };
 
-    let state = this.store.getState();
-    let transDur = (state.sessionPhaseDurations[SESSION_PHASES.TRANS_6]
+    const state = this.store.getState();
+    const transDur = (state.sessionPhaseDurations[SESSION_PHASES.TRANS_6]
       / state.tempo * 60.0 * 1000.0
     );
 
@@ -223,7 +212,7 @@ class IdleModeAnimation extends ControllerWithStore {
         remaining: 0.0
       }, transDur)
       .onUpdate((props) => {
-        let lastLit = Math.round(props.remaining * 12);
+        const lastLit = Math.round(props.remaining * 12);
         for (i = 0; i < lastLit; i++) {
           setPixelColors(
             this.params.segmentPixels[this.prevState.firstSegmentPressed],
@@ -260,7 +249,7 @@ class IdleModeAnimation extends ControllerWithStore {
     this.firstSegmentCountdownTween.stop();
   }
   handle_state_change () {
-    let state = this.store.getState();
+    const state = this.store.getState();
 
     if (this.prevState.sessionPhase !== state.sessionPhase) {
       this.prevState.sessionPhase = state.sessionPhase;
@@ -291,4 +280,4 @@ class IdleModeAnimation extends ControllerWithStore {
   }
 }
 
-export default IdleModeAnimation;
+export default SpinnyPluckIdleAnimation;

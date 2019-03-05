@@ -17,7 +17,7 @@ import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors } from './Pixels';
 import { SESSION_PHASES } from 'owa/constants';
 
-class Level4TransitionAnimation extends ControllerWithStore {
+class SpinnyPluckTrans4Animation extends ControllerWithStore {
   init() {
     this.prevState = {
       sessionPhase: null
@@ -159,4 +159,4 @@ class Level4TransitionAnimation extends ControllerWithStore {
   }
 }
 
-export default Level4TransitionAnimation;
+export default SpinnyPluckTrans4Animation;

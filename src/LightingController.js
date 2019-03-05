@@ -13,10 +13,10 @@ import logger from './logging';
 import ControllerWithStore from './ControllerWithStore';
 import FadecandyController from './FadecandyController';
 import SegmentLightingController from './SegmentLightingController';
-import IdleModeAnimation from "./SpinnyPluck_EerieIdleModeAnimation.js";
-import Level4TransitionAnimation from './SpinnyPluckL6-L4TransitionAnimation.js';
-import Level2TransitionAnimation from './SpinnyPluckL4-L2TransitionAnimation.js';
-import RevealAnimation from './SpinnyPluckRevealModeAnimation';
+import SpinnyPluckIdleAnimation from "./SpinnyPluckIdleAnimation";
+import SpinnyPluckTrans4Animation from './SpinnyPluckTrans4Animation';
+import SpinnyPluckTrans2Animation from './SpinnyPluckTrans2Animation';
+import SpinnyPluckRevealAnimation from './SpinnyPluckRevealAnimation';
 import Level4ReadyAnimationController from './Level4ReadyAnimationController';
 import Level2ReadyAnimationController from './Level2ReadyAnimationController';
 import {
@@ -40,10 +40,10 @@ const DEBUG_LIGHTING_PERFORMANCE = getEnvAsNumber('DEBUG_LIGHTING_PERFORMANCE');
  **/
 class LightingController extends ControllerWithStore {
   init() {
-    let state = this.store.getState();
+    const state = this.store.getState();
 
-    let segmentIds = state.segments.allIds;
-    let levelIds = state.levels.allIds;
+    const segmentIds = state.segments.allIds;
+    const levelIds = state.levels.allIds;
 
     this.hasQuit = false;
 
@@ -64,12 +64,12 @@ class LightingController extends ControllerWithStore {
 
     // for each segment get range of pixels for the ring
     segmentIds.forEach((segmentId) => {
-      let pixels = this.pixels.slice.apply(
+      const pixels = this.pixels.slice.apply(
         this.pixels,
         SEGMENTID_TO_PIXEL_RANGE[segmentId]
       );
       this.segmentPixels[segmentId] = pixels;
-      let controller = new SegmentLightingController(this.store, {
+      const controller = new SegmentLightingController(this.store, {
         segmentId,
         pixels
       });
@@ -79,23 +79,23 @@ class LightingController extends ControllerWithStore {
 
     // for each level get range of pixels for the rings
     levelIds.forEach((levelId) => {
-      let pixels = this.pixels.slice.apply(
+      const pixels = this.pixels.slice.apply(
         this.pixels,
         LEVELID_TO_PIXEL_RANGE[levelId]
       );
       this.levelPixels[levelId] = pixels;
     });
 
-    let params = {
+    const params = {
       pixels: this.pixels,
       levelPixels: this.levelPixels,
       segmentPixels: this.segmentPixels
     };
 
-    this.idleModeAnimation = new IdleModeAnimation(this.store, params);
-    this.level4TransitionAnimation = new Level4TransitionAnimation(this.store, params);
-    this.level2TransitionAnimation = new Level2TransitionAnimation(this.store, params);
-    this.revealAnimation = new RevealAnimation(this.store, params);
+    this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);
+    this.trans4Animation = new SpinnyPluckTrans4Animation(this.store, params);
+    this.trans2Animation = new SpinnyPluckTrans2Animation(this.store, params);
+    this.revealAnimation = new SpinnyPluckRevealAnimation(this.store, params);
     this.level4ReadyAnimationController = new Level4ReadyAnimationController(
       this.store,
       params
@@ -140,10 +140,10 @@ class LightingController extends ControllerWithStore {
   }
 
   tickDebug () {
-    let start = performance.now();
+    const start = performance.now();
     TWEEN.update();
     this.fcController.writePixels(this.pixels);
-    let end = performance.now();
+    const end = performance.now();
     this.tickCompletionTimeSum += end - start;
     this.numTickMeasurements += 1;
     this.tickCompletionTimeAvg = this.tickCompletionTimeSum / this.numTickMeasurements;

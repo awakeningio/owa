@@ -18,7 +18,7 @@ import ControllerWithStore from './ControllerWithStore';
 import { setPixelsColors } from './Pixels';
 import { SESSION_PHASES } from 'owa/constants';
 
-class RevealAnimation extends ControllerWithStore {
+class SpinnyPluckRevealAnimation extends ControllerWithStore {
   init() {
     this.prevState = {
       sessionPhase: null
@@ -485,4 +485,4 @@ class RevealAnimation extends ControllerWithStore {
   }
 }
 
-export default RevealAnimation;
+export default SpinnyPluckRevealAnimation;

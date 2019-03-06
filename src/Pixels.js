@@ -15,7 +15,7 @@ const MASTER_BRIGHTNESS = getEnvAsNumber('MASTER_BRIGHTNESS') || 1.0;
 const MASTER_BRIGHTNESS_FACTOR = MASTER_BRIGHTNESS * 100.0;
 
 // pixel values below this will be set to 0 [0 - 255]
-const MINIMUM_CUTOFF = 2;
+const MINIMUM_CUTOFF = 3;
 
 function applyMasterBrightness (color) {
   return color.value((color.value() / 100.0) * MASTER_BRIGHTNESS_FACTOR);

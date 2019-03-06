@@ -9,16 +9,18 @@
  **/
 
 
-import configureStore from "./configureStore"
-import LightingController from './LightingController'
-import { sessionPhaseAdvanced, buttonPressed } from './actions';
-import { SESSION_PHASES } from 'owa/constants';
+import configureStore from "../configureStore"
+import LightingController from '../LightingController'
+//import { sessionPhaseAdvanced, buttonPressed } from './actions';
+//import { SESSION_PHASES } from 'owa/constants';
 
 const store = configureStore();
 const lightingController = new LightingController(store);
 
 //lightingController.levelTransitionAnimation.start();
 //lightingController.revealAnimation.start();
+lightingController.trans4Animation.build();
+lightingController.trans4Animation.start();
 
 
 //let state = store.getState();
@@ -28,9 +30,9 @@ const lightingController = new LightingController(store);
   //);
 //}, state.sessionPhaseDurations[SESSION_PHASES.TRANS_ADVICE] / state.tempo * 60000.0);
 //lightingController.level2ReadyAnimationController.animation.start();
-setTimeout(function () {
+//setTimeout(function () {
   //store.dispatch(buttonPressed('level_6', 0));
-  store.dispatch(buttonPressed('level_6', 1));
+  //store.dispatch(buttonPressed('level_6', 1));
   //console.log("stopping...");
   //lightingController.level2ReadyAnimationController.animation.stop();
-}, 8000);
+//}, 8000);

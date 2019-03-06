@@ -16,17 +16,21 @@ class Trans4Animation extends ControllerWithStore {
     this.state = this.store.getState();
     this.build();
   }
+  build () {}
+  start () {}
+  stop () {}
   handle_state_change () {
     const state = this.store.getState();
 
     if (this.state.sessionPhase !== state.sessionPhase) {
       this.state = state;
       switch (state.sessionPhase) {
-        case SESSION_PHASES.TRANS_4:
+        case SESSION_PHASES.QUEUE_TRANS_4:
           this.build();
+          break;
+        case SESSION_PHASES.TRANS_4:
           this.start();
           break;
-
         default:
           this.stop();
           break;

@@ -119,6 +119,9 @@ export function createSpinnyPluckState () {
         },
         [SESSION_PHASES.QUEUE_TRANS_4]: {
           segmentIdToBufName: playingLevel4SegmentToBufName
+        },
+        [SESSION_PHASES.TRANS_4]: {
+          segmentIdToBufName: playingLevel4SegmentToBufName
         }
       }
     }

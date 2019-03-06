@@ -19,7 +19,6 @@ const lightingController = new LightingController(store);
 
 //lightingController.levelTransitionAnimation.start();
 //lightingController.revealAnimation.start();
-lightingController.trans4Animation.build();
 lightingController.trans4Animation.start();
 
 

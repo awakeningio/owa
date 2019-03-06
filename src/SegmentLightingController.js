@@ -16,7 +16,7 @@ import SegmentQueuedAnimation from './SegmentQueuedAnimation';
 import SegmentPlayingAnimation from './SegmentPlayingAnimation';
 import SegmentNoopAnimation from './SegmentNoopAnimation';
 import { SESSION_PHASES } from 'owa/constants';
-import { getSegmentIdToBufName } from './selectors';
+import { getSegmentIdToBufName, getLevel4Sequencer } from './selectors';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
@@ -72,6 +72,7 @@ class SegmentLightingController extends ControllerWithStore {
   handle_state_change () {
     const state = this.store.getState();
     const segmentIdToBufName = getSegmentIdToBufName(state);
+    const level4Sequencer = getLevel4Sequencer(state);
     const segment = state.segments.byId[this.params.segmentId];
     const sequencer = state.sequencers[segment.sequencerId];
     const sessionPhase = state.sessionPhase;
@@ -82,7 +83,9 @@ class SegmentLightingController extends ControllerWithStore {
         segment.lastButtonPressTime
         !== this.lastState.segment.lastButtonPressTime
         && sequencer.playingState === PLAYING_STATES.STOPPED
-        && [SESSION_PHASES.PLAYING_6, SESSION_PHASES.PLAYING_4].includes(sessionPhase)
+        && [SESSION_PHASES.PLAYING_6, SESSION_PHASES.PLAYING_4].includes(
+          sessionPhase
+        )
       ) {
         // segment button was pressed and sequencer is still stopped,
         // means this was a no-op
@@ -92,7 +95,7 @@ class SegmentLightingController extends ControllerWithStore {
       this.lastState.segment = segment;
     }
 
-    if (sequencer.sequencerId === 'level_4') {
+    if (sequencer === level4Sequencer) {
 
       if (
         sequencer.playingState !== this.lastState.sequencer.playingState
@@ -100,14 +103,15 @@ class SegmentLightingController extends ControllerWithStore {
         || sequencer.bufSequence !== this.lastState.sequencer.bufSequence
       ) {
         this.lastState.sequencer = sequencer;
-        const ourBufNameIndex = sequencer.bufSequence.indexOf(
-          segmentIdToBufName[segment.segmentId]
-        );
-        const currentBufNameIndex = sequencer.bufSequence.indexOf(
-          sequencer.event.bufName
-        );
 
-        if (sequencer.playingState == PLAYING_STATES.PLAYING) {
+        if (sequencer.playingState === PLAYING_STATES.PLAYING) {
+
+          const ourBufNameIndex = sequencer.bufSequence.indexOf(
+            segmentIdToBufName[segment.segmentId]
+          );
+          const currentBufNameIndex = sequencer.bufSequence.indexOf(
+            sequencer.event.bufName
+          );
           
           // if our portion of the chord prog is playing
           if (

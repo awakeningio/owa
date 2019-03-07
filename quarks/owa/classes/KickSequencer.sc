@@ -20,7 +20,7 @@ KickSequencer : AwakenedSequencer {
       attackTime: 0.0,
       releaseTime: 0.0,
       amp: 1.0.dbamp(),
-      gate: 1
+      gate: KrNumberEditor(1, \gate)
     ));
     synthdef = patch.asSynthDef().add();
 

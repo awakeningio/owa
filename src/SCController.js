@@ -89,20 +89,22 @@ s.options.blockSize = 128;
 
 s.waitForBoot({
           `;
-          if (process.env.DEBUG_SC === "1") {
+          if (getEnvAsNumber(process.env.DISABLE_GUI) === 0) {
             scBootScript += `
 s.meter();
             `;
-            //scBootScript += `
-  //Routine {
-    //loop {
-      //s.queryAllNodes();
-      ////s.dumpOSC();
+          }
+          if (process.env.DEBUG_SC === "1") {
+            scBootScript += `
+  Routine {
+    loop {
+      s.queryAllNodes();
+      //s.dumpOSC();
 
-      //10.0.wait();
-    //}
-  //}.play();
-            //`;
+      10.0.wait();
+    }
+  }.play();
+            `;
           }
 
           scBootScript += `

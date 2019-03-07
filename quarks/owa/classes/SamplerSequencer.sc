@@ -8,6 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
+// TODO: This should be called OneShotSamplerSequencer
 SamplerSequencer : AwakenedSequencer {
   var synthdefsForBufNames,
     lastAmp = false,

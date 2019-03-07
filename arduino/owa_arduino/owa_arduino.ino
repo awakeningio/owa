@@ -14,6 +14,8 @@ from: https://github.com/sparkfun/74HC4051_8-Channel_Mux_Breakout
 
 #include "PiezoButton.h"
 
+const bool DEBUG = false;
+const int DEBUG_THRESHOLD = 20;
 
 // number of used input pins on the muxer
 const int numMuxerPins = 12;
@@ -67,10 +69,19 @@ void loop()
   {
     selectMuxPin(pin);
     inputValue = analogRead(A0);
-    /*Serial.println(String(int(pin)) + ": " + String(inputValue));*/
+    if (DEBUG && inputValue > DEBUG_THRESHOLD) {
+      Serial.println(
+        (
+         String(millis()) + ":\t"
+         + String(pin, DEC) + ":\t"
+         + String(inputValue, DEC))
+      );
+    }
     wasTriggered = buttons[pin].handleInputValue(inputValue);
     if (wasTriggered) {
-      /*Serial.println(String(millis()) + ":\t" + String(int(pin)));*/
+      if (DEBUG) {
+        Serial.println("B" + String(int(pin)) + " triggered.");
+      }
       sprintf(msg, "B%02d\n", int(pin));
       Serial.write(msg);
     }

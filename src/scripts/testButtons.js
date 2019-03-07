@@ -8,8 +8,8 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import configureStore from "./configureStore"
-import SerialInputController from './SerialInputController';
+import configureStore from "../configureStore"
+import SerialInputController from '../SerialInputController';
 
 const owaStateStore = configureStore();
 new SerialInputController(owaStateStore);

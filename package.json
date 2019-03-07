@@ -13,9 +13,10 @@
     "start_dev": "babel-node src/main.js",
     "test_lighting_config": "babel-node src/scripts/testLightingConfig.js",
     "test_lighting_animation": "babel-node src/scripts/testLightingAnimation.js",
-    "test_button_config": "DEBUG_INPUT=1 babel-node src/scripts/testButtonConfig.js",
+    "test_buttons": "DEBUG_INPUT=1 babel-node src/scripts/testButtons.js",
     "test_sequencer": "babel-node src/scripts/testSequencer.js",
-    "serialport-list": "serialport-list"
+    "serialport-list": "serialport-list",
+    "upload_arduino": "bash upload_arduino.sh"
   },
   "watch": {
     "build_docs": {

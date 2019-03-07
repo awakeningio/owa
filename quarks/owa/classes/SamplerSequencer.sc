@@ -60,8 +60,7 @@ SamplerSequencer : AwakenedSequencer {
       \instrument, synthdefsForBufNames[currentState.bufName.asSymbol()].name,
       \midinote, Pseq(["C3".notemidi()]),
       \dur, Pseq([currentState.numBeats]),
-      \legato, 1.0,
-      \sendGate, true
+      \legato, 1.0
     ).asStream();
   }
 

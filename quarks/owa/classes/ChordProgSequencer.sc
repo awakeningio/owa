@@ -24,7 +24,7 @@ ChordProgSequencer : AwakenedSequencer {
         gate: KrNumberEditor(1, \gate),
         attackTime: 0.0,
         releaseTime: 0.0,
-        isSustained: 0
+        isSustained: 1
       ));
       synthdefsForBufNames[bufSym] = patch.asSynthDef().add();
     });
@@ -46,8 +46,8 @@ ChordProgSequencer : AwakenedSequencer {
       }),
       \midinote, "C3".notemidi(),
       \dur, Pseq([currentState.numBeats], inf),
-      \amp, 8.0.dbamp(),
-      \sendGate, false
+      \sustain, currentState.numBeats + 2,
+      \amp, 8.0.dbamp()
     ).asStream();
   }
 

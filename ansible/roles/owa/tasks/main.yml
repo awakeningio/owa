@@ -37,7 +37,7 @@
   tags:
     - install
 
-- name: update npm deps
+- name: yarn
   yarn:
     path: "{{ owa_project_dir }}"
   when: owa_git.changed

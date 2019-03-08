@@ -16,7 +16,7 @@
     "test_buttons": "DEBUG_INPUT=1 babel-node src/scripts/testButtons.js",
     "test_sequencer": "babel-node src/scripts/testSequencer.js",
     "serialport-list": "serialport-list",
-    "upload_arduino": "bash upload_arduino.sh"
+    "upload_arduino": "bash arduino/upload_arduino.sh"
   },
   "watch": {
     "build_docs": {

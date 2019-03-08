@@ -33,7 +33,7 @@
 - name: arduino upload script
   template:
     src: upload_arduino.sh.j2
-    dest: "{{ owa_project_dir }}/upload_arduino.sh"
+    dest: "{{ owa_project_dir }}/arduino/upload_arduino.sh"
   tags:
     - install
 

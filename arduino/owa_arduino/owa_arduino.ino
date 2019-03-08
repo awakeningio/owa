@@ -15,12 +15,43 @@ from: https://github.com/sparkfun/74HC4051_8-Channel_Mux_Breakout
 #include "PiezoButton.h"
 
 const bool DEBUG = false;
+
+// Values below this threshold will not be output when DEBUG = true
 const int DEBUG_THRESHOLD = 20;
 
 // number of used input pins on the muxer
 const int numMuxerPins = 12;
 
 PiezoButton buttons[numMuxerPins];
+
+// not all piezos are created equal, override sensitivity for individual
+// buttons here.
+double buttonTriggerThresholds[numMuxerPins] = {
+  // 0
+  90.0,
+  // 1
+  90.0,
+  // 2
+  90.0,
+  // 3
+  90.0,
+  // 4
+  90.0,
+  // 5
+  90.0,
+  // 6
+  90.0,
+  // 7
+  90.0,
+  // 8
+  90.0,
+  // 9
+  50.0,
+  // 10
+  60.0,
+  // 11
+  50.0
+};
 
 // number of select pins on the muxer
 const int numSelectPins = 4;
@@ -48,17 +79,11 @@ void setup()
   // our analog in to read piezo values
   pinMode(zInput, INPUT);
 
-  // set id of the piezo button for debugging
+  // Sets the id of the piezo button for debugging and the trigger threshold.
   for (int i = 0; i < numMuxerPins; i++) {
     buttons[i].setId(i);
-    // seems to work for most of the piezos
-    buttons[i].setTriggerThreshold(90.0);
+    buttons[i].setTriggerThreshold(buttonTriggerThresholds[i]);
   }
-
-  // not all piezos are created equal
-  buttons[11].setTriggerThreshold(50.0);
-  buttons[10].setTriggerThreshold(60.0);
-  buttons[9].setTriggerThreshold(50.0);
 }
 
 bool wasTriggered;

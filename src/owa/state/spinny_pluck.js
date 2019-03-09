@@ -192,18 +192,12 @@ export function createSpinnyPluckState () {
     ...sequencers['trans'].phaseProps[SESSION_PHASES.QUEUE_TRANS_6]
   };
 
-  const idlePlayer = {
-    bufName: 'eerie_idle_loop',
-    gate: 0,
-    playingState: awakeningSequencers.PLAYING_STATES.STOPPED
-  };
 
   const tempo = 120.0;
   return {
     songId,
     sequencers,
     tempo,
-    sessionPhaseDurations,
-    idlePlayer
+    sessionPhaseDurations
   };
 }

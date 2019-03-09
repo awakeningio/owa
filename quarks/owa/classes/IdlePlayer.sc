@@ -12,11 +12,12 @@
    var store,
     outputChannel,
     bufManager,
-    patch,
+    patches,
+    players,
     state,
     clock,
     prevState,
-    gateEditor;
+    gateEditorBySongId;
 
     *new {
       arg params;
@@ -40,7 +41,16 @@
       );
       outputChannel.level = 1.0;
 
-      gateEditor = KrNumberEditor(0, \gate);
+      // initializes a gate for each song
+      gateEditorBySongId = Dictionary.new();
+      OWAConstants.songIdsList.do({
+        arg songId;
+        gateEditorBySongId[songId] = KrNumberEditor(0, \gate);
+      });
+
+      patches = Array.new();
+      players = Array.new();
+
       this.initPatch();
 
       //this.handle_state_change();
@@ -52,30 +62,44 @@
     initPatch {
       var bufSym;
       //"IdlePlayer.initPatch".postln();
-      bufSym = state.idlePlayer.bufName.asSymbol();
-      patch = Patch("owa.IdleLooper", (
-        buf: bufManager.bufs[bufSym],
-        gate: gateEditor,
+      //bufSym = state.idlePlayer.bufName.asSymbol();
+      patches = patches.add(Patch("owa.IdleLooper", (
+        buf: bufManager.bufs['eerie_idle_loop'],
+        gate: gateEditorBySongId[OWAConstants.songIds['SPINNY_PLUCK']],
         attackTime: 0.0,
         releaseTime: 15.0 * clock.tempo,
         amp: 1.0
-      ));
+      )));
+      patches = patches.add(Patch("owa.EminatorIdle", (
+        gate: gateEditorBySongId[OWAConstants.songIds['EMINATOR']],
+        attackTime: 1.0,
+        releaseTime: 15.0 * clock.tempo,
+        amp: 1.0
+      )));
     }
     handle_state_change {
-      var player;
+      var player,
+        songId;
       //"IdlePlayer.handle_state_change".postln();
       prevState = state;
       state = store.getState();
+      songId = state.songId.asSymbol();
 
       if (prevState.idlePlayer.gate != state.idlePlayer.gate, {
         //("IdlePlayer: setting gate to " ++ state.idlePlayer.gate).postln();
-        gateEditor.value = state.idlePlayer.gate;
+        gateEditorBySongId[songId].value = state.idlePlayer.gate;
       });
 
       if (prevState.idlePlayer.playingState != state.idlePlayer.playingState, {
         if (state.idlePlayer.playingState == "PLAYING", {
           //"IdlePlayer.playing...".postln();
-          player = outputChannel.play(patch);    
+          patches.do({
+            arg patch;
+
+
+
+            players.add(outputChannel.play(patch));
+          });
         });    
       });
 

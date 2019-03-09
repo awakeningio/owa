@@ -16,10 +16,11 @@ import {
   INACTIVITY_TIMEOUT_EXCEEDED
 } from '../actionTypes';
 import { SESSION_PHASES } from 'owa/constants';
+import { createIdlePlayer } from 'owa/models';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
-export default function idlePlayer (state, action) {
+export default function idlePlayer (state = createIdlePlayer(), action) {
   switch (action.type) {
     case INACTIVITY_TIMEOUT_EXCEEDED:
       return Object.assign({}, state, {

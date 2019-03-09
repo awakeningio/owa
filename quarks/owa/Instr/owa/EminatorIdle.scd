@@ -17,7 +17,8 @@ Instr("owa.EminatorIdle", {
   env = EnvGen.ar(
     Env.asr(1.0, 1.0, releaseTime),
     gate,
-    doneAction: Done.freeSelf
+    // This synth is never freed
+    doneAction: Done.none
   );
 	out = SinOsc.ar(
     10 + (

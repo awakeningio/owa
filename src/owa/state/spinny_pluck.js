@@ -9,34 +9,6 @@ import {
 
 import { SESSION_PHASES } from 'owa/constants'
 
-//export const spinnyPluckIdleTransitionSequencer = Object.assign(
-  //{},
-  //baseTransitionSequencer,
-  //{
-  //}
-//);
-
-//export const spinnyPluckL4TransitionSequencer = Object.assign(
-  //{},
-  //baseTransitionSequencer,
-  //{
-  //}
-//);
-
-//export const spinnyPluckL2TransitionSequencer = Object.assign(
-  //{},
-  //baseTransitionSequencer,
-  //{
-  //}
-//);
-
-//export const spinnyPluckRevealTransitionSequencer = Object.assign(
-  //{},
-  //baseTransitionSequencer,
-  //{
-  //}
-//);
-
 export function createSpinnyPluckState () {
   const sessionPhaseDurations = {
     [SESSION_PHASES.QUEUE_TRANS_6]: 4,

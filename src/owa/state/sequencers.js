@@ -8,16 +8,3 @@ export const baseRevealSequencer = create_default_sequencer(
 baseRevealSequencer.bufNames = [
   'spinny-pluck_reveal'
 ];
-
-export const baseTransitionSequencer = create_default_sequencer(
-  'trans',
-  'SamplerSequencer'
-);
-
-baseTransitionSequencer.bufNames = [
-  'spinny-pluck_idle-L6',
-  'spinny-pluck_L6-L4',
-  'spinny-pluck_L4-L2',
-  'spinny-pluck_L2-reveal'
-];
-

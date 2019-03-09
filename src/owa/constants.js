@@ -26,6 +26,13 @@ export const LEVEL_PLAYBACK_TYPE = {
   SEQUENTIAL: "SEQUENTIAL"
 };
 
+export const SONG_IDS = {
+  SPINNY_PLUCK: 'spinny_pluck',
+  EMINATOR: 'eminator'
+};
+
+export const SONG_IDS_LIST = Object.keys(SONG_IDS).map(k => SONG_IDS[k]);
+
 const IDLE = "IDLE";
 const QUEUE_TRANS_6 = "QUEUE_TRANS_6";
 const TRANS_6 = "TRANS_6";

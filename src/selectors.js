@@ -24,6 +24,7 @@ const getSequencers = state => state.sequencers;
 const getSegmentsById = state => state.segments.byId;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getIdlePlayer = state => state.idlePlayer;
+export const getSongId = state => state.songId;
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
@@ -148,13 +149,23 @@ export const getRevealReady = createSelector(
 );
 
 export const getSCState = createDeepEqualSelector(
+  getSongId,
   getTempo,
   getSessionPhase,
   getSessionPhaseDurations,
   awakeningSequencers.selectors.getSCSequencers,
   getRevealReady,
   getIdlePlayer,
-  (tempo, sessionPhase, sessionPhaseDurations, sequencers, revealReady, idlePlayer) => ({
+  (
+    songId,
+    tempo,
+    sessionPhase,
+    sessionPhaseDurations,
+    sequencers,
+    revealReady,
+    idlePlayer
+  ) => ({
+    songId,
     tempo,
     sessionPhase,
     sessionPhaseDurations,

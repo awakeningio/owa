@@ -235,4 +235,4 @@ describe('getRevealReady', function () {
 
     expect(getRevealReady(store.getState())).to.be.true;
   });
-})
+});

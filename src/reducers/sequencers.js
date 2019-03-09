@@ -22,32 +22,10 @@ import {
   getSegmentIdToBufName
 } from '../selectors';
 
-const create_default_sequencer = awakeningSequencers.create_default_sequencer;
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
-const baseRevealSequencer = create_default_sequencer(
-  'reveal',
-  'SamplerSequencer'
-);
-
-baseRevealSequencer.bufNames = [
-  'spinny-pluck_reveal'
-];
-
-const spinnyPluckRevealSequencer = Object.assign(
-  {},
-  baseRevealSequencer,
-  {
-    bufName: 'spinny-pluck_reveal',
-    attackTime: 0.0,
-    releaseTime: 0.0,
-    numBeats: 55 * 4,
-    amp: 1.0
-  }
-);
-
 function reveal (
-  state = spinnyPluckRevealSequencer,
+  state,
   action,
   sessionPhase,
   sessionPhaseDurations
@@ -70,68 +48,8 @@ function reveal (
   }
 }
 
-const baseTransitionSequencer = create_default_sequencer(
-  'trans',
-  'SamplerSequencer'
-);
-
-baseTransitionSequencer.bufNames = [
-  'spinny-pluck_idle-L6',
-  'spinny-pluck_L6-L4',
-  'spinny-pluck_L4-L2',
-  'spinny-pluck_L2-reveal'
-];
-
-const spinnyPluckIdleTransitionSequencer = Object.assign(
-  {},
-  baseTransitionSequencer,
-  {
-    bufName: 'spinny-pluck_idle-L6',
-    attackTime: 120.0/60.0 * 6,
-    releaseTime: 4.0,
-    numBeats: 15 * 4,
-    amp: 1.5
-  }
-);
-
-const spinnyPluckL4TransitionSequencer = Object.assign(
-  {},
-  baseTransitionSequencer,
-  {
-    bufName: 'spinny-pluck_L6-L4',
-    attackTime: 0.01,
-    releaseTime: 0.01,
-    numBeats: 6 * 4,
-    amp: 0.4
-  }
-);
-
-const spinnyPluckL2TransitionSequencer = Object.assign(
-  {},
-  baseTransitionSequencer,
-  {
-    bufName: 'spinny-pluck_L4-L2',
-    attackTime: 0.01,
-    releaseTime: 0.01,
-    numBeats: 5 * 4,
-    amp: 0.3
-  }
-);
-
-const spinnyPluckRevealTransitionSequencer = Object.assign(
-  {},
-  baseTransitionSequencer,
-  {
-    bufName: 'spinny-pluck_L2-reveal',
-    attackTime: 0.01,
-    releaseTime: 0.01,
-    numBeats: 7 * 4,
-    amp: 0.5
-  }
-);
-
 function trans (
-  state = spinnyPluckIdleTransitionSequencer,
+  state,
   action,
   sessionPhase,
   prevSessionPhase,
@@ -141,13 +59,17 @@ function trans (
     case actionTypes.SESSION_PHASE_ADVANCED:
       switch (action.payload.phase) {
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:
-          return Object.assign({}, spinnyPluckRevealTransitionSequencer, {
-            playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseEndQuant(
-              action.payload.phase,
-              sessionPhaseDurations
-            )
-          });
+          return {
+            ...state,
+            ...state.phaseProps[action.payload.phase],
+            ...{
+              playingState: PLAYING_STATES.QUEUED,
+              playQuant: createPhaseEndQuant(
+                action.payload.phase,
+                sessionPhaseDurations
+              )
+            }
+          };
         default:
           return state;
       }
@@ -155,25 +77,20 @@ function trans (
       // if this button pressed triggered a sessionPhase change
       if (prevSessionPhase !== sessionPhase) {
         const playQuant = [4, 4];
+        const queueProps = {
+          playQuant,
+          playingState: PLAYING_STATES.QUEUED
+        };
         // we may need to queue a transition now
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_6:
-            return Object.assign({}, spinnyPluckIdleTransitionSequencer, {
-              playingState: PLAYING_STATES.QUEUED,
-              playQuant
-            });
-
           case SESSION_PHASES.QUEUE_TRANS_4:
-            return Object.assign({}, spinnyPluckL4TransitionSequencer, {
-              playingState: PLAYING_STATES.QUEUED,
-              playQuant
-            });
-
           case SESSION_PHASES.QUEUE_TRANS_2:
-            return Object.assign({}, spinnyPluckL2TransitionSequencer, {
-              playingState: PLAYING_STATES.QUEUED,
-              playQuant
-            });
+            return {
+              ...state,
+              ...state.phaseProps[sessionPhase],
+              ...queueProps
+            };
 
           default:
             break;

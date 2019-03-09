@@ -11,5 +11,3 @@ export function create_owa_sequencer (sequencerId, type, defaults = {}) {
     }
   };
 }
-
-

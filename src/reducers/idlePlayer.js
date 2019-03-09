@@ -19,16 +19,7 @@ import { SESSION_PHASES } from 'owa/constants';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
-const defaultIdlePlayer = {
-  bufName: 'eerie_idle_loop',
-  gate: 0,
-  playingState: PLAYING_STATES.STOPPED
-};
-
-export default function idlePlayer (
-  state = defaultIdlePlayer,
-  action
-) {
+export default function idlePlayer (state, action) {
   switch (action.type) {
     case INACTIVITY_TIMEOUT_EXCEEDED:
       return Object.assign({}, state, {

@@ -1,3 +1,5 @@
+import awakeningSequencers from 'awakening-sequencers'
+
 import {
   create_owa_sequencer,
   create_segmentId,
@@ -189,10 +191,17 @@ export function createSpinnyPluckState () {
     ...sequencers['trans'].phaseProps[SESSION_PHASES.QUEUE_TRANS_6]
   };
 
+  const idlePlayer = {
+    bufName: 'eerie_idle_loop',
+    gate: 0,
+    playingState: awakeningSequencers.PLAYING_STATES.STOPPED
+  };
+
   const tempo = 120.0;
   return {
     sequencers,
     tempo,
-    sessionPhaseDurations
+    sessionPhaseDurations,
+    idlePlayer
   };
 }

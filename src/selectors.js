@@ -117,6 +117,7 @@ export const getLevel4Ready = createSelector(
     }
   }
 );
+
 export const getLevel2Ready = createSelector(
   getLevel4Sequencer,
   getSessionPhase,

@@ -2,24 +2,55 @@
 
 !include styles.iuml
 
+object SESSION_PHASES { 
+  IDLE
+  TRANS_10
+  PLAYING_10
+  TRANS_8
+  PLAYING_8
+  TRANS_6
+  PLAYING_6
+  TRANS_4
+  PLAYING_4
+  ADVICE_READY
+  TRANS_ADVICE
+  PLAYING_ADVICE
+  TRANS_IDLE
+}
+
+object LEVEL_PLAYBACK_TYPE {
+  SIMULTANEOUS,
+  SEQUENTIAL 
+}
+
+object CONNECTION_STATUS {
+  DISCONNECTED,
+  CONNECTING,
+  CONNECTED
+}
+
+object SONG_IDS {
+  "spinny_pluck",
+  "eminator"
+}
+
 object state {  
+  Enum SONG_IDS songId
+  float tempo
+  Enum CONNECTION_STATUS fadecandyConnection
   bool soundReady
-  bool lightsReady
-  tempo
-  fadecandyConnection
-  Enum SESSION_PHASES sessionPhase
-  sessionPhaseDurations
+  Object sessionPhaseDurations
   inactivityTimeoutStartTime
-  \n
-  levels levels{}
+  Enum SESSION_PHASES sessionPhase
   segments segments{}
+  levels levels{}
   SequencerState sequencers{}
   IdlePlayerState idlePlayer{}
-  bool level4Ready
-  bool level2Ready
-  bool revealReady
-  bool firstSegmentPressed
+  segmentId|false firstSegmentPressed
 }
+state *-- SESSION_PHASES
+state *-- CONNECTION_STATUS
+state *-- OWA_SONG_IDS
 
 object levels {
   LevelState byId{}
@@ -35,58 +66,40 @@ object segments {
 state *-- segments
 segments *-- SegmentState
 
-object SESSION_PHASES { 
-IDLE
-TRANS_10
-PLAYING_10
-TRANS_8
-PLAYING_8
-TRANS_6
-PLAYING_6
-TRANS_4
-PLAYING_4
-ADVICE_READY
-TRANS_ADVICE
-PLAYING_ADVICE
-TRANS_IDLE
-}
-
 object SegmentState {
-  string segmentId
-  string sequencerId
-  \n
-  If this segment is currently in playback.
-  PLAYING_STATES playingState
+  levelId
+  segmentIndex
+  segmentId
+  sequencerId
+  lastButtonPressTime
 }
 
 object LevelState {
   string levelId
-  \n
-  Segment ordering (segmentPlaybackIndex is an index into this list).
-  string segmentPlaybackOrder[];
-  \n
-  Index of the active segment on this level or false if the level is 
-  inactive.
-  int activeSegmentIndex
-  \n
-  Id of the active sequencer.  This also needs to be stored because the
-  playback order may change and the segmentPlaybackIndex may no longer point
-  to the currently playing sequencer
-  string activeSegmentId
+  Enum LEVEL_PLAYBACK_TYPE playbackType
+  numSegments
 }
+LevelState *-- LEVEL_PLAYBACK_TYPE
 
 object SequencerState {
   Awakening sequencers object
-  
-  name
+
+  sequencerId  
+  type
   clockOffsetSeconds
   beat
   nextBeat
+  nextTime
   numBeats
   playingState
   isReady
   playQuant
   stopQuant
+  event
+
+
+  Plus our own added state:
+  phaseProps
 }
 state *-- SequencerState
 

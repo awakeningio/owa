@@ -10,8 +10,10 @@
 
 ({
 
+  // TODO Move these to a test class.
   var samplerPbindTest,
     wideBassTest,
+    wideBassMIDITest,
     multiSamplerTest,
     leadPopTest,
     chimeyRingSequencer,
@@ -131,7 +133,11 @@
       ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83]
     ], ({
       bufManager.load_midi([
-        ["spinny-pluck_L6_hats.mid", 'spinny-pluck_L6_hats', 8]
+        (
+          midiFileName: "spinny-pluck_L6_hats.mid",
+          midiKey: 'spinny-pluck_L6_hats'
+          makeDuration: 8
+        )
       ]);
 
       midiFileSequences = bufManager.midiSequences['spinny-pluck_L6_hats'];
@@ -216,26 +222,123 @@
 
   wideBassTest = ({
     var pat,
+      patch,
+      synthdef,
       notes;
     
     notes = ["C#0", "D0"].notemidi();
 
-    pat = Pbind(
-      \amp, 0.7,
-      \type, \instr,
-      \instr, "cs.fm.WideBass",
-      \note, Pseq(notes, inf),
+    
+    patch = Patch("cs.fm.WideBass", (
+      amp: -6.dbamp(),
+      useSustain: 0,
+      gate: KrNumberEditor(1, \gate)
+    ));
+    synthdef = patch.asSynthDef().add();
+
+    pat = PmonoArtic(
+      synthdef.name,
+      \note, Pseq(notes, 3),
       \octave, 2,
       \dur, 4,
-      \sustain, 3.5,
+      \legato, 1.2,
       \attackModFreq, Pseq(12 + notes, inf),
       \toneModulatorGainMultiplier, 1.0,
       \toneModulatorLFOAmount, 2.0,
       \toneModulatorLFORate, 1.5,
-      \sendGate, true
     );
 
     "playing...".postln();
+    ~player = pat.play();
+  });
+
+  wideBassMIDITest = ({
+    var pat,
+      patch,
+      synthdef,
+      tempoBPM = 140,
+      loadedSequence = 'eminator_bass_L4',
+      control15Patch,
+      control15Bus = Bus.control(Server.default, 1),
+      control16Patch,
+      control16Bus = Bus.control(Server.default, 1);
+    
+    TempoClock.default.tempo = tempoBPM / 60.0;
+    bufManager.load_midi([
+      (
+        midiFileName: "eminator_bass_L2.mid",
+        midiKey: 'eminator_bass_L2',
+        makeDuration: 2 * 4,
+        ccsToEnv: [15, 16],
+        tempoBPM: tempoBPM
+      ),
+      (
+        midiFileName: "eminator_bass_L4_quant.mid",
+        midiKey: 'eminator_bass_L4',
+        makeDuration: 16 * 4,
+        ccsToEnv: [15, 16],
+        tempoBPM: tempoBPM
+      ),
+      (
+        midiFileName: "eminator_bass_L6_quant.mid",
+        midiKey: 'eminator_bass_L6',
+        makeDuration: 4 * 7,
+        ccsToEnv: [15, 16],
+        tempoBPM: tempoBPM
+      )
+    ]);
+
+    control15Patch = Patch("cs.utility.EnvToBus", (
+      gate: KrNumberEditor(1, \gate),
+      env: bufManager.midiCCEnvs[loadedSequence][15],
+      bus: control15Bus
+    ));
+    control16Patch = Patch("cs.utility.EnvToBus", (
+      gate: KrNumberEditor(1, \gate),
+      env: bufManager.midiCCEnvs[loadedSequence][16],
+      bus: control16Bus
+    ));
+
+    patch = Patch("cs.fm.WideBass", (
+      amp: -6.dbamp(),
+      useSustain: 0,
+      gate: KrNumberEditor(1, \gate),
+      useModulatorBus: 1,
+
+    ));
+    synthdef = patch.asSynthDef().add();
+
+    bufManager.midiCCEnvs[loadedSequence][15].plot();
+  
+    pat = Ppar([
+      Pbind(
+        \instrument, control16Patch.asSynthDef().add(),
+        \dur, Pseq([bufManager.midiCCEnvs[loadedSequence][16].duration * TempoClock.default.tempo], inf)
+      ),
+      Pbind(
+        \instrument, control15Patch.asSynthDef().add(),
+        \dur, Pseq([bufManager.midiCCEnvs[loadedSequence][15].duration * TempoClock.default.tempo], inf)
+      ),
+      PmonoArtic(
+        synthdef.name,
+        [\midinoteFromFile, \dur], Pseq(bufManager.midiSequences[loadedSequence], inf),
+        \legato, 1.1,
+        \midinote, Pfunc({
+          arg event;
+          (event['midinoteFromFile'] - 24);
+        }),
+        \attackModFreq, Pfunc({
+          arg event;
+          (event[\midinote] + 12).midicps();
+        }),
+        //\toneModulatorGainMultiplier, 1.0,
+        //\toneModulatorLFOAmount, 0.0,
+        \toneModulatorLFORate, tempoBPM / 60.0 / 4,
+        \toneModulatorGainMultiplierBus, control15Bus,
+        \toneModulatorLFOAmountBus, control16Bus
+      );
+    ]);
+    //"playing...".postln();
     ~player = pat.play();
   });
 
@@ -251,15 +354,16 @@
   s.meter();
   s.plotTree();
 
-  TempoClock.default.tempo = 140.0 / 60.0;
 
   s.waitForBoot({
+    TempoClock.default.tempo = 140.0 / 60.0;
     //samplerPbindTest.value();
     //wideBassTest.value();
     //multiSamplerTest.value();
     //leadPopTest.value();
     //chimeyRingSequencer.value();
-    sfxSequencerTest.value();
+    //sfxSequencerTest.value();
+    wideBassMIDITest.value();
   });
 
   s.boot();

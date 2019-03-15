@@ -18,6 +18,8 @@ import SpinnyPluckTrans4Animation from './SpinnyPluckTrans4Animation';
 import SpinnyPluckTrans2Animation from './SpinnyPluckTrans2Animation';
 import SpinnyPluckRevealAnimation from './SpinnyPluckRevealAnimation';
 import LevelReadyAnimation from './LevelReadyAnimation';
+import EminatorIdleAnimation from './EminatorIdleAnimation';
+import EminatorTrans4Animation from './EminatorTrans4Animation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
@@ -95,8 +97,9 @@ class LightingController extends ControllerWithStore {
       segmentPixels: segmentPixels
     };
 
-    this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);
-    this.trans4Animation = new SpinnyPluckTrans4Animation(this.store, params);
+    //this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);
+    this.idleAnimation = new EminatorIdleAnimation(this.store, params);
+    this.trans4Animation = new EminatorTrans4Animation(this.store, params);
     this.trans2Animation = new SpinnyPluckTrans2Animation(this.store, params);
     this.revealAnimation = new SpinnyPluckRevealAnimation(this.store, params);
     this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {
@@ -114,7 +117,7 @@ class LightingController extends ControllerWithStore {
         delayBeats: 16,
         levelReadySelector: getLevel2Ready
       }
-    })
+    });
 
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);
@@ -125,7 +128,7 @@ class LightingController extends ControllerWithStore {
         this.numTickMeasurements = 0;
         this.tickCompletionTimeAvg = 0;
         this.tickCompletionTimeSum = 0;
-        
+
         this.render = () => this.tickDebug();
 
         setInterval(() => {
@@ -135,7 +138,6 @@ class LightingController extends ControllerWithStore {
         }, 5000);
       } else {
         this.render = () => this.tick();
-        
       }
       this.render();
     }

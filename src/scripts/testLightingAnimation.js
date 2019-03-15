@@ -17,9 +17,14 @@ import LightingController from '../LightingController'
 const store = configureStore();
 const lightingController = new LightingController(store);
 
+// lightingController.idleAnimation.startIdle();
 //lightingController.levelTransitionAnimation.start();
 //lightingController.revealAnimation.start();
-lightingController.trans4Animation.start();
+lightingController.idleAnimation.stop();
+setTimeout(function() {
+  lightingController.trans4Animation.start();
+}, 500);
+
 
 
 //let state = store.getState();

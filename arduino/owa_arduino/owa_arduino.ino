@@ -28,29 +28,29 @@ PiezoButton buttons[numMuxerPins];
 // buttons here.
 double buttonTriggerThresholds[numMuxerPins] = {
   // 0
-  90.0,
+  25.0,
   // 1
-  90.0,
+  25.0,
   // 2
-  90.0,
+  25.0,
   // 3
-  90.0,
+  25.0,
   // 4
-  90.0,
+  25.0,
   // 5
-  90.0,
+  25.0,
   // 6
-  90.0,
+  25.0,
   // 7
-  90.0,
+  25.0,
   // 8
-  90.0,
+  25.0,
   // 9
-  50.0,
+  20.0,
   // 10
-  60.0,
+  25.0,
   // 11
-  50.0
+  25.0
 };
 
 // number of select pins on the muxer

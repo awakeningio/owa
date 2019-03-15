@@ -17,7 +17,7 @@ from: https://github.com/sparkfun/74HC4051_8-Channel_Mux_Breakout
 const bool DEBUG = false;
 
 // Values below this threshold will not be output when DEBUG = true
-const int DEBUG_THRESHOLD = 20;
+const int DEBUG_THRESHOLD = 25;
 
 // number of used input pins on the muxer
 const int numMuxerPins = 12;
@@ -48,9 +48,9 @@ double buttonTriggerThresholds[numMuxerPins] = {
   // 9
   20.0,
   // 10
-  25.0,
+  30.0,
   // 11
-  25.0
+  33.0
 };
 
 // number of select pins on the muxer

@@ -83,7 +83,10 @@ class SegmentLightingController extends ControllerWithStore {
         segment.lastButtonPressTime
         !== this.lastState.segment.lastButtonPressTime
         && sequencer.playingState === PLAYING_STATES.STOPPED
-        && [SESSION_PHASES.PLAYING_6, SESSION_PHASES.PLAYING_4].includes(
+        && [
+          SESSION_PHASES.PLAYING_6,
+          SESSION_PHASES.PLAYING_4
+        ].includes(
           sessionPhase
         )
       ) {

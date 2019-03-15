@@ -3,7 +3,8 @@
 
 #include <Arduino.h>
 
-const int NUM_READINGS = 10;
+const int NUM_READINGS = 13;
+const int RANGE_THRESHOLD = 45;
 
 class PiezoButton
 {

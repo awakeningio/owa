@@ -13,6 +13,7 @@ import { SESSION_PHASES, SONG_IDS } from 'owa/constants'
 
 export function createSpinnyPluckState () {
   const songId = SONG_IDS.SPINNY_PLUCK;
+  const tempo = 120.0;
   const sessionPhaseDurations = {
     [SESSION_PHASES.QUEUE_TRANS_6]: 4,
     [SESSION_PHASES.TRANS_6]: 15 * 4,
@@ -193,7 +194,6 @@ export function createSpinnyPluckState () {
   };
 
 
-  const tempo = 120.0;
   return {
     songId,
     sequencers,

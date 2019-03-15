@@ -28,7 +28,7 @@ export const LEVEL_PLAYBACK_TYPE = {
 
 export const SONG_IDS = {
   SPINNY_PLUCK: 'spinny_pluck',
-  EMINATOR: 'eminator'
+  //EMINATOR: 'eminator'
 };
 
 export const SONG_IDS_LIST = Object.keys(SONG_IDS).map(k => SONG_IDS[k]);

@@ -112,7 +112,10 @@ class SegmentPlayingAnimation extends ControllerWithStore {
     //}
 
     if (
-      sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
+      [
+        awakeningSequencers.PLAYING_STATES.PLAYING,
+        awakeningSequencers.PLAYING_STATES.STOP_QUEUED
+      ].includes(sequencer.playingState)
       && sequencer.event !== this.lastState.sequencer.event
     ) {
       let event = sequencer.event;

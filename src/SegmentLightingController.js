@@ -167,7 +167,11 @@ class SegmentLightingController extends ControllerWithStore {
             this.playingAnimation.start();
             this.queuedAnimation.stop();
             break;
-          
+
+          case awakeningSequencers.PLAYING_STATES.STOP_QUEUED:
+            // Do nothing when stop is queued, let the animations continue
+            break;
+
           default:
             this.playingAnimation.stop();
             this.queuedAnimation.stop();

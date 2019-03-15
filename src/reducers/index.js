@@ -20,8 +20,10 @@ import sessionPhaseDurations from './sessionPhaseDurations';
 import idlePlayer from './idlePlayer';
 import inactivityTimeoutStartTime from './inactivityTimeoutStartTime';
 import firstSegmentPressed from './firstSegmentPressed';
+import songId from './songId';
 
 var combined = combineReducers({
+  songId,
   tempo,
   fadecandyConnection,
   soundReady,

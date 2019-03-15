@@ -12,7 +12,9 @@ OWAConstants {
   classvar <>autoTransitionSessionPhases,
     <>sessionPhases,
     <>nextSessionPhases,
-    <>transPhaseDurations;
+    <>transPhaseDurations,
+    <>songIds,
+    <>songIdsList;
 
   *init {
     arg params;
@@ -25,5 +27,7 @@ OWAConstants {
     OWAConstants.autoTransitionSessionPhases = params.constants['AUTO_TRANS_SESSION_PHASES'].collect(convertToSymbol);
     OWAConstants.sessionPhases = params.constants['SESSION_PHASES'].collect(convertToSymbol);
     OWAConstants.nextSessionPhases = params.constants['NEXT_SESSION_PHASES'].collect(convertToSymbol);
+    OWAConstants.songIds = params.constants['SONG_IDS'].collect(convertToSymbol);
+    OWAConstants.songIdsList = params.constants['SONG_IDS_LIST'].collect(convertToSymbol);
   }
 }

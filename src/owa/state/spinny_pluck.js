@@ -1,12 +1,18 @@
+import awakeningSequencers from 'awakening-sequencers'
+
 import {
   create_owa_sequencer,
   create_segmentId,
 } from 'owa/models'
 
-import { SESSION_PHASES } from 'owa/constants';
+import {
+  baseRevealSequencer,
+} from 'owa/state/sequencers'
 
+import { SESSION_PHASES, SONG_IDS } from 'owa/constants'
 
 export function createSpinnyPluckState () {
+  const songId = SONG_IDS.SPINNY_PLUCK;
   const sessionPhaseDurations = {
     [SESSION_PHASES.QUEUE_TRANS_6]: 4,
     [SESSION_PHASES.TRANS_6]: 15 * 4,
@@ -126,8 +132,70 @@ export function createSpinnyPluckState () {
       }
     }
   );
+
+  sequencers['reveal'] = Object.assign(
+    {},
+    baseRevealSequencer,
+    {
+      bufName: 'spinny-pluck_reveal',
+      attackTime: 0.0,
+      releaseTime: 0.0,
+      numBeats: 55 * 4,
+      amp: 1.0
+    }
+  );
+
+  sequencers['trans'] = create_owa_sequencer(
+    'trans',
+    'SamplerSequencer',
+    {
+      bufNames: [
+        'spinny-pluck_idle-L6',
+        'spinny-pluck_L6-L4',
+        'spinny-pluck_L4-L2',
+        'spinny-pluck_L2-reveal'
+      ],
+      phaseProps: {
+        [SESSION_PHASES.QUEUE_TRANS_6]: {
+          bufName: 'spinny-pluck_idle-L6',
+          attackTime: 120.0/60.0 * 6,
+          releaseTime: 4.0,
+          numBeats: 15 * 4,
+          amp: 1.5
+        },
+        [SESSION_PHASES.QUEUE_TRANS_4]: {
+          bufName: 'spinny-pluck_L6-L4',
+          attackTime: 0.01,
+          releaseTime: 0.01,
+          numBeats: 6 * 4,
+          amp: 0.4
+        },
+        [SESSION_PHASES.QUEUE_TRANS_2]: {
+          bufName: 'spinny-pluck_L4-L2',
+          attackTime: 0.01,
+          releaseTime: 0.01,
+          numBeats: 5 * 4,
+          amp: 0.3
+        },
+        [SESSION_PHASES.QUEUE_TRANS_ADVICE]: {
+          bufName: 'spinny-pluck_L2-reveal',
+          attackTime: 0.01,
+          releaseTime: 0.01,
+          numBeats: 7 * 4,
+          amp: 0.5
+        }
+      }
+    }
+  );
+  sequencers['trans'] = {
+    ...sequencers['trans'],
+    ...sequencers['trans'].phaseProps[SESSION_PHASES.QUEUE_TRANS_6]
+  };
+
+
   const tempo = 120.0;
   return {
+    songId,
     sequencers,
     tempo,
     sessionPhaseDurations

@@ -135,6 +135,9 @@ class SegmentLightingController extends ControllerWithStore {
             this.playingAnimation.stop();
             this.queuedAnimation.stop();
           }
+        } else if(sequencer.playingState === PLAYING_STATES.STOP_QUEUED) {
+          // Does nothing when stop is queued (let animations continue)
+          return;
         } else {
           this.playingAnimation.stop();
           this.queuedAnimation.stop();

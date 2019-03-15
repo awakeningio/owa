@@ -97,9 +97,10 @@ class LightingController extends ControllerWithStore {
       segmentPixels: segmentPixels
     };
 
-    //this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);
-    this.idleAnimation = new EminatorIdleAnimation(this.store, params);
-    this.trans4Animation = new EminatorTrans4Animation(this.store, params);
+    this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);
+    //this.idleAnimation = new EminatorIdleAnimation(this.store, params);
+    //this.trans4Animation = new EminatorTrans4Animation(this.store, params);
+    this.trans4Animation = new SpinnyPluckTrans4Animation(this.store, params);
     this.trans2Animation = new SpinnyPluckTrans2Animation(this.store, params);
     this.revealAnimation = new SpinnyPluckRevealAnimation(this.store, params);
     this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {

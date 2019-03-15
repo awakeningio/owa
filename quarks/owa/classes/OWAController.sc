@@ -145,10 +145,26 @@ OWAController {
       // when buffers are done loading
       // load midi files
       bufManager.load_midi([
-        ["spinny-pluck_L6_hats.mid", 'spinny-pluck_L6_hats', 8 * 4],
-        ["spinny-pluck_L2_hats.mid", 'spinny-pluck_L2_hats', 8 * 4],
-        ["spinny-pluck_L6_lead.mid", 'spinny-pluck_L6_lead', 4 * 4],
-        ["spinny-pluck_L2_lead.mid", 'spinny-pluck_L2_lead', 4 * 4]
+        (
+          midiFileName: "spinny-pluck_L6_hats.mid",
+          midiKey: 'spinny-pluck_L6_hats',
+          makeDuration: 8 * 4 
+        ),
+        (
+          midiFileName: "spinny-pluck_L2_hats.mid",
+          midiKey: 'spinny-pluck_L2_hats',
+          makeDuration: 8 * 4
+        ),
+        (
+          midiFileName: "spinny-pluck_L6_lead.mid",
+          midiKey: 'spinny-pluck_L6_lead',
+          makeDuration: 4 * 4
+        ),
+        (
+          midiFileName: "spinny-pluck_L2_lead.mid",
+          midiKey: 'spinny-pluck_L2_lead',
+          makeDuration: 4 * 4
+        )
       ]);
 
       // initialize sequencers

@@ -14,12 +14,12 @@ import {
   create_sequential_level,
   create_segment
 } from 'owa/models'
-
-import { createSpinnyPluckState } from './spinny_pluck';
+import createSequencersInitialState from './sequencersInitialState';
+import songIdInitialState from './songIdInitialState';
+import tempoInitialState from './tempoInitialState';
+import sessionPhaseDurationsInitialState from './sessionPhaseDurationsInitialState';
 
 export function createInitialState () {
-  const spinnyPluck = createSpinnyPluckState();
-
   // create levels
   const levelsById = {
     'level_6': create_simultaneous_level('level_6', 6),
@@ -49,6 +49,9 @@ export function createInitialState () {
       byId: segmentsById,
       allIds: Object.keys(segmentsById)
     },
-    ...spinnyPluck
+    sequencers: createSequencersInitialState(),
+    songId: songIdInitialState,
+    tempo: tempoInitialState,
+    sessionPhaseDurations: sessionPhaseDurationsInitialState
   };
 }

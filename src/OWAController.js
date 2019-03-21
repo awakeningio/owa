@@ -36,9 +36,13 @@ class OWAController extends ControllerWithStore {
     this.store.dispatch({
       type: actionTypes.OWA_SOUND_BOOT_STARTED
     });
-    this.inactivityTimeoutController = new InactivityTimeoutController(
-      this.store
-    );
+    if (!this.params.disableInactivity) {
+      this.inactivityTimeoutController = new InactivityTimeoutController(
+        this.store
+      );
+    } else {
+      this.inactivityTimeoutController = null;
+    }
     this.scController.boot().then(() => {
       this.soundController = new SoundController(this.store, {
         //linkStateStore: this.params.linkStateStore
@@ -68,7 +72,9 @@ class OWAController extends ControllerWithStore {
       this.soundController.quit();
       this.actionListener.quit();
       this.lightingController.quit();
-      this.inactivityTimeoutController.quit();
+      if (this.inactivityTimeoutController) {
+        this.inactivityTimeoutController.quit();
+      }
       this.scController.quit().then(() => resolve()).catch(reject);
     });
   }

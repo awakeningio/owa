@@ -26,7 +26,6 @@ var combined = combineReducers({
   songId,
   fadecandyConnection,
   soundReady,
-  sessionPhaseDurations,
   inactivityTimeoutStartTime
 });
 
@@ -43,6 +42,14 @@ export default function (state, action) {
   );
   if (newTempo !== state.tempo) {
     state = {...state, ...{tempo: newTempo}};
+  }
+  const newSessionPhaseDurations = sessionPhaseDurations(
+    state.sessionPhaseDurations,
+    action,
+    state
+  );
+  if (newSessionPhaseDurations !== state.sessionPhaseDurations) {
+    state = {...state, ...{sessionPhaseDurations: newSessionPhaseDurations}};
   }
   const newSessionPhase = sessionPhase(
     state.sessionPhase,

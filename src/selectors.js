@@ -14,7 +14,12 @@ import every from 'lodash/every';
 import awakeningSequencers from 'awakening-sequencers'
 
 import { create_segmentId } from 'owa/models';
-import { SESSION_PHASES, SEGMENTID_TO_SEQUENCERID_BY_SONGID } from 'owa/constants';
+import {
+  SESSION_PHASES,
+  SEGMENTID_TO_SEQUENCERID_BY_SONGID,
+  REVEAL_SEQUENCERID_BY_SONGID,
+  TRANS_SEQUENCERID_BY_SONGID
+} from 'owa/constants';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
@@ -22,12 +27,12 @@ const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
 const getSequencers = state => state.sequencers;
 const getSegmentsById = state => state.segments.byId;
-const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getIdlePlayer = state => state.idlePlayer;
 export const getSongId = state => state.songId;
 export const getSegmentIdToSequencerId = (state) => (
   SEGMENTID_TO_SEQUENCERID_BY_SONGID[state.songId]
 );
+export const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 
 
 const createDeepEqualSelector = createSelectorCreator(
@@ -70,6 +75,9 @@ export const getLevel6Segments = createGetLevelSegmentsSelector('level_6');
 export const getLevel4Segments = createGetLevelSegmentsSelector('level_4');
 export const getLevel2Segments = createGetLevelSegmentsSelector('level_2');
 
+/**
+ *  Gets the level_6 sequencers for the current song.
+ **/
 export const getLevel6Sequencers = createSelector(
   getSegmentIdToSequencerId,
   getLevel6Segments,
@@ -81,6 +89,9 @@ export const getLevel6Sequencers = createSelector(
   }
 );
 
+/**
+ *  Gets the level_4 sequencer for the current song.
+ **/
 export const getLevel4Sequencer = createSelector(
   getSegmentIdToSequencerId,
   getLevel4Segments,
@@ -90,6 +101,9 @@ export const getLevel4Sequencer = createSelector(
   }
 );
 
+/**
+ *  Gets the level_2 sequencers for the current song.
+ **/
 export const getLevel2Sequencers = createSelector(
   getSegmentIdToSequencerId,
   getLevel2Segments,
@@ -98,6 +112,28 @@ export const getLevel2Sequencers = createSelector(
     return level2Segments.map(
       segment => sequencers[segmentIdToSequencerId[segment.segmentId]]
     );
+  }
+);
+
+/**
+ *  Gets the reveal sequencer for the current song.
+ **/
+export const getRevealSequencer = createSelector(
+  getSongId,
+  getSequencers,
+  function (songId, sequencers) {
+    return sequencers[REVEAL_SEQUENCERID_BY_SONGID[songId]];
+  }
+);
+
+/**
+ *  Gets the trans sequencer for the current song.
+ **/
+export const getTransSequencer = createSelector(
+  getSongId,
+  getSequencers,
+  function (songId, sequencers) {
+    return sequencers[TRANS_SEQUENCERID_BY_SONGID[songId]];
   }
 );
 

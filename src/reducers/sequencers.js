@@ -14,23 +14,33 @@ import {
   create_segmentId,
   createPhaseEndQuant
 } from 'owa/models'
-import { SESSION_PHASES, NEXT_SESSION_PHASES } from 'owa/constants'
+import {
+  SESSION_PHASES,
+  NEXT_SESSION_PHASES
+} from 'owa/constants'
 import {
   getLevel6Sequencers,
   getLevel4Sequencer,
   getLevel2Sequencers,
+  getRevealSequencer,
+  getTransSequencer,
   getSegmentIdToBufName,
   getSegmentIdToSequencerId
 } from '../selectors';
+import sequencersInitialState from 'owa/state/sequencersInitialState';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
-function reveal (
+function revealSequencer (
   state,
   action,
-  sessionPhase,
-  sessionPhaseDurations
+  fullState
 ) {
+
+  const {
+    sessionPhaseDurations
+  } = fullState;
+
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       if (action.payload.phase === SESSION_PHASES.TRANS_ADVICE) {
@@ -41,21 +51,24 @@ function reveal (
             sessionPhaseDurations
           )
         });
+      } else {
+        return state;
       }
-      return state;
-    
     default:
       return state;
   }
 }
 
-function trans (
+function transSequencer (
   state,
   action,
-  sessionPhase,
-  prevSessionPhase,
-  sessionPhaseDurations
+  fullState,
+  prevSessionPhase
 ) {
+  const {
+    sessionPhase,
+    sessionPhaseDurations
+  } = fullState;
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       switch (action.payload.phase) {
@@ -445,40 +458,48 @@ function l2Sequencer (
 }
 
 export default function sequencers (
-  state = {},
+  state = sequencersInitialState,
   action,
   fullState,
   prevSessionPhase
 ) {
-  const {
-    sessionPhase,
-    sessionPhaseDurations
-  } = fullState;
-
+  // Handles basic , stopping, queueing of all sequencers
   state = awakeningSequencers.reducer(
     state,
     action
   );
 
-  const newReveal = reveal(
-    state.reveal,
+  // Handles OWA specific sequencer manipulations for reveal, transition,
+  // and all levels (for current song)
+  const currentRevealSequencer = getRevealSequencer(fullState);
+  const newReveal = revealSequencer(
+    currentRevealSequencer,
     action,
-    sessionPhase,
-    sessionPhaseDurations
+    fullState
   );
-  if (newReveal !== state.reveal) {
-    state = Object.assign({}, state, {reveal: newReveal});
+  if (newReveal !== currentRevealSequencer) {
+    state = {
+      ...state,
+      ...{
+        [newReveal.sequencerId]: newReveal
+      }
+    };
   }
 
-  const newTrans = trans(
-    state.trans,
+  const currentTransSequencer = getTransSequencer(fullState);
+  const newTrans = transSequencer(
+    currentTransSequencer,
     action,
-    sessionPhase,
-    prevSessionPhase,
-    sessionPhaseDurations
+    fullState,
+    prevSessionPhase
   );
-  if (newTrans !== state.trans) {
-    state = Object.assign({}, state, {trans: newTrans});
+  if (newTrans !== currentTransSequencer) {
+    state = {
+      ...state,
+      ...{
+        [newTrans.sequencerId]: newTrans
+      }
+    };
   }
 
   const l6Sequencers = getLevel6Sequencers(fullState);

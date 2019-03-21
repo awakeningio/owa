@@ -1,31 +1,11 @@
-import awakeningSequencers from 'awakening-sequencers'
-
 import {
   create_owa_sequencer,
   create_segmentId,
 } from 'owa/models'
 
-import {
-  baseRevealSequencer,
-} from 'owa/state/sequencers'
-
-import { SESSION_PHASES, SONG_IDS } from 'owa/constants'
+import { SESSION_PHASES } from 'owa/constants'
 
 export function createSpinnyPluckState () {
-  const songId = SONG_IDS.SPINNY_PLUCK;
-  const tempo = 120.0;
-  const sessionPhaseDurations = {
-    [SESSION_PHASES.QUEUE_TRANS_6]: 4,
-    [SESSION_PHASES.TRANS_6]: 15 * 4,
-    [SESSION_PHASES.QUEUE_TRANS_4]: 4,
-    [SESSION_PHASES.TRANS_4]: 4 * 4,
-    [SESSION_PHASES.QUEUE_TRANS_2]: 4,
-    [SESSION_PHASES.TRANS_2]: 4 * 4,
-    [SESSION_PHASES.PLAYING_2]: 8,
-    [SESSION_PHASES.QUEUE_TRANS_ADVICE]: 4,
-    [SESSION_PHASES.TRANS_ADVICE]: 6 * 4,
-    [SESSION_PHASES.PLAYING_ADVICE]: 55 * 4
-  };
   const sequencers = {
     'spinny_pluck-6_0': create_owa_sequencer('spinny_pluck-6_0', 'BassSequencer', {
       numBeats: 2 * 4,
@@ -133,11 +113,13 @@ export function createSpinnyPluckState () {
       }
     }
   );
-
-  sequencers['reveal'] = Object.assign(
-    {},
-    baseRevealSequencer,
+  sequencers['spinny_pluck-reveal'] = create_owa_sequencer(
+    'spinny_pluck-reveal',
+    'SamplerSequencer',
     {
+      bufNames: [
+        'spinny-pluck_reveal'
+      ],
       bufName: 'spinny-pluck_reveal',
       attackTime: 0.0,
       releaseTime: 0.0,
@@ -145,9 +127,9 @@ export function createSpinnyPluckState () {
       amp: 1.0
     }
   );
-
-  sequencers['trans'] = create_owa_sequencer(
-    'trans',
+  
+  sequencers['spinny_pluck-trans'] = create_owa_sequencer(
+    'spinny_pluck-trans',
     'SamplerSequencer',
     {
       bufNames: [
@@ -188,16 +170,10 @@ export function createSpinnyPluckState () {
       }
     }
   );
-  sequencers['trans'] = {
-    ...sequencers['trans'],
-    ...sequencers['trans'].phaseProps[SESSION_PHASES.QUEUE_TRANS_6]
+  sequencers['spinny_pluck-trans'] = {
+    ...sequencers['spinny_pluck-trans'],
+    ...sequencers['spinny_pluck-trans'].phaseProps[SESSION_PHASES.QUEUE_TRANS_6]
   };
 
-
-  return {
-    songId,
-    sequencers,
-    tempo,
-    sessionPhaseDurations
-  };
+  return sequencers;
 }

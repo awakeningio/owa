@@ -6,12 +6,11 @@ import {
 } from '../selectors';
 import {
   TEMPO_BY_SONGID,
-  SONG_IDS_LIST,
   SESSION_PHASES
 } from 'owa/constants';
+import tempoInitialState from 'owa/state/tempoInitialState';
 
-const firstSongTempo = TEMPO_BY_SONGID[SONG_IDS_LIST[0]];
-export default function tempo (state = firstSongTempo, action, fullState) {
+export default function tempo (state = tempoInitialState, action, fullState) {
   switch (action.type) {
     case SESSION_PHASE_ADVANCED:
       // If we've just transitioned back to idle mode, the song

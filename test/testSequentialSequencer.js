@@ -22,7 +22,8 @@ describe("Sequential Sequencer", function () {
     sequencer,
     level,
     secondSegment,
-    segmentIdToBufName;
+    segmentIdToBufName,
+    owaController;
 
   it("should init properly", function (done) {
     var unsub, soundReady;
@@ -50,7 +51,9 @@ describe("Sequential Sequencer", function () {
         }
       }
     });
-    this.owaController = new OWAController(store);
+    this.owaController = new OWAController(store, {
+      disableInactivity: true
+    });
   });
   
   // start testing level 4

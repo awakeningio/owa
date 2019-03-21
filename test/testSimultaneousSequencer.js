@@ -21,7 +21,9 @@ describe("Simultaneous Sequencer Playback", function () {
     initialState.sessionPhaseDurations[SESSION_PHASES.TRANS_6] = 2;
     store = configureStore(initialState);
     //abletonLinkStateStore = configureLinkStore();
-    owaController = new OWAController(store, {});
+    owaController = new OWAController(store, {
+      disableInactivity: true
+    });
     this.owaController = owaController;
     state = store.getState();
     soundReady = state.soundReady;

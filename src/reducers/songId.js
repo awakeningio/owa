@@ -13,8 +13,9 @@ import {
   SONG_IDS_LIST
 } from 'owa/constants';
 import { SESSION_PHASE_ADVANCED } from '../actionTypes';
+import songIdInitialState from 'owa/state/songIdInitialState';
 
-export default function songId (state = SONG_IDS_LIST[0], action) {
+export default function songId (state = songIdInitialState, action) {
   switch (action.type) {
     case SESSION_PHASE_ADVANCED:
       if (action.payload.phase === SESSION_PHASES.IDLE) {

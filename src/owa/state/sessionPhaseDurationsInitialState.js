@@ -1,0 +1,5 @@
+import {
+  SESSION_PHASE_DURATIONS_BY_SONGID,
+  SONG_IDS_LIST,
+} from 'owa/constants';
+export default SESSION_PHASE_DURATIONS_BY_SONGID[SONG_IDS_LIST[0]];

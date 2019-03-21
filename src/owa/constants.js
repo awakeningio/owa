@@ -157,3 +157,8 @@ export const SEGMENTID_TO_SEQUENCERID_BY_SONGID = {
     'level_2-segment_1': 'spinny_pluck-2_1'
   }
 };
+
+export const TEMPO_BY_SONGID = {
+  [SONG_IDS.SPINNY_PLUCK]: 120.0,
+  [SONG_IDS.EMINATOR]: 140.0
+};

@@ -37,12 +37,8 @@ function action_starts_transition (action, sessionPhase, fullState) {
   return false;
 }
 
-function get_initial_state () {
-  return SESSION_PHASES.IDLE;
-}
-
 export default function sessionPhase (
-  state = get_initial_state(),
+  state = SESSION_PHASES.IDLE,
   action,
   fullState
 ) {

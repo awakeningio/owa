@@ -24,7 +24,6 @@ import songId from './songId';
 
 var combined = combineReducers({
   songId,
-  tempo,
   fadecandyConnection,
   soundReady,
   sessionPhaseDurations,
@@ -36,6 +35,14 @@ export default function (state, action) {
   const newState = combined(state, action);
   if (state !== newState) {
     state = Object.assign({}, state, newState);
+  }
+  const newTempo = tempo(
+    state.tempo,
+    action,
+    state
+  );
+  if (newTempo !== state.tempo) {
+    state = {...state, ...{tempo: newTempo}};
   }
   const newSessionPhase = sessionPhase(
     state.sessionPhase,

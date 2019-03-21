@@ -28,7 +28,7 @@ export const LEVEL_PLAYBACK_TYPE = {
 
 export const SONG_IDS = {
   SPINNY_PLUCK: 'spinny_pluck',
-  //EMINATOR: 'eminator'
+  EMINATOR: 'eminator'
 };
 
 export const SONG_IDS_LIST = Object.keys(SONG_IDS).map(k => SONG_IDS[k]);
@@ -125,4 +125,35 @@ export const BUTTON_ID_TO_LEVEL_SEGMENT = {
   "09": ['level_6', 2],
   "10": ['level_6', 1],
   "11": ['level_6', 0]
+};
+
+export const SEGMENTID_TO_SEQUENCERID_BY_SONGID = {
+  [SONG_IDS.SPINNY_PLUCK]: {
+    'level_6-segment_0': 'spinny_pluck-6_0',
+    'level_6-segment_1': 'spinny_pluck-6_1',
+    'level_6-segment_2': 'spinny_pluck-6_2',
+    'level_6-segment_3': 'spinny_pluck-6_3',
+    'level_6-segment_4': 'spinny_pluck-6_4',
+    'level_6-segment_5': 'spinny_pluck-6_5',
+    'level_4-segment_0': 'spinny_pluck-level_4',
+    'level_4-segment_1': 'spinny_pluck-level_4',
+    'level_4-segment_2': 'spinny_pluck-level_4',
+    'level_4-segment_3': 'spinny_pluck-level_4',
+    'level_2-segment_0': 'spinny_pluck-2_0',
+    'level_2-segment_1': 'spinny_pluck-2_1'
+  },
+  [SONG_IDS.EMINATOR]: {
+    'level_6-segment_0': 'spinny_pluck-6_0',
+    'level_6-segment_1': 'spinny_pluck-6_1',
+    'level_6-segment_2': 'spinny_pluck-6_2',
+    'level_6-segment_3': 'spinny_pluck-6_3',
+    'level_6-segment_4': 'spinny_pluck-6_4',
+    'level_6-segment_5': 'spinny_pluck-6_5',
+    'level_4-segment_0': 'spinny_pluck-level_4',
+    'level_4-segment_1': 'spinny_pluck-level_4',
+    'level_4-segment_2': 'spinny_pluck-level_4',
+    'level_4-segment_3': 'spinny_pluck-level_4',
+    'level_2-segment_0': 'spinny_pluck-2_0',
+    'level_2-segment_1': 'spinny_pluck-2_1'
+  }
 };

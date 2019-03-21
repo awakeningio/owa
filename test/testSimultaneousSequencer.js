@@ -6,6 +6,7 @@ import configureStore from "../src/configureStore"
 import OWAController from "../src/OWAController"
 import { create_segmentId } from 'owa/models'
 import { createInitialState } from 'owa/state';
+import { getSegmentIdToSequencerId } from '../src/selectors';
 import * as actions from '../src/actions'
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -66,15 +67,17 @@ describe("Simultaneous Sequencer Playback", function () {
 
   it("segment should have a sequencer", function () {
     segment = state.segments.byId[create_segmentId('level_6', 0)];
-    expect(segment.sequencerId, "sequencerId of segment '${segment.segmentId}'")
-      .to.not.be.false;
-    sequencer = state.sequencers[segment.sequencerId];
+    sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[segment.segmentId]
+    ];
     expect(sequencer).to.not.be.undefined;
   });
   
   it("should have queued first segment sequencer", function () {
     segment = state.segments.byId[create_segmentId('level_6', 0)];
-    sequencer = state.sequencers[segment.sequencerId];
+    sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[segment.segmentId]
+    ];
     expect(sequencer.playingState).to.equal(PLAYING_STATES.QUEUED)
   });
 
@@ -103,9 +106,13 @@ describe("Simultaneous Sequencer Playback", function () {
   it("should play first segment", function (done) {
     var unsub = store.subscribe(() => {
       state = store.getState();
-      
-      if (sequencer.playingState !== state.sequencers[segment.sequencerId].playingState) {
-        sequencer = state.sequencers[segment.sequencerId];
+
+      if (sequencer.playingState !== state.sequencers[
+        getSegmentIdToSequencerId(state)[segment.segmentId]
+      ].playingState) {
+        sequencer = state.sequencers[
+          getSegmentIdToSequencerId(state)[segment.segmentId]
+        ];
         expect(sequencer.playingState).to.equal(PLAYING_STATES.PLAYING);
         unsub();
         done();
@@ -118,7 +125,9 @@ describe("Simultaneous Sequencer Playback", function () {
     store.dispatch(actions.buttonPressed('level_6', 1));
     state = store.getState();
     segment = state.segments.byId[create_segmentId('level_6', 1)];
-    sequencer = state.sequencers[segment.sequencerId];
+    sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[segment.segmentId]
+    ];
     expect(sequencer.playingState).to.equal(PLAYING_STATES.QUEUED);
   });
   
@@ -126,8 +135,12 @@ describe("Simultaneous Sequencer Playback", function () {
     var unsub = store.subscribe(() => {
       state = store.getState();
       
-      if (sequencer.playingState !== state.sequencers[segment.sequencerId].playingState) {
-        sequencer = state.sequencers[segment.sequencerId];
+      if (sequencer.playingState !== state.sequencers[
+        getSegmentIdToSequencerId(state)[segment.segmentId]
+      ].playingState) {
+        sequencer = state.sequencers[
+          getSegmentIdToSequencerId(state)[segment.segmentId]
+        ];
         expect(sequencer.playingState).to.equal(PLAYING_STATES.PLAYING);
         unsub();
         done();
@@ -138,7 +151,7 @@ describe("Simultaneous Sequencer Playback", function () {
 
   it("should still be playing first segment", function () {
     segment = state.segments.byId[create_segmentId('level_6', 0)];
-    sequencer = state.sequencers[segment.sequencerId];
+    sequencer = state.sequencers[getSegmentIdToSequencerId(state)[segment.segmentId]];
     expect(sequencer.playingState).to.equal(PLAYING_STATES.PLAYING);
   });
   

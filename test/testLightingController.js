@@ -9,6 +9,7 @@ import { SESSION_PHASES } from 'owa/constants';
 import {
   sessionPhaseAdvanced,
 } from '../src/actions';
+import { getSegmentIdToSequencerId } from '../src/selectors';
 
 
 describe("LightingController", function () {
@@ -38,7 +39,9 @@ describe("LightingController", function () {
     segmentLightingController.queuedAnimation.start = sinon.fake();
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
     store.dispatch(awakeningSequencers.actions.sequencerQueued(
-        segmentTwo.sequencerId
+        getSegmentIdToSequencerId(store.getState())[
+          segmentTwo.segmentId
+        ]
     ));
 
     expect(

@@ -9,7 +9,11 @@ import {
   buttonPressed,
   sessionPhaseAdvanced
 } from '../src/actions';
-import { getLevel6Segments, getLevel4Segments } from '../src/selectors';
+import {
+  getLevel6Segments,
+  getLevel4Segments,
+  getSegmentIdToSequencerId
+} from '../src/selectors';
 
 describe("LevelReadyAnimation", function () {
   const store = configureStore();
@@ -26,7 +30,7 @@ describe("LevelReadyAnimation", function () {
     store.dispatch(buttonPressed(segment.levelId, segment.segmentIndex));
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
     store.dispatch(awakeningSequencers.actions.sequencerPlaying(
-        segment.sequencerId
+        getSegmentIdToSequencerId(store.getState())[segment.segmentId]
     ));
 
     expect(level4ReadyAnimation.start.callCount).to.equal(0);
@@ -35,7 +39,7 @@ describe("LevelReadyAnimation", function () {
   it('should start when all level 6 sequencers are playing', function () {
     getLevel6Segments(state).forEach(function (segment) {
       store.dispatch(awakeningSequencers.actions.sequencerPlaying(
-          segment.sequencerId
+        getSegmentIdToSequencerId(store.getState())[segment.segmentId]
       ));
     });
 

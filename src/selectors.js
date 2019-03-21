@@ -14,7 +14,7 @@ import every from 'lodash/every';
 import awakeningSequencers from 'awakening-sequencers'
 
 import { create_segmentId } from 'owa/models';
-import { SESSION_PHASES } from 'owa/constants';
+import { SESSION_PHASES, SEGMENTID_TO_SEQUENCERID_BY_SONGID } from 'owa/constants';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
@@ -25,6 +25,10 @@ const getSegmentsById = state => state.segments.byId;
 const getSessionPhaseDurations = state => state.sessionPhaseDurations;
 const getIdlePlayer = state => state.idlePlayer;
 export const getSongId = state => state.songId;
+export const getSegmentIdToSequencerId = (state) => (
+  SEGMENTID_TO_SEQUENCERID_BY_SONGID[state.songId]
+);
+
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
@@ -67,29 +71,32 @@ export const getLevel4Segments = createGetLevelSegmentsSelector('level_4');
 export const getLevel2Segments = createGetLevelSegmentsSelector('level_2');
 
 export const getLevel6Sequencers = createSelector(
+  getSegmentIdToSequencerId,
   getLevel6Segments,
   getSequencers,
-  function (level6Segments, sequencers) {
+  function (segmentIdToSequencerId, level6Segments, sequencers) {
     return level6Segments.map(
-      segment => sequencers[segment.sequencerId]
+      segment => sequencers[segmentIdToSequencerId[segment.segmentId]]
     );
   }
 );
 
 export const getLevel4Sequencer = createSelector(
+  getSegmentIdToSequencerId,
   getLevel4Segments,
   getSequencers,
-  (level4Segments, sequencers) => {
-    return sequencers[level4Segments[0].sequencerId];
+  (segmentIdToSequencerId, level4Segments, sequencers) => {
+    return sequencers[segmentIdToSequencerId[level4Segments[0].segmentId]];
   }
 );
 
 export const getLevel2Sequencers = createSelector(
+  getSegmentIdToSequencerId,
   getLevel2Segments,
   getSequencers,
-  function (level2Segments, sequencers) {
+  function (segmentIdToSequencerId, level2Segments, sequencers) {
     return level2Segments.map(
-      segment => sequencers[segment.sequencerId]
+      segment => sequencers[segmentIdToSequencerId[segment.segmentId]]
     );
   }
 );

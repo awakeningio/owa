@@ -22,7 +22,8 @@ import {
   getLevel2Segments,
   getLevel4Ready,
   getLevel2Ready,
-  getRevealReady
+  getRevealReady,
+  getSegmentIdToSequencerId
 } from '../src/selectors';
 import { buttonPressed, sessionPhaseAdvanced } from '../src/actions';
 import { SESSION_PHASES } from 'owa/constants';
@@ -58,18 +59,6 @@ describe('getLevel6Sequencers', function () {
     expect(level6Sequencers).to.be.an('array');
     expect(level6Sequencers).to.have.lengthOf(6);
   });
-
-  it('should have chosen right sequencers', function () {
-    var level6Sequencers, level6Segments;
-    level6Sequencers = getLevel6Sequencers(state);
-    level6Segments = getLevel6Segments(state);
-
-    level6Segments.forEach(function (segment) {
-      expect(level6Sequencers.find(
-          sequencer => sequencer.sequencerId === segment.sequencerId
-      )).to.not.be.undefined;
-    });
-  });
 });
 
 describe('getLevel4Sequencer', function () {
@@ -86,16 +75,6 @@ describe('getLevel4Sequencer', function () {
     expect(level4Sequencer).to.be.an('object');
   });
 
-  // TODO: This isn't really testing the selector, more the integrity of 
-  // expected structure of our state...
-  it('should be sequencer pointed at by level4 segments', function () {
-    var level4Segments = getLevel4Segments(state),
-      level4Sequencer = getLevel4Sequencer(state);
-
-    level4Segments.forEach(function (segment) {
-      expect(segment.sequencerId).to.equal(level4Sequencer.sequencerId);
-    });
-  });
 });
 
 describe('getLevel2Sequencer', function () {
@@ -112,17 +91,6 @@ describe('getLevel2Sequencer', function () {
 
     expect(level2Sequencers).to.be.an('array');
     expect(level2Sequencers.length).to.equal(2);
-  });
-
-  it('should be sequencers pointed at by segments', function () {
-    var level2Segments = getLevel2Segments(state),
-      level2Sequencers = getLevel2Sequencers(state);
-
-    level2Segments.forEach(function (segment) {
-      expect(level2Sequencers.find(
-          sequencer => sequencer.sequencerId === segment.sequencerId
-      )).to.not.be.undefined;
-    });
   });
 });
 
@@ -144,7 +112,7 @@ describe('getLevel4Ready', function () {
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
     store.dispatch(
       awakeningSequencers.actions.sequencerPlaying(
-        level6Segments[0].sequencerId
+        getSegmentIdToSequencerId(store.getState())[level6Segments[0].segmentId]
       )
     );
     expect(getLevel4Ready(store.getState())).to.be.false;
@@ -161,7 +129,9 @@ describe('getLevel4Ready', function () {
       );
       store.dispatch(
         awakeningSequencers.actions.sequencerPlaying(
-          level6Segments[i].sequencerId
+          getSegmentIdToSequencerId(
+            store.getState()
+          )[level6Segments[i].segmentId]
         )
       );
     }
@@ -219,7 +189,9 @@ describe('getRevealReady', function () {
     getLevel4Sequencer(initialState).playingState = PLAYING_STATES.PLAYING;
     const level2Segments = getLevel2Segments(initialState);
     setSequencerToPlaying(
-      initialState.sequencers[level2Segments[0].sequencerId]
+      initialState.sequencers[
+        getSegmentIdToSequencerId(initialState)[level2Segments[0].segmentId]
+      ]
     );
     const store = configureStore(initialState);
     expect(getRevealReady(store.getState())).to.be.false;
@@ -229,7 +201,7 @@ describe('getRevealReady', function () {
     );
     store.dispatch(
       awakeningSequencers.actions.sequencerPlaying(
-        level2Segments[1].sequencerId
+        getSegmentIdToSequencerId(store.getState())[level2Segments[1].segmentId]
       )
     );
 

@@ -19,7 +19,8 @@ import {
   getLevel6Sequencers,
   getLevel4Sequencer,
   getLevel2Sequencers,
-  getSegmentIdToBufName
+  getSegmentIdToBufName,
+  getSegmentIdToSequencerId
 } from '../selectors';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -106,11 +107,14 @@ function trans (
 function l6Sequencer (
   state,
   action,
-  segments,
-  sessionPhase,
-  prevSessionPhase,
-  sessionPhaseDurations
+  fullState,
+  prevSessionPhase
 ) {
+  const {
+    sessionPhase,
+    sessionPhaseDurations
+  } = fullState;
+
   switch (action.type) {
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
       return Object.assign({}, state, {
@@ -170,8 +174,7 @@ function l6Sequencer (
         action.payload.levelId,
         action.payload.segmentIndex
       );
-      const segment = segments.byId[segmentId];
-      const buttonSequencerId = segment.sequencerId;
+      const buttonSequencerId = getSegmentIdToSequencerId(fullState)[segmentId];
       if (
           // button press was for this sequencer
           buttonSequencerId === state.sequencerId
@@ -288,7 +291,7 @@ function chordProgSequencer (
         action.payload.segmentIndex
       );
       const segment = segments.byId[segmentId];
-      const buttonSequencerId = segment.sequencerId;
+      const buttonSequencerId = getSegmentIdToSequencerId(fullState)[segmentId];
 
       if (
         // button press was for this sequencer
@@ -365,11 +368,13 @@ function chordProgSequencer (
 function l2Sequencer (
   state,
   action,
-  segments,
-  sessionPhase,
-  prevSessionPhase,
-  sessionPhaseDurations
+  fullState,
+  prevSessionPhase
 ) {
+  const {
+    sessionPhase,
+    sessionPhaseDurations
+  } = fullState;
   switch (action.type) {
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
       return Object.assign({}, state, {
@@ -392,8 +397,7 @@ function l2Sequencer (
         action.payload.levelId,
         action.payload.segmentIndex
       );
-      const segment = segments.byId[segmentId];
-      const buttonSequencerId = segment.sequencerId;
+      const buttonSequencerId = getSegmentIdToSequencerId(fullState)[segmentId];
       if (
         // button pressed for this sequencer
         buttonSequencerId === state.sequencerId
@@ -446,9 +450,10 @@ export default function sequencers (
   fullState,
   prevSessionPhase
 ) {
-  const segments = fullState.segments;
-  const sessionPhase = fullState.sessionPhase;
-  const sessionPhaseDurations = fullState.sessionPhaseDurations;
+  const {
+    sessionPhase,
+    sessionPhaseDurations
+  } = fullState;
 
   state = awakeningSequencers.reducer(
     state,
@@ -481,10 +486,8 @@ export default function sequencers (
     const newSeq = l6Sequencer(
       seq,
       action,
-      segments,
-      sessionPhase,
+      fullState,
       prevSessionPhase,
-      sessionPhaseDurations
     );
     if (newSeq !== seq) {
       state = Object.assign({}, state, {
@@ -511,10 +514,8 @@ export default function sequencers (
     const newSeq = l2Sequencer(
       seq,
       action,
-      segments,
-      sessionPhase,
-      prevSessionPhase,
-      sessionPhaseDurations
+      fullState,
+      prevSessionPhase
     );
     if (seq !== newSeq) {
       state = Object.assign({}, state, {

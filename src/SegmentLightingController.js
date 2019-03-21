@@ -16,7 +16,11 @@ import SegmentQueuedAnimation from './SegmentQueuedAnimation';
 import SegmentPlayingAnimation from './SegmentPlayingAnimation';
 import SegmentNoopAnimation from './SegmentNoopAnimation';
 import { SESSION_PHASES } from 'owa/constants';
-import { getSegmentIdToBufName, getLevel4Sequencer } from './selectors';
+import {
+  getSegmentIdToBufName,
+  getLevel4Sequencer,
+  getSegmentIdToSequencerId
+} from './selectors';
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
@@ -30,7 +34,9 @@ class SegmentLightingController extends ControllerWithStore {
   init () {
     const state = this.store.getState();
     const segment = state.segments.byId[this.params.segmentId];
-    const sequencer = state.sequencers[segment.sequencerId];
+    const sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[this.params.segmentId]
+    ];
 
     this.queuedAnimation = new SegmentQueuedAnimation({
       pixels: this.params.pixels
@@ -74,7 +80,9 @@ class SegmentLightingController extends ControllerWithStore {
     const segmentIdToBufName = getSegmentIdToBufName(state);
     const level4Sequencer = getLevel4Sequencer(state);
     const segment = state.segments.byId[this.params.segmentId];
-    const sequencer = state.sequencers[segment.sequencerId];
+    const sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[this.params.segmentId]
+    ];
     const sessionPhase = state.sessionPhase;
 
     if (segment !== this.lastState.segment) {

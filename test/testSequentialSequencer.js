@@ -8,7 +8,8 @@ import { create_segmentId } from 'owa/models'
 import { createInitialState } from 'owa/state';
 import {
   getSegmentIdToBufName,
-  getLevel6Sequencers
+  getLevel6Sequencers,
+  getSegmentIdToSequencerId
 } from '../src/selectors';
 import * as actions from '../src/actions'
 
@@ -59,14 +60,18 @@ describe("Sequential Sequencer", function () {
     state = store.getState();
     segmentIdToBufName = getSegmentIdToBufName(state);
     segment = state.segments.byId[create_segmentId(level.levelId, 0)];
-    sequencer = state.sequencers[segment.sequencerId];
+    sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[segment.segmentId]
+    ];
     expect(state.sessionPhase).to.equal(SESSION_PHASES.QUEUE_TRANS_4);
   });
   
   it("sequencer should have updated playback order on button press", function () {
     level = state.levels.byId['level_4'];
     segment = state.segments.byId[create_segmentId(level.levelId, 0)];
-    sequencer = state.sequencers[segment.sequencerId];
+    sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[segment.segmentId]
+    ];
     expect(sequencer).to.have.property('bufSequence');
     expect(sequencer.bufSequence).to.be.a('array');
     expect(sequencer.bufSequence).to.have.lengthOf(1);
@@ -102,8 +107,9 @@ describe("Sequential Sequencer", function () {
     state = store.getState();
     segmentIdToBufName = getSegmentIdToBufName(state);
     level = state.levels.byId['level_4'];
-    sequencer = state.sequencers[segment.sequencerId];
-    expect(secondSegment.sequencerId).to.equal(segment.sequencerId);
+    sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[segment.segmentId]
+    ];
     expect(state.sessionPhase).to.equal(SESSION_PHASES.PLAYING_4);
   });
 

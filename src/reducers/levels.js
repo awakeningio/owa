@@ -47,7 +47,9 @@ function level (state, action) {
         //let nextSegmentId = state.segmentPlaybackOrder[nextSegmentPlaybackIndex];
         //let nextSegment = segments.byId[nextSegmentId];
 
-        //// is the sequencer for this segment ?
+      //// is the sequencer for this segment ?
+      //// TODO: if this code is used again, note `sequencerId` has been
+      //removed from segment.
         //if (nextSegment.sequencerId === action.payload.sequencerId) {
           //// if so, our next segment has started playing
           //state = Object.assign({}, state);

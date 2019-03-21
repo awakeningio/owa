@@ -14,6 +14,7 @@ import TWEEN from '@tweenjs/tween.js';
 import awakeningSequencers from 'awakening-sequencers';
 import ControllerWithStore from './ControllerWithStore';
 import { setPixelColors } from './Pixels';
+import { getSegmentIdToSequencerId } from './selectors';
 
 const dimLayerColor = Color.hsv([0.72 * 360, 20, 20]);
 const playingLayerColor = Color.hsv([0.72 * 360, 50, 50]);
@@ -21,9 +22,10 @@ const playingLayerColor = Color.hsv([0.72 * 360, 50, 50]);
 
 class SegmentPlayingAnimation extends ControllerWithStore {
   init() {
-    let state = this.store.getState();
-    let segment = state.segments.byId[this.params.segmentId];
-    let sequencer = state.sequencers[segment.sequencerId];
+    const state = this.store.getState();
+    const sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[this.params.segmentId]
+    ];
 
 
     this.phaseTween = null;
@@ -43,12 +45,13 @@ class SegmentPlayingAnimation extends ControllerWithStore {
     
   }
   start () {
-    let state = this.store.getState();
-    let tempo = state.tempo;
-    let segment = state.segments.byId[this.params.segmentId];
-    let sequencer = state.sequencers[segment.sequencerId];
-    let duration = sequencer.numBeats / tempo * 60000.0;
-    let pixels = this.params.pixels;
+    const state = this.store.getState();
+    const tempo = state.tempo;
+    const sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[this.params.segmentId]
+    ];
+    const duration = sequencer.numBeats / tempo * 60000.0;
+    const pixels = this.params.pixels;
 
     this.stop();
 
@@ -94,9 +97,10 @@ class SegmentPlayingAnimation extends ControllerWithStore {
     this.build();
   }
   handle_state_change () {
-    let state = this.store.getState();
-    let segment = state.segments.byId[this.params.segmentId];
-    let sequencer = state.sequencers[segment.sequencerId];
+    const state = this.store.getState();
+    const sequencer = state.sequencers[
+      getSegmentIdToSequencerId(state)[this.params.segmentId]
+    ];
 
     //if (sequencer.playingState !== this.lastState.sequencer.playingState) {
 
@@ -118,12 +122,12 @@ class SegmentPlayingAnimation extends ControllerWithStore {
       ].includes(sequencer.playingState)
       && sequencer.event !== this.lastState.sequencer.event
     ) {
-      let event = sequencer.event;
+      const event = sequencer.event;
       if (event.midinote !== 'rest') {
         if (this.beatPulseTween) {
           this.beatPulseTween.stop();
         }
-        let pulseDuration = event.nextTime / state.tempo * 60000.0;
+        const pulseDuration = event.nextTime / state.tempo * 60000.0;
         this.beatPulseTween = new TWEEN.Tween({pulseBrightness: 1.0})
           .to({pulseBrightness: 0.0}, pulseDuration)
           .onUpdate((props) => {

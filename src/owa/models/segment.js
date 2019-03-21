@@ -7,7 +7,6 @@ export function create_segment (levelId, segmentIndex) {
     levelId,
     segmentIndex,
     segmentId: create_segmentId(levelId, segmentIndex),
-    sequencerId: false,
     lastButtonPressTime: 0
   };
 }

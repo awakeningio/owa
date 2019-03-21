@@ -9,6 +9,9 @@ import {
   sessionPhaseAdvanced,
   owaSoundInitDone
 } from '../src/actions';
+import {
+  getSegmentIdToSequencerId
+} from '../src/selectors';
 import IdleAnimation from '../src/IdleAnimation';
 
 describe("IdleAnimation", function () {
@@ -38,7 +41,7 @@ describe("IdleAnimation", function () {
   it("should switch to playing animation when sequencer is playing", function () {
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
     store.dispatch(awakeningSequencers.actions.sequencerPlaying(
-        segment.sequencerId
+        getSegmentIdToSequencerId(store.getState())[segment.segmentId]
     ));
     expect(idleAnimation.stop.callCount).to.equal(1);
   });

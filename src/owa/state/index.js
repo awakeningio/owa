@@ -12,8 +12,7 @@
 import {
   create_simultaneous_level,
   create_sequential_level,
-  create_segment,
-  create_segmentId,
+  create_segment
 } from 'owa/models'
 
 import { createSpinnyPluckState } from './spinny_pluck';
@@ -40,19 +39,6 @@ export function createInitialState () {
       segmentsById[newSegment.segmentId] = newSegment;
     }
   });
-
-  segmentsById[create_segmentId('level_6', 0)].sequencerId = 'spinny_pluck-6_0';
-  segmentsById[create_segmentId('level_6', 1)].sequencerId = 'spinny_pluck-6_1';
-  segmentsById[create_segmentId('level_6', 2)].sequencerId = 'spinny_pluck-6_2';
-  segmentsById[create_segmentId('level_6', 3)].sequencerId = 'spinny_pluck-6_3';
-  segmentsById[create_segmentId('level_6', 4)].sequencerId = 'spinny_pluck-6_4';
-  segmentsById[create_segmentId('level_6', 5)].sequencerId = 'spinny_pluck-6_5';
-  segmentsById[create_segmentId('level_4', 0)].sequencerId = 'spinny_pluck-level_4';
-  segmentsById[create_segmentId('level_4', 1)].sequencerId = 'spinny_pluck-level_4';
-  segmentsById[create_segmentId('level_4', 2)].sequencerId = 'spinny_pluck-level_4';
-  segmentsById[create_segmentId('level_4', 3)].sequencerId = 'spinny_pluck-level_4';
-  segmentsById[create_segmentId('level_2', 0)].sequencerId = 'spinny_pluck-2_0';
-  segmentsById[create_segmentId('level_2', 1)].sequencerId = 'spinny_pluck-2_1';
 
   return {
     levels: {

@@ -257,13 +257,20 @@
       patch,
       synthdef,
       tempoBPM = 140,
-      loadedSequence = 'eminator_bass_L4',
+      loadedSequence = 'eminator_bass_L6',
       control15Patch,
       control15Bus = Bus.control(Server.default, 1),
       control16Patch,
-      control16Bus = Bus.control(Server.default, 1);
+      control16Bus = Bus.control(Server.default, 1),
+      envsPat,
+      outputChannel;
     
     TempoClock.default.tempo = tempoBPM / 60.0;
+    outputChannel = MixerChannel.new(
+      "scratch" ,
+      Server.default,
+      2, 2
+    );
     bufManager.load_midi([
       (
         midiFileName: "eminator_bass_L2.mid",
@@ -288,15 +295,28 @@
       )
     ]);
 
-    control15Patch = Patch("cs.utility.EnvToBus", (
-      gate: KrNumberEditor(1, \gate),
-      env: bufManager.midiCCEnvs[loadedSequence][15],
-      bus: control15Bus
+    control15Patch = Patch({
+      arg gate, env;
+
+      Instr.kr("cs.utility.EnvToBus", (
+        gate: gate,
+        env: bufManager.midiCCEnvs[loadedSequence][15],
+        bus: control15Bus
+      ));
+    }, (
+        gate: KrNumberEditor(1, \gate),
     ));
-    control16Patch = Patch("cs.utility.EnvToBus", (
+
+    control16Patch = Patch({
+      arg gate, env;
+
+      Instr.kr("cs.utility.EnvToBus", (
+        gate: gate,
+        env: bufManager.midiCCEnvs[loadedSequence][16],
+        bus: control16Bus
+      ));
+    }, (
       gate: KrNumberEditor(1, \gate),
-      env: bufManager.midiCCEnvs[loadedSequence][16],
-      bus: control16Bus
     ));
 
     patch = Patch("cs.fm.WideBass", (
@@ -309,37 +329,41 @@
     synthdef = patch.asSynthDef().add();
 
     bufManager.midiCCEnvs[loadedSequence][15].plot();
-  
-    pat = Ppar([
+ 
+    envsPat = Ppar([
       Pbind(
-        \instrument, control16Patch.asSynthDef().add(),
-        \dur, Pseq([bufManager.midiCCEnvs[loadedSequence][16].duration * TempoClock.default.tempo], inf)
+        \instrument, control16Patch.asSynthDef().add().name,
+        \dur, Pseq([bufManager.midiCCEnvs[loadedSequence][16].duration * TempoClock.default.tempo], inf),
+        \legato, 0.99,
       ),
       Pbind(
-        \instrument, control15Patch.asSynthDef().add(),
-        \dur, Pseq([bufManager.midiCCEnvs[loadedSequence][15].duration * TempoClock.default.tempo], inf)
-      ),
-      PmonoArtic(
-        synthdef.name,
-        [\midinoteFromFile, \dur], Pseq(bufManager.midiSequences[loadedSequence], inf),
-        \legato, 1.1,
-        \midinote, Pfunc({
-          arg event;
-          (event['midinoteFromFile'] - 24);
-        }),
-        \attackModFreq, Pfunc({
-          arg event;
-          (event[\midinote] + 12).midicps();
-        }),
-        //\toneModulatorGainMultiplier, 1.0,
-        //\toneModulatorLFOAmount, 0.0,
-        \toneModulatorLFORate, tempoBPM / 60.0 / 4,
-        \toneModulatorGainMultiplierBus, control15Bus,
-        \toneModulatorLFOAmountBus, control16Bus
-      );
+        \instrument, control15Patch.asSynthDef().add().name,
+        \dur, Pseq([bufManager.midiCCEnvs[loadedSequence][15].duration * TempoClock.default.tempo], inf),
+        \legato, 0.99,
+      )
     ]);
+    pat = PmonoArtic(
+      synthdef.name,
+      [\midinoteFromFile, \dur], Pseq(bufManager.midiSequences[loadedSequence], inf),
+      \legato, 1.1,
+      \midinote, Pfunc({
+        arg event;
+        (event['midinoteFromFile'] - 24);
+      }),
+      \attackModFreq, Pfunc({
+        arg event;
+        (event[\midinote] + 12).midicps();
+      }),
+      //\toneModulatorGainMultiplier, 1.0,
+      //\toneModulatorLFOAmount, 0.0,
+      \toneModulatorLFORate, tempoBPM / 60.0 / 4,
+      \toneModulatorGainMultiplierBus, control15Bus,
+      \toneModulatorLFOAmountBus, control16Bus
+    );
     //"playing...".postln();
-    ~player = pat.play();
+    //~player = pat.play();
+    envsPat.play(quant: 4);
+    outputChannel.play(EventStreamPlayer.new(pat.asStream()), (quant:4));
   });
 
   "Setting up".postln();
@@ -353,6 +377,7 @@
   s.options.blockSize = 8;
   s.meter();
   s.plotTree();
+  //s.dumpOSC();
 
 
   s.waitForBoot({
@@ -365,11 +390,22 @@
     //sfxSequencerTest.value();
     wideBassMIDITest.value();
   });
-
+  
   s.boot();
 
 }.value());
 
-(
-  ~player.stop();
-)
+//(
+  //~player.stop();
+//)
+
+//(
+  //~pat = Pseq([
+    //['hello', 'world']
+  //], inf);
+  //~stream = ~pat.asStream();
+//)
+
+//(
+  //~stream.next();
+//)

@@ -14,7 +14,8 @@ OWAConstants {
     <>nextSessionPhases,
     <>transPhaseDurations,
     <>songIds,
-    <>songIdsList;
+    <>songIdsList,
+    <>tempoBySongId;
 
   *init {
     arg params;
@@ -29,5 +30,6 @@ OWAConstants {
     OWAConstants.nextSessionPhases = params.constants['NEXT_SESSION_PHASES'].collect(convertToSymbol);
     OWAConstants.songIds = params.constants['SONG_IDS'].collect(convertToSymbol);
     OWAConstants.songIdsList = params.constants['SONG_IDS_LIST'].collect(convertToSymbol);
+    OWAConstants.tempoBySongId = params.constants['TEMPO_BY_SONGID'];
   }
 }

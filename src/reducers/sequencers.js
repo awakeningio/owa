@@ -202,6 +202,7 @@ function l6Sequencer (
           return Object.assign(
             {},
             state,
+            //state.phaseProps[SESSION_PHASES.PLAYING_6],
             {
               playingState: PLAYING_STATES.QUEUED,
               playQuant: [4, 4 + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]]

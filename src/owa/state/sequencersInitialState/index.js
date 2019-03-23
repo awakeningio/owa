@@ -1,9 +1,9 @@
-import awakeningSequencers from "awakening-sequencers"
-
 import { createSpinnyPluckState } from './spinny_pluck';
+import createEminatorState from './eminator';
 
 export default function createSequencersInitialState () {
   return {
-    ...createSpinnyPluckState()
+    ...createSpinnyPluckState(),
+    ...createEminatorState()
   }; 
 }

@@ -96,10 +96,10 @@ s.meter();
           }
           if (process.env.DEBUG_SC === "1") {
             scBootScript += `
+  s.dumpOSC();
   Routine {
     loop {
       s.queryAllNodes();
-      //s.dumpOSC();
 
       10.0.wait();
     }

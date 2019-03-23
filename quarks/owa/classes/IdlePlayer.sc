@@ -86,7 +86,12 @@
       songId = state.songId.asSymbol();
 
       if (prevState.idlePlayer.gate != state.idlePlayer.gate, {
-        //("IdlePlayer: setting gate to " ++ state.idlePlayer.gate).postln();
+        (
+          "IdlePlayer: setting gate to "
+          ++ state.idlePlayer.gate
+          ++ " for songId: "
+          ++ songId
+        ).postln();
         gateEditorBySongId[songId].value = state.idlePlayer.gate;
       });
 

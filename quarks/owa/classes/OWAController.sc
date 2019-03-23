@@ -148,22 +148,47 @@ OWAController {
         (
           midiFileName: "spinny-pluck_L6_hats.mid",
           midiKey: 'spinny-pluck_L6_hats',
-          makeDuration: 8 * 4 
+          makeDuration: 8 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['spinny_pluck']
         ),
         (
           midiFileName: "spinny-pluck_L2_hats.mid",
           midiKey: 'spinny-pluck_L2_hats',
-          makeDuration: 8 * 4
+          makeDuration: 8 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['spinny_pluck']
         ),
         (
           midiFileName: "spinny-pluck_L6_lead.mid",
           midiKey: 'spinny-pluck_L6_lead',
-          makeDuration: 4 * 4
+          makeDuration: 4 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['spinny_pluck']
         ),
         (
           midiFileName: "spinny-pluck_L2_lead.mid",
           midiKey: 'spinny-pluck_L2_lead',
-          makeDuration: 4 * 4
+          makeDuration: 4 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['spinny_pluck']
+        ),
+        (
+          midiFileName: "eminator_bass_L2.mid",
+          midiKey: 'eminator_bass_L2',
+          makeDuration: 2 * 4,
+          ccsToEnv: [15, 16],
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_bass_L4_quant.mid",
+          midiKey: 'eminator_bass_L4',
+          makeDuration: 16 * 4,
+          ccsToEnv: [15, 16],
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_bass_L6_quant.mid",
+          midiKey: 'eminator_bass_L6',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
         )
       ]);
 

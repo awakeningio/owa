@@ -9,7 +9,7 @@
  **/
 
 Instr("owa.EminatorIdle", {
-  arg gate = 1,
+  arg gate,
     amp = 1.0,
     attackTime = 1.0,
     releaseTime = 1.0;

@@ -43,7 +43,8 @@ OWAClockController {
 
     var tempo = store.getState().tempo;
     if (tempo != lastTempo, {
-      // TODO: handle queueing tempo changes here
+      ("Changing tempo abruptly to " ++ tempo ++ " bpm...").postln();
+      clock.tempo = tempo / 60.0;
     });
     lastTempo = tempo;
   }

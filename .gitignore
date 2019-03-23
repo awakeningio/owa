@@ -14,3 +14,4 @@ combined.log
 error.log
 owa_env_*
 package-lock.json
+*.swo

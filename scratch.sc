@@ -409,3 +409,13 @@
 //(
   //~stream.next();
 //)
+
+(
+Env.new(
+      //initial attack             peak          exp. decay
+      [0.0,   1.0,      0.9,      0.9,      0.0 ],
+      [   0.001,      0.05,      0.05,   1.2      ],
+      [0.0,   2.5,     4.5,      -2.5,   -5.5  ],
+      releaseNode: 3
+    ).plot();
+)

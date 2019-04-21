@@ -61,6 +61,7 @@ OWAController {
     store.dispatch((
       type: "OWA_SOUND_BOOTED"
     ));
+    ^this;
   }
 
   init {
@@ -140,6 +141,34 @@ OWAController {
       [
         "eerie_idle_loop.wav",
         'eerie_idle_loop'
+      ],
+      [
+        "eminator_floortom_01 [2019-03-23 192053].aif",
+        'eminator_floortom_01'
+      ],
+      [
+        "eminator_hat_closed_01 [2019-03-23 192053].aif",
+        'eminator_hat_closed_01'
+      ],
+      [
+        "eminator_hat_open_01 [2019-03-23 192053].aif",
+        'eminator_hat_open_01'
+      ],
+      [
+        "eminator_hightom_01 [2019-03-23 192053].aif",
+        'eminator_hightom_01'
+      ],
+      [
+        "eminator_kick_01 [2019-03-23 192053].aif",
+        'eminator_kick_01'
+      ],
+      [
+        "eminator_snare_01 [2019-03-23 192053].aif",
+        'eminator_snare_01'
+      ],
+      [
+        "eminator_snareroll_01 [2019-03-23 192053].aif",
+        'eminator_snareroll_01'
       ]
     ], ({
       // when buffers are done loading

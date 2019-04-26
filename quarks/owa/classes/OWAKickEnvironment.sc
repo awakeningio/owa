@@ -4,7 +4,7 @@ OWAKickEnvironment : VoicerEnvironmentComponent {
 
     var voicer,
       sock,
-      vileKickInstr = Instr("cs.percussion.OWAKick"),
+      vileKickInstr = Instr("owa.OWAKick"),
       vileKickSpecs = vileKickInstr.specs,
       gui;
   

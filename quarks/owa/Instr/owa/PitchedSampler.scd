@@ -48,7 +48,7 @@ Instr("owa.PitchedSampler", {
   out = amp * EnvGen.ar(
     env,
     gate: gate,
-    doneAction: 2
+    doneAction: Done.freeSelf
   ) * samplePlayer;
 
   out;

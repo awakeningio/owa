@@ -21,7 +21,7 @@ Instr("owa.OWAKick", {
 
   acoustic = Instr.ar("owa.AcousticKickSampler", (
     gate: gate,
-    amp: -8.0.dbamp() * amp,
+    amp: -4.0.dbamp() * amp,
     velocity: velocity,
     startTimesByVelocity: acousticStartTimesByVelocity,
     bufnums: acousticBufnums,
@@ -40,11 +40,12 @@ Instr("owa.OWAKick", {
 
   out = CompanderD.ar(
     out,
-    thresh: 0.3,
+    thresh: -8.0.dbamp(),
     slopeBelow: 1.0,
-    slopeAbove: 0.8,
+    slopeAbove: 0.4,
     clampTime: 0.005,
-    relaxTime: 0.1
+    relaxTime: 0.1,
+    mul: 7.0.dbamp()
   );
 
 

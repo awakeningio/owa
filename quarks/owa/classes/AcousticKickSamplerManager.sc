@@ -1,7 +1,7 @@
 AcousticKickSamplerManager {
-  var synthdefs,
-    <bufs,
-    noteTimesByVelocity;
+  var <synthdef,
+    <startTimesByVelocity,
+    <bufnums;
   *new {
     arg params;
     ^super.new.init(params);
@@ -12,13 +12,9 @@ AcousticKickSamplerManager {
     var bufManager = params['bufManager'],
       metadataFilePath = params['metadataFilePath'],
       metadata = metadataFilePath.parseYAMLFile(),
-      noteVelocities,
       noteTimes,
       filepaths = metadata["filepaths"],
       fileSyms;
-
-    noteTimesByVelocity = Dictionary.new();
-    synthdefs = Array.new();
 
     // Creates symbol names for each file
     fileSyms = filepaths.collect({
@@ -31,6 +27,7 @@ AcousticKickSamplerManager {
       arg fp, i;
       [fp, fileSyms[i]];
     }), ({
+      var bufs;
       "acoustic kick samples loaded".postln();
       bufs = fileSyms.collect({
         arg fs;
@@ -38,44 +35,25 @@ AcousticKickSamplerManager {
       });
 
 
-      // Creates a map from note velocity to time in the files
-      noteVelocities = metadata["noteVelocities"];
-      noteTimes = metadata["noteTimesInSeconds"];
-
-      noteVelocities.do({
-        arg vel, i;
-        noteTimesByVelocity[vel.asSymbol()] = noteTimes[i];
+      // Converts note times to floats
+      startTimesByVelocity = metadata["noteTimesInSeconds"].collect({
+        arg t;
+        t.asFloat();
       });
 
-      // Creates a synthdef for each alternative file
-      bufs.do({
-        arg buf;
-        synthdefs.add(Patch("owa.AcousticKickSampler", (
-          bufnum: buf.bufnum,
-          gate: KrNumberEditor(1, \gate),
-          amp: KrNumberEditor(1.0, \amp)
-        )).asSynthDef().add());
-      });
+      bufnums = bufs.collect({arg buf; buf.bufnum; });
+
+      // Creates synthdef, passing in all bufnums and the mapping of 
+      // velocity (index) to note time in `startTimes`.
+      synthdef = Patch("owa.AcousticKickSampler", (
+        bufnums: bufs.collect({arg buf; buf.bufnum; }),
+        gate: KrNumberEditor(1, \gate),
+        amp: KrNumberEditor(1.0, \amp),
+        startTimes: noteTimes
+      )).asSynthDef().add();
 
       params['onDoneLoading'].value();
 
     }));
-  }
-  getPatternParams {
-    ^Pfunc({
-      arg e;
-      [
-        this.getRandomSynthDef().name,
-        this.getStartTimeForVelocity(e['velocity']),
-        false
-      ]
-    });
-  }
-  getRandomSynthDef {
-    ^synthdefs[rrand(0, synthdefs.size - 1)];
-  }
-  getStartTimeForVelocity {
-    arg vel;
-    ^noteTimesByVelocity[vel.asSymbol()].asFloat();
   }
 }

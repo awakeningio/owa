@@ -1,57 +1,42 @@
 Instr("owa.OWAKick", {
-  arg freq = 110,
-    amp = 0.9,
-    gate = 0;
+  arg gate = 1,
+    amp = 1.0,
+    freq = 55,
+    velocity,
+    acousticStartTimesByVelocity,
+    acousticBufnums;
 
-  var carrier,
-    attackModulator,
-    toneModulator,
+  var synthetic,
+    acoustic,
+    env,
     out;
 
-  //freq = freq * 0.5;
-
-  attackModulator = Instr.ar("cs.fm.Oscillator", (
-    amp: 50 * freq,
-    freq: 7.3 * freq,
+  synthetic = Instr.ar("owa.SyntheticKick", (
     gate: gate,
-    envShape: Env.new(
-      [1.0,   0.0,    0.0 ],
-      [   0.25,    0.75    ],
-      [   -3.0,    0.00    ],
-      releaseNode: nil
-    ),
-    envTimeScale: 0.2,
-    envDoneAction: 0
+    amp: -1.0.dbamp() * amp,
+    freq: freq,
+    velocity: velocity,
+    doneAction: Done.none
   ));
 
-  toneModulator = Instr.ar("cs.fm.Oscillator", (
-    amp: 40 * freq,
-    freq: 0.5 * freq,
+  acoustic = Instr.ar("owa.AcousticKickSampler", (
     gate: gate,
-    envShape: Env.new(
-      [0.0,     0.2,    0.0 ],
-      [   0.05,      1.0    ],
-      [   3.0,     -3.00    ],
-      releaseNode: 1
-    ),
-    envTimeScale: 0.5,
-    envDoneAction: 0
+    amp: -8.0.dbamp() * amp,
+    velocity: velocity,
+    startTimesByVelocity: acousticStartTimesByVelocity,
+    bufnums: acousticBufnums,
+    doneAction: Done.none
   ));
 
-  carrier = Instr.ar("cs.fm.Oscillator", (
-    amp: 1.0,
-    freq: freq + attackModulator + toneModulator,
+  out = acoustic + synthetic;
+
+  env = EnvGen.ar(
+    Env.perc(0, 2),
     gate: gate,
-    envShape: Env.new(
-      //initial attack             peak          exp. decay
-      [0.0,   1.0,      0.9,      0.9,      0.0 ],
-      [   0.001,      0.05,      0.05,   0.5      ],
-      [0.0,   2.5,     4.5,      -2.5,   -5.5  ],
-      releaseNode: 3
-    ),
-    envDoneAction: 2
-  ));
-  out = amp * carrier;
+    doneAction: Done.freeSelf
+  );
+
+  out = env * out;
 
   out = CompanderD.ar(
     out,
@@ -66,8 +51,11 @@ Instr("owa.OWAKick", {
   //out = [out, out];
 
 }, [
-  \freq,
+  \gate,
   \amp,
-  \gate
+  \freq,
+  [0, 127],
+  ArraySpec.new([0.0, 10000].asSpec()),
+  ArraySpec.new(\buffer)
 ]);
 

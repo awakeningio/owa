@@ -1,12 +1,16 @@
 Instr("owa.AcousticKickSampler", {
   arg gate = 1,
     amp = 1.0,
-    startTime = 0.0,
-    bufnum;
+    velocity = 55,
+    startTimesByVelocity,
+    bufnums,
+    doneAction = Done.freeSelf;
 
   var out,
     samplePlayer,
-    env;
+    env,
+    bufnum = TChoose.kr(gate, bufnums),
+    startTime = Select.kr(velocity, startTimesByVelocity);
 
   samplePlayer = PlayBuf.ar(
     2,
@@ -15,18 +19,19 @@ Instr("owa.AcousticKickSampler", {
     startPos: (startTime / BufDur.kr(bufnum)) * BufFrames.kr(bufnum)
   );
 
-  env = Env.perc(0.005, 1.0, curve: 4.0);
+  env = Env.perc(0.005, 1.5, curve: 4.0);
 
   out = amp * EnvGen.ar(
     env,
     gate: gate,
-    doneAction: Done.freeSelf
+    doneAction: doneAction
   ) * samplePlayer;
 
   out;
 }, [
   \gate,
   \amp,
-  [0.0, 10000],
-  \buffer
+  [0, 127],
+  ArraySpec.new([0.0, 10000].asSpec()),
+  ArraySpec.new(\buffer)
 ]);

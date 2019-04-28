@@ -5,7 +5,7 @@ OWAKickEnvironment : VoicerEnvironmentComponent {
     var voicer,
       sock,
       soundsDir = params['soundsDir'],
-      vileKickInstr = Instr("owa.OWAKick"),
+      vileKickInstr = Instr("owa.SyntheticKick"),
       vileKickSpecs = vileKickInstr.specs,
       gui,
       acousticKickSamplerManager,
@@ -13,12 +13,11 @@ OWAKickEnvironment : VoicerEnvironmentComponent {
 
     acousticKickDone = {
 
-      params['numVoices'] = 10;
-      params['instr'] = Patch("owa.OWAKick", (
-        acousticBufnums: acousticKickSamplerManager.bufnums,
-        acousticStartTimesByVelocity: acousticKickSamplerManager.startTimesByVelocity
-      )).asSynthDef().add().name;
+      params['numVoices'] = 1;
+      params['instr'] = vileKickInstr;
       //params['instrArgs'] = [
+        //\acousticBufnums, acousticKickSamplerManager.bufnums,
+        //\acousticStartTimesByVelocity, acousticKickSamplerManager.startTimesByVelocity
       //];
 
       super.init(params);

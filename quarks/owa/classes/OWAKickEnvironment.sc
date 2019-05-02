@@ -5,25 +5,26 @@ OWAKickEnvironment : VoicerEnvironmentComponent {
     var voicer,
       sock,
       soundsDir = params['soundsDir'],
-      vileKickInstr = Instr("owa.SyntheticKick"),
-      vileKickSpecs = vileKickInstr.specs,
       gui,
       acousticKickSamplerManager,
       acousticKickDone;
 
     acousticKickDone = {
-
+      
       params['numVoices'] = 1;
-      params['instr'] = vileKickInstr;
-      //params['instrArgs'] = [
-        //\acousticBufnums, acousticKickSamplerManager.bufnums,
-        //\acousticStartTimesByVelocity, acousticKickSamplerManager.startTimesByVelocity
-      //];
+      params['instr'] = Instr("owa.OWAKick");
+      params['instrArgs'] = [
+        \acousticStartTimesBufnum, acousticKickSamplerManager.startTimesBuf.bufnum
+      ];
+      ////params['noteOnPat'] = ;
 
       super.init(params);
       
       this.sock.lowkey = "C0".notemidi();
       this.sock.hikey = "C2".notemidi();
+      this.sock.noteOnArgsPat = Pbind(
+        \acousticSampleBufnum, acousticKickSamplerManager.sampleBufnumPattern(),
+      );
 
     };
     

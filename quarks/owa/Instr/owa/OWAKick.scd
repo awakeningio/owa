@@ -3,8 +3,8 @@ Instr("owa.OWAKick", {
     amp = 1.0,
     freq = 55,
     velocity,
-    acousticStartTimesByVelocity,
-    acousticBufnums;
+    acousticStartTimesBufnum,
+    acousticSampleBufnum;
 
   var synthetic,
     acoustic,
@@ -13,7 +13,7 @@ Instr("owa.OWAKick", {
 
   synthetic = Instr.ar("owa.SyntheticKick", (
     gate: gate,
-    amp: -1.0.dbamp() * amp,
+    amp: -4.0.dbamp() * amp,
     freq: freq,
     velocity: velocity,
     doneAction: Done.none
@@ -21,14 +21,14 @@ Instr("owa.OWAKick", {
 
   acoustic = Instr.ar("owa.AcousticKickSampler", (
     gate: gate,
-    amp: -4.0.dbamp() * amp,
+    amp: -2.0.dbamp() * amp,
     velocity: velocity,
-    startTimesByVelocity: acousticStartTimesByVelocity,
-    bufnums: acousticBufnums,
+    startTimesBufnum: acousticStartTimesBufnum,
+    sampleBufnum: acousticSampleBufnum,
     doneAction: Done.none
   ));
 
-  out = acoustic + synthetic;
+  out = synthetic + acoustic;
 
   env = EnvGen.ar(
     Env.perc(0, 2),
@@ -56,7 +56,7 @@ Instr("owa.OWAKick", {
   \amp,
   \freq,
   [0, 127],
-  ArraySpec.new([0.0, 10000].asSpec()),
-  ArraySpec.new(\buffer)
+  \bufnum,
+  \bufnum
 ]);
 

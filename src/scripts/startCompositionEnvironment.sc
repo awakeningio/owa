@@ -9,10 +9,11 @@
   s.options.blockSize = 8;
 
   s.waitForBoot({
+    s.meter();
+    s.plotTree();
     OWACompositionEnvironment.start(());
   });
 
-  s.meter();
   s.boot();
 
 

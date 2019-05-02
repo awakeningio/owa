@@ -11,7 +11,7 @@ Instr("owa.SyntheticKick", {
     out;
 
   attackModulator = Instr.ar("cs.fm.Oscillator", (
-    amp: LinExp.kr(velocity, 0, 127, 25, 50) * freq,
+    amp: LinExp.kr(velocity, 0, 127, 15, 50) * freq,
     freq: 7.3 * freq,
     gate: gate,
     envShape: Env.new(
@@ -39,7 +39,7 @@ Instr("owa.SyntheticKick", {
   ));
 
   carrier = Instr.ar("cs.fm.Oscillator", (
-    amp: LinExp.kr(velocity, 0, 127, -6.dbamp(), 0.dbamp()) * amp,
+    amp: LinExp.kr(velocity, 0, 127, -12.dbamp(), 0.dbamp()) * amp,
     freq: freq + attackModulator + toneModulator,
     gate: gate,
     envShape: Env.new(

@@ -1,7 +1,8 @@
 AcousticKickSamplerManager {
   var <synthdef,
     <startTimesByVelocity,
-    <bufnums;
+    <startTimesBuf,
+    bufnums;
   *new {
     arg params;
     ^super.new.init(params);
@@ -29,31 +30,43 @@ AcousticKickSamplerManager {
     }), ({
       var bufs;
       "acoustic kick samples loaded".postln();
+
+      // Collects the bufnums of the alternative recordings
       bufs = fileSyms.collect({
         arg fs;
         bufManager.bufs[fs];
       });
+      bufnums = bufs.collect({arg buf; buf.bufnum; });
 
-
-      // Converts note times to floats
+      // Collects the start times (by velocity) as an Array of floats
       startTimesByVelocity = metadata["noteTimesInSeconds"].collect({
         arg t;
         t.asFloat();
       });
 
-      bufnums = bufs.collect({arg buf; buf.bufnum; });
+      // Converts the Array of floats into a buffer
+      Buffer.loadCollection(collection: startTimesByVelocity, action: {
+        arg buf;
 
-      // Creates synthdef, passing in all bufnums and the mapping of 
-      // velocity (index) to note time in `startTimes`.
-      synthdef = Patch("owa.AcousticKickSampler", (
-        bufnums: bufs.collect({arg buf; buf.bufnum; }),
-        gate: KrNumberEditor(1, \gate),
-        amp: KrNumberEditor(1.0, \amp),
-        startTimes: noteTimes
-      )).asSynthDef().add();
+        startTimesBuf = buf;
 
-      params['onDoneLoading'].value();
+        // Creates synthdef, passing in all bufnums and the mapping of 
+        // velocity (index) to note time in `startTimesBufnum`.
+        //synthdef = Patch("owa.AcousticKickSampler", (
+          //velocity: KrNumberEditor(0, [0, 127]),
+          //gate: KrNumberEditor(1, \gate),
+          //amp: KrNumberEditor(1.0, \amp),
+          //startTimesBufnum: startTimesBuf.bufnum
+        //)).asSynthDef().add();
+
+        params['onDoneLoading'].value();
+      })
 
     }));
+  }
+  sampleBufnumPattern {
+    ^Pfunc({
+      bufnums[rrand(0, bufnums.size - 1)];
+    });
   }
 }

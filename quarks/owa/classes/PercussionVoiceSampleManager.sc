@@ -1,8 +1,14 @@
-AcousticKickSamplerManager {
-  var <synthdef,
-    <startTimesByVelocity,
-    <startTimesBuf,
+/**
+ *  @class        PercussionVoiceSampleManager
+ *
+ *  @classdesc    Manages loading samples and metadata for a single percussion
+ *  voice.  Metadata is expected to contain start times for each possible
+ *  velocity and samples are expected to be randomized for each note.
+ **/
+PercussionVoiceSampleManager {
+  var <startTimesBuf,
     bufnums;
+
   *new {
     arg params;
     ^super.new.init(params);
@@ -15,7 +21,9 @@ AcousticKickSamplerManager {
       metadata = metadataFilePath.parseYAMLFile(),
       noteTimes,
       filepaths = metadata["filepaths"],
-      fileSyms;
+      fileSyms,
+      startTimesByVelocity,
+      bufsToLoad;
 
     // Creates symbol names for each file
     fileSyms = filepaths.collect({
@@ -23,19 +31,21 @@ AcousticKickSamplerManager {
       fp.asSymbol();
     });
 
-    // Loads buffers for each file
-    bufManager.load_bufs(filepaths.collect({
+    bufsToLoad = filepaths.collect({
       arg fp, i;
       [fp, fileSyms[i]];
-    }), ({
+    });
+
+    // Loads buffers for each file
+    bufManager.load_bufs(bufsToLoad, ({
       var bufs;
-      "acoustic kick samples loaded".postln();
 
       // Collects the bufnums of the alternative recordings
       bufs = fileSyms.collect({
         arg fs;
         bufManager.bufs[fs];
       });
+
       bufnums = bufs.collect({arg buf; buf.bufnum; });
 
       // Collects the start times (by velocity) as an Array of floats
@@ -49,15 +59,6 @@ AcousticKickSamplerManager {
         arg buf;
 
         startTimesBuf = buf;
-
-        // Creates synthdef, passing in all bufnums and the mapping of 
-        // velocity (index) to note time in `startTimesBufnum`.
-        //synthdef = Patch("owa.AcousticKickSampler", (
-          //velocity: KrNumberEditor(0, [0, 127]),
-          //gate: KrNumberEditor(1, \gate),
-          //amp: KrNumberEditor(1.0, \amp),
-          //startTimesBufnum: startTimesBuf.bufnum
-        //)).asSynthDef().add();
 
         params['onDoneLoading'].value();
       })

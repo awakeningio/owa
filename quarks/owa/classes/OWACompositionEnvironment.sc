@@ -17,9 +17,11 @@ OWACompositionEnvironment {
 
     var clock,
       owaKickEnvironment,
+      owaSnareEnvironment,
       owaBassEnvironment,
       soundsDir = "SOUNDS_DIRECTORY_PATH".getenv(),
-      bufManager;
+      bufManager,
+      percussionKitSampleManager;
 
     Server.default.latency = 0.1;
     clock = LinkClock();
@@ -28,16 +30,27 @@ OWACompositionEnvironment {
       rootDir: soundsDir
     ));
 
-    owaKickEnvironment = OWAKickEnvironment.new((
-      inChannel: 6,
-      outputBus: 24,
+    percussionKitSampleManager = OWAPercussionKitSampleManager.new((
+      bufManager: bufManager,
       soundsDir: soundsDir,
-      bufManager: bufManager
+      onDoneLoading: {
+        owaKickEnvironment = OWAKickEnvironment.new((
+          inChannel: 6,
+          outputBus: 24,
+          percussionKitSampleManager: percussionKitSampleManager
+        ));
+        owaSnareEnvironment = OWASnareEnvironment.new((
+          inChannel: 7,
+          outputBus: 26,
+          percussionKitSampleManager: percussionKitSampleManager
+        ));
+        owaBassEnvironment = OWABassVoicerEnvironment.new((
+          inChannel: 5,
+          outputBus: 28
+        ));
+      }
     ));
-    owaBassEnvironment = OWABassVoicerEnvironment.new((
-      inChannel: 5,
-      outputBus: 28
-    ));
+
 
     ^this;  
   }

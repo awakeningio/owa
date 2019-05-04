@@ -1,4 +1,4 @@
-Instr("owa.OWAKick", {
+Instr("owa.EminatorKick", {
   arg gate = 1,
     amp = 1.0,
     freq = 55,
@@ -53,7 +53,7 @@ Instr("owa.OWAKick", {
     slopeAbove: 0.4,
     clampTime: 0.005,
     relaxTime: 0.3,
-    mul: 7.0.dbamp()
+    mul: 2.0.dbamp()
   );
 
   out = env * out;

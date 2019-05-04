@@ -13,7 +13,7 @@
       //startTimesBufnum: acousticKickSamplerManager.startTimesBuf.bufnum
     //)).asSynthDef().add();
 
-    synthdef = Patch("owa.OWAKick", (
+    synthdef = Patch("owa.EminatorKick", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
       amp: KrNumberEditor(1.0, \amp),

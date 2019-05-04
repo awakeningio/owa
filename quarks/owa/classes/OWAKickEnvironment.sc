@@ -12,7 +12,7 @@ OWAKickEnvironment : VoicerEnvironmentComponent {
     acousticKickDone = {
       
       params['numVoices'] = 1;
-      params['instr'] = Instr("owa.OWAKick");
+      params['instr'] = Instr("owa.EminatorKick");
       params['instrArgs'] = [
         \acousticStartTimesBufnum, acousticKickSamplerManager.startTimesBuf.bufnum
       ];

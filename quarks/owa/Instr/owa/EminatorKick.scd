@@ -24,8 +24,8 @@ Instr("owa.EminatorKick", {
     gate: gate,
     amp: -7.0.dbamp() * amp,
     velocity: velocity,
-    startTimesByVelocityBufNum: acousticStartTimesBufnum,
-    sampleBufnum: acousticSampleBufnum,
+    startTimesByVelocity: acousticStartTimesBufnum,
+    sample: acousticSampleBufnum,
     sampleDur: 0.5
   ));
   acoustic = RHPF.ar(in: acoustic, freq: 79.1, rq: 0.72, mul: 1.0, add: 0.0);

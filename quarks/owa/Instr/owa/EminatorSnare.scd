@@ -16,8 +16,8 @@ Instr("owa.EminatorSnare", {
     gate: gate,
     amp: LinExp.kr(velocity, 0, 127, -18.0.dbamp(), 0.0.dbamp()),
     velocity: velocity,
-    startTimesByVelocityBufNum: electronicStartTimesBufnum,
-    sampleBufnum: electronicSampleBufnum,
+    startTimesByVelocity: electronicStartTimesBufnum,
+    sample: electronicSampleBufnum,
     sampleDur: 0.5
   ));
 
@@ -25,8 +25,8 @@ Instr("owa.EminatorSnare", {
     gate: gate,
     amp: -18.0.dbamp(),
     velocity: velocity,
-    startTimesByVelocityBufNum: acousticStartTimesBufnum,
-    sampleBufnum: acousticSampleBufnum,
+    startTimesByVelocity: acousticStartTimesBufnum,
+    sample: acousticSampleBufnum,
     sampleDur: 0.5
   ));
 

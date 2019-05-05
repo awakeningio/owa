@@ -3,23 +3,29 @@ OWAPercussionKitSampleManager : PercussionKitSampleManager {
     arg params;
     var bufManager = params['bufManager'],
       soundsDir = params['soundsDir'],
-      onDoneLoading = params['onDoneLoading'];
+      onDoneLoading = params['onDoneLoading'],
+      voices;
+
+    voices = [
+      'acoustic_kick',
+      'electronic_snare',
+      'acoustic_snare',
+      'acoustic_hat',
+      'acoustic_hat_open',
+      'electronic_hat',
+      'electronic_hat_open'
+    ].collect({
+      arg voiceName;
+
+      (
+        name: voiceName,
+        metadataFilePath: soundsDir +/+ voiceName.asString() ++ ".json"
+      );
+    });
+
     ^super.new((
       bufManager: bufManager,
-      voices: [
-        (
-          name: 'acoustic_kick',
-          metadataFilePath: soundsDir +/+ "acoustic_kick_sampled.json" 
-        ),
-        (
-          name: 'electronic_snare',
-          metadataFilePath: soundsDir +/+ "electronic_snare.json"
-        ),
-        (
-          name: 'acoustic_snare',
-          metadataFilePath: soundsDir +/+ "acoustic_snare.json"
-        )
-      ],
+      voices: voices,
       onDoneLoading: onDoneLoading
     ));
   }

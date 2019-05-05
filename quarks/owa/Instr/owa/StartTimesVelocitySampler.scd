@@ -4,28 +4,28 @@
  *  @classdesc    Takes a buffer of startTimes into the sample buffer.  Useful
  *  for storing multiple velocities in a single audio file.
  *
- *  @param  {bufnum}  startTimesByVelocityBufNum - A 127 size buffer, element 0
+ *  @param  {bufnum}  startTimesByVelocity - A 127 size buffer, element 0
  *  is the start time (in seconds) of the note with velocity 1, etc.
  *  @param  {bufnum}  sampleBufNum - The sample to play starting at `startTime`.
  **/
 Instr("owa.StartTimesVelocitySampler", {
   arg gate,
-    amp,
+    amp = 1.0,
     velocity,
-    startTimesByVelocityBufNum,
-    sampleBufnum,
+    startTimesByVelocity,
+    sample,
     sampleDur,
     numChannels = 2;
 
-  var startTime = Index.kr(startTimesByVelocityBufNum, velocity - 1),
+  var startTime = Index.kr(startTimesByVelocity, velocity - 1),
     samplePlayer,
     env;
 
   samplePlayer = PlayBuf.ar(
     numChannels,
-    sampleBufnum,
+    sample,
     trigger: gate,
-    startPos: (startTime / BufDur.kr(sampleBufnum)) * BufFrames.kr(sampleBufnum)
+    startPos: (startTime / BufDur.kr(sample)) * BufFrames.kr(sample)
   );
 
   env = EnvGen.ar(
@@ -40,5 +40,6 @@ Instr("owa.StartTimesVelocitySampler", {
   [0, 127],
   \bufnum,
   \bufnum,
+  [0, 100],
   [0, 64]
 ]);

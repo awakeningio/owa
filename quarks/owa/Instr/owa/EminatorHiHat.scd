@@ -11,7 +11,8 @@ Instr("owa.EminatorHiHat", {
     electronicClosedStartTimes,
     electronicOpenStartTimes,
     electronicClosedSample,
-    electronicOpenSample;
+    electronicOpenSample,
+    sustained = false;
 
   var acousticClosed,
     acousticOpen,
@@ -20,12 +21,16 @@ Instr("owa.EminatorHiHat", {
     out,
     trig,
     trigTime,
-    acousticAmp = -8.0.dbamp(),
+    acousticAmp = -12.0.dbamp(),
+    electronicAmp = -8.0.dbamp(),
     env;
 
-  trigTime = sustainTime + (openHat * 0.15);
-
-  trig = Trig.kr(gate, trigTime);
+  trigTime = sustainTime + (openHat * 0.1);
+  if (sustained == false, {
+    trig = Trig.kr(gate, trigTime);
+  }, {
+    trig = gate;
+  });
 
   acousticClosed = Instr.ar("owa.StartTimesVelocitySampler", (
     gate: trig * (1.0 - openHat),
@@ -33,7 +38,7 @@ Instr("owa.EminatorHiHat", {
     velocity: velocity,
     startTimesByVelocity: acousticClosedStartTimes,
     sample: acousticClosedSample,
-    sampleDur: trigTime
+    sampleDur: 0.5
   ));
 
   acousticOpen = Instr.ar("owa.StartTimesVelocitySampler", (
@@ -42,23 +47,25 @@ Instr("owa.EminatorHiHat", {
     velocity: velocity,
     startTimesByVelocity: acousticOpenStartTimes,
     sample: acousticOpenSample,
-    sampleDur: trigTime
+    sampleDur: 3.0
   ));
 
   electronicClosed = Instr.ar("owa.StartTimesVelocitySampler", (
-    gate: gate * (1.0 - openHat),
+    gate: trig * (1.0 - openHat),
+    amp: electronicAmp,
     velocity: velocity,
     startTimesByVelocity: electronicClosedStartTimes,
     sample: electronicClosedSample,
-    sampleDur: trigTime
+    sampleDur: 0.5
   ));
 
   electronicOpen = Instr.ar("owa.StartTimesVelocitySampler", (
-    gate: gate * openHat,
+    gate: trig * openHat,
+    amp: electronicAmp,
     velocity: velocity,
     startTimesByVelocity: electronicOpenStartTimes,
     sample: electronicOpenSample,
-    sampleDur: trigTime
+    sampleDur: 2.0
   ));
 
   env = EnvGen.ar(
@@ -66,13 +73,18 @@ Instr("owa.EminatorHiHat", {
       attackTime: 0,
       decayTime: 0,
       sustainLevel: 1.0,
-      releaseTime: 0.2
+      releaseTime: 0.1
     ),
     gate: trig,
     doneAction: Done.freeSelf
   );
 
-  out = acousticClosed + acousticOpen + electronicClosed + electronicOpen;
+  out = electronicClosed + electronicOpen + acousticClosed + acousticOpen;
+
+  out = out * -12.0.dbamp();
+
+  out = RHPF.ar(in: out, freq: 454, rq: 0.6134);
+  out = BHiShelf.ar(in: out, freq: 2670, rs: 1.0, db: 9.0);
 
   out = env * amp * out;
 
@@ -89,5 +101,6 @@ Instr("owa.EminatorHiHat", {
   \bufnum,
   \bufnum,
   \bufnum,
-  \bufnum
+  \bufnum,
+  ObjectSpec(false)
 ]);

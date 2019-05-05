@@ -19,6 +19,7 @@ OWACompositionEnvironment {
       owaKickEnvironment,
       owaSnareEnvironment,
       owaBassEnvironment,
+      owaHatsEnvironment,
       soundsDir = "SOUNDS_DIRECTORY_PATH".getenv(),
       bufManager,
       percussionKitSampleManager;
@@ -47,6 +48,11 @@ OWACompositionEnvironment {
         owaBassEnvironment = OWABassVoicerEnvironment.new((
           inChannel: 5,
           outputBus: 28
+        ));
+        owaHatsEnvironment = OWAHatsEnvironment.new((
+          inChannel: 8,
+          outputBus: 30,
+          percussionKitSampleManager: percussionKitSampleManager
         ));
       }
     ));

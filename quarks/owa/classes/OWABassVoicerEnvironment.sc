@@ -5,7 +5,7 @@ OWABassVoicerEnvironment : VoicerEnvironmentComponent {
     var instr = Instr("cs.fm.WideBass"),
       specs = instr.specs;
 
-    params['numVoices'] = 1;
+    params['monoPortaVoicer'] = true;
     params['instr'] = instr;
     params['instrArgs'] = (
       'useSustain': 0

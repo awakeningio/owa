@@ -42,6 +42,7 @@
       acousticOpenStartTimes: percussionKitSampleManager.getVoiceSampleManager('acoustic_hat_open').startTimesBuf.bufnum,
       electronicClosedStartTimes: percussionKitSampleManager.getVoiceSampleManager('electronic_hat').startTimesBuf.bufnum,
       electronicOpenStartTimes: percussionKitSampleManager.getVoiceSampleManager('electronic_hat_open').startTimesBuf.bufnum,
+      sustained: false
     )).asSynthDef().add();
 
     //pat = Pbind(

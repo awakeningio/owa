@@ -101,8 +101,6 @@
           patches.do({
             arg patch;
 
-
-
             players.add(outputChannel.play(patch));
           });
         });    

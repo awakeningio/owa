@@ -26,6 +26,7 @@ import InactivityTimeoutController from './InactivityTimeoutController';
 
 class OWAController extends ControllerWithStore {
   init () {
+    const onInit = this.params.onInit || (() => {});
     logger.debug('OWAController.init');
     this.actionListener = new OSCActionListener(this.store, {
       localPort: getEnvOrError('GUI_OSC_OUT_PORT'),
@@ -43,8 +44,11 @@ class OWAController extends ControllerWithStore {
     } else {
       this.inactivityTimeoutController = null;
     }
-    this.scController.boot().then(() => {
+    this.scController.boot().then((sclang) => {
+      console.log("sclang");
+      console.log(sclang);
       this.soundController = new SoundController(this.store, {
+        sclang
         //linkStateStore: this.params.linkStateStore
       });
       //this.abletonLinkController = new AbletonLinkController(
@@ -55,6 +59,8 @@ class OWAController extends ControllerWithStore {
       //);
       this.lightingController = new LightingController(this.store);
       this.serialInputController = new SerialInputController(this.store);
+
+      onInit();
     }).catch((err) => {
       console.log(`ERROR while booting: ${err}`);
       console.log(err.stack);

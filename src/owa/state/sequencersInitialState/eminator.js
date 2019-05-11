@@ -34,6 +34,12 @@ export default function createEminatorState () {
     ...eminatorBassSeq.phaseProps[SESSION_PHASES.PLAYING_6]
   };
   sequencerList.push(eminatorBassSeq);
+
+  sequencerList.push(create_owa_sequencer(
+    'eminator-6_1',
+    'EminatorCrazyVoicesSequencer'
+  ));
+
   return sequencerList.reduce((acc, sequencer) => {
     acc[sequencer.sequencerId] = sequencer;
     return acc;

@@ -144,7 +144,7 @@ export const SEGMENTID_TO_SEQUENCERID_BY_SONGID = {
   },
   [SONG_IDS.EMINATOR]: {
     'level_6-segment_0': 'eminator-6_0',
-    'level_6-segment_1': 'spinny_pluck-6_1',
+    'level_6-segment_1': 'eminator-6_1',
     'level_6-segment_2': 'spinny_pluck-6_2',
     'level_6-segment_3': 'spinny_pluck-6_3',
     'level_6-segment_4': 'spinny_pluck-6_4',
@@ -186,8 +186,7 @@ export const SESSION_PHASE_DURATIONS_BY_SONGID = {
     [SESSION_PHASES.PLAYING_ADVICE]: 55 * 4
   },
   [SONG_IDS.EMINATOR]: {
-    [SESSION_PHASES.QUEUE_TRANS_6]: 4,
-    //[SESSION_PHASES.TRANS_6]: 15 * 4,
+    [SESSION_PHASES.QUEUE_TRANS_6]: 15 * 4,
     [SESSION_PHASES.TRANS_6]: 4 * 4,
     [SESSION_PHASES.QUEUE_TRANS_4]: 4,
     [SESSION_PHASES.TRANS_4]: 4 * 4,

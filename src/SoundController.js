@@ -54,7 +54,7 @@ class SoundController extends ControllerWithStore {
 
   handle_state_change () {
 
-    var state = this.store.getState();
+    const state = this.store.getState();
 
     if (state.soundReady !== this.lastState.soundReady) {
       this.lastState.soundReady = state.soundReady;
@@ -67,13 +67,8 @@ class SoundController extends ControllerWithStore {
         this.owaAPI.on("error", this.handle_api_error.bind(this));
         logger.debug('SoundController owaAPI.connect');
         this.owaAPI.connect();
-        //this.linkStore.subscribe(() => {
-          //this.handle_link_state_change();
-        //});
-        //this.handle_link_state_change();
         logger.debug('SoundController calling owa.init');
         this.call("owa.init", [{
-          //linkState: this.linkStore.getState(),
           state: this.store.getState(),
           constants
         }]);
@@ -81,7 +76,7 @@ class SoundController extends ControllerWithStore {
       
     }
     if (state.soundReady == constants.OWA_READY_STATES.READY) {
-      let scState = getSCState(state);
+      const scState = getSCState(state);
       if (this.lastSCState !== scState) {
         logger.debug('replica state changed.');
         this.lastSCState = scState;
@@ -98,8 +93,13 @@ class SoundController extends ControllerWithStore {
     return this._apiCallIndex;
   }
   call (apiMethodName, args) {
+
     if (this.owaAPI) {
-      return this.owaAPI.call(this.getAPICallIndex(), apiMethodName, args);
+      return this.owaAPI.call(
+        this.getAPICallIndex(),
+        apiMethodName,
+        args
+      ).catch((err) => this.handle_api_error(err));
     } else {
       return new Promise((res) => {
         res();

@@ -52,7 +52,7 @@ class SCController {
       'avgCPU': s.avgCPU()
     );
 `;
-    if (process.env.DEBUG_SC === "1") {
+    if (process.env.DEBUG_SC === "1" && process.env.DISABLE_GUI === "1") {
       this.debugSCInterval = setInterval(() => {
         this.sclang.interpret(scsynthGetInfo).then((result) => {
           logger.debug(
@@ -89,22 +89,24 @@ s.options.blockSize = 128;
 
 s.waitForBoot({
           `;
-          if (getEnvAsNumber(process.env.DISABLE_GUI) === 0) {
-            scBootScript += `
-s.meter();
-            `;
-          }
           if (process.env.DEBUG_SC === "1") {
-            scBootScript += `
-  s.dumpOSC();
-  Routine {
-    loop {
-      s.queryAllNodes();
+            if (process.env.DISABLE_GUI === "0") {
+              scBootScript += `
+  s.meter();
+  s.plotTree();
+              `;
+            } else {
 
-      10.0.wait();
-    }
-  }.play();
-            `;
+              scBootScript += `
+    Routine {
+      loop {
+        s.queryAllNodes();
+
+        10.0.wait();
+      }
+    }.play();
+              `;
+            }
           }
 
           scBootScript += `
@@ -113,7 +115,7 @@ s.meter();
           `;
           return sclang.interpret(scBootScript).then(() => {
             this.handleBooted();
-            resolve();
+            resolve(sclang);
           });
         }).catch(reject);
       }

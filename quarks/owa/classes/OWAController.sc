@@ -36,6 +36,10 @@ OWAController {
       )
     ));
 
+    //OSCFunc.new({
+      //arg msg, time, addr, recvPort;
+    //}, '/owa/init')
+
     //linkStore = StateStore.new(());
     
     outputChannel = MixerChannel.new(

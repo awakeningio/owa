@@ -19,7 +19,19 @@ OWAPercussionKitSampleManager : PercussionKitSampleManager {
 
       (
         name: voiceName,
-        metadataFilePath: soundsDir +/+ voiceName.asString() ++ ".json"
+        metadataFilePath: soundsDir +/+ voiceName.asString() ++ ".json",
+        sampleManagerClass: PercussionVoiceSampleManager
+      );
+    });
+
+    voices = voices ++ [
+      'wub-buzz-slices'
+    ].collect({
+      arg voiceName;
+      (
+        name: voiceName,
+        metadataFilePath: soundsDir +/+ voiceName.asString() ++ ".json",
+        sampleManagerClass: SlicedVoiceSampleManager
       );
     });
 

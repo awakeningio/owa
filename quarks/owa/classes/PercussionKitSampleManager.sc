@@ -32,9 +32,12 @@ PercussionKitSampleManager {
       arg voiceInfo;
 
       var voiceName = voiceInfo['name'].asSymbol(),
-        voiceSampleManager;
+        voiceSampleManager,
+        sampleManagerClass;
 
-      voiceSampleManager = PercussionVoiceSampleManager.new((
+      sampleManagerClass = voiceInfo['sampleManagerClass'];
+
+      voiceSampleManager = sampleManagerClass.new((
         bufManager: bufManager,
         metadataFilePath: voiceInfo['metadataFilePath'],
         onDoneLoading: {

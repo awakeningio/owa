@@ -61,7 +61,7 @@ PercussionVoiceSampleManager {
         startTimesBuf = buf;
 
         params['onDoneLoading'].value();
-      })
+      });
 
     }));
   }

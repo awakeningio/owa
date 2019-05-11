@@ -29,7 +29,7 @@ Instr("owa.StartTimesVelocitySampler", {
   );
 
   env = EnvGen.ar(
-    Env.perc(0, sampleDur, -4),
+    Env.perc(0, sampleDur, 24),
     gate: gate,
     doneAction: Done.none
   );

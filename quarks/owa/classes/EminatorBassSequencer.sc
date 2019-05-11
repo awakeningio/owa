@@ -62,7 +62,7 @@ EminatorBassSequencer : AwakenedSequencer {
 
 
     ^Patch("cs.fm.WideBass", (
-      amp: -6.dbamp(),
+      amp: -24.dbamp(),
       useSustain: 0,
       gate: KrNumberEditor(1, \gate),
       useModulatorBus: 1

@@ -173,7 +173,16 @@ OWAController {
       [
         "eminator_snareroll_01 [2019-03-23 192053].aif",
         'eminator_snareroll_01'
-      ]
+      ],
+			["sharp_eerie/eerie_L6_01 [2019-05-10 104045]_mono.aif", \sharp_eerie_01],
+			["sharp_eerie/eerie_L6_02 [2019-05-10 104045]_mono.aif", \sharp_eerie_02],
+			["sharp_eerie/eerie_L6_03 [2019-05-10 104045]_mono.aif", \sharp_eerie_03],
+			["sharp_eerie/eerie_L6_04 [2019-05-10 104045]_mono.aif", \sharp_eerie_04],
+			["sharp_eerie/eerie_L6_05 [2019-05-10 104045]_mono.aif", \sharp_eerie_05],
+			["sharp_eerie/eerie_L6_06 [2019-05-10 104045]_mono.aif", \sharp_eerie_06],
+			["sharp_eerie/eerie_L6_07 [2019-05-10 104045]_mono.aif", \sharp_eerie_07],
+			["sharp_eerie/eerie_L6_08 [2019-05-10 104045]_mono.aif", \sharp_eerie_08],
+			["sharp_eerie/eerie_L6_09 [2019-05-10 104045]_mono.aif", \sharp_eerie_09]
     ], ({
       // when buffers are done loading
       // load midi files

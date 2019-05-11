@@ -39,7 +39,7 @@
         2, 2,
         outbus: 0
       );
-      outputChannel.level = 1.0;
+      outputChannel.level = 0.0;
 
       // initializes a gate for each song
       gateEditorBySongId = Dictionary.new();

@@ -40,6 +40,11 @@ export default function createEminatorState () {
     'EminatorCrazyVoicesSequencer'
   ));
 
+  sequencerList.push(create_owa_sequencer(
+      'eminator-6_2',
+      'EminatorSharpEerieSequencer'
+  ));
+
   return sequencerList.reduce((acc, sequencer) => {
     acc[sequencer.sequencerId] = sequencer;
     return acc;

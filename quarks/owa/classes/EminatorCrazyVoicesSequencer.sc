@@ -17,12 +17,18 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
       //\degree, Pseq([0, 5, 3, 8, 7, 0, 7, 5], inf),
       \degree, Pseq([0, 7, 2, 0, 7, 0, 2, 2], inf),
       \scale, Scale.minor,
-      \octave, Prand([1, 2, 6, 7], inf),
+      \octave, Prand([1, 2, 3, 4], inf),
       // D
       \mtranspose, 2,
       //\dur, Prand([0.5, Rest(0.5)], inf),
-      \dur, Prand([0.25, Rest(0.25), 0.5, Rest(0.5)], inf),
-      \amp, -5.0.dbamp(),
+      //\dur, Prand([0.25, Rest(0.25), 0.5, Rest(0.5)], inf),
+      \dur, Prand([
+        Pseq([1, Rest(6)]),
+        Pseq([0.5, Rest(6.5)]),
+        Pseq([Rest(7)]),
+        Pseq([Rest(7)])
+      ], inf),
+      \amp, Prand([-10.0.dbamp(), -20.0.dbamp()], inf),
       \vibratoSpeed, clock.tempo * 4,
       \vibratoDepth, 2, // in semitones
       \vowel, Prand([0, 1, 2, 3, 4], inf),

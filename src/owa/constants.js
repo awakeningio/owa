@@ -145,7 +145,7 @@ export const SEGMENTID_TO_SEQUENCERID_BY_SONGID = {
   [SONG_IDS.EMINATOR]: {
     'level_6-segment_0': 'eminator-6_0',
     'level_6-segment_1': 'eminator-6_1',
-    'level_6-segment_2': 'spinny_pluck-6_2',
+    'level_6-segment_2': 'eminator-6_2',
     'level_6-segment_3': 'spinny_pluck-6_3',
     'level_6-segment_4': 'spinny_pluck-6_4',
     'level_6-segment_5': 'spinny_pluck-6_5',

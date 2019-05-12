@@ -19,7 +19,6 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
 
   initStream {
     var sampleManager = OWASampleManager.getInstance();
-    bufManager.midiSequences['eminator_hats_L6'].postln();
     ^Pbind(
       \instrument, hatsSynthdef.name,
       [\midinote, \dur], Pseq(bufManager.midiSequences['eminator_hats_L6'], inf),

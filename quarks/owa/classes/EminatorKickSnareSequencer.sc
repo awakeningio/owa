@@ -1,0 +1,9 @@
+EminatorKickSnareSequencer : AwakenedSequencer {
+  initPatch {
+    
+  }
+
+  initStream {
+    
+  }
+}

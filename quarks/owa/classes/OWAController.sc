@@ -250,6 +250,42 @@ OWAController {
           midiKey: 'eminator_hats_L6',
           makeDuration: 2 * 7,
           tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_kick_L2.mid",
+          midiKey: 'eminator_kick_L2',
+          makeDuration: 8 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_kick_L4.mid",
+          midiKey: 'eminator_kick_L4',
+          makeDuration: 8 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_kick_L6.mid",
+          midiKey: 'eminator_kick_L6',
+          makeDuration: 2 * 7,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_snare_L2.mid",
+          midiKey: 'eminator_snare_L2',
+          makeDuration: 8 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_snare_L4.mid",
+          midiKey: 'eminator_snare_L4',
+          makeDuration: 8 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_snare_L6.mid",
+          midiKey: 'eminator_snare_L6',
+          makeDuration: 2 * 7,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
         )
       ]);
 

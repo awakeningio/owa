@@ -6,7 +6,20 @@ import {
 } from 'owa/constants';
 
 export default function createEminatorState () {
-  const sequencerList = [];
+  const sequencerList = [
+    create_owa_sequencer(
+      'eminator-6_1',
+      'EminatorCrazyVoicesSequencer'
+    ),
+    create_owa_sequencer(
+      'eminator-6_2',
+      'EminatorSharpEerieSequencer'
+    ),
+    create_owa_sequencer(
+      'eminator-6_3',
+      'EminatorNoisySFXSequencer'
+    )
+  ];
   let eminatorBassSeq = create_owa_sequencer(
     'eminator-6_0',
     'EminatorBassSequencer',
@@ -34,16 +47,6 @@ export default function createEminatorState () {
     ...eminatorBassSeq.phaseProps[SESSION_PHASES.PLAYING_6]
   };
   sequencerList.push(eminatorBassSeq);
-
-  sequencerList.push(create_owa_sequencer(
-    'eminator-6_1',
-    'EminatorCrazyVoicesSequencer'
-  ));
-
-  sequencerList.push(create_owa_sequencer(
-      'eminator-6_2',
-      'EminatorSharpEerieSequencer'
-  ));
 
   return sequencerList.reduce((acc, sequencer) => {
     acc[sequencer.sequencerId] = sequencer;

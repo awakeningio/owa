@@ -45,8 +45,6 @@ class OWAController extends ControllerWithStore {
       this.inactivityTimeoutController = null;
     }
     this.scController.boot().then((sclang) => {
-      console.log("sclang");
-      console.log(sclang);
       this.soundController = new SoundController(this.store, {
         sclang
         //linkStateStore: this.params.linkStateStore

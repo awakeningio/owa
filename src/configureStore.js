@@ -38,10 +38,10 @@ if (process.env.NODE_ENV === 'development') {
       //])
     //});
     toPrint.sessionPhase = state.sessionPhase;
-    toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
-    toPrint.idlePlayer = state.idlePlayer;
+    //toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
+    //toPrint.idlePlayer = state.idlePlayer;
     toPrint.soundReady = state.soundReady;
-    toPrint.sequencers = state.sequencers;
+    //toPrint.sequencers = state.sequencers;
     //toPrint.segments = state.segments;
     return toPrint;
   };

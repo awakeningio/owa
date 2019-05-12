@@ -15,7 +15,7 @@ Instr("owa.eminator.WubBuzzSampler", {
     doneAction: Done.freeSelf
   );
 
-  out = env * Instr.ar("owa.StartTimesIndexSampler", (
+  out = amp * env * Instr.ar("owa.StartTimesIndexSampler", (
     gate: gate,
     startTimesByIndex: startTimes,
     sample: sample,

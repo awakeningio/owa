@@ -1,4 +1,5 @@
-OWAPercussionKitSampleManager : PercussionKitSampleManager {
+OWASampleManager : PercussionKitSampleManager {
+  classvar instance;
   *new {
     arg params;
     var bufManager = params['bufManager'],
@@ -35,10 +36,15 @@ OWAPercussionKitSampleManager : PercussionKitSampleManager {
       );
     });
 
-    ^super.new((
+    instance = super.new((
       bufManager: bufManager,
       voices: voices,
       onDoneLoading: onDoneLoading
     ));
+    ^instance;
+  }
+
+  *getInstance {
+    ^instance;    
   }
 }

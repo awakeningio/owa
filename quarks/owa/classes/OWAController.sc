@@ -20,7 +20,8 @@ OWAController {
     bufManager,
     clockController,
     seqFactory,
-    idlePlayer;
+    idlePlayer,
+    sampleManager;
 
 
   *new {
@@ -234,20 +235,27 @@ OWAController {
         )
       ]);
 
-      // initialize sequencers
-      seqFactory.setStore(store);
-
-      // initialize idle player
-      idlePlayer = IdlePlayer.new((
-        store: store,
+      sampleManager = OWASampleManager.new((
         bufManager: bufManager,
-        clock: clockController.clock
+        soundsDir: "SOUNDS_DIRECTORY_PATH".getenv(),
+        onDoneLoading: {
+          // initialize sequencers
+          seqFactory.setStore(store);
+
+          // initialize idle player
+          idlePlayer = IdlePlayer.new((
+            store: store,
+            bufManager: bufManager,
+            clock: clockController.clock
+          ));
+
+          // tell main process we are done
+          store.dispatch((
+            type: "OWA_SOUND_INIT_DONE"
+          ));
+        }
       ));
 
-      // tell main process we are done
-      store.dispatch((
-        type: "OWA_SOUND_INIT_DONE"
-      ));
 
     }));
 

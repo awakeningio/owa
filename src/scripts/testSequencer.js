@@ -43,6 +43,7 @@ const main = function () {
     setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 1)), 2000);
     setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 2)), 2000);
     setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 3)), 2000);
+    setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 4)), 2000);
 
     //setTimeout(function () {
       //store.dispatch(buttonPressed('level_4', 0));

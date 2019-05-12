@@ -232,6 +232,24 @@ OWAController {
           makeDuration: 4 * 7,
           ccsToEnv: [15, 16],
           tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_L2_hats.mid",
+          midiKey: 'eminator_hats_L2',
+          makeDuration: 8 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_L4_hats.mid",
+          midiKey: 'eminator_hats_L4',
+          makeDuration: 8 * 4,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_L6_hats.mid",
+          midiKey: 'eminator_hats_L6',
+          makeDuration: 2 * 7,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
         )
       ]);
 

@@ -1,7 +1,7 @@
 ({
   var bufManager,
     soundsDir,
-    percussionKitSampleManager,
+    sampleManager,
     onPercussionLoaded;
 
   onPercussionLoaded = {
@@ -14,9 +14,9 @@
       hatSynthDef,
       wubBuzzSynthDef,
       clock = TempoClock.default();
-    acousticKickSamplerManager = percussionKitSampleManager.getVoiceSampleManager('acoustic_kick');
-    electronicSnareSampleManager = percussionKitSampleManager.getVoiceSampleManager('electronic_snare');
-    acousticSnareSampleManager = percussionKitSampleManager.getVoiceSampleManager('acoustic_snare');
+    acousticKickSamplerManager = sampleManager.getVoiceSampleManager('acoustic_kick');
+    electronicSnareSampleManager = sampleManager.getVoiceSampleManager('electronic_snare');
+    acousticSnareSampleManager = sampleManager.getVoiceSampleManager('acoustic_snare');
 
     synthdef = Patch("owa.EminatorKick", (
       velocity: KrNumberEditor(0, [0, 127]),
@@ -60,10 +60,10 @@
       amp: KrNumberEditor(1.0, \amp),
       openHat: KrNumberEditor(0, [0, 1]),
       sustainTime: KrNumberEditor(1, [0, 100]),
-      acousticClosedStartTimes: percussionKitSampleManager.getVoiceSampleManager('acoustic_hat').startTimesBuf.bufnum,
-      acousticOpenStartTimes: percussionKitSampleManager.getVoiceSampleManager('acoustic_hat_open').startTimesBuf.bufnum,
-      electronicClosedStartTimes: percussionKitSampleManager.getVoiceSampleManager('electronic_hat').startTimesBuf.bufnum,
-      electronicOpenStartTimes: percussionKitSampleManager.getVoiceSampleManager('electronic_hat_open').startTimesBuf.bufnum,
+      acousticClosedStartTimes: sampleManager.getVoiceSampleManager('acoustic_hat').startTimesBuf.bufnum,
+      acousticOpenStartTimes: sampleManager.getVoiceSampleManager('acoustic_hat_open').startTimesBuf.bufnum,
+      electronicClosedStartTimes: sampleManager.getVoiceSampleManager('electronic_hat').startTimesBuf.bufnum,
+      electronicOpenStartTimes: sampleManager.getVoiceSampleManager('electronic_hat_open').startTimesBuf.bufnum,
       sustained: false
     )).asSynthDef().add();
     //pat = Pbind(
@@ -84,17 +84,17 @@
         //arg e;
         //(e[\dur] / clock.tempo);
       //}),
-      //\acousticClosedSample, percussionKitSampleManager.getVoiceSampleManager('acoustic_hat').sampleBufnumPattern(),
-      //\electronicClosedSample, percussionKitSampleManager.getVoiceSampleManager('electronic_hat').sampleBufnumPattern(),
-      //\acousticOpenSample, percussionKitSampleManager.getVoiceSampleManager('acoustic_hat_open').sampleBufnumPattern(),
-      //\electronicOpenSample, percussionKitSampleManager.getVoiceSampleManager('electronic_hat_open').sampleBufnumPattern()
+      //\acousticClosedSample, sampleManager.getVoiceSampleManager('acoustic_hat').sampleBufnumPattern(),
+      //\electronicClosedSample, sampleManager.getVoiceSampleManager('electronic_hat').sampleBufnumPattern(),
+      //\acousticOpenSample, sampleManager.getVoiceSampleManager('acoustic_hat_open').sampleBufnumPattern(),
+      //\electronicOpenSample, sampleManager.getVoiceSampleManager('electronic_hat_open').sampleBufnumPattern()
     //);
 
     wubBuzzSynthDef = Patch("owa.eminator.WubBuzzSampler", (
       gate: KrNumberEditor(1.0, \gate),
       amp: KrNumberEditor(-8.0.dbamp(), \amp),
-      startTimes: percussionKitSampleManager.getVoiceSampleManager('wub-buzz-slices').startTimesBuf.bufnum,
-      sample: percussionKitSampleManager.getVoiceSampleManager('wub-buzz-slices').sample.bufnum
+      startTimes: sampleManager.getVoiceSampleManager('wub-buzz-slices').startTimesBuf.bufnum,
+      sample: sampleManager.getVoiceSampleManager('wub-buzz-slices').sample.bufnum
     )).asSynthDef().add();
     pat = Pbind(
       \instrument, wubBuzzSynthDef.name,
@@ -113,7 +113,7 @@
       rootDir: soundsDir
     ));
 
-    percussionKitSampleManager = OWAPercussionKitSampleManager.new((
+    sampleManager = OWASampleManager.new((
       bufManager: bufManager,
       soundsDir: soundsDir,
       onDoneLoading: onPercussionLoaded

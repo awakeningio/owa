@@ -14,7 +14,7 @@ Instr("owa.EminatorKick", {
 
   synthetic = Instr.ar("owa.SyntheticKick", (
     gate: gate,
-    amp: -0.0.dbamp() * amp,
+    amp: -4.0.dbamp() * amp,
     freq: freq,
     velocity: velocity,
     doneAction: Done.none
@@ -22,7 +22,7 @@ Instr("owa.EminatorKick", {
 
   acoustic = Instr.ar("owa.StartTimesVelocitySampler", (
     gate: gate,
-    amp: -4.0.dbamp() * amp,
+    amp: -11.0.dbamp() * amp,
     velocity: velocity,
     startTimesByVelocity: acousticStartTimesBufnum,
     sample: acousticSampleBufnum,
@@ -46,14 +46,13 @@ Instr("owa.EminatorKick", {
     //mul: -12.dbamp()
   //);
 
-  out = CompanderD.ar(
+  out = -4.0.dbamp() * CompanderD.ar(
     out,
     thresh: -10.0.dbamp(),
     slopeBelow: 0.6,
     slopeAbove: 0.4,
     clampTime: 0.005,
-    relaxTime: 0.3,
-    mul: 2.0.dbamp()
+    relaxTime: 0.3
   );
 
   out = amp * env * out;

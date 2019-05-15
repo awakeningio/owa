@@ -14,7 +14,7 @@ Instr("owa.EminatorSnare", {
 
   synthetic = Instr.ar("owa.StartTimesVelocitySampler", (
     gate: gate,
-    amp: LinExp.kr(velocity, 0, 127, -12.0.dbamp(), 0.0.dbamp()),
+    amp: LinExp.kr(velocity, 0, 127, -18.0.dbamp(), -6.0.dbamp()),
     velocity: velocity,
     startTimesByVelocity: electronicStartTimesBufnum,
     sample: electronicSampleBufnum,
@@ -23,7 +23,7 @@ Instr("owa.EminatorSnare", {
 
   acoustic = Instr.ar("owa.StartTimesVelocitySampler", (
     gate: gate,
-    amp: -18.0.dbamp(),
+    amp: -22.0.dbamp(),
     velocity: velocity,
     startTimesByVelocity: acousticStartTimesBufnum,
     sample: acousticSampleBufnum,
@@ -32,14 +32,13 @@ Instr("owa.EminatorSnare", {
 
   out = synthetic + acoustic;
   
-  out = CompanderD.ar(
+  out = -6.0.dbamp() * CompanderD.ar(
     out,
     thresh: -10.0.dbamp(),
     slopeBelow: 0.6,
     slopeAbove: 0.4,
     clampTime: 0.005,
-    relaxTime: 0.3,
-    mul: 2.0.dbamp()
+    relaxTime: 0.3
   );
 
   env = EnvGen.ar(

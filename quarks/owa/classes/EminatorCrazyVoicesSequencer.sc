@@ -4,7 +4,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
     var patch = Patch("owa.eminator.CrazyVoices", (
       gate: KrNumberEditor(1, \gate),
       freq: KrNumberEditor(440, \freq),
-      amp: KrNumberEditor(1.0, \amp),
+      amp: KrNumberEditor(-3.0.dbamp(), \amp),
       phasingAmt: KrNumberEditor(0.0, \unipolar)
     ));
     synthdef = patch.asSynthDef().add();
@@ -28,7 +28,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
         Pseq([Rest(7)]),
         Pseq([Rest(7)])
       ], inf),
-      \amp, Prand([-10.0.dbamp(), -20.0.dbamp()], inf),
+      \amp, Prand([-6.0.dbamp(), -12.0.dbamp()], inf),
       \vibratoSpeed, clock.tempo * 4,
       \vibratoDepth, 2, // in semitones
       \vowel, Prand([0, 1, 2, 3, 4], inf),

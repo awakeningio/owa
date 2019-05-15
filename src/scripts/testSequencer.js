@@ -15,8 +15,8 @@ import { SESSION_PHASES } from 'owa/constants';
 
 var owaStateStore = configureStore({
   sessionPhaseDurations: {
-    [SESSION_PHASES.QUEUE_TRANS_6]: 4,
-    [SESSION_PHASES.TRANS_6]: 4 * 4,
+    [SESSION_PHASES.QUEUE_TRANS_6]: 7,
+    [SESSION_PHASES.TRANS_6]: 7,
     [SESSION_PHASES.QUEUE_TRANS_4]: 4,
     [SESSION_PHASES.TRANS_4]: 4 * 4,
     [SESSION_PHASES.QUEUE_TRANS_2]: 4,
@@ -44,6 +44,7 @@ const main = function () {
     setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 2)), 2000);
     setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 3)), 2000);
     setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 4)), 2000);
+    setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 5)), 2000);
 
     //setTimeout(function () {
       //store.dispatch(buttonPressed('level_4', 0));

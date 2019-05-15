@@ -17,6 +17,7 @@ import logger from './logging'
 
 //import abletonlinkRedux from 'abletonlink-redux'
 import rootReducer from './reducers'
+import { getLevel6Sequencers } from './selectors';
 const middleware = [
 ];
 
@@ -26,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
    **/
   const stateTransformer = function (state) {
     const toPrint = {};
-    //toPrint.sequencers = state.sequencers;
+    toPrint.sequencers = getLevel6Sequencers(state);
     //Object.keys(state.sequencers).forEach(function (seqId) {
       //toPrint.sequencers[seqId] = _.pick(state.sequencers[seqId], [
         //'type',

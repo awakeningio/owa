@@ -31,7 +31,7 @@ OWACompositionEnvironment {
       rootDir: soundsDir
     ));
 
-    percussionKitSampleManager = OWAPercussionKitSampleManager.new((
+    percussionKitSampleManager = OWASampleManager.new((
       bufManager: bufManager,
       soundsDir: soundsDir,
       onDoneLoading: {

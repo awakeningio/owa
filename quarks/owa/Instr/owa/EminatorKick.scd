@@ -22,16 +22,16 @@ Instr("owa.EminatorKick", {
 
   acoustic = Instr.ar("owa.StartTimesVelocitySampler", (
     gate: gate,
-    amp: -7.0.dbamp() * amp,
+    amp: -4.0.dbamp() * amp,
     velocity: velocity,
     startTimesByVelocity: acousticStartTimesBufnum,
     sample: acousticSampleBufnum,
     sampleDur: 0.5
   ));
-  acoustic = RHPF.ar(in: acoustic, freq: 79.1, rq: 0.72, mul: 1.0, add: 0.0);
-  acoustic = RLPF.ar(in: acoustic, freq: 484000, rq: 0.2, mul: 1.0, add: 0.0);
 
   out = synthetic + acoustic;
+  out = RHPF.ar(in: out, freq: 79.1, rq: 0.72, mul: 1.0, add: 0.0);
+  out = RLPF.ar(in: out, freq: 484000, rq: 0.2, mul: 1.0, add: 0.0);
 
   env = EnvGen.ar(
     Env.perc(0, 1.5),
@@ -56,7 +56,7 @@ Instr("owa.EminatorKick", {
     mul: 2.0.dbamp()
   );
 
-  out = env * out;
+  out = amp * env * out;
   //out = [out, out];
 
 }, [

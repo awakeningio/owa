@@ -62,7 +62,7 @@ EminatorBassSequencer : AwakenedSequencer {
 
 
     ^Patch("cs.fm.WideBass", (
-      amp: -24.dbamp(),
+      amp: -28.dbamp(),
       useSustain: 0,
       gate: KrNumberEditor(1, \gate),
       useModulatorBus: 1
@@ -143,7 +143,8 @@ EminatorBassSequencer : AwakenedSequencer {
   // Overrides queue and stop methods to play the controlPattern alongside
   // the sequencer.
   queue {
-    super.queue();
+    arg requeue;
+    super.queue(requeue);
     controlPlayer = controlPattern.play(
       quant: currentState.playQuant,
       clock: clockController.clock

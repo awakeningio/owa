@@ -132,7 +132,7 @@ function l6Sequencer (
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
       return Object.assign({}, state, {
         playingState: PLAYING_STATES.STOP_QUEUED,
-        stopQuant: [4, 4]
+        //stopQuant: [4, 4]
       });
     case actionTypes.SESSION_PHASE_ADVANCED:
       // session phase automatically advanced.
@@ -192,6 +192,7 @@ function l6Sequencer (
           // button press was for this sequencer
           buttonSequencerId === state.sequencerId
       ) {
+        const playQuant = state.playQuant;
         if (
           // session phase just transitioned
           sessionPhase !== prevSessionPhase
@@ -205,7 +206,7 @@ function l6Sequencer (
             //state.phaseProps[SESSION_PHASES.PLAYING_6],
             {
               playingState: PLAYING_STATES.QUEUED,
-              playQuant: [4, 4 + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]]
+              playQuant: [playQuant[0], playQuant[0] + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]]
             }
           );
         } else if (
@@ -219,8 +220,7 @@ function l6Sequencer (
               {},
               state,
               {
-                playingState: PLAYING_STATES.QUEUED,
-                playQuant: [4, 4]
+                playingState: PLAYING_STATES.QUEUED
               }
             );
           }
@@ -233,7 +233,7 @@ function l6Sequencer (
         // props if we want to stop this sequencer when this phase ends
         const queueStopProps = {
           playingState: PLAYING_STATES.STOP_QUEUED,
-          stopQuant: [4, 4]
+          //stopQuant: [4, 4]
         };
 
         switch (sessionPhase) {

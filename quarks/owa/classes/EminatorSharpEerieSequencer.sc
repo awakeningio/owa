@@ -4,7 +4,7 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
   initPatch {
     var patch = Patch("owa.eminator.SharpEerieSampler", (
       gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(1.0, \amp),
+      amp: KrNumberEditor(-2.0.dbamp(), \amp),
       sampleBufnum: KrNumberEditor(0, \bufnum)
     ));
     synthdef = patch.asSynthDef().add();

@@ -6,7 +6,9 @@ import {
 } from 'owa/constants';
 
 export default function createEminatorState () {
-  const sequencerList = [
+  const l6PlayQuant = [14, 0];
+  const l6StopQuant = [14, 14];
+  let sequencerList = [
     create_owa_sequencer(
       'eminator-6_0',
       'EminatorBassSequencer',
@@ -15,7 +17,8 @@ export default function createEminatorState () {
           [SESSION_PHASES.PLAYING_6]: {
             midiKey: 'eminator_bass_L6',
             numBeats: 4 * 7,
-            playQuant: [7, 7]
+            playQuant: l6PlayQuant,
+            stopQuant: l6StopQuant
           },
           [SESSION_PHASES.PLAYING_4]: {
             midiKey: 'eminator_bass_L4',
@@ -36,7 +39,8 @@ export default function createEminatorState () {
         phaseProps: {
           [SESSION_PHASES.PLAYING_6]: {
             numBeats: 4 * 7,
-            playQuant: [7, 7]
+            playQuant: l6PlayQuant,
+            stopQuant: l6StopQuant
           }
         }
       }
@@ -48,7 +52,8 @@ export default function createEminatorState () {
         phaseProps: {
           [SESSION_PHASES.PLAYING_6]: {
             numBeats: 2 * 7,
-            playQuant: [7, 7]
+            playQuant: l6PlayQuant,
+            stopQuant: l6StopQuant
           }
         }
       }
@@ -60,7 +65,8 @@ export default function createEminatorState () {
         phaseProps: {
           [SESSION_PHASES.PLAYING_6]: {
             numBeats: 2 * 7,
-            playQuant: [7, 7]
+            playQuant: l6PlayQuant,
+            stopQuant: l6StopQuant
           }
         }
       }
@@ -72,18 +78,35 @@ export default function createEminatorState () {
         phaseProps: {
           [SESSION_PHASES.PLAYING_6]: {
             numBeats: 2 * 7,
-            playQuant: [7, 7]
+            playQuant: l6PlayQuant,
+            stopQuant: l6StopQuant
+          }
+        }
+      }
+    ),
+    create_owa_sequencer(
+      'eminator-6_5',
+      'EminatorKickSnareSequencer',
+      {
+        phaseProps: {
+          [SESSION_PHASES.PLAYING_6]: {
+            numBeats: 2 * 7,
+            playQuant: l6PlayQuant,
+            stopQuant: l6StopQuant
           }
         }
       }
     )
   ];
-  sequencerList.map(seq => (
+  sequencerList = sequencerList.map(seq => (
       {
         ...seq,
         ...seq.phaseProps[SESSION_PHASES.PLAYING_6]
       }
   ));
+
+  console.log("sequencerList");
+  console.log(sequencerList);
 
   return sequencerList.reduce((acc, sequencer) => {
     acc[sequencer.sequencerId] = sequencer;

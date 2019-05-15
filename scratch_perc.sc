@@ -28,7 +28,7 @@
       //\velocity, Pseq([10, 0, 100, 0, 50, 0, 127, 0], inf),
       //\dur, Pseq([0.5, 0.5], inf),
       //\midinote, Pseq(["D0".notemidi(), \rest], inf),
-      //\acousticStartTimesBufnum, acousticKickSamplerManager.sampleBufnumPattern(),
+      //\acousticSampleBufnum, acousticKickSamplerManager.sampleBufnumPattern(),
       //\instrument, synthdef.name,
       ////\echo, Pfunc({
         ////arg e;

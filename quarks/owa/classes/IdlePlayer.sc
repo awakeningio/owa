@@ -39,7 +39,7 @@
         2, 2,
         outbus: 0
       );
-      outputChannel.level = 0.0;
+      outputChannel.level = -3.0.dbamp();
 
       // initializes a gate for each song
       gateEditorBySongId = Dictionary.new();

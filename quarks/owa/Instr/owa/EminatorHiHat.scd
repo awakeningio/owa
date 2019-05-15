@@ -21,7 +21,7 @@ Instr("owa.EminatorHiHat", {
     out,
     trig,
     trigTime,
-    acousticAmp = -12.0.dbamp(),
+    acousticAmp = -15.0.dbamp(),
     electronicAmp = -8.0.dbamp(),
     env;
 

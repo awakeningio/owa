@@ -6,7 +6,7 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
     hatsSynthdef = Patch("owa.EminatorHiHat", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(1.0, \amp),
+      amp: KrNumberEditor(-11.0.dbamp(), \amp),
       openHat: KrNumberEditor(0, [0, 1]),
       sustainTime: KrNumberEditor(1, [0, 100]),
       acousticClosedStartTimes: sampleManager.getVoiceSampleManager('acoustic_hat').startTimesBuf.bufnum,

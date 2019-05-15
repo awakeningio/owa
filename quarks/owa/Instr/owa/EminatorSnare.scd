@@ -14,7 +14,7 @@ Instr("owa.EminatorSnare", {
 
   synthetic = Instr.ar("owa.StartTimesVelocitySampler", (
     gate: gate,
-    amp: LinExp.kr(velocity, 0, 127, -18.0.dbamp(), 0.0.dbamp()),
+    amp: LinExp.kr(velocity, 0, 127, -12.0.dbamp(), 0.0.dbamp()),
     velocity: velocity,
     startTimesByVelocity: electronicStartTimesBufnum,
     sample: electronicSampleBufnum,

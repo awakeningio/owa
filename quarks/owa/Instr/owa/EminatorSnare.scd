@@ -23,7 +23,7 @@ Instr("owa.EminatorSnare", {
 
   acoustic = Instr.ar("owa.StartTimesVelocitySampler", (
     gate: gate,
-    amp: -22.0.dbamp(),
+    amp: -18.0.dbamp(),
     velocity: velocity,
     startTimesByVelocity: acousticStartTimesBufnum,
     sample: acousticSampleBufnum,
@@ -31,12 +31,16 @@ Instr("owa.EminatorSnare", {
   ));
 
   out = synthetic + acoustic;
+
+  out = MidEQ.ar(out, 750, 1.5, 9.5);
+  out = MidEQ.ar(out, 2.20*1000, 1.5, 9.5);
+  out = HPF.ar(out, 325);
   
-  out = -6.0.dbamp() * CompanderD.ar(
+  out = -2.0.dbamp() * CompanderD.ar(
     out,
-    thresh: -10.0.dbamp(),
-    slopeBelow: 0.6,
-    slopeAbove: 0.4,
+    thresh: -14.0.dbamp(),
+    slopeBelow: 0.4,
+    slopeAbove: 0.2,
     clampTime: 0.005,
     relaxTime: 0.3
   );

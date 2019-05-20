@@ -183,7 +183,12 @@ OWAController {
 			["sharp_eerie/eerie_L6_06 [2019-05-10 104045]_mono.aif", \sharp_eerie_06],
 			["sharp_eerie/eerie_L6_07 [2019-05-10 104045]_mono.aif", \sharp_eerie_07],
 			["sharp_eerie/eerie_L6_08 [2019-05-10 104045]_mono.aif", \sharp_eerie_08],
-			["sharp_eerie/eerie_L6_09 [2019-05-10 104045]_mono.aif", \sharp_eerie_09]
+			["sharp_eerie/eerie_L6_09 [2019-05-10 104045]_mono.aif", \sharp_eerie_09],
+      ["eminator_trans_L2-Reveal.wav", \eminator_trans_L2_reveal],
+      ["eminator_trans_L4-L2.wav", \eminator_trans_L4_L2],
+      ["eminator_trans_L6-L4.wav", \eminator_trans_L6_L4],
+      ["eminator_trans_idle.wav", \eminator_trans_idle],
+      ["eminator_reveal.wav", \eminator_reveal]
     ], ({
       // when buffers are done loading
       // load midi files

@@ -115,7 +115,7 @@ export function createSpinnyPluckState () {
   );
   sequencers['spinny_pluck-reveal'] = create_owa_sequencer(
     'spinny_pluck-reveal',
-    'SamplerSequencer',
+    'OneShotSamplerSequencer',
     {
       bufNames: [
         'spinny-pluck_reveal'
@@ -130,7 +130,7 @@ export function createSpinnyPluckState () {
   
   sequencers['spinny_pluck-trans'] = create_owa_sequencer(
     'spinny_pluck-trans',
-    'SamplerSequencer',
+    'OneShotSamplerSequencer',
     {
       bufNames: [
         'spinny-pluck_idle-L6',

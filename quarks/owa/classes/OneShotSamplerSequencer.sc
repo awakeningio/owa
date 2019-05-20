@@ -1,5 +1,5 @@
 /**
- *  @file       SamplerSequencer.sc
+ *  @file       OneShotSamplerSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,8 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-// TODO: This should be called OneShotSamplerSequencer
-SamplerSequencer : AwakenedSequencer {
+OneShotSamplerSequencer : AwakenedSequencer {
   var synthdefsForBufNames,
     lastAmp = false,
     lastAttackTime = false,

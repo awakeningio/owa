@@ -149,10 +149,10 @@ export const SEGMENTID_TO_SEQUENCERID_BY_SONGID = {
     'level_6-segment_3': 'eminator-6_3',
     'level_6-segment_4': 'eminator-6_4',
     'level_6-segment_5': 'eminator-6_5',
-    'level_4-segment_0': 'spinny_pluck-level_4',
-    'level_4-segment_1': 'spinny_pluck-level_4',
-    'level_4-segment_2': 'spinny_pluck-level_4',
-    'level_4-segment_3': 'spinny_pluck-level_4',
+    'level_4-segment_0': 'eminator-level_4',
+    'level_4-segment_1': 'eminator-level_4',
+    'level_4-segment_2': 'eminator-level_4',
+    'level_4-segment_3': 'eminator-level_4',
     'level_2-segment_0': 'spinny_pluck-2_0',
     'level_2-segment_1': 'spinny_pluck-2_1'
   }

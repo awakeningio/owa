@@ -34,6 +34,8 @@ Instr("owa.EminatorIdle", {
 
   //transitionProgress.poll();
 
+  //transitionGate.poll();
+
   // Phasing rocket sound
 	drone = SinOsc.ar(
     10 + (
@@ -160,6 +162,6 @@ Instr("owa.EminatorIdle", {
   \amp,
   [0.01, 200.0],
   [0.01, 200.0],
-  \gate,
+  \unipolar,
   [0.01, 200.0]
 ]);

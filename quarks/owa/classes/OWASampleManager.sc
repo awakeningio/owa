@@ -36,6 +36,17 @@ OWASampleManager : PercussionKitSampleManager {
       );
     });
 
+    voices = voices ++ [
+      'high-pop'
+    ].collect({
+      arg voiceName;
+      (
+        name: voiceName,
+        metadataFilePath: soundsDir +/+ voiceName.asString() ++ ".json",
+        sampleManagerClass: PitchedVoiceSampleManager
+      );
+    });
+
     instance = super.new((
       bufManager: bufManager,
       voices: voices,

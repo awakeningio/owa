@@ -37,7 +37,8 @@ OWASampleManager : PercussionKitSampleManager {
     });
 
     voices = voices ++ [
-      'high-pop'
+      'high-pop',
+      'lead'
     ].collect({
       arg voiceName;
       (

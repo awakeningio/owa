@@ -300,6 +300,12 @@ OWAController {
           midiKey: 'eminator_snare_L6',
           makeDuration: 2 * 7,
           tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_lead_L2.mid",
+          midiKey: 'eminator_lead_L2',
+          makeDuration: 4 * 16,
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
         )
       ]);
 

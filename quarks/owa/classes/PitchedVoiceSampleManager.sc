@@ -45,9 +45,6 @@ PitchedVoiceSampleManager {
       renderedNotes.add(notenum);
     });
 
-    "bufsToLoad:".postln;
-    bufsToLoad.postln;
-
     bufManager.load_bufs(bufsToLoad, ({
       bufsToLoad.do({
         arg bufInfo;
@@ -88,7 +85,11 @@ PitchedVoiceSampleManager {
         // Finds closest rendered note and returns that sample with the
         // midi note of the sample.
         upperIndex = renderedNotes.indexOfGreaterThan(midinote);
-        lowerIndex = 0.max(upperIndex - 1);
+        if (upperIndex == nil, {
+          lowerIndex = renderedNotes.size - 1;
+        }, {
+          lowerIndex = 0.max(upperIndex - 1);
+        });
         closestMidiNote = renderedNotes[lowerIndex];
 
         // Returns bufnum as well as midinote and fundamental freq for that

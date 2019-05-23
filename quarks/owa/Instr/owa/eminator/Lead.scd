@@ -1,4 +1,4 @@
-Instr("owa.eminator.HighPop", {
+Instr("owa.eminator.Lead", {
   arg gate,
     amp = 1.0,
     velocity,
@@ -24,7 +24,7 @@ Instr("owa.eminator.HighPop", {
   ));
 
   env = EnvGen.ar(
-    Env.perc(0, sampleDur, 1.0, 24),
+    Env.adsr(0, 0, 1.0, 0.2, curve: 4),
     gate: gate,
     doneAction: Done.freeSelf
   );

@@ -21,8 +21,8 @@ Instr("owa.EminatorHiHat", {
     out,
     trig,
     trigTime,
-    acousticAmp = -24.0.dbamp(),
-    electronicAmp = -18.0.dbamp(),
+    acousticAmp = -12.0.dbamp(),
+    electronicAmp = -3.0.dbamp(),
     env;
 
   trigTime = sustainTime + (openHat * 0.1);
@@ -83,7 +83,7 @@ Instr("owa.EminatorHiHat", {
 
 
   out = RHPF.ar(in: out, freq: 2.5*1000, rq: 0.6134);
-  out = -12.0.dbamp() * BHiShelf.ar(in: out, freq: 2670, rs: 1.0, db: 5.0);
+  out = -6.0.dbamp() * BHiShelf.ar(in: out, freq: 2670, rs: 1.0, db: 5.0);
   
   out = env * amp * out;
 

@@ -14,7 +14,7 @@ Instr("owa.EminatorKick", {
 
   synthetic = Instr.ar("owa.SyntheticKick", (
     gate: gate,
-    amp: -4.0.dbamp() * amp,
+    amp: -0.0.dbamp() * amp,
     freq: freq,
     velocity: velocity,
     doneAction: Done.none
@@ -22,7 +22,7 @@ Instr("owa.EminatorKick", {
 
   acoustic = Instr.ar("owa.StartTimesVelocitySampler", (
     gate: gate,
-    amp: -22.0.dbamp() * amp,
+    amp: -6.0.dbamp() * amp,
     velocity: velocity,
     startTimesByVelocity: acousticStartTimesBufnum,
     sample: acousticSampleBufnum,
@@ -33,6 +33,7 @@ Instr("owa.EminatorKick", {
   acoustic = RLPF.ar(in: acoustic, freq: 4.84*1000, rq: 0.4, mul: 1.0, add: 0.0);
   out = synthetic + acoustic;
 
+  out = MidEQ.ar(out, 4.84*1000, 1.4, 6.0);
   out = MidEQ.ar(out, 140, 1.8, -7);
   out = MidEQ.ar(out, 70, 1.5, 12);
 
@@ -49,9 +50,9 @@ Instr("owa.EminatorKick", {
     //mul: -12.dbamp()
   //);
 
-  out = -4.0.dbamp() * CompanderD.ar(
+  out = CompanderD.ar(
     out,
-    thresh: -8.0.dbamp(),
+    thresh: -10.0.dbamp(),
     slopeBelow: 0.6,
     slopeAbove: 0.4,
     clampTime: 0.005,

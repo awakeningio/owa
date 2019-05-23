@@ -15,7 +15,8 @@ Instr("owa.StartTimesVelocitySampler", {
     startTimesByVelocity,
     sample,
     sampleDur,
-    numChannels = 2;
+    numChannels = 2,
+    rate = 1.0;
 
   var startTime = Index.kr(startTimesByVelocity, velocity - 1),
     samplePlayer,
@@ -25,11 +26,12 @@ Instr("owa.StartTimesVelocitySampler", {
     numChannels,
     sample,
     trigger: gate,
-    startPos: (startTime / BufDur.kr(sample)) * BufFrames.kr(sample)
+    startPos: (startTime / BufDur.kr(sample)) * BufFrames.kr(sample),
+    rate: rate
   );
 
   env = EnvGen.ar(
-    Env.perc(0, sampleDur, 24),
+    Env.perc(0, sampleDur, 1.0, 24),
     gate: gate,
     doneAction: Done.none
   );
@@ -41,5 +43,6 @@ Instr("owa.StartTimesVelocitySampler", {
   \bufnum,
   \bufnum,
   [0, 100],
-  [0, 64]
+  [0, 64],
+  [-100, 100]
 ]);

@@ -41,9 +41,12 @@ PitchedVoiceSampleManager {
       notenum = notenumStr.asInteger();
 
       notesByBufSym[bufSym] = notenum;
-      bufsToLoad.add([filepath, bufSym]);
+      bufsToLoad = bufsToLoad.add([filepath, bufSym]);
       renderedNotes.add(notenum);
     });
+
+    "bufsToLoad:".postln;
+    bufsToLoad.postln;
 
     bufManager.load_bufs(bufsToLoad, ({
       bufsToLoad.do({
@@ -71,13 +74,31 @@ PitchedVoiceSampleManager {
 
     }));
   }
-  sampleBufnumPattern {
+  sampleAndSampleNotePattern {
     ^Pfunc({
       arg e;
-      var midinote = e['midinote'];
+      var midinote = e['midinote'],
+        upperIndex,
+        lowerIndex,
+        closestMidiNote;
 
-      // Finds closest rendered note
-      //bufnumsByNote[midinote];
+      if (midinote == \rest, {
+        [0, 0, 0]    
+      }, {
+        // Finds closest rendered note and returns that sample with the
+        // midi note of the sample.
+        upperIndex = renderedNotes.indexOfGreaterThan(midinote);
+        lowerIndex = 0.max(upperIndex - 1);
+        closestMidiNote = renderedNotes[lowerIndex];
+
+        // Returns bufnum as well as midinote and fundamental freq for that
+        // bufnum
+        [
+          bufnumsByNote[closestMidiNote],
+          closestMidiNote,
+          closestMidiNote.midicps()
+        ];
+      });
     });
   }
 }

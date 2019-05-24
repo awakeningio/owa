@@ -2,12 +2,9 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
   var synthdef,
 		bufnums;
   initPatch {
-    var patch = Patch("owa.eminator.SharpEerieSampler", (
+    synthdef = Patch("owa.eminator.SharpEerieSampler", (
       gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(-2.0.dbamp(), \amp),
-      sampleBufnum: KrNumberEditor(0, \bufnum)
-    ));
-    synthdef = patch.asSynthDef().add();
+    )).asSynthDef().add();
 
     bufnums = [
       \sharp_eerie_01,
@@ -24,8 +21,6 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
 
       bufManager.bufs[bufSym].bufnum
     });
-
-    ^patch;
   }
 
   initStream {

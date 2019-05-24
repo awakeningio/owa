@@ -140,7 +140,8 @@ export default function createEminatorState () {
             bufName: 'eminator_trans_idle',
             attackTime: 0.0,
             releaseTime: 0.0,
-            numBeats: 37 * 7,
+            //numBeats: 22 * 7,
+            numBeats: 2 * 7,
             amp: 1.0
           },
           [SESSION_PHASES.QUEUE_TRANS_4]: {
@@ -171,10 +172,12 @@ export default function createEminatorState () {
       'eminator-level_4',
       'ChordProgSequencer',
       {
-        numBeats: 4,
-        playQuant: [4, 4],
-        defaultPlayQuant: [4, 4],
+        numBeats: 4 * 4,
+        playQuant: [4 * 4, 4],
+        defaultPlayQuant: [4 * 4, 4],
         stopQuant: [4, 4],
+        ampDb: -15.0,
+        sustain: 4 * 4,
         bufNames: [
           'eminator_chords_L2_01',
           'eminator_chords_L2_02',
@@ -209,7 +212,25 @@ export default function createEminatorState () {
           }
         }
       }
-    )
+    ),
+    create_owa_sequencer(
+      'eminator-2_0',
+      'EminatorWhispPopSequencer',
+      {
+        //phaseProps: {
+          ////[SESSION_PHASES.QUEUE_TRANS_6]: {
+            ////numBeats: 2 * 7,
+            ////playQuant: l6PlayQuant,
+            ////stopQuant: l6StopQuant
+          ////}
+        //}
+      }
+    ),
+    create_owa_sequencer (
+      'eminator-2_1',
+      'EminatorLeadSequencer',
+      {}
+    ),
   ];
   sequencerList = sequencerList.map(seq => (
       {

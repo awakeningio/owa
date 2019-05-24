@@ -61,8 +61,7 @@ EminatorBassSequencer : AwakenedSequencer {
     });
 
 
-    ^Patch("cs.fm.WideBass", (
-      amp: -28.dbamp(),
+    ^Patch("owa.eminator.Bass", (
       useSustain: 0,
       gate: KrNumberEditor(1, \gate),
       useModulatorBus: 1
@@ -112,7 +111,8 @@ EminatorBassSequencer : AwakenedSequencer {
   // for playing the CC messages converted to envelopes.
   initStream {
     this.assignPdefnsFromCurrentState();
-    controlPattern = Ppar([
+    //controlPattern = Ppar([
+    ^Ppar([
       Pbind(
         [\instrument, \dur], Pdefn('EminatorBassSeqControl16'),
         \legato, 0.99
@@ -121,39 +121,40 @@ EminatorBassSequencer : AwakenedSequencer {
         [\instrument, \dur], Pdefn('EminatorBassSeqControl15'),
         \legato, 0.99
       ),
-    ]);
-    ^PmonoArtic(
-      patch.asSynthDef().add().name,
-      [\midinoteFromFile, \dur], Pdefn('EminatorBassSeqNotes'),
-      \legato, 1.1,
-      \midinote, Pfunc({
-        arg event;
-        (event['midinoteFromFile'] - 24);
-      }),
-      \attackModFreq, Pfunc({
-        arg event;
-        (event[\midinote] + 12).midicps();
-      }),
-      \toneModulatorLFORate, clockController.clock.tempo / 4.0,
-      \toneModulatorGainMultiplierBus, control15Bus,
-      \toneModulatorLFOAmountBus, control16Bus
-    ).asStream();
+      PmonoArtic(
+        patch.asSynthDef().add().name,
+        [\midinoteFromFile, \dur], Pdefn('EminatorBassSeqNotes'),
+        \legato, 1.1,
+        \midinote, Pfunc({
+          arg event;
+          (event['midinoteFromFile'] - 24);
+        }),
+        \attackModFreq, Pfunc({
+          arg event;
+          (event[\midinote] + 12).midicps();
+        }),
+        \toneModulatorLFORate, clockController.clock.tempo / 4.0,
+        \toneModulatorGainMultiplierBus, control15Bus,
+        \toneModulatorLFOAmountBus, control16Bus
+      )
+    ]).asStream();
+    //^.asStream();
   }
 
   // Overrides queue and stop methods to play the controlPattern alongside
   // the sequencer.
-  queue {
-    arg requeue;
-    super.queue(requeue);
-    controlPlayer = controlPattern.play(
-      quant: currentState.playQuant,
-      clock: clockController.clock
-    );
-  }
-  stop {
-    super.stop();
-    controlPlayer.stop();
-  }
+  //queue {
+    //arg requeue;
+    //super.queue(requeue);
+    //controlPlayer = controlPattern.play(
+      //quant: currentState.playQuant,
+      //clock: clockController.clock
+    //);
+  //}
+  //stop {
+    //super.stop();
+    //controlPlayer.stop();
+  //}
 
   handleStateChange {
     lastState = currentState;

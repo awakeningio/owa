@@ -46,8 +46,8 @@ ChordProgSequencer : AwakenedSequencer {
       }),
       \midinote, "C3".notemidi(),
       \dur, Pseq([currentState.numBeats], inf),
-      \sustain, currentState.numBeats + 2,
-      \amp, 8.0.dbamp()
+      \sustain, currentState.sustain,
+      \amp, currentState.ampDb.dbamp()
     ).asStream();
   }
 

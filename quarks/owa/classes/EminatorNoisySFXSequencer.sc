@@ -8,7 +8,7 @@ EminatorNoisySFXSequencer : AwakenedSequencer {
 
     wubBuzzSynthdef = Patch("owa.eminator.WubBuzzSampler", (
       gate: KrNumberEditor(1.0, \gate),
-      amp: KrNumberEditor(-16.0.dbamp(), \amp),
+      amp: KrNumberEditor(-18.0.dbamp(), \amp),
       startTimes: wubBuzzSampleManager.startTimesBuf.bufnum,
       sample: wubBuzzSampleManager.sample.bufnum
     )).asSynthDef().add();

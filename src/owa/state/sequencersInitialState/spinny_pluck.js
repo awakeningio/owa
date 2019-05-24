@@ -78,6 +78,8 @@ export function createSpinnyPluckState () {
       playQuant: [8, 8],
       defaultPlayQuant: [8, 8],
       stopQuant: [numBeats, numBeats],
+      ampDb: 8.0,
+      sustain: numBeats + 2,
       bufNames: [
         'spinny-pluck_L4_chords-1',
         'spinny-pluck_L4_chords-2',

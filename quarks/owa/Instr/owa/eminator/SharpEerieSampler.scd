@@ -1,6 +1,6 @@
 Instr("owa.eminator.SharpEerieSampler", {
   arg gate,
-    amp,
+    amp = 22.0.dbamp(),
     sampleBufnum;
 
   var out,
@@ -12,11 +12,12 @@ Instr("owa.eminator.SharpEerieSampler", {
     doneAction: Done.freeSelf
   );
 
-  out = amp * PlayBuf.ar(
+  out = amp * env * PlayBuf.ar(
     1,
     sampleBufnum,
     trigger: gate
-  )
+  );
+  [out, out];
 }, [
   \gate,
   \amp,

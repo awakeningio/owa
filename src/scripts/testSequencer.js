@@ -40,11 +40,11 @@ const main = function () {
     //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_3'));
     //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_4'));
 
-    setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 1)), 2000);
-    setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 2)), 2000);
-    setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 3)), 2000);
-    setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 4)), 2000);
-    setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 5)), 2000);
+    //setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 1)), 2000);
+    //setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 2)), 2000);
+    //setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 3)), 2000);
+    //setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 4)), 2000);
+    //setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 5)), 2000);
 
     //setTimeout(function () {
       //store.dispatch(buttonPressed('level_4', 0));

@@ -1,5 +1,6 @@
 EminatorCrazyVoicesSequencer : AwakenedSequencer {
-  var synthdef;
+  var synthdef,
+    lastSessionPhase;
   initPatch {
     var patch = Patch("owa.eminator.CrazyVoices", (
       gate: KrNumberEditor(1, \gate),
@@ -10,6 +11,38 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
     synthdef = patch.asSynthDef().add();
     ^patch;
   }
+
+  updateNotes {
+    var state = store.getState();
+    var sessionPhase = state.sessionPhase.asSymbol();
+
+    switch(sessionPhase, 
+      \QUEUE_TRANS_6, {
+        Pdefn(
+          'EminatorCrazyVoices',
+          Prand([
+            Pseq([1, Rest(6)]),
+            Pseq([0.5, Rest(6.5)]),
+            Pseq([Rest(7)]),
+            Pseq([Rest(7)])
+          ], inf)
+        );
+      },
+      \QUEUE_TRANS_4, {
+        Pdefn(
+          'EminatorCrazyVoices',
+          Prand([
+            Pseq([1, Rest(3)]),
+            Pseq([0.5, Rest(3.5)]),
+            Pseq([Rest(4)]),
+            Pseq([Rest(4)])
+          ], inf)
+        );
+      }
+    );
+    Pdefn('EminatorCrazyVoices').quant = currentState.playQuant;
+  }
+
 
   initStream {
     ^Pbind(
@@ -22,13 +55,8 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
       \mtranspose, 2,
       //\dur, Prand([0.5, Rest(0.5)], inf),
       //\dur, Prand([0.25, Rest(0.25), 0.5, Rest(0.5)], inf),
-      \dur, Prand([
-        Pseq([1, Rest(6)]),
-        Pseq([0.5, Rest(6.5)]),
-        Pseq([Rest(7)]),
-        Pseq([Rest(7)])
-      ], inf),
-      \amp, Prand([-6.0.dbamp(), -12.0.dbamp()], inf),
+      \dur, Pdefn('EminatorCrazyVoices'),
+      \amp, Prand([-10.0.dbamp(), -16.0.dbamp()], inf),
       \vibratoSpeed, clock.tempo * 4,
       \vibratoDepth, 2, // in semitones
       \vowel, Prand([0, 1, 2, 3, 4], inf),
@@ -49,4 +77,15 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
     ).asStream();
   }
 
+  handleStateChange {
+    var state = store.getState();
+    var sessionPhase = state.sessionPhase.asSymbol();
+    
+    super.handleStateChange();
+
+    if (lastSessionPhase !== sessionPhase, {
+      this.updateNotes();
+      lastSessionPhase = sessionPhase;
+    });
+  }
 }

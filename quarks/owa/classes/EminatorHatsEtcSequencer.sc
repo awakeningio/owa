@@ -1,5 +1,6 @@
 EminatorHatsEtcSequencer : AwakenedSequencer {
-  var hatsSynthdef;
+  var hatsSynthdef,
+    lastSessionPhase;
 
   initPatch {
     var sampleManager = OWASampleManager.getInstance();
@@ -17,16 +18,41 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
     )).asSynthDef().add();
   }
 
+  updateNotes {
+
+    var state = store.getState();
+    var hatsMidiKey;
+
+    hatsMidiKey = switch(state.sessionPhase.asSymbol(),
+      \QUEUE_TRANS_6, {
+        'eminator_hats_L6';
+      },
+      \QUEUE_TRANS_4, {
+        'eminator_hats_L4';
+      },
+      \QUEUE_TRANS_2, {
+        'eminator_hats_L2';
+      }
+    );
+
+    if (hatsMidiKey != nil, {
+      Pdefn(
+        'EminatorHatsEtcSequencerNotes',
+        Pseq(bufManager.midiSequences[hatsMidiKey], inf)
+      );
+    });
+
+    Pdefn('EminatorHatsEtcSequencerNotes').quant = currentState.playQuant;
+  }
+
   initStream {
     var sampleManager = OWASampleManager.getInstance();
+
     ^Pbind(
       \instrument, hatsSynthdef.name,
-      [\midinote, \dur], Pseq(bufManager.midiSequences['eminator_hats_L6'], inf),
+      [\midinote, \dur], Pdefn('EminatorHatsEtcSequencerNotes'),
       \openHat, Pfunc({
         arg e;
-
-        //"e[\midinote]:".postln;
-        //e[\midinote].postln;
 
         if (e[\midinote] == 9, {
           1    
@@ -43,5 +69,17 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
       \acousticOpenSample, sampleManager.getVoiceSampleManager('acoustic_hat_open').sampleBufnumPattern(),
       \electronicOpenSample, sampleManager.getVoiceSampleManager('electronic_hat_open').sampleBufnumPattern()
     ).asStream();
+  }
+
+  handleStateChange {
+    var state = store.getState();
+    var sessionPhase = state.sessionPhase.asSymbol();
+    
+    super.handleStateChange();
+
+    if (lastSessionPhase !== sessionPhase, {
+      this.updateNotes();
+      lastSessionPhase = sessionPhase;
+    });
   }
 }

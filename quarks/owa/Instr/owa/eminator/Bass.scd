@@ -38,7 +38,7 @@ Instr("owa.eminator.Bass", {
   out = MidEQ.ar(out, 140, 1.5, 6.0);
   out = MidEQ.ar(out, 70, 1.8, -12);
 
-  out = -11.0.dbamp() * out;
+  out = -14.0.dbamp() * out;
   //out = out + Resonz.ar(out, 140, 1.05, 6.0.dbamp());
 
   out;

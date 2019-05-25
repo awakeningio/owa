@@ -1,6 +1,6 @@
 Instr("owa.eminator.SharpEerieSampler", {
   arg gate,
-    amp = 22.0.dbamp(),
+    amp = 24.0.dbamp(),
     sampleBufnum;
 
   var out,

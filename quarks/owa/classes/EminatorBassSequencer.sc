@@ -11,10 +11,8 @@
 EminatorBassSequencer : AwakenedSequencer {
   var control15Synthdefs,
     control16Synthdefs,
-    control15DurProxy,
     control15Bus,
     control16Bus,
-    control16DurProxy,
     controlPlayer,
     controlPattern,
     lastState;

@@ -12,7 +12,8 @@ import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
 import {
   create_segmentId,
-  createPhaseEndQuant
+  createPhaseEndQuant,
+  createNextPhaseEndQuant
 } from 'owa/models'
 import { apply_phase_props } from 'owa/models/sequencer';
 import {
@@ -38,25 +39,25 @@ function revealSequencer (
 ) {
 
   const {
-    sessionPhaseDurations
+    songId
   } = fullState;
+
+  let newState = state;
 
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       if (action.payload.phase === SESSION_PHASES.TRANS_ADVICE) {
-        return Object.assign({}, state, {
+        newState = {
+          ...newState,
           playingState: PLAYING_STATES.QUEUED,
-          playQuant: createPhaseEndQuant(
-            action.payload.phase,
-            sessionPhaseDurations
-          )
-        });
-      } else {
-        return state;
+          playQuant: createPhaseEndQuant(action.payload.phase, songId, true)
+        };
       }
+      break;
     default:
-      return state;
+      break;
   }
+  return newState;
 }
 
 function transSequencer (
@@ -67,7 +68,7 @@ function transSequencer (
 ) {
   const {
     sessionPhase,
-    sessionPhaseDurations
+    songId
   } = fullState;
   let newState = state;
   switch (action.type) {
@@ -80,10 +81,7 @@ function transSequencer (
             ...newState,
             ...{
               playingState: PLAYING_STATES.QUEUED,
-              playQuant: createPhaseEndQuant(
-                action.payload.phase,
-                sessionPhaseDurations
-              )
+              playQuant: createPhaseEndQuant(action.payload.phase, songId, true)
             }
           };
           break;
@@ -103,8 +101,7 @@ function transSequencer (
           case SESSION_PHASES.QUEUE_TRANS_2:
             newState = {
               ...newState,
-              // TODO: playQuant is song and sessionPhase specific
-              playQuant: [4, 4],
+              playQuant: createPhaseEndQuant(sessionPhase, songId),
               playingState: PLAYING_STATES.QUEUED
             };
             break;
@@ -129,7 +126,7 @@ function l6Sequencer (
 ) {
   const {
     sessionPhase,
-    sessionPhaseDurations
+    songId
   } = fullState;
 
   let newState = state;
@@ -151,10 +148,7 @@ function l6Sequencer (
           newState = {
             ...newState,
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseEndQuant(
-              action.payload.phase,
-              sessionPhaseDurations
-            )
+            playQuant: createPhaseEndQuant(action.payload.phase, songId, true)
           };
           break;
 
@@ -162,10 +156,7 @@ function l6Sequencer (
           newState = {
             ...newState,
             playingState: PLAYING_STATES.STOP_QUEUED,
-            stopQuant: createPhaseEndQuant(
-              action.payload.phase,
-              sessionPhaseDurations
-            )
+            stopQuant: createPhaseEndQuant(action.payload.phase, songId, true)
           };
           break;
         default:
@@ -189,7 +180,6 @@ function l6Sequencer (
             // button press was for this sequencer
             buttonSequencerId === state.sequencerId
         ) {
-          const playQuant = newState.playQuant;
           if (
             // to l6
             sessionPhase === SESSION_PHASES.QUEUE_TRANS_6
@@ -200,7 +190,7 @@ function l6Sequencer (
               newState,
               {
                 playingState: PLAYING_STATES.QUEUED,
-                playQuant: [playQuant[0], playQuant[0] + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]]
+                playQuant: createNextPhaseEndQuant(sessionPhase, songId)
               }
             );
           }
@@ -213,6 +203,7 @@ function l6Sequencer (
               newState = {
                 ...newState,
                 playingState: PLAYING_STATES.STOP_QUEUED,
+                stopQuant: createPhaseEndQuant(sessionPhase, songId)
               };
               break;
             default:
@@ -250,16 +241,18 @@ function chordProgSequencer (
   fullState,
   prevSessionPhase,
 ) {
-  const sessionPhaseDurations = fullState.sessionPhaseDurations;
-  const segments = fullState.segments;
-  const sessionPhase = fullState.sessionPhase;
+  const {
+    segments,
+    sessionPhase,
+    songId
+  } = fullState;
   let newState = state;
   switch (action.type) {
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
       newState = {
         ...newState,
         playingState: PLAYING_STATES.STOP_QUEUED,
-        stopQuant: [4, 4]
+        //stopQuant: [4, 4]
       };
       break;
     case actionTypes.SESSION_PHASE_ADVANCED:
@@ -271,19 +264,13 @@ function chordProgSequencer (
         case SESSION_PHASES.TRANS_2:
           newState = Object.assign({}, newState, {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseEndQuant(
-              action.payload.phase,
-              sessionPhaseDurations
-            )
+            playQuant: createPhaseEndQuant(action.payload.phase, songId, true)
           });
           break;
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:
           newState = Object.assign({}, newState, {
             playingState: PLAYING_STATES.STOP_QUEUED,
-            stopQuant: createPhaseEndQuant(
-              action.payload.phase,
-              sessionPhaseDurations
-            )
+            stopQuant: createPhaseEndQuant(action.payload.phase, songId, true)
           });
           break;
         default:
@@ -316,10 +303,7 @@ function chordProgSequencer (
               ...newState, 
               playingState: PLAYING_STATES.QUEUED,
               bufSequence: [newState.segmentIdToBufName[segmentId]],
-              playQuant: [
-                4,
-                4 + sessionPhaseDurations[sessionPhase] + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]
-              ]
+              playQuant: createNextPhaseEndQuant(sessionPhase, songId)
             };
           } 
         } else if (
@@ -384,7 +368,8 @@ function l2Sequencer (
 ) {
   const {
     sessionPhase,
-    sessionPhaseDurations
+    sessionPhaseDurations,
+    songId
   } = fullState;
   let newState = state;
   switch (action.type) {
@@ -402,7 +387,7 @@ function l2Sequencer (
         newState = {
           ...newState,
           playingState: PLAYING_STATES.STOP_QUEUED,
-          stopQuant: createPhaseEndQuant(sessionPhase, sessionPhaseDurations)
+          stopQuant: createPhaseEndQuant(sessionPhase, songId, true)
         };
       }
       break;
@@ -426,10 +411,7 @@ function l2Sequencer (
           newState = {
             ...newState,
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: [
-              4,
-              4 + sessionPhaseDurations[sessionPhase] + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]
-            ]
+            playQuant: createNextPhaseEndQuant(sessionPhase, songId)
           };
         }
       } else if (
@@ -442,8 +424,7 @@ function l2Sequencer (
         if (state.playingState === PLAYING_STATES.STOPPED) {
           newState = {
             ...newState,
-            playingState: PLAYING_STATES.QUEUED,
-            playQuant: [4, 4]
+            playingState: PLAYING_STATES.QUEUED
           };
         }
       }

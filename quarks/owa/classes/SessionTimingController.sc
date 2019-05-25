@@ -81,13 +81,15 @@ SessionTimingController {
   schedule_transition_to_next_phase {
     var phaseDuration,
       nextPhase,
-      state;
+      state,
+      phaseMeter,
+      sessionPhase;
 
     state = store.getState();
+    sessionPhase = state.sessionPhase.asSymbol();
     nextPhase = OWAConstants.nextSessionPhases[state.sessionPhase.asSymbol()];
-    phaseDuration = state.sessionPhaseDurations[
-      state.sessionPhase.asSymbol()
-    ];
+    phaseDuration = state.sessionPhaseDurations[sessionPhase];
+    phaseMeter = OWAConstants.sessionPhaseBeatPerBarBySongId[state.songId.asSymbol()][sessionPhase];
 
     (
       "[SessionTimingController]: Scheduling transition to phase "
@@ -101,6 +103,6 @@ SessionTimingController {
           phase: nextPhase
         )
       ));
-    }, [4, phaseDuration]);
+    }, [phaseMeter, phaseDuration]);
   }
 }

@@ -37,7 +37,8 @@ export default function createEminatorState () {
           [SESSION_PHASES.QUEUE_TRANS_4]: {
             midiKey: 'eminator_bass_L4',
             numBeats: 16 * 4,
-            playQuant: [4, 4]
+            playQuant: [4, 4],
+            stopQuant: [4, 16 * 4]
           },
           [SESSION_PHASES.QUEUE_TRANS_2]: {
             midiKey: 'eminator_bass_L2',
@@ -138,8 +139,8 @@ export default function createEminatorState () {
         bufName: 'eminator_trans_idle',
         attackTime: 0.0,
         releaseTime: 0.0,
-        //numBeats: 22 * 7,
-        numBeats: 2 * 7,
+        numBeats: 22 * 7,
+        //numBeats: 2 * 7,
         amp: 1.0,
         phaseProps: {
           [SESSION_PHASES.QUEUE_TRANS_4]: {

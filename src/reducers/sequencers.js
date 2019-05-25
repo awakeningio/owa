@@ -14,6 +14,7 @@ import {
   create_segmentId,
   createPhaseEndQuant
 } from 'owa/models'
+import { apply_phase_props } from 'owa/models/sequencer';
 import {
   SESSION_PHASES,
   NEXT_SESSION_PHASES
@@ -69,13 +70,15 @@ function transSequencer (
     sessionPhase,
     sessionPhaseDurations
   } = fullState;
+  let newState = state;
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
+      newState = apply_phase_props(newState, action.payload.phase);
+
       switch (action.payload.phase) {
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:
-          return {
-            ...state,
-            ...state.phaseProps[action.payload.phase],
+          newState = {
+            ...newState,
             ...{
               playingState: PLAYING_STATES.QUEUED,
               playQuant: createPhaseEndQuant(
@@ -84,9 +87,11 @@ function transSequencer (
               )
             }
           };
+          break;
         default:
-          return state;
+          break;
       }
+      break;
     case actionTypes.BUTTON_PRESSED:
       // if this button pressed triggered a sessionPhase change
       if (prevSessionPhase !== sessionPhase) {
@@ -95,25 +100,28 @@ function transSequencer (
           playQuant,
           playingState: PLAYING_STATES.QUEUED
         };
+        newState = apply_phase_props(newState, action.payload.phase);
+        
         // we may need to queue a transition now
         switch (sessionPhase) {
           case SESSION_PHASES.QUEUE_TRANS_6:
           case SESSION_PHASES.QUEUE_TRANS_4:
           case SESSION_PHASES.QUEUE_TRANS_2:
-            return {
-              ...state,
-              ...state.phaseProps[sessionPhase],
+            newState = {
+              ...newState,
               ...queueProps
             };
+            break;
 
           default:
             break;
         }
       }
-      return state;
+      break;
     default:
-      return state;
+      break;
   }
+  return newState;
 }
 
 // assumes parent reducer calling this at the right time.
@@ -128,60 +136,47 @@ function l6Sequencer (
     sessionPhaseDurations
   } = fullState;
 
+  let newState = state;
+
   switch (action.type) {
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
-      return Object.assign({}, state, {
-        playingState: PLAYING_STATES.STOP_QUEUED,
-        //stopQuant: [4, 4]
-      });
+      newState = {
+        ...newState,
+        playingState: PLAYING_STATES.STOP_QUEUED
+      };
+      break;
     case actionTypes.SESSION_PHASE_ADVANCED:
-      // session phase automatically advanced.
-      
-      // props to queue this sequencer after transition (if needed)
-      const queueProps = {
-        playingState: PLAYING_STATES.QUEUED,
-        playQuant: createPhaseEndQuant(
-          action.payload.phase,
-          sessionPhaseDurations
-        )
-      };
-      const queueStopProps = {
-        playingState: PLAYING_STATES.STOP_QUEUED,
-        stopQuant: createPhaseEndQuant(
-          action.payload.phase,
-          sessionPhaseDurations
-        )
-      };
+      newState = apply_phase_props(state, action.payload.phase);
 
+      // Starts or stops level 6 sequencer depending on the phase
       switch (action.payload.phase) {
-        case SESSION_PHASES.TRANS_6:
-          // prepare sequencer for PLAYING_6, do not queue auto
-          return Object.assign(
-            {},
-            state,
-            state.phaseProps[SESSION_PHASES.PLAYING_6]
-          );
         case SESSION_PHASES.TRANS_4:
-          // prepare sequencer for PLAYING_4, queue automatically
-          return Object.assign(
-            {},
-            state,
-            queueProps,
-            state.phaseProps[SESSION_PHASES.PLAYING_4]
-          );
         case SESSION_PHASES.TRANS_2:
-          // prepare sequencer for PLAYING_2, queue automatically
-          return Object.assign(
-            {},
-            state,
-            queueProps,
-            state.phaseProps[SESSION_PHASES.PLAYING_2]
-          );
+          newState = {
+            ...newState,
+            playingState: PLAYING_STATES.QUEUED,
+            playQuant: createPhaseEndQuant(
+              action.payload.phase,
+              sessionPhaseDurations
+            )
+          };
+          break;
+
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:
-          return Object.assign({}, state, queueStopProps);
+          newState = {
+            ...newState,
+            playingState: PLAYING_STATES.STOP_QUEUED,
+            stopQuant: createPhaseEndQuant(
+              action.payload.phase,
+              sessionPhaseDurations
+            )
+          };
+          break;
         default:
-          return state;
+          break;
       }
+      break;
+
     case actionTypes.BUTTON_PRESSED:
       const segmentId = create_segmentId(
         action.payload.levelId,
@@ -189,66 +184,68 @@ function l6Sequencer (
       );
       const buttonSequencerId = getSegmentIdToSequencerId(fullState)[segmentId];
       if (
-          // button press was for this sequencer
-          buttonSequencerId === state.sequencerId
-      ) {
-        const playQuant = state.playQuant;
-        if (
           // session phase just transitioned
           sessionPhase !== prevSessionPhase
-          // to l6
-          && sessionPhase === SESSION_PHASES.QUEUE_TRANS_6
+      ) {
+        newState = apply_phase_props(newState, sessionPhase);
+
+        if (
+            // button press was for this sequencer
+            buttonSequencerId === state.sequencerId
         ) {
-          // queue pressed sequencer for post-transition
-          return Object.assign(
-            {},
-            state,
-            //state.phaseProps[SESSION_PHASES.PLAYING_6],
-            {
-              playingState: PLAYING_STATES.QUEUED,
-              playQuant: [playQuant[0], playQuant[0] + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]]
-            }
-          );
-        } else if (
-          // we are currently playing level 6
-          // TODO: when just queued, second button will not respond.
-          sessionPhase === SESSION_PHASES.PLAYING_6
-        ) {
-          // queue if stopped
-          if (state.playingState === PLAYING_STATES.STOPPED) {
-            return Object.assign(
+          const playQuant = newState.playQuant;
+          if (
+            // to l6
+            sessionPhase === SESSION_PHASES.QUEUE_TRANS_6
+          ) {
+            // queue pressed sequencer for post-transition
+            newState = Object.assign(
               {},
-              state,
+              newState,
               {
-                playingState: PLAYING_STATES.QUEUED
+                playingState: PLAYING_STATES.QUEUED,
+                playQuant: [playQuant[0], playQuant[0] + sessionPhaseDurations[NEXT_SESSION_PHASES[sessionPhase]]]
               }
             );
           }
+        } else {
+          // button press was for another sequencer and the session phase
+          // transitioned
+          switch (sessionPhase) {
+            case SESSION_PHASES.QUEUE_TRANS_4:
+            case SESSION_PHASES.QUEUE_TRANS_2:
+              newState = {
+                ...newState,
+                playingState: PLAYING_STATES.STOP_QUEUED,
+              };
+              break;
+            default:
+              break;
+          }
         }
       } else if (
-        // button press was for another sequencer and the session phase
-        // transitioned
-        sessionPhase !== prevSessionPhase
+        // we are currently playing level 6
+        // TODO: when just queued, second button will not respond.
+        sessionPhase === SESSION_PHASES.PLAYING_6
+        // button press was for this sequencer
+        && buttonSequencerId === state.sequencerId
       ) {
-        // props if we want to stop this sequencer when this phase ends
-        const queueStopProps = {
-          playingState: PLAYING_STATES.STOP_QUEUED,
-          //stopQuant: [4, 4]
-        };
-
-        switch (sessionPhase) {
-          case SESSION_PHASES.QUEUE_TRANS_4:
-          case SESSION_PHASES.QUEUE_TRANS_2:
-            return Object.assign({}, state, queueStopProps);
-          default:
-            return state;
+        // queue if stopped
+        if (state.playingState === PLAYING_STATES.STOPPED) {
+          newState = Object.assign(
+            {},
+            newState,
+            {
+              playingState: PLAYING_STATES.QUEUED
+            }
+          );
         }
-
       }
-      return state;
+      break;
     default:
-      return state;
+      break;
   }
+  return newState;
 }
 
 function chordProgSequencer (
@@ -268,35 +265,33 @@ function chordProgSequencer (
         stopQuant: [4, 4]
       });
     case actionTypes.SESSION_PHASE_ADVANCED:
+      let newState = apply_phase_props(state, action.payload.phase);
+
       // session phase automatically advanced.  If it is a transition
       // we may need to re-queue
       switch (action.payload.phase) {
-        //case SESSION_PHASES.TRANS_4:
-          //// prepare sequencer for playing 4, do not queue
-          //return Object.assign(
-            //{},
-            //state,
-            //state.phaseProps[SESSION_PHASES.PLAYING_4]
-          //);
         case SESSION_PHASES.TRANS_2:
-          return Object.assign({}, state, {
+          newState = Object.assign({}, newState, {
             playingState: PLAYING_STATES.QUEUED,
             playQuant: createPhaseEndQuant(
               action.payload.phase,
               sessionPhaseDurations
             )
-          }, state.phaseProps[SESSION_PHASES.PLAYING_2]);
+          });
+          break;
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:
-          return Object.assign({}, state, {
+          newState = Object.assign({}, newState, {
             playingState: PLAYING_STATES.STOP_QUEUED,
             stopQuant: createPhaseEndQuant(
               action.payload.phase,
               sessionPhaseDurations
             )
           });
+          break;
         default:
-          return state;
+          break;
       }
+      return newState;
     case actionTypes.BUTTON_PRESSED:
 
       // segment corresponding to button pressed

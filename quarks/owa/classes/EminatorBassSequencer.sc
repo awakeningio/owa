@@ -111,7 +111,6 @@ EminatorBassSequencer : AwakenedSequencer {
   // for playing the CC messages converted to envelopes.
   initStream {
     this.assignPdefnsFromCurrentState();
-    //controlPattern = Ppar([
     ^Ppar([
       Pbind(
         [\instrument, \dur], Pdefn('EminatorBassSeqControl16'),
@@ -138,30 +137,18 @@ EminatorBassSequencer : AwakenedSequencer {
         \toneModulatorLFOAmountBus, control16Bus
       )
     ]).asStream();
-    //^.asStream();
   }
-
-  // Overrides queue and stop methods to play the controlPattern alongside
-  // the sequencer.
-  //queue {
-    //arg requeue;
-    //super.queue(requeue);
-    //controlPlayer = controlPattern.play(
-      //quant: currentState.playQuant,
-      //clock: clockController.clock
-    //);
-  //}
-  //stop {
-    //super.stop();
-    //controlPlayer.stop();
-  //}
 
   handleStateChange {
     lastState = currentState;
     super.handleStateChange();
 
+    "currentState:".postln;
+    currentState.postln;
+
     if (lastState.midiKey != currentState.midiKey, {
       this.assignPdefnsFromCurrentState();
     });
+    
   }
 }

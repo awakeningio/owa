@@ -22,7 +22,7 @@ const playingLevel2SegmentToBufName = {
 export default function createEminatorState () {
   const l6PlayQuant = [14, 0];
   const l6StopQuant = [14, 14];
-  let sequencerList = [
+  const sequencerList = [
     create_owa_sequencer(
       'eminator-6_0',
       'EminatorBassSequencer',
@@ -135,15 +135,13 @@ export default function createEminatorState () {
           "eminator_trans_L6_L4",
           "eminator_trans_idle",
         ],
+        bufName: 'eminator_trans_idle',
+        attackTime: 0.0,
+        releaseTime: 0.0,
+        //numBeats: 22 * 7,
+        numBeats: 2 * 7,
+        amp: 1.0,
         phaseProps: {
-          [SESSION_PHASES.QUEUE_TRANS_6]: {
-            bufName: 'eminator_trans_idle',
-            attackTime: 0.0,
-            releaseTime: 0.0,
-            //numBeats: 22 * 7,
-            numBeats: 2 * 7,
-            amp: 1.0
-          },
           [SESSION_PHASES.QUEUE_TRANS_4]: {
             bufName: 'eminator_trans_L6_L4',
             attackTime: 0.00,
@@ -192,7 +190,7 @@ export default function createEminatorState () {
           'eminator_chords_L4_01'
         ],
         phaseProps: {
-          [SESSION_PHASES.PLAYING_2]: {
+          [SESSION_PHASES.TRANS_2]: {
             bufSequence: [
               'eminator_chords_L2_01',
               'eminator_chords_L2_02',
@@ -200,12 +198,6 @@ export default function createEminatorState () {
               'eminator_chords_L2_04'
             ],
             segmentIdToBufName: playingLevel2SegmentToBufName
-          },
-          [SESSION_PHASES.PLAYING_4]: {
-            segmentIdToBufName: playingLevel4SegmentToBufName
-          },
-          [SESSION_PHASES.QUEUE_TRANS_4]: {
-            segmentIdToBufName: playingLevel4SegmentToBufName
           },
           [SESSION_PHASES.TRANS_4]: {
             segmentIdToBufName: playingLevel4SegmentToBufName
@@ -232,12 +224,13 @@ export default function createEminatorState () {
       {}
     ),
   ];
-  sequencerList = sequencerList.map(seq => (
-      {
-        ...seq,
-        ...seq.phaseProps[SESSION_PHASES.QUEUE_TRANS_6]
-      }
-  ));
+  //sequencerList = sequencerList.map(seq => {
+    //return (
+      //{
+        //...seq,
+        //...seq.phaseProps[SESSION_PHASES.QUEUE_TRANS_6]
+      //}
+  //)});
 
   return sequencerList.reduce((acc, sequencer) => {
     acc[sequencer.sequencerId] = sequencer;

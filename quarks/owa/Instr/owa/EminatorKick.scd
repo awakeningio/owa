@@ -26,7 +26,8 @@ Instr("owa.EminatorKick", {
     velocity: velocity,
     startTimesByVelocity: acousticStartTimesBufnum,
     sample: acousticSampleBufnum,
-    sampleDur: 0.5
+    sampleDur: 0.5,
+    numChannels: 1
   ));
 
   acoustic = RHPF.ar(in: acoustic, freq: 79.1, rq: 0.72, mul: 1.0, add: 0.0);
@@ -60,8 +61,7 @@ Instr("owa.EminatorKick", {
   );
 
   out = amp * env * out;
-  //out = [out, out];
-
+  [out, out];
 }, [
   \gate,
   \amp,

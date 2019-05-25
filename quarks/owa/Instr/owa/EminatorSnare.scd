@@ -18,7 +18,8 @@ Instr("owa.EminatorSnare", {
     velocity: velocity,
     startTimesByVelocity: electronicStartTimesBufnum,
     sample: electronicSampleBufnum,
-    sampleDur: 0.5
+    sampleDur: 0.5,
+    numChannels: 1
   ));
 
   acoustic = Instr.ar("owa.StartTimesVelocitySampler", (
@@ -27,7 +28,8 @@ Instr("owa.EminatorSnare", {
     velocity: velocity,
     startTimesByVelocity: acousticStartTimesBufnum,
     sample: acousticSampleBufnum,
-    sampleDur: 0.5
+    sampleDur: 0.5,
+    numChannels: 1
   ));
 
   out = synthetic + acoustic;
@@ -52,6 +54,8 @@ Instr("owa.EminatorSnare", {
   );
 
   out = amp * env * out;
+
+  [out, out];
 
 }, [
   \gate,

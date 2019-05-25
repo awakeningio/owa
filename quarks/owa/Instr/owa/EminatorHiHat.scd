@@ -38,7 +38,8 @@ Instr("owa.EminatorHiHat", {
     velocity: velocity,
     startTimesByVelocity: acousticClosedStartTimes,
     sample: acousticClosedSample,
-    sampleDur: 0.5
+    sampleDur: 0.5,
+    numChannels: 1
   ));
 
   acousticOpen = Instr.ar("owa.StartTimesVelocitySampler", (
@@ -47,7 +48,8 @@ Instr("owa.EminatorHiHat", {
     velocity: velocity,
     startTimesByVelocity: acousticOpenStartTimes,
     sample: acousticOpenSample,
-    sampleDur: 3.0
+    sampleDur: 3.0,
+    numChannels: 1
   ));
 
   electronicClosed = Instr.ar("owa.StartTimesVelocitySampler", (
@@ -56,7 +58,8 @@ Instr("owa.EminatorHiHat", {
     velocity: velocity,
     startTimesByVelocity: electronicClosedStartTimes,
     sample: electronicClosedSample,
-    sampleDur: 0.5
+    sampleDur: 0.5,
+    numChannels: 1
   ));
 
   electronicOpen = Instr.ar("owa.StartTimesVelocitySampler", (
@@ -65,7 +68,8 @@ Instr("owa.EminatorHiHat", {
     velocity: velocity,
     startTimesByVelocity: electronicOpenStartTimes,
     sample: electronicOpenSample,
-    sampleDur: 2.0
+    sampleDur: 2.0,
+    numChannels: 1
   ));
 
   env = EnvGen.ar(
@@ -86,6 +90,8 @@ Instr("owa.EminatorHiHat", {
   out = -6.0.dbamp() * BHiShelf.ar(in: out, freq: 2670, rs: 1.0, db: 5.0);
   
   out = env * amp * out;
+
+  [out, out];
 
 }, [
   \gate,

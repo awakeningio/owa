@@ -18,7 +18,7 @@ Instr("owa.eminator.Lead", {
     startTimesByVelocity: startTimesByVelocity,
     sample: sample,
     sampleDur: sampleDur,
-    numChannels: 2,
+    numChannels: 1,
     freq: freq,
     sampleFreq: sampleFreq
   ));
@@ -31,7 +31,7 @@ Instr("owa.eminator.Lead", {
 
   out = env * amp * samplePlayer;
 
-  out;
+  [out, out];
 }, [
   \gate,
   \amp,

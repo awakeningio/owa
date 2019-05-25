@@ -143,9 +143,6 @@ EminatorBassSequencer : AwakenedSequencer {
     lastState = currentState;
     super.handleStateChange();
 
-    "currentState:".postln;
-    currentState.postln;
-
     if (lastState.midiKey != currentState.midiKey, {
       this.assignPdefnsFromCurrentState();
     });

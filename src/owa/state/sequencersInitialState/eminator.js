@@ -190,7 +190,7 @@ export default function createEminatorState () {
           'eminator_chords_L4_01'
         ],
         phaseProps: {
-          [SESSION_PHASES.TRANS_2]: {
+          [SESSION_PHASES.QUEUE_TRANS_2]: {
             bufSequence: [
               'eminator_chords_L2_01',
               'eminator_chords_L2_02',
@@ -199,7 +199,7 @@ export default function createEminatorState () {
             ],
             segmentIdToBufName: playingLevel2SegmentToBufName
           },
-          [SESSION_PHASES.TRANS_4]: {
+          [SESSION_PHASES.QUEUE_TRANS_4]: {
             segmentIdToBufName: playingLevel4SegmentToBufName
           }
         }

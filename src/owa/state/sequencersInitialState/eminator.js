@@ -22,25 +22,27 @@ const playingLevel2SegmentToBufName = {
 export default function createEminatorState () {
   const l6PlayQuant = [14, 0];
   const l6StopQuant = [14, 14];
+  const l4PlayQuant = [4, 0];
+  const l4StopQuant = [4, 4];
   const sequencerList = [
     create_owa_sequencer(
       'eminator-6_0',
       'EminatorBassSequencer',
       {
         phaseProps: {
-          [SESSION_PHASES.QUEUE_TRANS_6]: {
+          [SESSION_PHASES.TRANS_6]: {
             midiKey: 'eminator_bass_L6',
             numBeats: 4 * 7,
             playQuant: l6PlayQuant,
             stopQuant: l6StopQuant
           },
-          [SESSION_PHASES.QUEUE_TRANS_4]: {
+          [SESSION_PHASES.TRANS_4]: {
             midiKey: 'eminator_bass_L4',
             numBeats: 16 * 4,
-            playQuant: [4, 4],
+            playQuant: l4PlayQuant,
             stopQuant: [4, 16 * 4]
           },
-          [SESSION_PHASES.QUEUE_TRANS_2]: {
+          [SESSION_PHASES.TRANS_2]: {
             midiKey: 'eminator_bass_L2',
             numBeats: 2 * 4
           }
@@ -52,7 +54,7 @@ export default function createEminatorState () {
       'EminatorCrazyVoicesSequencer',
       {
         phaseProps: {
-          [SESSION_PHASES.QUEUE_TRANS_6]: {
+          [SESSION_PHASES.TRANS_6]: {
             numBeats: 4 * 7,
             playQuant: l6PlayQuant,
             stopQuant: l6StopQuant
@@ -65,7 +67,7 @@ export default function createEminatorState () {
       'EminatorSharpEerieSequencer',
       {
         phaseProps: {
-          [SESSION_PHASES.QUEUE_TRANS_6]: {
+          [SESSION_PHASES.TRANS_6]: {
             numBeats: 2 * 7,
             playQuant: l6PlayQuant,
             stopQuant: l6StopQuant
@@ -78,7 +80,7 @@ export default function createEminatorState () {
       'EminatorNoisySFXSequencer',
       {
         phaseProps: {
-          [SESSION_PHASES.QUEUE_TRANS_6]: {
+          [SESSION_PHASES.TRANS_6]: {
             numBeats: 2 * 7,
             playQuant: l6PlayQuant,
             stopQuant: l6StopQuant
@@ -91,7 +93,7 @@ export default function createEminatorState () {
       'EminatorHatsEtcSequencer',
       {
         phaseProps: {
-          [SESSION_PHASES.QUEUE_TRANS_6]: {
+          [SESSION_PHASES.TRANS_6]: {
             numBeats: 2 * 7,
             playQuant: l6PlayQuant,
             stopQuant: l6StopQuant
@@ -104,7 +106,7 @@ export default function createEminatorState () {
       'EminatorKickSnareSequencer',
       {
         phaseProps: {
-          [SESSION_PHASES.QUEUE_TRANS_6]: {
+          [SESSION_PHASES.TRANS_6]: {
             numBeats: 2 * 7,
             playQuant: l6PlayQuant,
             stopQuant: l6StopQuant
@@ -143,6 +145,14 @@ export default function createEminatorState () {
         //numBeats: 2 * 7,
         amp: 1.0,
         phaseProps: {
+          [SESSION_PHASES.QUEUE_TRANS_6]: {
+            bufName: 'eminator_trans_idle',
+            attackTime: 0.0,
+            releaseTime: 0.0,
+            numBeats: 22 * 7,
+            //numBeats: 2 * 7,
+            amp: 1.0,
+          },
           [SESSION_PHASES.QUEUE_TRANS_4]: {
             bufName: 'eminator_trans_L6_L4',
             attackTime: 0.00,
@@ -211,7 +221,7 @@ export default function createEminatorState () {
       'EminatorWhispPopSequencer',
       {
         //phaseProps: {
-          ////[SESSION_PHASES.QUEUE_TRANS_6]: {
+          ////[SESSION_PHASES.TRANS_6]: {
             ////numBeats: 2 * 7,
             ////playQuant: l6PlayQuant,
             ////stopQuant: l6StopQuant
@@ -229,7 +239,7 @@ export default function createEminatorState () {
     //return (
       //{
         //...seq,
-        //...seq.phaseProps[SESSION_PHASES.QUEUE_TRANS_6]
+        //...seq.phaseProps[SESSION_PHASES.TRANS_6]
       //}
   //)});
 

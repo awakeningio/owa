@@ -27,10 +27,10 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
       \QUEUE_TRANS_6, {
         'eminator_hats_L6';
       },
-      \QUEUE_TRANS_4, {
+      \TRANS_4, {
         'eminator_hats_L4';
       },
-      \QUEUE_TRANS_2, {
+      \TRANS_2, {
         'eminator_hats_L2';
       }
     );

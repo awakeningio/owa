@@ -1,4 +1,4 @@
-import { SESSION_PHASES, NEXT_SESSION_PHASES, SESSION_PHASE_BEATS_PER_BAR_BY_SONGID, SESSION_PHASE_DURATIONS_BY_SONGID } from 'owa/constants';
+import { SESSION_PHASES, SESSION_PHASE_BEATS_PER_BAR_BY_SONGID, SESSION_PHASE_DURATIONS_BY_SONGID } from 'owa/constants';
 
 // A mapping of session phase to properties which are to be applied
 // when the session phase occurs.
@@ -20,12 +20,12 @@ export function get_playing_levelId_for_sessionPhase (sessionPhase) {
   }[sessionPhase] || null;
 }
 
-export function createPhaseEndQuant (sessionPhase, songId, onBoundary=false) {
+export function createPhaseEndQuant (sessionPhase, songId, endOfBar=false) {
   const sessionPhaseDuration = SESSION_PHASE_DURATIONS_BY_SONGID[songId][sessionPhase];
   const sessionPhaseMeter = SESSION_PHASE_BEATS_PER_BAR_BY_SONGID[songId][sessionPhase];
   return [
     sessionPhaseMeter,
-    sessionPhaseDuration + (onBoundary ? sessionPhaseMeter : 0)
+    sessionPhaseDuration + (endOfBar ? sessionPhaseMeter : 0)
   ];
 }
 
@@ -35,14 +35,14 @@ export function createPhaseEndQuant (sessionPhase, songId, onBoundary=false) {
 
 //}
 
-export function createNextPhaseEndQuant (sessionPhase, songId, onBoundary=false) {
-  const sessionPhaseDuration = SESSION_PHASE_DURATIONS_BY_SONGID[songId][sessionPhase];
-  const sessionPhaseMeter = SESSION_PHASE_BEATS_PER_BAR_BY_SONGID[songId][sessionPhase];
-  const nextSessionPhase = NEXT_SESSION_PHASES[sessionPhase];
-  const nextSessionPhaseMeter = SESSION_PHASE_BEATS_PER_BAR_BY_SONGID[songId][nextSessionPhase];
-  const nextSessionPhaseDuration = SESSION_PHASE_DURATIONS_BY_SONGID[songId][nextSessionPhase];
-  return [
-    sessionPhaseMeter,
-    sessionPhaseDuration + nextSessionPhaseDuration + (onBoundary ? nextSessionPhaseMeter : 0)
-  ];
-}
+//export function createNextPhaseEndQuant (sessionPhase, songId, endOfBar=false) {
+  //const sessionPhaseDuration = SESSION_PHASE_DURATIONS_BY_SONGID[songId][sessionPhase];
+  //const sessionPhaseMeter = SESSION_PHASE_BEATS_PER_BAR_BY_SONGID[songId][sessionPhase];
+  //const nextSessionPhase = NEXT_SESSION_PHASES[sessionPhase];
+  //const nextSessionPhaseMeter = SESSION_PHASE_BEATS_PER_BAR_BY_SONGID[songId][nextSessionPhase];
+  //const nextSessionPhaseDuration = SESSION_PHASE_DURATIONS_BY_SONGID[songId][nextSessionPhase];
+  //return [
+    //nextSessionPhaseMeter,
+    //sessionPhaseDuration + nextSessionPhaseDuration + (endOfBar ? nextSessionPhaseMeter : 0)
+  //];
+//}

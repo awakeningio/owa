@@ -38,13 +38,13 @@ EminatorKickSnareSequencer : AwakenedSequencer {
     sessionPhase = state.sessionPhase.asSymbol();
 
     kickMidiKey = switch(sessionPhase, 
-      \QUEUE_TRANS_6, {
+      \TRANS_6, {
         'eminator_kick_L6';
       },
-      \QUEUE_TRANS_4, {
+      \TRANS_4, {
         'eminator_kick_L4';
       },
-      \QUEUE_TRANS_2, {
+      \TRANS_2, {
         'eminator_kick_L2'
       }
     );
@@ -58,13 +58,13 @@ EminatorKickSnareSequencer : AwakenedSequencer {
     Pdefn('EminatorKickNotes').quant = currentState.playQuant;
 
     snareMidiKey = switch(sessionPhase,
-      \QUEUE_TRANS_6, {
+      \TRANS_6, {
         'eminator_snare_L6';
       },
-      \QUEUE_TRANS_4, {
+      \TRANS_4, {
         'eminator_snare_L4';
       },
-      \QUEUE_TRANS_2, {
+      \TRANS_2, {
         'eminator_snare_L2';
       }
     );

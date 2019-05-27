@@ -20,7 +20,7 @@ export function createSpinnyPluckState () {
       playQuant: [4, 4],
       midiName: 'spinny-pluck_L6_hats',
       phaseProps: {
-        [SESSION_PHASES.PLAYING_2]: {
+        [SESSION_PHASES.TRANS_2]: {
           midiName: 'spinny-pluck_L2_hats'
         }
       }
@@ -94,7 +94,7 @@ export function createSpinnyPluckState () {
         'spinny-pluck_L4_chords-1'
       ],
       phaseProps: {
-        [SESSION_PHASES.PLAYING_2]: {
+        [SESSION_PHASES.TRANS_2]: {
           bufSequence: [
             'spinny-pluck_L2_chords-1',
             'spinny-pluck_L2_chords-2',
@@ -102,12 +102,6 @@ export function createSpinnyPluckState () {
             'spinny-pluck_L2_chords-4'
           ],
           segmentIdToBufName: playingLevel2SegmentToBufName
-        },
-        [SESSION_PHASES.PLAYING_4]: {
-          segmentIdToBufName: playingLevel4SegmentToBufName
-        },
-        [SESSION_PHASES.QUEUE_TRANS_4]: {
-          segmentIdToBufName: playingLevel4SegmentToBufName
         },
         [SESSION_PHASES.TRANS_4]: {
           segmentIdToBufName: playingLevel4SegmentToBufName

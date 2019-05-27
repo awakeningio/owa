@@ -12,13 +12,11 @@ import awakeningSequencers from "awakening-sequencers"
 import * as actionTypes from '../actionTypes'
 import {
   create_segmentId,
-  createPhaseEndQuant,
-  createNextPhaseEndQuant
+  createPhaseEndQuant
 } from 'owa/models'
-import { apply_phase_props } from 'owa/models/sequencer';
+import { apply_phase_props, do_queue_on_phase_start } from 'owa/models/sequencer';
 import {
-  SESSION_PHASES,
-  NEXT_SESSION_PHASES
+  SESSION_PHASES
 } from 'owa/constants'
 import {
   getLevel6Sequencers,
@@ -50,7 +48,7 @@ function revealSequencer (
         newState = {
           ...newState,
           playingState: PLAYING_STATES.QUEUED,
-          playQuant: createPhaseEndQuant(action.payload.phase, songId, true)
+          playQuant: createPhaseEndQuant(action.payload.phase, songId)
         };
       }
       break;
@@ -81,7 +79,7 @@ function transSequencer (
             ...newState,
             ...{
               playingState: PLAYING_STATES.QUEUED,
-              playQuant: createPhaseEndQuant(action.payload.phase, songId, true)
+              playQuant: createPhaseEndQuant(action.payload.phase, songId)
             }
           };
           break;
@@ -140,6 +138,7 @@ function l6Sequencer (
       break;
     case actionTypes.SESSION_PHASE_ADVANCED:
       newState = apply_phase_props(state, action.payload.phase);
+      newState = do_queue_on_phase_start(newState, action.payload.phase, songId);
 
       // Starts or stops level 6 sequencer depending on the phase
       switch (action.payload.phase) {
@@ -148,7 +147,7 @@ function l6Sequencer (
           newState = {
             ...newState,
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseEndQuant(action.payload.phase, songId, true)
+            playQuant: createPhaseEndQuant(action.payload.phase, songId)
           };
           break;
 
@@ -185,14 +184,18 @@ function l6Sequencer (
             sessionPhase === SESSION_PHASES.QUEUE_TRANS_6
           ) {
             // queue pressed sequencer for post-transition
-            newState = Object.assign(
-              {},
-              newState,
-              {
-                playingState: PLAYING_STATES.QUEUED,
-                playQuant: createNextPhaseEndQuant(sessionPhase, songId)
-              }
-            );
+            newState = {
+              ...newState,
+              queueOnPhaseStart: SESSION_PHASES.TRANS_6
+            };
+            //newState = Object.assign(
+              //{},
+              //newState,
+              //{
+                //playingState: PLAYING_STATES.QUEUED,
+                //playQuant: createNextPhaseEndQuant(sessionPhase, songId)
+              //}
+            //);
           }
         } else {
           // button press was for another sequencer and the session phase
@@ -257,14 +260,16 @@ function chordProgSequencer (
       break;
     case actionTypes.SESSION_PHASE_ADVANCED:
       newState = apply_phase_props(newState, action.payload.phase);
+      newState = do_queue_on_phase_start(newState, action.payload.phase, songId);
 
       // session phase automatically advanced.  If it is a transition
       // we may need to re-queue
       switch (action.payload.phase) {
         case SESSION_PHASES.TRANS_2:
+          newState = do_queue_on_phase_start(newState, action.payload.phase, songId);
           newState = Object.assign({}, newState, {
             playingState: PLAYING_STATES.QUEUED,
-            playQuant: createPhaseEndQuant(action.payload.phase, songId, true)
+            playQuant: createPhaseEndQuant(action.payload.phase, songId)
           });
           break;
         case SESSION_PHASES.QUEUE_TRANS_ADVICE:
@@ -301,9 +306,10 @@ function chordProgSequencer (
             // this is the first press for level 4
             newState = {
               ...newState, 
-              playingState: PLAYING_STATES.QUEUED,
+              queueOnPhaseStart: SESSION_PHASES.TRANS_4,
+              //playingState: PLAYING_STATES.QUEUED,
               bufSequence: [newState.segmentIdToBufName[segmentId]],
-              playQuant: createNextPhaseEndQuant(sessionPhase, songId)
+              //playQuant: createNextPhaseEndQuant(sessionPhase, songId)
             };
           } 
         } else if (
@@ -368,7 +374,6 @@ function l2Sequencer (
 ) {
   const {
     sessionPhase,
-    sessionPhaseDurations,
     songId
   } = fullState;
   let newState = state;
@@ -382,6 +387,7 @@ function l2Sequencer (
       break;
     case actionTypes.SESSION_PHASE_ADVANCED:
       newState = apply_phase_props(newState, action.payload.phase);
+      newState = do_queue_on_phase_start(newState, action.payload.phase, songId);
       if (action.payload.phase === SESSION_PHASES.QUEUE_TRANS_ADVICE) {
         // queue seq to stop for trans advice
         newState = {
@@ -410,8 +416,9 @@ function l2Sequencer (
           // queue self post-transition
           newState = {
             ...newState,
-            playingState: PLAYING_STATES.QUEUED,
-            playQuant: createNextPhaseEndQuant(sessionPhase, songId)
+            queueOnPhaseStart: SESSION_PHASES.TRANS_2
+            //playingState: PLAYING_STATES.QUEUED,
+            //playQuant: createNextPhaseEndQuant(sessionPhase, songId)
           };
         }
       } else if (

@@ -29,7 +29,7 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
     var sessionPhase = state.sessionPhase.asSymbol();
 
     switch(sessionPhase, 
-      \QUEUE_TRANS_6, {
+      \TRANS_6, {
         Pdefn(
           'EminatorSharpEerieDurs',
           Prand([
@@ -41,7 +41,7 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
           ], inf)
         );
       },
-      \QUEUE_TRANS_4, {
+      \TRANS_4, {
         Pdefn(
           'EminatorSharpEerieDurs',
           Prand([
@@ -53,7 +53,7 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
           ], inf)
         );
       },
-      \QUEUE_TRANS_2, {
+      \TRANS_2, {
         Pdefn(
           'EminatorSharpEerieDurs',
           Prand([

@@ -28,7 +28,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
           ], inf)
         );
       },
-      \QUEUE_TRANS_4, {
+      \TRANS_4, {
         Pdefn(
           'EminatorCrazyVoices',
           Prand([

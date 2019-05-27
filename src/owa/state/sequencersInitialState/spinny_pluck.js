@@ -94,16 +94,18 @@ export function createSpinnyPluckState () {
         'spinny-pluck_L4_chords-1'
       ],
       phaseProps: {
+        [SESSION_PHASES.QUEUE_TRANS_2]: {
+          segmentIdToBufName: playingLevel2SegmentToBufName
+        },
         [SESSION_PHASES.TRANS_2]: {
           bufSequence: [
             'spinny-pluck_L2_chords-1',
             'spinny-pluck_L2_chords-2',
             'spinny-pluck_L2_chords-3',
             'spinny-pluck_L2_chords-4'
-          ],
-          segmentIdToBufName: playingLevel2SegmentToBufName
+          ]
         },
-        [SESSION_PHASES.TRANS_4]: {
+        [SESSION_PHASES.QUEUE_TRANS_4]: {
           segmentIdToBufName: playingLevel4SegmentToBufName
         }
       }

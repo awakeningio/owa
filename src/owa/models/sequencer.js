@@ -32,7 +32,8 @@ export function do_queue_on_phase_start (sequencer, sessionPhase, songId) {
     newSequencer = {
       ...newSequencer,
       playingState: PLAYING_STATES.QUEUED,
-      playQuant: createPhaseEndQuant(sessionPhase, songId)
+      playQuant: createPhaseEndQuant(sessionPhase, songId),
+      queueOnPhaseStart: false
     };
   }
   return newSequencer;

@@ -23,7 +23,7 @@ export default function createEminatorState () {
   const l6PlayQuant = [14, 0];
   const l6StopQuant = [14, 14];
   const l4PlayQuant = [4, 0];
-  const l4StopQuant = [4, 4];
+  //const l4StopQuant = [4, 4];
   const sequencerList = [
     create_owa_sequencer(
       'eminator-6_0',
@@ -182,8 +182,8 @@ export default function createEminatorState () {
       'ChordProgSequencer',
       {
         numBeats: 4 * 4,
-        playQuant: [4 * 4, 4],
-        defaultPlayQuant: [4 * 4, 4],
+        playQuant: [4 * 4, 0],
+        defaultPlayQuant: [4 * 4, 0],
         stopQuant: [4, 4],
         ampDb: -15.0,
         sustain: 4 * 4,
@@ -202,13 +202,15 @@ export default function createEminatorState () {
         ],
         phaseProps: {
           [SESSION_PHASES.QUEUE_TRANS_2]: {
+            segmentIdToBufName: playingLevel2SegmentToBufName
+          },
+          [SESSION_PHASES.TRANS_2]: {
             bufSequence: [
               'eminator_chords_L2_01',
               'eminator_chords_L2_02',
               'eminator_chords_L2_03',
               'eminator_chords_L2_04'
             ],
-            segmentIdToBufName: playingLevel2SegmentToBufName
           },
           [SESSION_PHASES.QUEUE_TRANS_4]: {
             segmentIdToBufName: playingLevel4SegmentToBufName
@@ -220,6 +222,7 @@ export default function createEminatorState () {
       'eminator-2_0',
       'EminatorWhispPopSequencer',
       {
+        playQuant: [16, 0]
         //phaseProps: {
           ////[SESSION_PHASES.TRANS_6]: {
             ////numBeats: 2 * 7,
@@ -232,7 +235,9 @@ export default function createEminatorState () {
     create_owa_sequencer (
       'eminator-2_1',
       'EminatorLeadSequencer',
-      {}
+      {
+        playQuant: [16, 0]
+      }
     ),
   ];
   //sequencerList = sequencerList.map(seq => {

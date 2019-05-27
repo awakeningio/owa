@@ -266,7 +266,6 @@ function chordProgSequencer (
       // we may need to re-queue
       switch (action.payload.phase) {
         case SESSION_PHASES.TRANS_2:
-          newState = do_queue_on_phase_start(newState, action.payload.phase, songId);
           newState = Object.assign({}, newState, {
             playingState: PLAYING_STATES.QUEUED,
             playQuant: createPhaseEndQuant(action.payload.phase, songId)

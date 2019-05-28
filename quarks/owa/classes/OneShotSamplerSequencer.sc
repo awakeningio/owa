@@ -31,7 +31,8 @@ OneShotSamplerSequencer : AwakenedSequencer {
         attackTime: KrNumberEditor(0.0, [0.0, 200.0]),
         releaseTime: KrNumberEditor(0.0, [0.0, 20.0]),
         amp: KrNumberEditor(1.0, \amp),
-        isSustained: 1
+        isSustained: 1,
+        convertToStereo: 1
       )).asSynthDef().add();
     });
 

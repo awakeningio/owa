@@ -104,47 +104,47 @@ OWAController {
       ["chime high pitch ring_D.wav", \chime_ring_d],
       ["spinny-pluck_L6_sfx [2018-05-27 133232].wav", 'spinny-pluck_L6_sfx'],
       [
-        "spinny-pluck_L4_chords-1 [2018-07-07 122629].wav",
+        "spinny-pluck_L4_chords-1 [2018-07-07 122629]_mono.wav",
         'spinny-pluck_L4_chords-1'
       ],
       [
-        "spinny-pluck_L4_chords-2 [2018-07-07 122628].wav",
+        "spinny-pluck_L4_chords-2 [2018-07-07 122628]_mono.wav",
         'spinny-pluck_L4_chords-2'
       ],
       [
-        "spinny-pluck_L4_chords-3 [2018-07-07 122629].wav",
+        "spinny-pluck_L4_chords-3 [2018-07-07 122629]_mono.wav",
         'spinny-pluck_L4_chords-3'
       ],
       [
-        "spinny-pluck_L4_chords-4 [2018-07-07 122629].wav",
+        "spinny-pluck_L4_chords-4 [2018-07-07 122629]_mono.wav",
         'spinny-pluck_L4_chords-4'
       ], [
-        "eerie_exit_15bars [2018-07-08 173939].wav",
+        "eerie_exit_15bars [2018-07-08 173939]_mono.wav",
         'spinny-pluck_idle-L6'
       ], [
-        "spinny-pluck_L6-L4.wav",
+        "spinny-pluck_L6-L4_mono.wav",
         'spinny-pluck_L6-L4'
       ], [
-        "spinny-pluck_L4-L2_5bar [2018-08-03 180721].wav",
+        "spinny-pluck_L4-L2_5bar [2018-08-03 180721]_mono.wav",
         'spinny-pluck_L4-L2'
       ],
-      ["spinny-pluck_L2_chords-1 [2018-08-03 182411].wav",
+      ["spinny-pluck_L2_chords-1 [2018-08-03 182411]_mono.wav",
       'spinny-pluck_L2_chords-1'],
-      ["spinny-pluck_L2_chords-2 [2018-08-03 182411].wav",
+      ["spinny-pluck_L2_chords-2 [2018-08-03 182411]_mono.wav",
       'spinny-pluck_L2_chords-2'],
-      ["spinny-pluck_L2_chords-3 [2018-08-03 182410].wav",
+      ["spinny-pluck_L2_chords-3 [2018-08-03 182410]_mono.wav",
       'spinny-pluck_L2_chords-3'],
-      ["spinny-pluck_L2_chords-4 [2018-08-03 182410].wav",
+      ["spinny-pluck_L2_chords-4 [2018-08-03 182410]_mono.wav",
       'spinny-pluck_L2_chords-4'],
       [
-        "spinny-pluck_L2-reveal.wav",
+        "spinny-pluck_L2-reveal_mono.wav",
         'spinny-pluck_L2-reveal'
       ], [
-        "spinny-pluck_reveal-55bar.wav",
+        "spinny-pluck_reveal-55bar_mono.wav",
         'spinny-pluck_reveal'
       ],
       [
-        "eerie_idle_loop.wav",
+        "eerie_idle_loop_mono_adjusted.wav",
         'eerie_idle_loop'
       ],
       [
@@ -164,14 +164,6 @@ OWAController {
         'eminator_hightom_01'
       ],
       [
-        "eminator_kick_01 [2019-03-23 192053].aif",
-        'eminator_kick_01'
-      ],
-      [
-        "eminator_snare_01 [2019-03-23 192053].aif",
-        'eminator_snare_01'
-      ],
-      [
         "eminator_snareroll_01 [2019-03-23 192053].aif",
         'eminator_snareroll_01'
       ],
@@ -184,19 +176,19 @@ OWAController {
       ["sharp_eerie/eerie_L6_07 [2019-05-10 104045]_mono.aif", \sharp_eerie_07],
       ["sharp_eerie/eerie_L6_08 [2019-05-10 104045]_mono.aif", \sharp_eerie_08],
       ["sharp_eerie/eerie_L6_09 [2019-05-10 104045]_mono.aif", \sharp_eerie_09],
-      ["eminator_trans_L2-Reveal.wav", \eminator_trans_L2_reveal],
-      ["eminator_trans_L4-L2.wav", \eminator_trans_L4_L2],
-      ["eminator_trans_L6-L4.wav", \eminator_trans_L6_L4],
-      ["eminator_trans_idle.wav", \eminator_trans_idle],
-      ["eminator_reveal.wav", \eminator_reveal],
-      ["eminator-chords/render chords L2 01 [2019-05-19 204530].aif", \eminator_chords_L2_01],
-      ["eminator-chords/render chords L2 02 [2019-05-19 204530].aif", \eminator_chords_L2_02],
-      ["eminator-chords/render chords L2 03 [2019-05-19 204530].aif", \eminator_chords_L2_03],
-      ["eminator-chords/render chords L2 04 [2019-05-19 204530].aif", \eminator_chords_L2_04],
-      ["eminator-chords/render chords L4 01 [2019-05-19 204530].aif", \eminator_chords_L4_01],
-      ["eminator-chords/render chords L4 02 [2019-05-19 204530].aif", \eminator_chords_L4_02],
-      ["eminator-chords/render chords L4 03 [2019-05-19 204530].aif", \eminator_chords_L4_03],
-      ["eminator-chords/render chords L4 04 [2019-05-19 204530].aif", \eminator_chords_L4_04],
+      ["eminator_trans_L2-Reveal_mono.wav", \eminator_trans_L2_reveal],
+      ["eminator_trans_L4-L2_mono.wav", \eminator_trans_L4_L2],
+      ["eminator_trans_L6-L4_mono.wav", \eminator_trans_L6_L4],
+      ["eminator_trans_idle_mono.wav", \eminator_trans_idle],
+      ["eminator_reveal_mono.wav", \eminator_reveal],
+      ["eminator-chords/render chords L2 01 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_01],
+      ["eminator-chords/render chords L2 02 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_02],
+      ["eminator-chords/render chords L2 03 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_03],
+      ["eminator-chords/render chords L2 04 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_04],
+      ["eminator-chords/render chords L4 01 [2019-05-19 204530]__mono.wav", \eminator_chords_L4_01],
+      ["eminator-chords/render chords L4 02 [2019-05-19 204530]__mono.wav", \eminator_chords_L4_02],
+      ["eminator-chords/render chords L4 03 [2019-05-19 204530]__mono.wav", \eminator_chords_L4_03],
+      ["eminator-chords/render chords L4 04 [2019-05-19 204530]__mono.wav", \eminator_chords_L4_04],
 
     ], ({
       // when buffers are done loading

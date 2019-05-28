@@ -24,7 +24,8 @@ ChordProgSequencer : AwakenedSequencer {
         gate: KrNumberEditor(1, \gate),
         attackTime: 0.0,
         releaseTime: 0.0,
-        isSustained: 1
+        isSustained: 1,
+        convertToStereo: 1
       ));
       synthdefsForBufNames[bufSym] = patch.asSynthDef().add();
     });

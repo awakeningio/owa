@@ -10,7 +10,7 @@ Instr("owa.eminator.Lead", {
   var samplePlayer,
     env,
     out,
-    sampleDur = 60.0/140.0;
+    sampleDur = 60.0/140.0 * 4.0 / 8.0;
 
   samplePlayer = Instr.ar("owa.PitchedStartTimesVelocitySampler", (
     gate: gate,

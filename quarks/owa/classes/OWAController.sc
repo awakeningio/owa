@@ -144,10 +144,6 @@ OWAController {
         'spinny-pluck_reveal'
       ],
       [
-        "eerie_idle_loop_mono_adjusted.wav",
-        'eerie_idle_loop'
-      ],
-      [
         "eminator_floortom_01 [2019-03-23 192053].aif",
         'eminator_floortom_01'
       ],
@@ -298,6 +294,14 @@ OWAController {
           midiKey: 'eminator_lead_L2',
           makeDuration: 4 * 16,
           tempoBPM: OWAConstants.tempoBySongId['eminator']
+        )
+      ]);
+
+      bufManager.cue_bufs([
+        (
+          bufferFileName: "eerie_idle_loop_mono_adjusted.wav",
+          bufferKey: 'eerie_idle_loop',
+          numChannels: 1
         )
       ]);
 

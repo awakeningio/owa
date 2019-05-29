@@ -83,13 +83,17 @@ SessionTimingController {
       nextPhase,
       state,
       phaseMeter,
-      sessionPhase;
+      sessionPhase,
+      sessionPhaseDurations,
+      songId;
 
     state = store.getState();
+    songId = state.songId.asSymbol();
     sessionPhase = state.sessionPhase.asSymbol();
-    nextPhase = OWAConstants.nextSessionPhases[state.sessionPhase.asSymbol()];
-    phaseDuration = state.sessionPhaseDurations[sessionPhase];
-    phaseMeter = OWAConstants.sessionPhaseBeatPerBarBySongId[state.songId.asSymbol()][sessionPhase];
+    nextPhase = OWAConstants.nextSessionPhases[sessionPhase];
+    sessionPhaseDurations = OWAConstants.sessionPhaseDurationsBySongId[songId];
+    phaseDuration = sessionPhaseDurations[sessionPhase];
+    phaseMeter = OWAConstants.sessionPhaseBeatPerBarBySongId[songId][sessionPhase];
 
     (
       "[SessionTimingController]: Scheduling transition to phase "

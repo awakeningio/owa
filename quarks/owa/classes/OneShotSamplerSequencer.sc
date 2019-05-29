@@ -25,7 +25,7 @@ OneShotSamplerSequencer : AwakenedSequencer {
       arg bufName;
       var bufSym = bufName.asSymbol();
 
-      synthdefsForBufNames[bufSym] = Patch("cs.sfx.PlayBuf", (
+      synthdefsForBufNames[bufSym] = Patch("cs.sfx.StreamBuf", (
         buf: bufManager.bufs[bufSym],
         gate: KrNumberEditor(1, \gate),
         attackTime: KrNumberEditor(0.0, [0.0, 200.0]),

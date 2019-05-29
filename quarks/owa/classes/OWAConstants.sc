@@ -16,7 +16,8 @@ OWAConstants {
     <>songIds,
     <>songIdsList,
     <>tempoBySongId,
-    <>sessionPhaseBeatPerBarBySongId;
+    <>sessionPhaseBeatPerBarBySongId,
+    <>sessionPhaseDurationsBySongId;
 
   *init {
     arg params;
@@ -33,5 +34,6 @@ OWAConstants {
     OWAConstants.songIdsList = params.constants['SONG_IDS_LIST'].collect(convertToSymbol);
     OWAConstants.tempoBySongId = params.constants['TEMPO_BY_SONGID'];
     OWAConstants.sessionPhaseBeatPerBarBySongId = params.constants['SESSION_PHASE_BEATS_PER_BAR_BY_SONGID'];
+    OWAConstants.sessionPhaseDurationsBySongId = params.constants['SESSION_PHASE_DURATIONS_BY_SONGID'];
   }
 }

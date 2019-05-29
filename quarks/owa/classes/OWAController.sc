@@ -118,16 +118,7 @@ OWAController {
       [
         "spinny-pluck_L4_chords-4 [2018-07-07 122629]_mono.wav",
         'spinny-pluck_L4_chords-4'
-      ], [
-        "eerie_exit_15bars [2018-07-08 173939]_mono.wav",
-        'spinny-pluck_idle-L6'
-      ], [
-        "spinny-pluck_L6-L4_mono.wav",
-        'spinny-pluck_L6-L4'
-      ], [
-        "spinny-pluck_L4-L2_5bar [2018-08-03 180721]_mono.wav",
-        'spinny-pluck_L4-L2'
-      ],
+      ], 
       ["spinny-pluck_L2_chords-1 [2018-08-03 182411]_mono.wav",
       'spinny-pluck_L2_chords-1'],
       ["spinny-pluck_L2_chords-2 [2018-08-03 182411]_mono.wav",
@@ -136,13 +127,7 @@ OWAController {
       'spinny-pluck_L2_chords-3'],
       ["spinny-pluck_L2_chords-4 [2018-08-03 182410]_mono.wav",
       'spinny-pluck_L2_chords-4'],
-      [
-        "spinny-pluck_L2-reveal_mono.wav",
-        'spinny-pluck_L2-reveal'
-      ], [
-        "spinny-pluck_reveal-55bar_mono.wav",
-        'spinny-pluck_reveal'
-      ],
+      
       [
         "eminator_floortom_01 [2019-03-23 192053].aif",
         'eminator_floortom_01'
@@ -172,11 +157,6 @@ OWAController {
       ["sharp_eerie/eerie_L6_07 [2019-05-10 104045]_mono.aif", \sharp_eerie_07],
       ["sharp_eerie/eerie_L6_08 [2019-05-10 104045]_mono.aif", \sharp_eerie_08],
       ["sharp_eerie/eerie_L6_09 [2019-05-10 104045]_mono.aif", \sharp_eerie_09],
-      ["eminator_trans_L2-Reveal_mono.wav", \eminator_trans_L2_reveal],
-      ["eminator_trans_L4-L2_mono.wav", \eminator_trans_L4_L2],
-      ["eminator_trans_L6-L4_mono.wav", \eminator_trans_L6_L4],
-      ["eminator_trans_idle_mono.wav", \eminator_trans_idle],
-      ["eminator_reveal_mono.wav", \eminator_reveal],
       ["eminator-chords/render chords L2 01 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_01],
       ["eminator-chords/render chords L2 02 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_02],
       ["eminator-chords/render chords L2 03 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_03],
@@ -299,8 +279,58 @@ OWAController {
 
       bufManager.cue_bufs([
         (
-          bufferFileName: "eerie_idle_loop_mono_adjusted.wav",
+          relativeFilePath: "eerie_idle_loop_mono_adjusted.wav",
           bufferKey: 'eerie_idle_loop',
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "eerie_exit_15bars [2018-07-08 173939]_mono.wav",
+          bufferKey: 'spinny-pluck_idle-L6',
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "spinny-pluck_L6-L4_mono.wav",
+          bufferKey: 'spinny-pluck_L6-L4',
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "spinny-pluck_L4-L2_5bar [2018-08-03 180721]_mono.wav",
+          bufferKey: 'spinny-pluck_L4-L2',
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "spinny-pluck_L2-reveal_mono.wav",
+          bufferKey: 'spinny-pluck_L2-reveal',
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "spinny-pluck_reveal-55bar_mono.wav",
+          bufferKey: 'spinny-pluck_reveal',
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "eminator_trans_L2-Reveal_mono.wav",
+          bufferKey: \eminator_trans_L2_reveal,
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "eminator_trans_L4-L2_mono.wav",
+          bufferKey: \eminator_trans_L4_L2,
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "eminator_trans_L6-L4_mono.wav",
+          bufferKey: \eminator_trans_L6_L4,
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "eminator_trans_idle_mono.wav",
+          bufferKey: \eminator_trans_idle,
+          numChannels: 1
+        ),
+        (
+          relativeFilePath: "eminator_reveal_mono.wav",
+          bufferKey: \eminator_reveal,
           numChannels: 1
         )
       ]);

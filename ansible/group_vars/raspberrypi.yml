@@ -1,5 +1,6 @@
 user_default_groups: "adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi"
-raspberrypi: true
-raspberrypi_fepi: true
-raspberrypi_disable_onboard_audio: true
-num_cpu_cores: 4
+audio_raspberrypi: true
+audio_raspberrypi_fepi: true
+audio_raspberrypi_disable_onboard_audio: true
+audio_raspberrypi_gpu_mem_mb: 4
+supercollider_num_cpu_cores: 4

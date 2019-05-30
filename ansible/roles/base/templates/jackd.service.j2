@@ -1,0 +1,12 @@
+[Unit]
+Description=JackServer
+DefaultDependencies=yes
+
+[Service]
+TimeoutStartSec=30
+ExecStart=/usr/local/bin/jackd -d alsa -p 512
+
+[Install]
+#WantedBy=multi-user.target
+#WantedBy=autologin@.service
+WantedBy=default.target

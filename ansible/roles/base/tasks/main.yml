@@ -1,14 +1,8 @@
 ---
 - name: Install packages
   apt:
-    name: "{{ item }}"
+    name: ['git', 'vim-nox', 'tmux', 'xsel', 'liblo-tools']
     state: present
-  with_items:
-    - git
-    - vim-nox
-    - tmux
-    - xsel
-    - liblo-tools
 - name: colin
   user:
     append: yes
@@ -33,4 +27,39 @@
   npm:
     name: yarn
     global: yes
+
+- name: user jack systemd file
+  template:
+    src: jackd.service.j2
+    dest: "/home/{{ owa_deploy_user }}/.local/share/systemd/user/jackd.service"
+    owner: colin
+    group: colin
+    mode: 0644
+  register: jackd_service
+
+- name: user owa systemd file
+  template:
+    src: owa.service.j2
+    dest: "/home/{{ owa_deploy_user }}/.local/share/systemd/user/owa.service"
+    owner: colin
+    group: colin
+    mode: 0644
+  register: owa_service
+
+- name: systemd daemon-reload
+  become: "{{ owa_deploy_user }}"
+  systemd:
+    scope: user
+    daemon_reload: yes
+  when: jackd_service.changed or owa_service.changed
+
+- name: user systemd units enabled
+  become: "{{ owa_deploy_user }}"
+  systemd:
+    scope: user
+    enabled: true
+    name: "{{ item }}"
+  with_items:
+    - "owa.service"
+    - "jackd.service"
 

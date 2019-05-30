@@ -67,8 +67,9 @@
     dest: "{{ owa_project_dir }}/"
     src: "{{ local_owa_sounds_dir }}"
     times: yes
+    delete: yes
     rsync_opts:
-      - "--exclude=*.asd"
+      - "--exclude=*.asd --exclude=*.pkf"
 
 - name: run a build
   shell: npm run build

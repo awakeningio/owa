@@ -1,0 +1,15 @@
+[Unit]
+Description=OWA
+DefaultDependencies=yes
+Requires=jackd.service
+
+[Service]
+TimeoutStartSec=60
+ExecStart=/usr/bin/node /home/colin/owa/build/main.js
+EnvironmentFile=/home/colin/owa/owa_env_systemd
+WorkingDirectory=/home/colin/owa
+
+[Install]
+#WantedBy=multi-user.target
+#WantedBy=autologin@.service
+WantedBy=default.target

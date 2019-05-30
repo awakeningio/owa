@@ -90,6 +90,8 @@ export const AUTO_TRANS_SESSION_PHASES = [
   PLAYING_ADVICE
 ];
 
+export const NUM_PIXELS = 168;
+
 // pixel address ranges and their respective names.
 export const SEGMENTID_TO_PIXEL_RANGE = {
   "level_6-segment_0": [0, 12],
@@ -111,6 +113,18 @@ export const LEVELID_TO_PIXEL_RANGE = {
   'level_4': [72, 120],
   'level_6': [0, 72]
 };
+
+export const SHELL_PIXEL_RANGE = [144, 168];
+export const SHELL_NUM_PYRAMIDS = 12;
+export const SHELL_PIXELS_PER_PYRAMID = 2;
+export const SHELL_PYRAMID_PIXEL_RANGES = new Array(SHELL_NUM_PYRAMIDS);
+let i;
+for (i = 0; i < SHELL_PYRAMID_PIXEL_RANGES.length; i++) {
+  const startingPixel = SHELL_PIXEL_RANGE[0]+(SHELL_PIXELS_PER_PYRAMID * i);
+  // list is filled backwards because pyramid is wired from the top but indexed
+  // from the bottom
+  SHELL_PYRAMID_PIXEL_RANGES[SHELL_NUM_PYRAMIDS - i - 1] = [startingPixel, startingPixel + SHELL_PIXELS_PER_PYRAMID];
+}
 
 export const BUTTON_ID_TO_LEVEL_SEGMENT = {
   "00": ["level_2", 1],

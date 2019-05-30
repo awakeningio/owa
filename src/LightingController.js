@@ -11,7 +11,7 @@
 import { performance } from 'perf_hooks';
 import logger from './logging';
 import ControllerWithStore from './ControllerWithStore';
-import FadecandyController from './FadecandyController';
+import F from './FadecandyController';
 import SegmentLightingController from './SegmentLightingController';
 import SpinnyPluckIdleAnimation from "./SpinnyPluckIdleAnimation";
 import SpinnyPluckTrans4Animation from './SpinnyPluckTrans4Animation';
@@ -23,6 +23,7 @@ import EminatorTrans4Animation from './EminatorTrans4Animation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
+  NUM_PIXELS
   //SESSION_PHASES
 } from 'owa/constants';
 import {
@@ -53,7 +54,7 @@ class LightingController extends ControllerWithStore {
     this.hasQuit = false;
 
     // create our pixel buffer
-    this.pixels = createOPCStrand(144);
+    this.pixels = createOPCStrand(NUM_PIXELS);
 
     // ranges of pixel buffer for each segment
     const segmentPixels = {};

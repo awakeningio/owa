@@ -20,10 +20,10 @@ const lightingController = new LightingController(store);
 // lightingController.idleAnimation.startIdle();
 //lightingController.levelTransitionAnimation.start();
 //lightingController.revealAnimation.start();
-lightingController.idleAnimation.stop();
-setTimeout(function() {
-  lightingController.trans4Animation.start();
-}, 500);
+//lightingController.idleAnimation.stop();
+//setTimeout(function() {
+  //lightingController.trans4Animation.start();
+//}, 500);
 
 
 

@@ -118,8 +118,8 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
         transHueOffset = this.animationState.transHueOffset;
       }
 
-      return new TWEEN.Tween(Object.assign({}, initial))
-        .to(Object.assign({}, dest), 8000)
+      return new TWEEN.Tween({...initial})
+        .to({...dest}, 8000)
         .delay(Math.random() * 500 + 2000)
         .yoyo(true)
         .repeat(Infinity)
@@ -161,6 +161,27 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
       'level_2-segment_1': createSegmentTween('level_2-segment_1', 'level_2')
       .easing(TWEEN.Easing.Sinusoidal.Out)
     };
+
+    const {pyramidPixels} = this.params;
+
+    this.pyramidTweens = pyramidPixels.map(p => {
+      const color = Color.hsv(25 + (Math.random() < 0.5 ? -1.0 : 1.0) * 4, 120, initialBrightness);
+
+      return new TWEEN.Tween({...initial})
+        .to({...dest}, 8000)
+        .easing(TWEEN.Easing.Sinusoidal.In)
+        .delay(Math.random() * 750 + 2000)
+        .yoyo(true)
+        .repeat(Infinity)
+        .onUpdate((props) => {
+          setPixelsColors(
+            p,
+            color.value(
+              100 * props.brightness * this.animationState.masterBrightness
+            )
+          );
+        });
+    });
 
     const state = this.store.getState();
     const transDur = (state.sessionPhaseDurations[SESSION_PHASES.TRANS_6]
@@ -227,6 +248,7 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
     Object.keys(this.segmentTweens).forEach((segmentId) => {
       this.segmentTweens[segmentId].start();
     });
+    this.pyramidTweens.forEach(t => t.start());
   }
   startQueueTrans6 () {
     this.transHueTween.start();
@@ -245,6 +267,7 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
     this.transHueTween.stop();
     this.firstSegmentPulsingTween.stop();
     this.firstSegmentCountdownTween.stop();
+    this.pyramidTweens.forEach(t => t.stop());
   }
 }
 

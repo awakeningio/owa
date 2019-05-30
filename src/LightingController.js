@@ -11,7 +11,7 @@
 import { performance } from 'perf_hooks';
 import logger from './logging';
 import ControllerWithStore from './ControllerWithStore';
-import F from './FadecandyController';
+import FadecandyController from './FadecandyController';
 import SegmentLightingController from './SegmentLightingController';
 import SpinnyPluckIdleAnimation from "./SpinnyPluckIdleAnimation";
 import SpinnyPluckTrans4Animation from './SpinnyPluckTrans4Animation';
@@ -23,7 +23,8 @@ import EminatorTrans4Animation from './EminatorTrans4Animation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
-  NUM_PIXELS
+  NUM_PIXELS,
+  SHELL_PYRAMID_PIXEL_RANGES
   //SESSION_PHASES
 } from 'owa/constants';
 import {
@@ -56,11 +57,14 @@ class LightingController extends ControllerWithStore {
     // create our pixel buffer
     this.pixels = createOPCStrand(NUM_PIXELS);
 
-    // ranges of pixel buffer for each segment
+    // ranges of pixel buffer for each segment by segmentId
     const segmentPixels = {};
 
-    // ranges of pixel buffer for each level
+    // ranges of pixel buffer for each level by levelId
     const levelPixels = {};
+
+    // ranges of pixel buffer for each pyramid
+    const pyramidPixels = SHELL_PYRAMID_PIXEL_RANGES.map(pixelRange => this.pixels.slice.apply(this.pixels, pixelRange));
 
     // all subcontrollers to tick
     this.controllersToTick = [];
@@ -94,8 +98,9 @@ class LightingController extends ControllerWithStore {
 
     const params = {
       pixels: this.pixels,
-      levelPixels: levelPixels,
-      segmentPixels: segmentPixels
+      levelPixels,
+      segmentPixels,
+      pyramidPixels
     };
 
     this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);

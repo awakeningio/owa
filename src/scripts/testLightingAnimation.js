@@ -17,13 +17,19 @@ import LightingController from '../LightingController'
 const store = configureStore();
 const lightingController = new LightingController(store);
 
-// lightingController.idleAnimation.startIdle();
+//lightingController.idleAnimation.startIdle();
 //lightingController.levelTransitionAnimation.start();
 //lightingController.revealAnimation.start();
-//lightingController.idleAnimation.stop();
-//setTimeout(function() {
+lightingController.idleAnimation.stop();
+setTimeout(function() {
+  console.log("Starting animation...");
   //lightingController.trans4Animation.start();
-//}, 500);
+  //lightingController.trans2Animation.start();
+
+  lightingController.revealAnimation.start();
+  setTimeout(() => lightingController.revealAnimation.startAdvice(), 3000);
+
+}, 2000);
 
 
 

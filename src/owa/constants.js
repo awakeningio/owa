@@ -141,6 +141,21 @@ export const BUTTON_ID_TO_LEVEL_SEGMENT = {
   "11": ['level_6', 0]
 };
 
+export const SEGMENTID_TO_PYRAMID_INDEX = {
+  "level_6-segment_0": 0,
+  "level_6-segment_1": 1,
+  "level_6-segment_2": 2,
+  "level_6-segment_3": 3,
+  "level_6-segment_4": 4,
+  "level_6-segment_5": 5,
+  "level_4-segment_0": 6,
+  "level_4-segment_1": 7,
+  "level_4-segment_2": 8,
+  "level_4-segment_3": 9,
+  "level_2-segment_0": 10,
+  "level_2-segment_1": 11
+};
+
 export const SEGMENTID_TO_SEQUENCERID_BY_SONGID = {
   [SONG_IDS.SPINNY_PLUCK]: {
     'level_6-segment_0': 'spinny_pluck-6_0',

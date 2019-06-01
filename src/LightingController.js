@@ -81,7 +81,8 @@ class LightingController extends ControllerWithStore {
       segmentPixels[segmentId] = pixels;
       const controller = new SegmentLightingController(this.store, {
         segmentId,
-        pixels
+        pixels,
+        pyramidPixels
       });
       this.segmentLightingControllers.push(controller);
       this.controllersToTick.push(controller);

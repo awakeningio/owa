@@ -11,7 +11,7 @@
     "build": "babel src -d build",
     "watch": "npm-watch build",
     "start": "node build/main.js",
-    "start_dev": "babel-node src/main.js",
+    "start_dev": "NODE_ENV=development babel-node src/main.js",
     "test_lighting_config": "babel-node src/scripts/testLightingConfig.js",
     "test_lighting_animation": "babel-node src/scripts/testLightingAnimation.js",
     "test_buttons": "DEBUG_INPUT=1 babel-node src/scripts/testButtons.js",
@@ -87,7 +87,7 @@
     "serialport": "^6.2.0",
     "sinon": "^7.2.7",
     "supercollider-redux": "0.0.97",
-    "supercolliderjs": "^0.14.2",
+    "supercolliderjs": "file:../patches/supercolliderjs",
     "winston": "^3.2.1"
   },
   "eslintConfig": {

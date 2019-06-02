@@ -4,7 +4,7 @@
   "description": "Out of this World Advice simulator",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "NODE_ENV=development electron .",
     "rebuild": "electron-rebuild"
   },
   "devDependencies": {

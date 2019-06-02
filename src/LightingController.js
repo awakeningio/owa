@@ -129,6 +129,9 @@ class LightingController extends ControllerWithStore {
 
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);
+    
+    this.renderNextFrame = () => setTimeout(this.render, 35);
+    //this.renderNextFrame = () => setImmediate(this.render);
 
     // start render loop
     if (!DISABLE_LIGHTING) {
@@ -150,14 +153,12 @@ class LightingController extends ControllerWithStore {
       this.render();
     }
 
-
-
   }
 
   tick () {
     TWEEN.update();
     this.fcController.writePixels(this.pixels);
-    setImmediate(this.render);
+    this.renderNextFrame();
   }
 
   tickDebug () {
@@ -168,7 +169,7 @@ class LightingController extends ControllerWithStore {
     this.tickCompletionTimeSum += end - start;
     this.numTickMeasurements += 1;
     this.tickCompletionTimeAvg = this.tickCompletionTimeSum / this.numTickMeasurements;
-    setImmediate(this.render);
+    this.renderNextFrame();
   }
 
   quit () {

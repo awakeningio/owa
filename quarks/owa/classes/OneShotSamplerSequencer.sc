@@ -13,6 +13,8 @@ OneShotSamplerSequencer : AwakenedSequencer {
     lastAmp = false,
     lastAttackTime = false,
     lastReleaseTime = false,
+    state = false,
+    lastState = false,
     ampProxy,
     attackTimeProxy,
     releaseTimeProxy;
@@ -49,7 +51,6 @@ OneShotSamplerSequencer : AwakenedSequencer {
   }
 
   initStream {
-
     // when the stream is created, use the current `bufName` to select
     // the proper synthdef.
 
@@ -66,6 +67,8 @@ OneShotSamplerSequencer : AwakenedSequencer {
 
   handleStateChange {
     super.handleStateChange();
+    lastState = state;
+    state = store.getState();
 
     if (lastAmp != currentState.amp, {
       lastAmp = currentState.amp;
@@ -83,6 +86,19 @@ OneShotSamplerSequencer : AwakenedSequencer {
       lastAttackTime = currentState.attackTime;
       attackTimeProxy.quant = currentState.playQuant;
       attackTimeProxy.source = currentState.attackTime;
+    });
+
+    if (lastState != false, {
+      if ((
+        lastState.sessionPhase != state.sessionPhase
+      ).and(state.sessionPhase == "IDLE"), {
+        // When switching back to idle mode, re-cue all bufs
+        currentState.bufNames.do({
+          arg bufName;
+          var bufKey = bufName.asSymbol();
+          bufManager.recue_buf(bufKey);
+        });
+      });
     });
   }
 

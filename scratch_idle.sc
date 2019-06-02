@@ -27,19 +27,31 @@
 
 
 (
-  ~player = Patch("owa.EminatorIdle", (
-    gate: KrNumberEditor(1, \gate),
+  ~patch = Patch("owa.EminatorIdle", (
+    gate: KrNumberEditor(0, \gate),
     attackTime: 4.0,
     releaseTime: 1 * ~clock.tempo,
     transitionGate: KrNumberEditor(0, \gate),
     transitionDuration: 7 * 4 * ~clock.tempo
-  )).play(atTime: 7, bus: 46);
+  ));
+  ~patch.gate.value = 1;
+  ~player = ~patch.play();
 );
 
 (
   ~player.gate.value = 0;
 )
 
+~player.gate.value.class
+
+(
+  ~player.stop();
+)
+
 ~player.transitionGate.value = 1;
+~player.transitionGate.value = 0;
 
 Env.perc(attackTime: 10, releaseTime: 0, curve: 4).range(50, 90).plot()
+
+
+~something.isNil().not()

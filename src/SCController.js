@@ -83,9 +83,7 @@ Instr.loadAll();
 API.mountDuplexOSC();
 s.options.inDevice = "JackRouter";
 s.options.outDevice = "JackRouter";
-s.options.memSize = 8192 * 2 * 2 * 2;
-//s.options.blockSize = 128;
-
+s.options.memSize = 65536 * 4;
 
 s.waitForBoot({
           `;
@@ -105,6 +103,7 @@ s.waitForBoot({
         10.0.wait();
       }
     }.play();
+  s.dumpOSC();
               `;
             }
           }

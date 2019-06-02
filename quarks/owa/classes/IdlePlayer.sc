@@ -10,14 +10,12 @@
 
  IdlePlayer {
    var store,
-    outputChannel,
     bufManager,
-    patches,
-    players,
+    player,
     state,
     clock,
     prevState,
-    gateEditorBySongId;
+    patchesBySongId;
 
     *new {
       arg params;
@@ -33,23 +31,8 @@
       state = store.getState();
       prevState = state;
 
-      outputChannel = MixerChannel.new(
-        "IdlePlayer",
-        Server.default,
-        2, 2,
-        outbus: 0
-      );
-      outputChannel.level = -3.0.dbamp();
-
       // initializes a gate for each song
-      gateEditorBySongId = Dictionary.new();
-      OWAConstants.songIdsList.do({
-        arg songId;
-        gateEditorBySongId[songId] = KrNumberEditor(0, \gate);
-      });
-
-      patches = Array.new();
-      players = Array.new();
+      patchesBySongId = Dictionary.new();
 
       this.initPatch();
 
@@ -60,51 +43,61 @@
 
     }
     initPatch {
-      var bufSym;
+      //var bufSym;
       //"IdlePlayer.initPatch".postln();
       //bufSym = state.idlePlayer.bufName.asSymbol();
-      patches = patches.add(Patch("owa.IdleLooper", (
+      patchesBySongId['spinny_pluck'] = Patch("owa.IdleLooper", (
         buf: bufManager.bufs['eerie_idle_loop'],
-        gate: gateEditorBySongId[OWAConstants.songIds['SPINNY_PLUCK']],
+        gate: KrNumberEditor(0, \gate),
         attackTime: 0.0,
         releaseTime: 15.0 * clock.tempo,
         amp: 1.0
-      )));
-      patches = patches.add(Patch("owa.EminatorIdle", (
-        gate: gateEditorBySongId[OWAConstants.songIds['EMINATOR']],
+      ));
+      patchesBySongId['eminator'] = Patch("owa.EminatorIdle", (
+        gate: KrNumberEditor(0, \gate),
         attackTime: 1.0,
-        releaseTime: 15.0 * clock.tempo,
-        amp: 1.0
-      )));
+        releaseTime: 16.0 * clock.tempo,
+        amp: 1.0,
+        transitionGate: 0,
+        transitionDuration: 0
+      ));
     }
     handle_state_change {
-      var player,
-        songId;
+      var songId;
       //"IdlePlayer.handle_state_change".postln();
       prevState = state;
       state = store.getState();
       songId = state.songId.asSymbol();
 
-      if (prevState.idlePlayer.gate != state.idlePlayer.gate, {
+      //if (prevState.songId != state.songId, {
+        //patchesBySongId[songId].gate.value = 0;
+      //});
+
+      if (prevState.idlePlayer.playingState != state.idlePlayer.playingState, {
+        if (state.idlePlayer.playingState == "PLAYING", {
+          "IdlePlayer.playing...".postln();
+          if (player.isNil().not(), {
+            player.stop();
+          });
+          patchesBySongId[songId].gate.value = state.idlePlayer.gate;
+          player = patchesBySongId[songId].play();
+        }, {
+          if (player.isNil().not(), {
+            player.stop();
+            player = nil;
+          });
+        });
+      });
+      if (player.isNil().not().and(state.idlePlayer.gate != prevState.idlePlayer.gate), {
         (
           "IdlePlayer: setting gate to "
           ++ state.idlePlayer.gate
           ++ " for songId: "
           ++ songId
         ).postln();
-        gateEditorBySongId[songId].value = state.idlePlayer.gate;
+        player.gate.value = 0;
       });
 
-      if (prevState.idlePlayer.playingState != state.idlePlayer.playingState, {
-        if (state.idlePlayer.playingState == "PLAYING", {
-          //"IdlePlayer.playing...".postln();
-          patches.do({
-            arg patch;
-
-            players.add(outputChannel.play(patch));
-          });
-        });    
-      });
-
+      
     }
  }

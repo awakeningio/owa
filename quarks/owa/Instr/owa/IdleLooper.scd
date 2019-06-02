@@ -10,15 +10,14 @@
 
 Instr("owa.IdleLooper", {
   arg buf,
-    gate,
+    gate = 1,
     attackTime = 1.0,
     releaseTime = 1.0,
     amp = 1.0;
 
   var out, env;
 
-  // this synth is not freed
-  env = Linen.kr(gate, attackTime, 1.0, releaseTime, Done.none);
+  env = Linen.kr(gate, attackTime, 1.0, releaseTime, Done.freeSelf);
   out = env * amp * DiskIn.ar(buf.numChannels, buf.bufnum, loop: 1);
 
   [out, out];

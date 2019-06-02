@@ -24,6 +24,7 @@ export default function idlePlayer (state = createIdlePlayer(), action) {
   switch (action.type) {
     case INACTIVITY_TIMEOUT_EXCEEDED:
       return Object.assign({}, state, {
+        playingState: PLAYING_STATES.PLAYING,
         gate: 1
       });
     case OWA_SOUND_INIT_DONE:
@@ -35,17 +36,20 @@ export default function idlePlayer (state = createIdlePlayer(), action) {
       // we may need to queue a transition now
       switch (action.payload.phase) {
         case SESSION_PHASES.TRANS_6:
-          return Object.assign({}, state, {
+          return {
+            ...state,
             gate: 0
-          });
+          };
 
         case SESSION_PHASES.PLAYING_6:
-          return {...state, ...{
-            gate: 0
-          }};
+          return {
+            ...state,
+            playingState: PLAYING_STATES.STOPPED
+          };
 
         case SESSION_PHASES.IDLE:
           return Object.assign({}, state, {
+            playingState: PLAYING_STATES.PLAYING,
             gate: 1
           });
 

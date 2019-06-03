@@ -46,6 +46,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
   }
   build() {}
   start() {
+    const { tweenGroup } = this.params;
     const state = this.store.getState();
     const tempo = state.tempo;
     const sequencer =
@@ -60,7 +61,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
     };
 
     let i, progressPixel;
-    this.phaseTween = new TWEEN.Tween({ phase: 0.0 })
+    this.phaseTween = new TWEEN.Tween({ phase: 0.0 }, tweenGroup)
       .to({ phase: 1.0 }, duration)
       .onUpdate(props => {
         progressPixel = Math.round(props.phase * pixels.length);
@@ -104,6 +105,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
   }
   handle_state_change() {
     const state = this.store.getState();
+    const { tweenGroup } = this.params;
     const sequencer =
       state.sequencers[getSegmentIdToSequencerId(state)[this.params.segmentId]];
 
@@ -133,7 +135,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
           this.beatPulseTween.stop();
         }
         const pulseDuration = (event.nextTime / state.tempo) * 60000.0;
-        this.beatPulseTween = new TWEEN.Tween({ pulseBrightness: 1.0 })
+        this.beatPulseTween = new TWEEN.Tween({ pulseBrightness: 1.0 }, tweenGroup)
           .to({ pulseBrightness: 0.0 }, pulseDuration)
           .onUpdate(props => {
             this.animationState.pulseBrightness = props.pulseBrightness;

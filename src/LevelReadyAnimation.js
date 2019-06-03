@@ -37,13 +37,14 @@ class LevelReadyAnimation extends ControllerWithStore {
     const createSegmentTween = (segmentId) => {
 
       const state = this.store.getState();
+      const { tweenGroup } = this.params;
       const pixels = this.params.segmentPixels[segmentId];
       const color = this.segmentColors[segmentId];
       const tempo = state.tempo;
 
       const periodMs = 2000;
 
-      return new TWEEN.Tween({value: 0})
+      return new TWEEN.Tween({value: 0}, tweenGroup)
         .to({value: 100}, periodMs)
         .easing(TWEEN.Easing.Circular.In)
         .repeat(Infinity)

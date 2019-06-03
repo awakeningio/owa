@@ -18,6 +18,7 @@ import IdleAnimation from "./IdleAnimation";
 
 class SpinnyPluckIdleAnimation extends IdleAnimation {
   build() {
+    const { tweenGroup } = this.params;
     this.animationState = {
       masterBrightness: 1.0,
       transHueOffset: 0.0
@@ -93,7 +94,7 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
         transHueOffset = this.animationState.transHueOffset;
       }
 
-      return new TWEEN.Tween({ ...initial })
+      return new TWEEN.Tween({ ...initial }, tweenGroup)
         .to({ ...dest }, 8000)
         .delay(Math.random() * 500 + 2000)
         .yoyo(true)
@@ -170,7 +171,7 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
         initialBrightness
       );
 
-      return new TWEEN.Tween({ ...initial })
+      return new TWEEN.Tween({ ...initial }, tweenGroup)
         .to({ ...dest }, 8000)
         .easing(TWEEN.Easing.Sinusoidal.In)
         .delay(Math.random() * 750 + 2000)
@@ -192,7 +193,7 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
       60.0 *
       1000.0;
 
-    this.transBrightnessTween = new TWEEN.Tween({ masterBrightness: 1.0 })
+    this.transBrightnessTween = new TWEEN.Tween({ masterBrightness: 1.0 }, tweenGroup)
       .to(
         {
           masterBrightness: 0.0
@@ -204,7 +205,7 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
         this.animationState.masterBrightness = props.masterBrightness;
       });
 
-    this.transHueTween = new TWEEN.Tween({ transHueOffset: 0.0 })
+    this.transHueTween = new TWEEN.Tween({ transHueOffset: 0.0 }, tweenGroup)
       .to(
         {
           transHueOffset: 30.0
@@ -218,7 +219,7 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
 
     this.firstSegmentColor = Color.hsv(280, 100, 100);
 
-    this.firstSegmentPulsingTween = new TWEEN.Tween({ brightness: 0.8 })
+    this.firstSegmentPulsingTween = new TWEEN.Tween({ brightness: 0.8 }, tweenGroup)
       .to({ brightness: 0.9 }, 1500)
       .easing(TWEEN.Easing.Cubic.InOut)
       .yoyo(true)
@@ -228,7 +229,7 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
       });
 
     let i;
-    this.firstSegmentCountdownTween = new TWEEN.Tween({ remaining: 1.0 })
+    this.firstSegmentCountdownTween = new TWEEN.Tween({ remaining: 1.0 }, tweenGroup)
       .to(
         {
           remaining: 0.0

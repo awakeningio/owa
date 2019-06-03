@@ -18,8 +18,8 @@ import SpinnyPluckTrans4Animation from './SpinnyPluckTrans4Animation';
 import SpinnyPluckTrans2Animation from './SpinnyPluckTrans2Animation';
 import SpinnyPluckRevealAnimation from './SpinnyPluckRevealAnimation';
 import LevelReadyAnimation from './LevelReadyAnimation';
-import EminatorIdleAnimation from './EminatorIdleAnimation';
-import EminatorTrans4Animation from './EminatorTrans4Animation';
+//import EminatorIdleAnimation from './EminatorIdleAnimation';
+//import EminatorTrans4Animation from './EminatorTrans4Animation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
@@ -38,6 +38,8 @@ import { getEnvAsNumber } from './utils';
 
 const DISABLE_LIGHTING = getEnvAsNumber('DISABLE_LIGHTING');
 const DEBUG_LIGHTING_PERFORMANCE = getEnvAsNumber('DEBUG_LIGHTING_PERFORMANCE');
+
+const NUM_TWEEN_GROUPS = 2;
 
 /**
  *  @class        LightingController
@@ -66,6 +68,12 @@ class LightingController extends ControllerWithStore {
     // ranges of pixel buffer for each pyramid
     const pyramidPixels = SHELL_PYRAMID_PIXEL_RANGES.map(pixelRange => this.pixels.slice.apply(this.pixels, pixelRange));
 
+    const tweenGroups = [];
+    for (let i = 0; i < NUM_TWEEN_GROUPS; i++) {
+      tweenGroups.push(new TWEEN.Group());
+    }
+    this.tweenGroups = tweenGroups;
+
     // all subcontrollers to tick
     this.controllersToTick = [];
 
@@ -82,7 +90,8 @@ class LightingController extends ControllerWithStore {
       const controller = new SegmentLightingController(this.store, {
         segmentId,
         pixels,
-        pyramidPixels
+        pyramidPixels,
+        tweenGroup: tweenGroups[1]
       });
       this.segmentLightingControllers.push(controller);
       this.controllersToTick.push(controller);
@@ -101,7 +110,8 @@ class LightingController extends ControllerWithStore {
       pixels: this.pixels,
       levelPixels,
       segmentPixels,
-      pyramidPixels
+      pyramidPixels,
+      tweenGroup: tweenGroups[0]
     };
 
     this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);
@@ -129,6 +139,13 @@ class LightingController extends ControllerWithStore {
 
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);
+
+    let i;
+    this.update = () => {
+      for (i = 0; i < tweenGroups.length; i++) {
+        tweenGroups[i].update();
+      }
+    }
     
     this.renderNextFrame = () => setTimeout(this.render, 42);
     //this.renderNextFrame = () => setImmediate(this.render);
@@ -156,14 +173,14 @@ class LightingController extends ControllerWithStore {
   }
 
   tick () {
-    TWEEN.update();
+    this.update();
     this.fcController.writePixels(this.pixels);
     this.renderNextFrame();
   }
 
   tickDebug () {
     const start = performance.now();
-    TWEEN.update();
+    this.update();
     this.fcController.writePixels(this.pixels);
     const end = performance.now();
     this.tickCompletionTimeSum += end - start;

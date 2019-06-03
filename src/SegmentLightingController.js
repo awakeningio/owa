@@ -31,22 +31,24 @@ const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
  **/
 class SegmentLightingController extends ControllerWithStore {
   init() {
-    const { pixels, segmentId, pyramidPixels } = this.params;
+    const { pixels, segmentId, pyramidPixels, tweenGroup } = this.params;
     const state = this.store.getState();
     const segment = state.segments.byId[segmentId];
     const sequencer =
       state.sequencers[getSegmentIdToSequencerId(state)[segmentId]];
-
     this.queuedAnimation = new SegmentQueuedAnimation({
-      pixels
+      pixels,
+      tweenGroup
     });
     this.playingAnimation = new SegmentPlayingAnimation(this.store, {
       pixels,
       segmentId,
-      pyramidPixels
+      pyramidPixels,
+      tweenGroup
     });
     this.noopAnimation = new SegmentNoopAnimation({
-      pixels
+      pixels,
+      tweenGroup
     });
 
     this.lastState = {
@@ -82,16 +84,12 @@ class SegmentLightingController extends ControllerWithStore {
     const segment = state.segments.byId[this.params.segmentId];
     const sequencer =
       state.sequencers[getSegmentIdToSequencerId(state)[this.params.segmentId]];
-    const sessionPhase = state.sessionPhase;
 
     if (segment !== this.lastState.segment) {
       if (
         segment.lastButtonPressTime !==
           this.lastState.segment.lastButtonPressTime &&
-        sequencer.playingState === PLAYING_STATES.STOPPED &&
-        [SESSION_PHASES.PLAYING_6, SESSION_PHASES.PLAYING_4].includes(
-          sessionPhase
-        )
+        sequencer.playingState === PLAYING_STATES.STOPPED
       ) {
         // segment button was pressed and sequencer is still stopped,
         // means this was a no-op

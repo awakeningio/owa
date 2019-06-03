@@ -22,7 +22,7 @@ class SegmentQueuedAnimation {
   build () {
     this.tween = new TWEEN.Tween({
       brightness: 0
-    }).to({
+    }, this.params.tweenGroup).to({
       brightness: 100
     }, 500).repeat(
       Infinity

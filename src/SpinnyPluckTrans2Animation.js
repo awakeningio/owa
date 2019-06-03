@@ -17,6 +17,7 @@ import Trans2Animation from "./Trans2Animation";
 
 class SpinnyPluckTrans2Animation extends Trans2Animation {
   build() {
+    const { tweenGroup } = this.params;
     const initial = {
       brightness: 0
     };
@@ -78,7 +79,7 @@ class SpinnyPluckTrans2Animation extends Trans2Animation {
     const createSegmentTween = (segmentId, duration, delay) => {
       const pixels = this.params.segmentPixels[segmentId];
       const color = this.segmentColors[segmentId];
-      return new TWEEN.Tween({...initial})
+      return new TWEEN.Tween({...initial}, tweenGroup)
         .to({...dest}, duration)
         .delay(delay)
         .easing(TWEEN.Easing.Sinusoidal.InOut)
@@ -114,7 +115,7 @@ class SpinnyPluckTrans2Animation extends Trans2Animation {
       );
       const duration = Math.random() * 100 + 2000 + (i * 100);
       const delay = Math.random() * 130 + 1700 + (i * 100);
-      return new TWEEN.Tween({...initial})
+      return new TWEEN.Tween({...initial}, tweenGroup)
         .to({...dest}, duration)
         .delay(delay)
         .easing(TWEEN.Easing.Sinusoidal.InOut)

@@ -17,6 +17,7 @@ import Trans4Animation from "./Trans4Animation";
 
 class SpinnyPluckTrans4Animation extends Trans4Animation {
   build() {
+    const { tweenGroup } = this.params;
     const initial = {
       brightness: 0
     };
@@ -78,7 +79,7 @@ class SpinnyPluckTrans4Animation extends Trans4Animation {
     const createSegmentTween = segmentId => {
       const segmentPixels = this.params.segmentPixels;
       const segmentColors = this.segmentColors;
-      return new TWEEN.Tween(Object.assign({}, initial))
+      return new TWEEN.Tween(Object.assign({}, initial), tweenGroup)
         .to(Object.assign({}, dest), 3000)
         .delay(1000)
         .yoyo(true)
@@ -139,7 +140,7 @@ class SpinnyPluckTrans4Animation extends Trans4Animation {
         100
       );
 
-      return new TWEEN.Tween(Object.assign({}, initial))
+      return new TWEEN.Tween(Object.assign({}, initial), tweenGroup)
         .to(Object.assign({}, dest), 3000)
         .easing(TWEEN.Easing.Sinusoidal.InOut)
         .delay(1000)

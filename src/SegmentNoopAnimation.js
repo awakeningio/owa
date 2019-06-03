@@ -31,18 +31,19 @@ class SegmentNoopAnimation {
   }
 
   build () {
-    let dur = 100;
-    let maxBrightness = 0.5;
-    let brightnessUpTween = new TWEEN.Tween({
+    const { tweenGroup } = this.props;
+    const dur = 100;
+    const maxBrightness = 0.5;
+    const brightnessUpTween = new TWEEN.Tween({
       brightness: 0.0
-    }).to({
+    }, tweenGroup).to({
       brightness: maxBrightness
     }, dur).easing(
       TWEEN.Easing.Sinusoidal.In
     ).onUpdate(this.onUpdate);
-    let brightnessDownTween = new TWEEN.Tween({
+    const brightnessDownTween = new TWEEN.Tween({
       brightness: maxBrightness
-    }).to({
+    }, tweenGroup).to({
       brightness: 0.0
     }, dur).easing(
       TWEEN.Easing.Sinusoidal.Out

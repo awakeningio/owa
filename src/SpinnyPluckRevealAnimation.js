@@ -33,9 +33,10 @@ class SpinnyPluckRevealAnimation extends ControllerWithStore {
     this.build();
   }
   createSegmentTween(segmentId, dur, delay, easing) {
+    const { tweenGroup } = this.params;
     const pixels = this.params.segmentPixels[segmentId];
     const color = this.segmentColors[segmentId];
-    return new TWEEN.Tween(Object.assign({}, this.segmentTweenState[segmentId]))
+    return new TWEEN.Tween({...this.segmentTweenState[segmentId]}, tweenGroup)
       .to(
         {
           brightness: 100
@@ -192,13 +193,13 @@ class SpinnyPluckRevealAnimation extends ControllerWithStore {
       )
     };
 
-    const { pyramidPixels } = this.params;
+    const { pyramidPixels, tweenGroup } = this.params;
     this.pyramidTweens = pyramidPixels.map(p => {
       const color = Color.hsv(30 + (Math.random() < 0.5 ? -1.0 : 1.0) * 5, 100, 100);
 
       return new TWEEN.Tween({
         ...this.initial
-      })
+      }, tweenGroup)
         .to(
           {
             brightness: 100
@@ -466,13 +467,13 @@ class SpinnyPluckRevealAnimation extends ControllerWithStore {
         TWEEN.Easing.Sinusoidal.Out
       )
     };
-    const { pyramidPixels } = this.params;
+    const { pyramidPixels, tweenGroup } = this.params;
     this.pyramidTweens = pyramidPixels.map(p => {
       const color = Color.hsv(30 + (Math.random() < 0.5 ? -1.0 : 1.0) * 5, 100, 100);
 
       return new TWEEN.Tween({
         ...this.initial
-      })
+      }, tweenGroup)
         .to(
           {
             brightness: 100

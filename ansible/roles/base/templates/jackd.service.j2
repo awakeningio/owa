@@ -4,7 +4,7 @@ DefaultDependencies=yes
 
 [Service]
 TimeoutStartSec=30
-ExecStart=/usr/local/bin/jackd -d alsa -p 512
+ExecStart=/usr/local/bin/jackd -d alsa -p 2048 -i 0
 
 [Install]
 #WantedBy=multi-user.target

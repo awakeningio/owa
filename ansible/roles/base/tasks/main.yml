@@ -3,6 +3,7 @@
   apt:
     name: ['git', 'vim-nox', 'tmux', 'xsel', 'liblo-tools']
     state: present
+
 - name: colin
   user:
     append: yes
@@ -10,6 +11,7 @@
     name: colin
     groups: "{{ user_default_groups }}"
     shell: /bin/bash
+
 - name: colin ssh key
   copy:
     force: no
@@ -47,14 +49,22 @@
   register: owa_service
 
 - name: systemd daemon-reload
-  become: "{{ owa_deploy_user }}"
+  become_user: "{{ owa_deploy_user }}"
   systemd:
     scope: user
     daemon_reload: yes
   when: jackd_service.changed or owa_service.changed
 
+- name: restart jackd user service
+  become_user: "{{ owa_deploy_user }}"
+  systemd:
+    scope: user
+    name: jackd.service
+    state: restarted
+  when: jackd_service.changed
+
 - name: user systemd units enabled
-  become: "{{ owa_deploy_user }}"
+  become_user: "{{ owa_deploy_user }}"
   systemd:
     scope: user
     enabled: true

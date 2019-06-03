@@ -130,7 +130,7 @@ class LightingController extends ControllerWithStore {
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);
     
-    this.renderNextFrame = () => setTimeout(this.render, 35);
+    this.renderNextFrame = () => setTimeout(this.render, 42);
     //this.renderNextFrame = () => setImmediate(this.render);
 
     // start render loop

@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
    **/
   const stateTransformer = function (state) {
     const toPrint = {};
-    //toPrint.sequencers = state.sequencers;
+    toPrint.sequencers = state.sequencers;
     //Object.keys(state.sequencers).forEach(function (seqId) {
       //toPrint.sequencers[seqId] = _.pick(state.sequencers[seqId], [
         //'type',

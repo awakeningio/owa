@@ -104,12 +104,21 @@ class SegmentLightingController extends ControllerWithStore {
     if (sequencer === level4Sequencer) {
       if (
         sequencer.playingState !== this.lastState.sequencer.playingState ||
+        sequencer.queueOnPhaseStart !== this.lastState.sequencer.queueOnPhaseStart ||
         sequencer.event.bufName !== this.lastState.sequencer.event.bufName ||
         sequencer.bufSequence !== this.lastState.sequencer.bufSequence
       ) {
         this.lastState.sequencer = sequencer;
 
-        if (sequencer.playingState === PLAYING_STATES.PLAYING) {
+        if (
+          // If the first level4 segment was queued
+          sequencer.queueOnPhaseStart !== false &&
+          // And it was ours
+          sequencer.bufSequence[0] === segmentIdToBufName[segment.segmentId]
+        ) {
+          // Start queued animation for this segment
+          this.queuedAnimation.start();
+        } else if (sequencer.playingState === PLAYING_STATES.PLAYING) {
           const ourBufNameIndex = sequencer.bufSequence.indexOf(
             segmentIdToBufName[segment.segmentId]
           );
@@ -144,40 +153,39 @@ class SegmentLightingController extends ControllerWithStore {
         }
       }
     } else {
-      if (sequencer.playingState !== this.lastState.sequencer.playingState) {
+      if (
+        sequencer.playingState !== this.lastState.sequencer.playingState ||
+        sequencer.queueOnPhaseStart !== this.lastState.sequencer.queueOnPhaseStart
+      ) {
         this.lastState.sequencer = sequencer;
 
-        // playing state changed, animation should change
-        switch (sequencer.playingState) {
-          case awakeningSequencers.PLAYING_STATES.QUEUED:
-          case awakeningSequencers.PLAYING_STATES.REQUEUED:
-            this.playingAnimation.stop();
-            switch (state.sessionPhase) {
-              case SESSION_PHASES.PLAYING_6:
-              case SESSION_PHASES.PLAYING_4:
-              case SESSION_PHASES.PLAYING_2:
-                this.queuedAnimation.start();
-                break;
+        if (
+          sequencer.playingState == awakeningSequencers.PLAYING_STATES.QUEUED ||
+          sequencer.playingState === awakeningSequencers.PLAYING_STATES.REQUEUED ||
+          sequencer.queueOnPhaseStart
+        ) {
 
-              default:
-                this.queuedAnimation.stop();
-                break;
-            }
-            break;
+          this.playingAnimation.stop();
 
-          case awakeningSequencers.PLAYING_STATES.PLAYING:
-            this.playingAnimation.start();
-            this.queuedAnimation.stop();
-            break;
+          switch (state.sessionPhase) {
+            case SESSION_PHASES.PLAYING_6:
+            case SESSION_PHASES.PLAYING_4:
+            case SESSION_PHASES.PLAYING_2:
+              this.queuedAnimation.start();
+              break;
 
-          case awakeningSequencers.PLAYING_STATES.STOP_QUEUED:
-            // Do nothing when stop is queued, let the animations continue
-            break;
-
-          default:
-            this.playingAnimation.stop();
-            this.queuedAnimation.stop();
-            break;
+            default:
+              this.queuedAnimation.stop();
+              break;
+          }
+        } else if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
+          this.playingAnimation.start();
+          this.queuedAnimation.stop();
+        } else if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
+          return;
+        } else {
+          this.playingAnimation.stop();
+          this.queuedAnimation.stop();
         }
       }
     }

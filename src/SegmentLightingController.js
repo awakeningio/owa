@@ -158,15 +158,14 @@ class SegmentLightingController extends ControllerWithStore {
         sequencer.queueOnPhaseStart !== this.lastState.sequencer.queueOnPhaseStart
       ) {
         this.lastState.sequencer = sequencer;
+        this.playingAnimation.stop();
 
-        if (
+        if (sequencer.queueOnPhaseStart !== false) {
+          this.queuedAnimation.start();
+        } else if (
           sequencer.playingState == awakeningSequencers.PLAYING_STATES.QUEUED ||
-          sequencer.playingState === awakeningSequencers.PLAYING_STATES.REQUEUED ||
-          sequencer.queueOnPhaseStart
+          sequencer.playingState === awakeningSequencers.PLAYING_STATES.REQUEUED
         ) {
-
-          this.playingAnimation.stop();
-
           switch (state.sessionPhase) {
             case SESSION_PHASES.PLAYING_6:
             case SESSION_PHASES.PLAYING_4:
@@ -175,6 +174,7 @@ class SegmentLightingController extends ControllerWithStore {
               break;
 
             default:
+              // this was queued during a transition
               this.queuedAnimation.stop();
               break;
           }

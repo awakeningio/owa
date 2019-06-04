@@ -124,7 +124,7 @@ export default function createEminatorState () {
         bufName: 'eminator_reveal',
         attackTime: 0.0,
         releaseTime: 0.0,
-        numBeats: 98 * 4,
+        numBeats: 112 * 4,
         amp: 1.0
       }
     ),

@@ -297,7 +297,11 @@ function chordProgSequencer(state, action, fullState, prevSessionPhase) {
               break;
           }
         }
-      } else if (sessionPhase === SESSION_PHASES.PLAYING_4) {
+      } else if (
+        sessionPhase === SESSION_PHASES.PLAYING_4
+        // button press was for this sequencer
+        && buttonSequencerId === newState.sequencerId
+      ) {
         const segmentBuf = newState.segmentIdToBufName[segment.segmentId];
         if (newState.bufSequence.indexOf(segmentBuf) < 0) {
           // this segment hasn't been pressed yet, we will insert this

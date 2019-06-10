@@ -57,7 +57,7 @@
         gate: KrNumberEditor(0, \gate),
         attackTime: 1.0,
         releaseTime: 16.0 * clock.tempo,
-        amp: 1.0,
+        amp: -3.0.dbamp(),
         transitionGate: 0,
         transitionDuration: 0
       ));

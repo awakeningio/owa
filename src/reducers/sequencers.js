@@ -108,7 +108,8 @@ function l6Sequencer(state, action, fullState, prevSessionPhase) {
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
       newState = {
         ...newState,
-        playingState: PLAYING_STATES.STOP_QUEUED
+        playingState: PLAYING_STATES.STOP_QUEUED,
+        stopQuant: [4, 4]
       };
       break;
     case actionTypes.SESSION_PHASE_ADVANCED:
@@ -220,8 +221,8 @@ function chordProgSequencer(state, action, fullState, prevSessionPhase) {
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
       newState = {
         ...newState,
-        playingState: PLAYING_STATES.STOP_QUEUED
-        //stopQuant: [4, 4]
+        playingState: PLAYING_STATES.STOP_QUEUED,
+        stopQuant: [4, 4]
       };
       break;
     case actionTypes.SESSION_PHASE_ADVANCED:

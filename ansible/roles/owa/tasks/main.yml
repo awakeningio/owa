@@ -34,6 +34,15 @@
   template:
     src: upload_arduino.sh.j2
     dest: "{{ owa_project_dir }}/arduino/upload_arduino.sh"
+    mode: 0755
+  tags:
+    - install
+
+- name: arduino serial monitor script
+  template:
+    src: serial_monitor.sh.j2
+    dest: "{{ owa_project_dir }}/arduino/serial_monitor.sh"
+    mode: 0755
   tags:
     - install
 

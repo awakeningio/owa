@@ -8,7 +8,8 @@ build
 ansible/roles/*.*
 *.retry
 owa_env
-upload_arduino.sh
+arduino/upload_arduino.sh
+arduino/serial_monitor.sh
 *~.skp
 combined.log
 error.log

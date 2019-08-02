@@ -10,6 +10,7 @@ export function create_owa_sequencer (sequencerId, type, defaults = {}) {
     queueOnPhaseStart: false,
     phaseProps: {},
     variationProps: [],
+    currentVariationIndex: 0,
     variationMenuType: VARIATION_MENU_TYPES.NONE,
     ...defaults,
   };

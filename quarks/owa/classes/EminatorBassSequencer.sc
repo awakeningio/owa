@@ -29,7 +29,8 @@ EminatorBassSequencer : AwakenedSequencer {
     [
       'eminator_bass_L2',
       'eminator_bass_L4',
-      'eminator_bass_L6'
+      'eminator_bass_L6',
+      'eminator_bass_L6_01'
     ].do({
       arg midiKey;
 
@@ -70,11 +71,11 @@ EminatorBassSequencer : AwakenedSequencer {
     var tempo = clockController.clock.tempo,
       midiKey = currentState.midiKey;
 
-    Pdefn('EminatorBassSeqControl16').quant = currentState.playQuant;
-    Pdefn('EminatorBassSeqControl16Instr').quant = currentState.playQuant;
-    Pdefn('EminatorBassSeqControl15').quant = currentState.playQuant;
-    Pdefn('EminatorBassSeqControl15Instr').quant = currentState.playQuant;
-    Pdefn('EminatorBassSeqNotes').quant = currentState.playQuant;
+    Pdefn('EminatorBassSeqControl16').quant = currentState.propQuant;
+    Pdefn('EminatorBassSeqControl16Instr').quant = currentState.propQuant;
+    Pdefn('EminatorBassSeqControl15').quant = currentState.propQuant;
+    Pdefn('EminatorBassSeqControl15Instr').quant = currentState.propQuant;
+    Pdefn('EminatorBassSeqNotes').quant = currentState.propQuant;
 
 
     if (midiKey.isNil() == false, {

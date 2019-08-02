@@ -40,7 +40,7 @@ export default function createEminatorState () {
         phaseProps: {
           [SESSION_PHASES.TRANS_6]: {
             ...sessionPhaseDefaults[SESSION_PHASES.TRANS_6],
-            midiKey: 'eminator_bass_L6',
+            midiKey: 'eminator_bass_L6_01',
             numBeats: 4 * 7,
           },
           [SESSION_PHASES.TRANS_4]: {

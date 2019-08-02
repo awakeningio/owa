@@ -4,7 +4,7 @@
     name: ['git', 'vim-nox', 'tmux', 'xsel', 'liblo-tools', 'screen']
     state: present
 
-- name: colin
+- name: colin user
   user:
     append: yes
     generate_ssh_key: yes
@@ -30,30 +30,28 @@
     name: yarn
     global: yes
 
+- name: user systemd file directory
+  file:
+    path: "/home/{{ owa_deploy_user }}/.local/share/systemd/user/"
+    state: directory
+    owner: "{{ owa_deploy_user }}"
+    group: "{{ owa_deploy_user }}"
+
 - name: user jack systemd file
   template:
     src: jackd.service.j2
     dest: "/home/{{ owa_deploy_user }}/.local/share/systemd/user/jackd.service"
-    owner: colin
-    group: colin
+    owner: "{{ owa_deploy_user }}"
+    group: "{{ owa_deploy_user }}"
     mode: 0644
   register: jackd_service
-
-- name: user owa systemd file
-  template:
-    src: owa.service.j2
-    dest: "/home/{{ owa_deploy_user }}/.local/share/systemd/user/owa.service"
-    owner: colin
-    group: colin
-    mode: 0644
-  register: owa_service
 
 - name: systemd daemon-reload
   become_user: "{{ owa_deploy_user }}"
   systemd:
     scope: user
     daemon_reload: yes
-  when: jackd_service.changed or owa_service.changed
+  when: jackd_service.changed
 
 - name: restart jackd user service
   become_user: "{{ owa_deploy_user }}"
@@ -63,13 +61,9 @@
     state: restarted
   when: jackd_service.changed
 
-- name: user systemd units enabled
+- name: user jackd systemd units enabled
   become_user: "{{ owa_deploy_user }}"
   systemd:
     scope: user
     enabled: true
-    name: "{{ item }}"
-  with_items:
-    - "owa.service"
-    - "jackd.service"
-
+    name: jackd.service

@@ -1,0 +1,17 @@
+[Unit]
+Description=OWA
+DefaultDependencies=yes
+Requires=jackd.service
+
+[Service]
+TimeoutStartSec=60
+ExecStart=/usr/bin/node /home/{{ owa_deploy_user }}/owa/build/main.js
+WorkingDirectory=/home/{{ owa_deploy_user }}/owa
+{% for item in owa_environment %}
+Environment={{ item['name'] }}={{ item['value'] }}
+{% endfor %}
+
+[Install]
+#WantedBy=multi-user.target
+#WantedBy=autologin@.service
+WantedBy=default.target

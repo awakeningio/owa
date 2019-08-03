@@ -15,14 +15,25 @@ EminatorBassSequencer : AwakenedSequencer {
     control16Bus,
     controlPlayer,
     controlPattern,
-    lastState;
+    lastState,
+    legatoForMidiKey;
 
   initPatch {
+    var patch;
     control15Bus = Bus.control(Server.default, 1);
     control16Bus = Bus.control(Server.default, 1);
 
     control15Synthdefs = Dictionary.new();
     control16Synthdefs = Dictionary.new();
+
+    legatoForMidiKey = (
+      'eminator_bass_L2': 1.1,
+      'eminator_bass_L4': 1.1,
+      'eminator_bass_L6': 1.1,
+      'eminator_bass_L6_01': 1.1,
+      'eminator_bass_L6_02': 0.99,
+      'eminator_bass_L6_03': 0.99
+    );
 
     // Creates synthdefs for playing back CC messages embedded in the midi
     // files.
@@ -30,11 +41,14 @@ EminatorBassSequencer : AwakenedSequencer {
       'eminator_bass_L2',
       'eminator_bass_L4',
       'eminator_bass_L6',
-      'eminator_bass_L6_01'
+      'eminator_bass_L6_01',
+      'eminator_bass_L6_02',
+      'eminator_bass_L6_03'
     ].do({
       arg midiKey;
+      var control15Patch, control16Patch;
 
-      control15Synthdefs[midiKey] = Patch({
+      control15Patch = Patch({
         arg gate;
 
         Instr.kr("cs.utility.EnvToBus", (
@@ -44,9 +58,11 @@ EminatorBassSequencer : AwakenedSequencer {
         ));
       }, (
         gate: KrNumberEditor(1, \gate),
-      )).asSynthDef().add();
+      ));
+      control15Patch.gate.lag = 0;
+      control15Synthdefs[midiKey] = control15Patch.asSynthDef().add();
 
-      control16Synthdefs[midiKey] = Patch({
+      control16Patch = Patch({
         arg gate;
 
         Instr.kr("cs.utility.EnvToBus", (
@@ -56,15 +72,19 @@ EminatorBassSequencer : AwakenedSequencer {
         ));
       }, (
         gate: KrNumberEditor(1, \gate),
-      )).asSynthDef().add();
+      ));
+      control16Patch.gate.lag = 0;
+      control16Synthdefs[midiKey] = control16Patch.asSynthDef().add();
     });
 
 
-    ^Patch("owa.eminator.Bass", (
+    patch = Patch("owa.eminator.Bass", (
       useSustain: 0,
       gate: KrNumberEditor(1, \gate),
       useModulatorBus: 1
     ));
+    patch.gate.lag = 0;
+    ^patch;
   }
 
   assignPdefnsFromCurrentState {
@@ -76,6 +96,7 @@ EminatorBassSequencer : AwakenedSequencer {
     Pdefn('EminatorBassSeqControl15').quant = currentState.propQuant;
     Pdefn('EminatorBassSeqControl15Instr').quant = currentState.propQuant;
     Pdefn('EminatorBassSeqNotes').quant = currentState.propQuant;
+    Pdefn('EminatorBassSeqLegato').quant = currentState.propQuant;
 
 
     if (midiKey.isNil() == false, {
@@ -102,6 +123,10 @@ EminatorBassSequencer : AwakenedSequencer {
         'EminatorBassSeqNotes',
         Pseq(bufManager.midiSequences[midiKey], inf)
       );
+      Pdefn(
+        'EminatorBassSeqLegato',
+        Pseq([legatoForMidiKey[midiKey]], inf)
+      );
     });
 
   }
@@ -122,7 +147,7 @@ EminatorBassSequencer : AwakenedSequencer {
       PmonoArtic(
         patch.asSynthDef().add().name,
         [\midinoteFromFile, \dur], Pdefn('EminatorBassSeqNotes'),
-        \legato, 1.1,
+        \legato, Pdefn('EminatorBassSeqLegato'),
         \midinote, Pfunc({
           arg event;
           (event['midinoteFromFile'] - 24);

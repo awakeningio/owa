@@ -223,6 +223,20 @@ OWAController {
           tempoBPM: OWAConstants.tempoBySongId['eminator']
         ),
         (
+          midiFileName: "eminator_bass_L6-02.mid",
+          midiKey: 'eminator_bass_L6_02',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
+          midiFileName: "eminator_bass_L6-03.mid",
+          midiKey: 'eminator_bass_L6_03',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
+          tempoBPM: OWAConstants.tempoBySongId['eminator']
+        ),
+        (
           midiFileName: "eminator_L2_hats.mid",
           midiKey: 'eminator_hats_L2',
           makeDuration: 8 * 4,

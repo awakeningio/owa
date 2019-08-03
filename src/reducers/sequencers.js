@@ -15,7 +15,7 @@ import {
   apply_phase_props,
   do_queue_on_phase_start
 } from "owa/models/sequencer";
-import { SESSION_PHASES } from "owa/constants";
+import { SESSION_PHASES, VARIATION_MENU_TYPES, VARIATION_INTERACTION_STATES } from "owa/constants";
 import {
   getLevel6Sequencers,
   getLevel4Sequencer,
@@ -27,6 +27,47 @@ import {
 import sequencersInitialState from "owa/state/sequencersInitialState";
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
+
+// Handles commonalities for any button-based sequencer
+function owaButtonSequencer (state, action) {
+  let newState = state;
+
+  switch (action.type) {
+    case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
+      newState = {
+        ...newState,
+        playingState: PLAYING_STATES.STOP_QUEUED,
+        stopQuant: [4, 4]
+      };
+      break;
+    // When a sequencer parameter change goes into effect, if it was for this
+    // sequencer, reset menu
+    case awakeningSequencers.actionTypes.SEQUENCER_PROP_CHANGED:
+      if (action.payload.sequencerId === state.sequencerId) {
+        newState = {
+          ...newState,
+          variationInteractionState: VARIATION_INTERACTION_STATES.NONE
+        };
+      }
+      break;
+    // When a sequencer variation menu timeout exceeded, actually apply
+    // the variations, changing the sequencer, and closing the menu
+    case actionTypes.VARIATION_MENU_TIMEOUT_EXCEEDED:
+      if (action.payload.sequencerId === state.sequencerId) {
+        newState = {
+          ...newState,
+          ...newState.variationProps[newState.currentVariationIndex],
+          lastPropChangeQueuedAt: (new Date()).getTime(),
+          variationInteractionState: VARIATION_INTERACTION_STATES.CHOSEN
+        };
+      }
+      break;
+    default:
+      break;
+  }
+
+  return newState;
+}
 
 function revealSequencer(state, action, fullState) {
   const { songId } = fullState;
@@ -104,14 +145,9 @@ function l6Sequencer(state, action, fullState, prevSessionPhase) {
 
   let newState = state;
 
+  newState = owaButtonSequencer(state, action);
+
   switch (action.type) {
-    case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
-      newState = {
-        ...newState,
-        playingState: PLAYING_STATES.STOP_QUEUED,
-        stopQuant: [4, 4]
-      };
-      break;
     case actionTypes.SESSION_PHASE_ADVANCED:
       newState = apply_phase_props(state, action.payload.phase);
       newState = do_queue_on_phase_start(
@@ -205,6 +241,34 @@ function l6Sequencer(state, action, fullState, prevSessionPhase) {
           newState = Object.assign({}, newState, {
             playingState: PLAYING_STATES.QUEUED
           });
+        } else if (state.playingState === PLAYING_STATES.PLAYING) {
+          // If sequencer is already playing and was pressed again, determines
+          // if sequencer has variations available and if menu is open.
+          if (state.variationMenuType !== VARIATION_MENU_TYPES.NONE) {
+
+            // Opens menu if it is not open, selects next variation if
+            // menu is open.
+            switch (state.variationInteractionState) {
+              case VARIATION_INTERACTION_STATES.NONE:
+                newState = {
+                  ...state,
+                  variationInteractionState: VARIATION_INTERACTION_STATES.CHOOSING
+                };
+                break;
+              case VARIATION_INTERACTION_STATES.CHOOSING:
+                newState = {
+                  ...state,
+                  currentVariationIndex: (
+                    (state.currentVariationIndex + 1)
+                    % state.variationProps.length
+                  )
+                };
+                break;
+              
+              default:
+                break;
+            }
+          }
         }
       }
       break;
@@ -217,14 +281,8 @@ function l6Sequencer(state, action, fullState, prevSessionPhase) {
 function chordProgSequencer(state, action, fullState, prevSessionPhase) {
   const { segments, sessionPhase, songId } = fullState;
   let newState = state;
+  newState = owaButtonSequencer(state, action);
   switch (action.type) {
-    case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
-      newState = {
-        ...newState,
-        playingState: PLAYING_STATES.STOP_QUEUED,
-        stopQuant: [4, 4]
-      };
-      break;
     case actionTypes.SESSION_PHASE_ADVANCED:
       newState = apply_phase_props(newState, action.payload.phase);
       newState = do_queue_on_phase_start(
@@ -331,14 +389,8 @@ function chordProgSequencer(state, action, fullState, prevSessionPhase) {
 function l2Sequencer(state, action, fullState, prevSessionPhase) {
   const { sessionPhase, songId } = fullState;
   let newState = state;
+  newState = owaButtonSequencer(state, action);
   switch (action.type) {
-    case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
-      newState = {
-        ...newState,
-        playingState: PLAYING_STATES.STOP_QUEUED,
-        stopQuant: [4, 4]
-      };
-      break;
     case actionTypes.SESSION_PHASE_ADVANCED:
       newState = apply_phase_props(newState, action.payload.phase);
       newState = do_queue_on_phase_start(

@@ -3,7 +3,8 @@ import {
   create_segmentId
 } from 'owa/models';
 import { 
-  SESSION_PHASES
+  SESSION_PHASES,
+  VARIATION_MENU_TYPES
 } from 'owa/constants';
 
 const playingLevel4SegmentToBufName = {
@@ -40,18 +41,34 @@ export default function createEminatorState () {
         phaseProps: {
           [SESSION_PHASES.TRANS_6]: {
             ...sessionPhaseDefaults[SESSION_PHASES.TRANS_6],
-            midiKey: 'eminator_bass_L6_01',
+            midiKey: 'eminator_bass_L6',
             numBeats: 4 * 7,
+            variationProps: [
+              {
+                midiKey: 'eminator_bass_L6'
+              },
+              {
+                midiKey: 'eminator_bass_L6_01'
+              },
+              {
+                midiKey: 'eminator_bass_L6_02'
+              },
+              {
+                midiKey: 'eminator_bass_L6_03'
+              }
+            ]
           },
           [SESSION_PHASES.TRANS_4]: {
             ...sessionPhaseDefaults[SESSION_PHASES.TRANS_4],
             midiKey: 'eminator_bass_L4',
             numBeats: 16 * 4,
-            stopQuant: [4, 16 * 4]
+            stopQuant: [4, 16 * 4],
+            variationMenuType: VARIATION_MENU_TYPES.NONE
           },
           [SESSION_PHASES.TRANS_2]: {
             midiKey: 'eminator_bass_L2',
-            numBeats: 2 * 4
+            numBeats: 2 * 4,
+            variationMenuType: VARIATION_MENU_TYPES.NONE
           }
         }
       },

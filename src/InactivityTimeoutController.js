@@ -17,14 +17,23 @@ const CHECK_INTERVAL_MS = 5000;
 const INACTIVE_THRESHOLD_MS = 120000;
 //const INACTIVE_THRESHOLD_MS = 10000;
 
+const MENU_CHECK_INTERVAL_MS = 1000;
+
 class InactivityTimeoutController extends ControllerWithStore {
   init () {
+
+    // Uses an interval to check for total system inactivity
     this.interval = setInterval(() => {
-      this.checkInactivityTimeout();
+      this.checkSystemInactivity();
     }, CHECK_INTERVAL_MS);
+
+    // Uses a shorter interval to check for button menu inactivity
+    this.menuCheckInterval = setInterval(() => {
+      this.checkMenuInactivity();
+    }, MENU_CHECK_INTERVAL_MS);
   }
 
-  checkInactivityTimeout () {
+  checkSystemInactivity () {
     const state = this.store.getState();
 
     const now = (new Date()).getTime();
@@ -45,9 +54,24 @@ class InactivityTimeoutController extends ControllerWithStore {
 
   }
 
+  checkMenuInactivity () {
+    const state = this.store.getState();
+
+    const now = (new Date()).getTime();
+
+    // For all button sequencers, checks if they have an open menu, if the
+    // timeout duration has elapsed, and the changes have not yet been applied
+    // TODO
+
+  }
+
   quit () {
     if (this.interval) {
       clearInterval(this.interval);
+    }
+
+    if (this.menuCheckInterval) {
+      clearInterval(this.menuCheckInterval);
     }
   }
 }

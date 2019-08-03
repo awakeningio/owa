@@ -41,3 +41,12 @@ export function owaSoundInitDone () {
     type: actionTypes.OWA_SOUND_INIT_DONE
   };
 }
+
+export function variationMenuTimeoutExceeded (sequencerId) {
+  return {
+    type: actionTypes.VARIATION_MENU_TIMEOUT_EXCEEDED,
+    payload: {
+      sequencerId
+    }
+  };
+}

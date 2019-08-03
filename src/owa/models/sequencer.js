@@ -1,7 +1,10 @@
 import awakeningSequencers from 'awakening-sequencers';
 
 import { createPhaseEndQuant } from 'owa/models';
-import { VARIATION_MENU_TYPES } from 'owa/constants';
+import {
+  VARIATION_MENU_TYPES,
+  VARIATION_INTERACTION_STATES
+} from 'owa/constants';
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 export function create_owa_sequencer (sequencerId, type, defaults = {}) {
@@ -12,6 +15,7 @@ export function create_owa_sequencer (sequencerId, type, defaults = {}) {
     variationProps: [],
     currentVariationIndex: 0,
     variationMenuType: VARIATION_MENU_TYPES.NONE,
+    variationInteractionState: VARIATION_INTERACTION_STATES.NONE
     ...defaults,
   };
 }

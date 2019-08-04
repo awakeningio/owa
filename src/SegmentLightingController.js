@@ -101,7 +101,8 @@ class SegmentLightingController extends ControllerWithStore {
         segment.lastButtonPressTime !==
           this.lastState.segment.lastButtonPressTime &&
         sequencer.playingState === PLAYING_STATES.STOPPED &&
-        sequencer.queueOnPhaseStart === false
+        sequencer.queueOnPhaseStart === false &&
+      sequencer.variationInteractionState === this.lastState.sequencer.variationInteractionState
       ) {
         // segment button was pressed and sequencer is still stopped,
         // means this was a no-op
@@ -248,6 +249,7 @@ class SegmentLightingController extends ControllerWithStore {
         }
       }
     }
+    this.lastState.sequencer = sequencer;
   }
 }
 

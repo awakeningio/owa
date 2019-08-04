@@ -124,7 +124,7 @@ export const getButtonSequencers = createSelector(
   getSegmentIdToSequencerId,
   (segmentsById, sequencers, segmentIdToSequencerId) =>
     Object.keys(segmentsById).map(
-      segmentId => segmentIdToSequencerId[segmentId]
+      segmentId => sequencers[segmentIdToSequencerId[segmentId]]
     )
 );
 
@@ -152,8 +152,7 @@ export const getTransSequencer = createSelector(
 
 export const getSegmentIdToBufName = createSelector(
   getLevel4Sequencer,
-  getSessionPhase,
-  function(level4Sequencer, sessionPhase) {
+  function(level4Sequencer) {
     return level4Sequencer.segmentIdToBufName;
   }
 );

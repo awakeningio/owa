@@ -30,7 +30,7 @@ import sequencersInitialState from "owa/state/sequencersInitialState";
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 // Handles commonalities for any button-based sequencer
-function owaButtonSequencer (state, action) {
+function owaButtonSequencer (state, action, fullState) {
   let newState = state;
 
   switch (action.type) {
@@ -60,6 +60,22 @@ function owaButtonSequencer (state, action) {
           ...newState.variationProps[newState.currentVariationIndex],
           lastPropChangeQueuedAt: (new Date()).getTime(),
           variationInteractionState: VARIATION_INTERACTION_STATES.CHOSEN
+        };
+      }
+      break;
+    case actionTypes.BUTTON_PRESSED:
+      const segmentId = create_segmentId(
+        action.payload.levelId,
+        action.payload.segmentIndex
+      );
+      const buttonSequencerId = getSegmentIdToSequencerId(fullState)[segmentId];
+      if (
+        // button press was for this sequencer
+        buttonSequencerId === state.sequencerId
+      ) {
+        newState = {
+          ...newState,
+          lastButtonPressTime: (new Date()).getTime()
         };
       }
       break;
@@ -454,13 +470,14 @@ export default function sequencers(
   fullState,
   prevSessionPhase
 ) {
+  let newFullState = fullState;
   // Handles basic , stopping, queueing of all sequencers
   state = awakeningSequencers.reducer(state, action);
 
   // Handles OWA specific sequencer manipulations for reveal, transition,
   // and all levels (for current song)
-  const currentRevealSequencer = getRevealSequencer(fullState);
-  const newReveal = revealSequencer(currentRevealSequencer, action, fullState);
+  const currentRevealSequencer = getRevealSequencer(newFullState);
+  const newReveal = revealSequencer(currentRevealSequencer, action, newFullState);
   if (newReveal !== currentRevealSequencer) {
     state = {
       ...state,
@@ -468,13 +485,17 @@ export default function sequencers(
         [newReveal.sequencerId]: newReveal
       }
     };
+    newFullState = {
+      ...newFullState,
+      sequencers: state
+    };
   }
 
-  const currentTransSequencer = getTransSequencer(fullState);
+  const currentTransSequencer = getTransSequencer(newFullState);
   const newTrans = transSequencer(
     currentTransSequencer,
     action,
-    fullState,
+    newFullState,
     prevSessionPhase
   );
   if (newTrans !== currentTransSequencer) {
@@ -484,49 +505,69 @@ export default function sequencers(
         [newTrans.sequencerId]: newTrans
       }
     };
+    newFullState = {
+      ...newFullState,
+      sequencers: state
+    };
   }
 
-  const buttonSequencers = getButtonSequencers(fullState);
+  const buttonSequencers = getButtonSequencers(newFullState);
   buttonSequencers.forEach(function (seq) {
-    const newSeq = owaButtonSequencer(seq, action);
+    const newSeq = owaButtonSequencer(seq, action, newFullState);
     if (newSeq !== seq) {
       state = {
         ...state,
         [seq.sequencerId]: newSeq
       };
+      newFullState = {
+        ...newFullState,
+        sequencers: state
+      };
     }
   });
 
-  const l6Sequencers = getLevel6Sequencers(fullState);
+  const l6Sequencers = getLevel6Sequencers(newFullState);
   l6Sequencers.forEach(function(seq) {
-    const newSeq = l6Sequencer(seq, action, fullState, prevSessionPhase);
+    const newSeq = l6Sequencer(seq, action, newFullState, prevSessionPhase);
     if (newSeq !== seq) {
       state = Object.assign({}, state, {
         [seq.sequencerId]: newSeq
       });
+      newFullState = {
+        ...newFullState,
+        sequencers: state
+      };
     }
   });
 
-  const level4Sequencer = getLevel4Sequencer(fullState);
+  const level4Sequencer = getLevel4Sequencer(newFullState);
   const newLevel4Sequencer = chordProgSequencer(
     level4Sequencer,
     action,
-    fullState,
+    newFullState,
     prevSessionPhase
   );
   if (level4Sequencer !== newLevel4Sequencer) {
     state = Object.assign({}, state, {
       [level4Sequencer.sequencerId]: newLevel4Sequencer
     });
+    newFullState = {
+      ...newFullState,
+      sequencers: state
+    };
   }
 
-  const level2Sequencers = getLevel2Sequencers(fullState);
+  const level2Sequencers = getLevel2Sequencers(newFullState);
   level2Sequencers.forEach(function(seq) {
-    const newSeq = l2Sequencer(seq, action, fullState, prevSessionPhase);
+    const newSeq = l2Sequencer(seq, action, newFullState, prevSessionPhase);
     if (seq !== newSeq) {
       state = Object.assign({}, state, {
         [seq.sequencerId]: newSeq
       });
+      newFullState = {
+        ...newFullState,
+        sequencers: state
+      };
     }
   });
 

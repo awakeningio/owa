@@ -218,6 +218,8 @@ describe("getButtonSequencers", function() {
       12,
       "buttonSequencers should have one sequencer for each button"
     );
+
+    expect(buttonSequencers[0]).to.be.an('object');
   });
 });
 

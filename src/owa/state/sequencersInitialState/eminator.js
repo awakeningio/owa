@@ -56,7 +56,8 @@ export default function createEminatorState () {
               {
                 midiKey: 'eminator_bass_L6_03'
               }
-            ]
+            ],
+            variationMenuType: VARIATION_MENU_TYPES.QUADRANT
           },
           [SESSION_PHASES.TRANS_4]: {
             ...sessionPhaseDefaults[SESSION_PHASES.TRANS_4],

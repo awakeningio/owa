@@ -266,13 +266,13 @@ function l6Sequencer(state, action, fullState, prevSessionPhase) {
             switch (state.variationInteractionState) {
               case VARIATION_INTERACTION_STATES.NONE:
                 newState = {
-                  ...state,
+                  ...newState,
                   variationInteractionState: VARIATION_INTERACTION_STATES.CHOOSING
                 };
                 break;
               case VARIATION_INTERACTION_STATES.CHOOSING:
                 newState = {
-                  ...state,
+                  ...newState,
                   currentVariationIndex: (
                     (state.currentVariationIndex + 1)
                     % state.variationProps.length

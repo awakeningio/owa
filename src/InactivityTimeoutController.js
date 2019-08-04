@@ -8,36 +8,41 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import ControllerWithStore from './ControllerWithStore';
+import ControllerWithStore from "./ControllerWithStore";
 
-import { SESSION_PHASES } from 'owa/constants';
-import { inactivityTimeoutExceeded } from './actions';
+import { SESSION_PHASES, VARIATION_INTERACTION_STATES } from "owa/constants";
+import { inactivityTimeoutExceeded, variationMenuTimeoutExceeded } from "./actions";
+import { getButtonSequencers } from "./selectors";
 
 const CHECK_INTERVAL_MS = 5000;
 const INACTIVE_THRESHOLD_MS = 120000;
 //const INACTIVE_THRESHOLD_MS = 10000;
 
-const MENU_CHECK_INTERVAL_MS = 1000;
+const MENU_CHECK_INTERVAL_MS = 250;
+const MENU_INACTIVE_THRESHOLD_MS = 2000;
 
 class InactivityTimeoutController extends ControllerWithStore {
-  init () {
+  init() {
 
     // Uses an interval to check for total system inactivity
-    this.interval = setInterval(() => {
-      this.checkSystemInactivity();
-    }, CHECK_INTERVAL_MS);
+    this.interval = setInterval(
+      () => this.checkSystemInactivity(),
+      CHECK_INTERVAL_MS
+    );
 
     // Uses a shorter interval to check for button menu inactivity
-    this.menuCheckInterval = setInterval(() => {
-      this.checkMenuInactivity();
-    }, MENU_CHECK_INTERVAL_MS);
+    this.menuCheckInterval = setInterval(
+      () => this.checkMenuInactivity(),
+      MENU_CHECK_INTERVAL_MS
+    );
   }
 
-  checkSystemInactivity () {
+  checkSystemInactivity() {
     const state = this.store.getState();
 
-    const now = (new Date()).getTime();
-    const timeSinceInactivityTimeoutStart = now - state.inactivityTimeoutStartTime;
+    const now = new Date().getTime();
+    const timeSinceInactivityTimeoutStart =
+      now - state.inactivityTimeoutStartTime;
 
     switch (state.sessionPhase) {
       case SESSION_PHASES.PLAYING_6:
@@ -47,25 +52,34 @@ class InactivityTimeoutController extends ControllerWithStore {
           this.store.dispatch(inactivityTimeoutExceeded());
         }
         break;
-      
+
       default:
         break;
     }
-
   }
 
-  checkMenuInactivity () {
+  checkMenuInactivity() {
     const state = this.store.getState();
 
-    const now = (new Date()).getTime();
+    const now = new Date().getTime();
 
-    // For all button sequencers, checks if they have an open menu, if the
-    // timeout duration has elapsed, and the changes have not yet been applied
-    // TODO
+    // For all button sequencers, determines if menu should be closed and
+    // variation parameters applied
+    const buttonSequencers = getButtonSequencers(state);
 
+    buttonSequencers.forEach(seq => {
+      const menuState = seq.variationInteractionState;
+      const timeSinceLastPress = now - seq.lastButtonPressTime;
+      if (
+        menuState === VARIATION_INTERACTION_STATES.CHOOSING &&
+        timeSinceLastPress >= MENU_INACTIVE_THRESHOLD_MS
+      ) {
+        this.store.dispatch(variationMenuTimeoutExceeded(seq.sequencerId));
+      }
+    });
   }
 
-  quit () {
+  quit() {
     if (this.interval) {
       clearInterval(this.interval);
     }

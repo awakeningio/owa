@@ -67,6 +67,17 @@ const stateTransformer = function(state) {
   //'bufSequence'
   //])
   //});
+  //toPrint.sequencers = {
+    //'eminator-6_0': {
+      //playingState: state.sequencers['eminator-6_0'].playingState,
+      //variationProps: state.sequencers['eminator-6_0'].variationProps,
+      //variationMenuType: state.sequencers['eminator-6_0'].variationMenuType,
+      //variationInteractionState: state.sequencers['eminator-6_0'].variationInteractionState,
+      //currentVariationIndex: state.sequencers['eminator-6_0'].currentVariationIndex,
+      //lastPropChangeQueuedAt: state.sequencers['eminator-6_0'].lastPropChangeQueuedAt,
+      //lastPropChangeAt: state.sequencers['eminator-6_0'].lastPropChangeAt
+    //}
+  //};
   toPrint.sessionPhase = state.sessionPhase;
   //toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
   toPrint.idlePlayer = state.idlePlayer;

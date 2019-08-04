@@ -34,6 +34,19 @@ object SONG_IDS {
   "eminator"
 }
 
+object VARIATION_MENU_TYPES {
+  NONE,
+  QUADRANT,
+  INCREASING,
+  SUBDIVISIONS
+}
+
+object VARIATION_INTERACTION_STATES {
+  NONE,
+  CHOOSING,
+  CHOSEN
+}
+
 object state {  
   Enum SONG_IDS songId
   float tempo
@@ -98,8 +111,12 @@ object SequencerState {
   event
 
 
-  Plus our own added state:
-  phaseProps
+  Object phaseProps
+  
+  Number lastButtonPressTime
+  Array variationProps
+  Enum VARIATION_MENU_TYPES variationMenuType
+  Enum VARIATION_INTERACTION_STATES variationInteractionState
 }
 state *-- SequencerState
 

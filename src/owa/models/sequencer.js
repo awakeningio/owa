@@ -15,7 +15,7 @@ export function create_owa_sequencer (sequencerId, type, defaults = {}) {
     variationProps: [],
     currentVariationIndex: 0,
     variationMenuType: VARIATION_MENU_TYPES.NONE,
-    variationInteractionState: VARIATION_INTERACTION_STATES.NONE
+    variationInteractionState: VARIATION_INTERACTION_STATES.NONE,
     ...defaults,
   };
 }

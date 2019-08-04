@@ -22,7 +22,8 @@ import {
   getLevel2Sequencers,
   getRevealSequencer,
   getTransSequencer,
-  getSegmentIdToSequencerId
+  getSegmentIdToSequencerId,
+  getButtonSequencers
 } from "../selectors";
 import sequencersInitialState from "owa/state/sequencersInitialState";
 
@@ -144,8 +145,6 @@ function l6Sequencer(state, action, fullState, prevSessionPhase) {
   const { sessionPhase, songId } = fullState;
 
   let newState = state;
-
-  newState = owaButtonSequencer(state, action);
 
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
@@ -281,7 +280,6 @@ function l6Sequencer(state, action, fullState, prevSessionPhase) {
 function chordProgSequencer(state, action, fullState, prevSessionPhase) {
   const { segments, sessionPhase, songId } = fullState;
   let newState = state;
-  newState = owaButtonSequencer(state, action);
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       newState = apply_phase_props(newState, action.payload.phase);
@@ -389,7 +387,6 @@ function chordProgSequencer(state, action, fullState, prevSessionPhase) {
 function l2Sequencer(state, action, fullState, prevSessionPhase) {
   const { sessionPhase, songId } = fullState;
   let newState = state;
-  newState = owaButtonSequencer(state, action);
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       newState = apply_phase_props(newState, action.payload.phase);
@@ -488,6 +485,17 @@ export default function sequencers(
       }
     };
   }
+
+  const buttonSequencers = getButtonSequencers(fullState);
+  buttonSequencers.forEach(function (seq) {
+    const newSeq = owaButtonSequencer(seq, action);
+    if (newSeq !== seq) {
+      state = {
+        ...state,
+        [seq.sequencerId]: newSeq
+      };
+    }
+  });
 
   const l6Sequencers = getLevel6Sequencers(fullState);
   l6Sequencers.forEach(function(seq) {

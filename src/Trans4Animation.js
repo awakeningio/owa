@@ -8,22 +8,25 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import ControllerWithStore from './ControllerWithStore';
-import { SESSION_PHASES } from 'owa/constants';
+import ControllerWithStore from "./ControllerWithStore";
+import { SESSION_PHASES } from "owa/constants";
 
 class Trans4Animation extends ControllerWithStore {
   init() {
     this.state = this.store.getState();
     this.build();
   }
-  build () {}
-  start () {}
-  stop () {}
-  handle_state_change () {
+  build() {}
+  start() {}
+  stop() {}
+  handle_state_change() {
     const state = this.store.getState();
+    const { songId } = this.params;
 
-    if (this.state.sessionPhase !== state.sessionPhase) {
-      this.state = state;
+    if (
+      this.state.sessionPhase !== state.sessionPhase &&
+      state.songId === songId
+    ) {
       switch (state.sessionPhase) {
         case SESSION_PHASES.QUEUE_TRANS_4:
           this.build();
@@ -36,7 +39,10 @@ class Trans4Animation extends ControllerWithStore {
           break;
       }
     }
-
+    if (state.songId !== this.state.songId && state.songId !== songId) {
+      this.stop();
+    }
+    this.state = state;
   }
 }
 

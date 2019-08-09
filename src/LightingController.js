@@ -183,13 +183,13 @@ class LightingController extends ControllerWithStore {
   }
 
   handleSongChanged(songId) {
-    const animationParams = this.animationParams;
+    const animationParams = { ...this.animationParams, songId };
     switch (songId) {
       case SONG_IDS.SPINNY_PLUCK:
-        this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, {
-          ...animationParams,
-          songId: SONG_IDS.SPINNY_PLUCK
-        });
+        this.idleAnimation = new SpinnyPluckIdleAnimation(
+          this.store,
+          animationParams
+        );
         this.trans4Animation = new SpinnyPluckTrans4Animation(
           this.store,
           animationParams
@@ -206,12 +206,10 @@ class LightingController extends ControllerWithStore {
         break;
 
       case SONG_IDS.EMINATOR:
-        this.idleAnimation = new EminatorIdleAnimation(this.store, {
-          ...animationParams,
-          songId: SONG_IDS.EMINATOR
-        });
-        console.log("this.idleAnimation");
-        console.log(this.idleAnimation);
+        this.idleAnimation = new EminatorIdleAnimation(
+          this.store,
+          animationParams
+        );
         //this.trans4Animation = new EminatorTrans4Animation(this.store, animationParams);
         this.trans4Animation = new SpinnyPluckTrans4Animation(
           this.store,

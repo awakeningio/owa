@@ -73,6 +73,7 @@
     "source-map-support": "^0.5.11"
   },
   "dependencies": {
+    "@serialport/list": "^1.1.5",
     "@serialport/parser-readline": "^1.0.5",
     "@tweenjs/tween.js": "^17.3.0",
     "awakening-sequencers": "^0.8.10",

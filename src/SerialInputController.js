@@ -36,14 +36,16 @@ class SerialInputController extends ControllerWithStore {
     this.arduinoPort = new SerialPort(
       getEnvOrError("INPUT_ARDUINO_SERIALPORT"),
       () => {
-        console.log("Port opened!");
+        console.log("SerialInputController: Port opened!");
       }
     );
     this.parser = new ReadLineParser();
     this.arduinoPort.pipe(this.parser);
 
     if (DEBUG_INPUT) {
+      console.log("SerialInputController: Setting up debugging...");
       this.parser.on("data", (data) => {
+        console.log("SerialInputController: data received...");
         let levelSegment;
         try {
           levelSegment = this.buttonDataToLevelSegment(data);

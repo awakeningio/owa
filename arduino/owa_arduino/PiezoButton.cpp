@@ -1,7 +1,6 @@
 #include "PiezoButton.h"
 
-bool DEBUG = false;
-double DEBUG_THRESHOLD = 50;
+double DEBUG_THRESHOLD = 40;
 
 PiezoButton::PiezoButton () {
   int i;
@@ -12,6 +11,7 @@ PiezoButton::PiezoButton () {
   currentReading = 0;
   triggered = false;
   lastTriggerTime = 0;
+  debug = false;
 }
 
 bool PiezoButton::handleInputValue (int inputValue) {
@@ -39,7 +39,7 @@ bool PiezoButton::handleInputValue (int inputValue) {
   //}
 
   if (abs(avg) > this->triggerThreshold && (max - min) > RANGE_THRESHOLD) {
-    if (DEBUG) {
+    if (debug) {
       Serial.println("button: " + String(this->id) + "; avg: " + String(avg) + "; min: " + String(min) + "; max: " + String(max));
     }
     if (triggered == false) {
@@ -57,4 +57,8 @@ bool PiezoButton::handleInputValue (int inputValue) {
     triggered = false;
   }
   return wasJustTriggered;
+}
+
+void PiezoButton::enableDebug() {
+  debug = true;
 }

@@ -84,6 +84,8 @@ void setup()
     buttons[i].setId(i);
     buttons[i].setTriggerThreshold(buttonTriggerThresholds[i]);
   }
+
+  /*buttons[9].enableDebug();*/
 }
 
 bool wasTriggered;
@@ -107,8 +109,8 @@ void loop()
       if (DEBUG) {
         Serial.println("B" + String(int(pin)) + " triggered.");
       }
-      sprintf(msg, "B%02d\n", int(pin));
-      Serial.write(msg);
+      sprintf(msg, "B%02d", int(pin));
+      Serial.println(msg);
     }
   }
 }

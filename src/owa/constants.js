@@ -127,18 +127,18 @@ for (i = 0; i < SHELL_PYRAMID_PIXEL_RANGES.length; i++) {
 }
 
 export const BUTTON_ID_TO_LEVEL_SEGMENT = {
-  "00": ["level_2", 1],
-  "01": ["level_2", 0],
-  "02": ['level_4', 3],
-  "03": ['level_4', 2],
-  "04": ['level_4', 1],
-  "05": ['level_4', 0],
-  "06": ['level_6', 5],
-  "07": ['level_6', 4],
-  "08": ['level_6', 3],
-  "09": ['level_6', 2],
-  "10": ['level_6', 1],
-  "11": ['level_6', 0]
+  "B00": ["level_2", 1],
+  "B01": ["level_2", 0],
+  "B02": ['level_4', 3],
+  "B03": ['level_4', 2],
+  "B04": ['level_4', 1],
+  "B05": ['level_4', 0],
+  "B06": ['level_6', 5],
+  "B07": ['level_6', 4],
+  "B08": ['level_6', 3],
+  "B09": ['level_6', 2],
+  "B10": ['level_6', 1],
+  "B11": ['level_6', 0]
 };
 
 export const SEGMENTID_TO_PYRAMID_INDEX = {

@@ -54,7 +54,7 @@ class SerialInputController extends ControllerWithStore {
         }
         if (levelSegment) {
           console.log(
-            `${new Date()} :\n${data}\n${levelSegment}`
+            `Button parsed: ${new Date()} :\n${data}\n${levelSegment}`
           );
         } else {
           console.log(data);
@@ -67,7 +67,7 @@ class SerialInputController extends ControllerWithStore {
   }
 
   buttonDataToLevelSegment (data) {
-    var buttonId = data.slice(1) + "";
+    const buttonId = data.trim();
     return BUTTON_ID_TO_LEVEL_SEGMENT[buttonId];
   }
 
@@ -81,9 +81,11 @@ class SerialInputController extends ControllerWithStore {
 
   handleIncomingData (data) {
     var inputType = data[0];
-    //console.log("handleIncomingData");
-    //console.log("data");
-    //console.log(data);
+    if (DEBUG_INPUT) {
+      console.log("handleIncomingData");
+      console.log("data");
+      console.log(data);
+    }
     switch (inputType) {
       case INPUT_TYPES.BUTTON:
         this.handleButtonMessage(data);

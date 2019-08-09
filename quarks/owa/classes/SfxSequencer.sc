@@ -20,6 +20,7 @@ SfxSequencer : AwakenedSequencer {
       gate: KrNumberEditor(1, \gate),
       isSustained: 1
     ));
+    patch.gate.lag = 0;
     synthdef = patch.asSynthDef().add();
   }
   initStream {

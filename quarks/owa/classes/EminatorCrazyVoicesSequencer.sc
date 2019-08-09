@@ -8,6 +8,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
       amp: KrNumberEditor(-3.0.dbamp(), \amp),
       phasingAmt: KrNumberEditor(0.0, \unipolar)
     ));
+    patch.gate.lag = 0;
     synthdef = patch.asSynthDef().add();
     ^patch;
   }

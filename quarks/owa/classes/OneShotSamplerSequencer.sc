@@ -26,8 +26,7 @@ OneShotSamplerSequencer : AwakenedSequencer {
     currentState.bufNames.do({
       arg bufName;
       var bufSym = bufName.asSymbol();
-
-      synthdefsForBufNames[bufSym] = Patch("cs.sfx.StreamBuf", (
+      var patch = Patch("cs.sfx.StreamBuf", (
         buf: bufManager.bufs[bufSym],
         gate: KrNumberEditor(1, \gate),
         attackTime: KrNumberEditor(0.0, [0.0, 200.0]),
@@ -35,7 +34,11 @@ OneShotSamplerSequencer : AwakenedSequencer {
         amp: KrNumberEditor(1.0, \amp),
         isSustained: 1,
         convertToStereo: 1
-      )).asSynthDef().add();
+      ));
+
+      patch.gate.lag = 0;
+
+      synthdefsForBufNames[bufSym] = patch.asSynthDef().add();
     });
 
     ampProxy = PatternProxy.new;

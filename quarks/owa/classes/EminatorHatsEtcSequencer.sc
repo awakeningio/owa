@@ -4,7 +4,8 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
 
   initPatch {
     var sampleManager = OWASampleManager.getInstance();
-    hatsSynthdef = Patch("owa.EminatorHiHat", (
+    var patch;
+    patch = Patch("owa.EminatorHiHat", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
       amp: KrNumberEditor(-11.0.dbamp(), \amp),
@@ -15,7 +16,9 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
       electronicClosedStartTimes: sampleManager.getVoiceSampleManager('electronic_hat').startTimesBuf.bufnum,
       electronicOpenStartTimes: sampleManager.getVoiceSampleManager('electronic_hat_open').startTimesBuf.bufnum,
       sustained: false
-    )).asSynthDef().add();
+    ));
+    patch.gate.lag = 0;
+    hatsSynthdef = patch.asSynthDef().add();
   }
 
   updateNotes {

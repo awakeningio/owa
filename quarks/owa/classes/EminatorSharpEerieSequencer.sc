@@ -3,9 +3,11 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
 		bufnums,
     lastSessionPhase;
   initPatch {
-    synthdef = Patch("owa.eminator.SharpEerieSampler", (
+    var patch = Patch("owa.eminator.SharpEerieSampler", (
       gate: KrNumberEditor(1, \gate),
-    )).asSynthDef().add();
+    ));
+    patch.gate.lag = 0;
+    synthdef = patch.asSynthDef().add();
 
     bufnums = [
       \sharp_eerie_01,

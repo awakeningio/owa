@@ -22,6 +22,7 @@ KickSequencer : AwakenedSequencer {
       amp: 1.0.dbamp(),
       gate: KrNumberEditor(1, \gate)
     ));
+    patch.gate.lag = 0;
     synthdef = patch.asSynthDef().add();
 
     ^Pbind(

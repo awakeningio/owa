@@ -2,14 +2,17 @@ EminatorWhispPopSequencer : AwakenedSequencer {
   var synthdef;
 
   initPatch {
+    var patch;
     var sampleManager = OWASampleManager.getInstance(); 
     var highPopSamplerManager = sampleManager.getVoiceSampleManager('high-pop');
-    
-    synthdef = Patch("owa.eminator.HighPop", (
+   
+    patch =  Patch("owa.eminator.HighPop", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
       startTimesByVelocity: highPopSamplerManager.startTimesBuf.bufnum,
-    )).asSynthDef().add();
+    ));
+    patch.gate.lag = 0;
+    synthdef = patch.asSynthDef().add();
   }
 
   initStream {

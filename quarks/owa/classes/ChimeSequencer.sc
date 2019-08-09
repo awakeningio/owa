@@ -21,6 +21,7 @@ ChimeSequencer : AwakenedSequencer {
       releaseTime: 5.0,
       gate: KrNumberEditor(1, \gate)
     ));
+    patch.gate.lag = 0;
     synthdef = patch.asSynthDef().add();
 
     ^Ppar([

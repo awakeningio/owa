@@ -3,15 +3,18 @@ EminatorNoisySFXSequencer : AwakenedSequencer {
     wubBuzzSampleManager;
 
   initPatch {
+    var patch;
     wubBuzzSampleManager = OWASampleManager.getInstance()
       .getVoiceSampleManager('wub-buzz-slices');
 
-    wubBuzzSynthdef = Patch("owa.eminator.WubBuzzSampler", (
+    patch = Patch("owa.eminator.WubBuzzSampler", (
       gate: KrNumberEditor(1.0, \gate),
       amp: KrNumberEditor(-18.0.dbamp(), \amp),
       startTimes: wubBuzzSampleManager.startTimesBuf.bufnum,
       sample: wubBuzzSampleManager.sample.bufnum
-    )).asSynthDef().add();
+    ));
+    patch.gate.lag = 0;
+    wubBuzzSynthdef = patch.asSynthDef().add();
   }
 
   initStream {

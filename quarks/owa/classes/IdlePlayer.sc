@@ -53,6 +53,7 @@
         releaseTime: 15.0 * clock.tempo,
         amp: 1.0
       ));
+      patchesBySongId['spinny_pluck'].gate.lag = 0;
       patchesBySongId['eminator'] = Patch("owa.EminatorIdle", (
         gate: KrNumberEditor(0, \gate),
         attackTime: 1.0,
@@ -61,6 +62,7 @@
         transitionGate: 0,
         transitionDuration: 0
       ));
+      patchesBySongId['eminator'].gate.lag = 0;
     }
     handle_state_change {
       var songId;

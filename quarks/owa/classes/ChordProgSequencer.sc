@@ -27,6 +27,7 @@ ChordProgSequencer : AwakenedSequencer {
         isSustained: 1,
         convertToStereo: 1
       ));
+      patch.gate.lag = 0;
       synthdefsForBufNames[bufSym] = patch.asSynthDef().add();
     });
 

@@ -4,13 +4,15 @@ EminatorLeadSequencer : AwakenedSequencer {
   initPatch {
     var sampleManager = OWASampleManager.getInstance(); 
     var leadSamplerManager = sampleManager.getVoiceSampleManager('lead');
-    
-    synthdef = Patch("owa.eminator.Lead", (
+    var patch = Patch("owa.eminator.Lead", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
       amp: KrNumberEditor(-13.0.dbamp(), \amp),
       startTimesByVelocity: leadSamplerManager.startTimesBuf.bufnum
-    )).asSynthDef().add();
+    ));
+    patch.gate.lag = 0;
+    
+    synthdef = patch.asSynthDef().add();
   }
 
   initStream {

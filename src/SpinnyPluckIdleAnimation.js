@@ -193,7 +193,10 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
       60.0 *
       1000.0;
 
-    this.transBrightnessTween = new TWEEN.Tween({ masterBrightness: 1.0 }, tweenGroup)
+    this.transBrightnessTween = new TWEEN.Tween(
+      { masterBrightness: 1.0 },
+      tweenGroup
+    )
       .to(
         {
           masterBrightness: 0.0
@@ -219,7 +222,10 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
 
     this.firstSegmentColor = Color.hsv(280, 100, 100);
 
-    this.firstSegmentPulsingTween = new TWEEN.Tween({ brightness: 0.8 }, tweenGroup)
+    this.firstSegmentPulsingTween = new TWEEN.Tween(
+      { brightness: 0.8 },
+      tweenGroup
+    )
       .to({ brightness: 0.9 }, 1500)
       .easing(TWEEN.Easing.Cubic.InOut)
       .yoyo(true)
@@ -229,7 +235,10 @@ class SpinnyPluckIdleAnimation extends IdleAnimation {
       });
 
     let i;
-    this.firstSegmentCountdownTween = new TWEEN.Tween({ remaining: 1.0 }, tweenGroup)
+    this.firstSegmentCountdownTween = new TWEEN.Tween(
+      { remaining: 1.0 },
+      tweenGroup
+    )
       .to(
         {
           remaining: 0.0

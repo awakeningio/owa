@@ -207,11 +207,11 @@ class EminatorIdleAnimation extends IdleAnimation {
     )
       .to(
         {
-          masterBrightness: 0.0
+          masterBrightness: 0.1
         },
         transDur
       )
-      .easing(TWEEN.Easing.Bounce.InOut)
+      .easing(TWEEN.Easing.Cubic.In)
       .onUpdate(props => {
         this.animationState.masterBrightness = props.masterBrightness;
       });
@@ -223,7 +223,7 @@ class EminatorIdleAnimation extends IdleAnimation {
         },
         500
       )
-      .easing(TWEEN.Easing.Bounce.InOut)
+      .easing(TWEEN.Easing.Sinusoidal.In)
       .onUpdate(props => {
         this.animationState.transHueOffset = props.transHueOffset;
       });

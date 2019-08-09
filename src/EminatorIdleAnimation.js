@@ -19,6 +19,7 @@ import IdleAnimation from "./IdleAnimation";
 class EminatorIdleAnimation extends IdleAnimation {
   build() {
     const { tweenGroup } = this.params;
+    this.stop();
     this.animationState = {
       masterBrightness: 1.0,
       transHueOffset: 0.0
@@ -290,14 +291,16 @@ class EminatorIdleAnimation extends IdleAnimation {
     this.transBrightnessTween.start();
   }
   stop() {
-    Object.keys(this.segmentTweens).forEach(segmentId => {
-      this.segmentTweens[segmentId].stop();
-    });
-    this.transBrightnessTween.stop();
-    this.transHueTween.stop();
-    this.firstSegmentPulsingTween.stop();
-    this.firstSegmentCountdownTween.stop();
-    this.pyramidTweens.forEach(t => t.stop());
+    if (this.segmentTweens) {
+      Object.keys(this.segmentTweens).forEach(segmentId => {
+        this.segmentTweens[segmentId].stop();
+      });
+    }
+    this.transBrightnessTween && this.transBrightnessTween.stop();
+    this.transHueTween && this.transHueTween.stop();
+    this.firstSegmentPulsingTween && this.firstSegmentPulsingTween.stop();
+    this.firstSegmentCountdownTween && this.firstSegmentCountdownTween.stop();
+    this.pyramidTweens && this.pyramidTweens.forEach(t => t.stop());
   }
 }
 

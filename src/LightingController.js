@@ -10,7 +10,7 @@
 
 import { performance } from "perf_hooks";
 
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
 import logger from "./logging";
 
@@ -22,7 +22,7 @@ import SpinnyPluckTrans4Animation from "./SpinnyPluckTrans4Animation";
 import SpinnyPluckTrans2Animation from "./SpinnyPluckTrans2Animation";
 import SpinnyPluckRevealAnimation from "./SpinnyPluckRevealAnimation";
 import LevelReadyAnimation from "./LevelReadyAnimation";
-import EminatorIdleAnimation from './EminatorIdleAnimation';
+import EminatorIdleAnimation from "./EminatorIdleAnimation";
 //import EminatorTrans4Animation from './EminatorTrans4Animation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
@@ -45,7 +45,7 @@ const NUM_TWEEN_GROUPS = 2;
 
 const getState = createSelector(
   getSongId,
-  (songId) => ({
+  songId => ({
     songId
   })
 );
@@ -129,6 +129,23 @@ class LightingController extends ControllerWithStore {
 
     this.animationParams = animationParams;
 
+    this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {
+      ...animationParams,
+      ...{
+        levelId: "level_4",
+        delayBeats: 8,
+        levelReadySelector: getLevel4Ready
+      }
+    });
+    this.level2ReadyAnimation = new LevelReadyAnimation(this.store, {
+      ...animationParams,
+      ...{
+        levelId: "level_2",
+        delayBeats: 16,
+        levelReadySelector: getLevel2Ready
+      }
+    });
+
     this.handle_state_change();
 
     // create FadecandyController (and initiate connection)
@@ -165,28 +182,14 @@ class LightingController extends ControllerWithStore {
     }
   }
 
-  stopAllAnimations () {
-    [
-      this.idleAnimation,
-      this.trans4Animation,
-      this.trans2Animation,
-      this.revealAnimation,
-      this.level4ReadyAnimation,
-      this.level2ReadyAnimation
-    ].forEach(a => a && a.stop());
-  }
-
-  handleSongChanged (songId) {
-    this.stopAllAnimations();
+  handleSongChanged(songId) {
     const animationParams = this.animationParams;
     switch (songId) {
       case SONG_IDS.SPINNY_PLUCK:
-
-        this.idleAnimation = new SpinnyPluckIdleAnimation(
-          this.store,
-          animationParams
-        );
-        //this.trans4Animation = new EminatorTrans4Animation(this.store, animationParams);
+        this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, {
+          ...animationParams,
+          songId: SONG_IDS.SPINNY_PLUCK
+        });
         this.trans4Animation = new SpinnyPluckTrans4Animation(
           this.store,
           animationParams
@@ -199,31 +202,16 @@ class LightingController extends ControllerWithStore {
           this.store,
           animationParams
         );
-        this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {
-          ...animationParams,
-          ...{
-            levelId: "level_4",
-            delayBeats: 8,
-            levelReadySelector: getLevel4Ready
-          }
-        });
-        this.level2ReadyAnimation = new LevelReadyAnimation(this.store, {
-          ...animationParams,
-          ...{
-            levelId: "level_2",
-            delayBeats: 16,
-            levelReadySelector: getLevel2Ready
-          }
-        });
 
         break;
 
       case SONG_IDS.EMINATOR:
-        //this.idleAnimation = new SpinnyPluckIdleAnimation(
-          //this.store,
-          //animationParams
-        //);
-        this.idleAnimation = new EminatorIdleAnimation(this.store, animationParams);
+        this.idleAnimation = new EminatorIdleAnimation(this.store, {
+          ...animationParams,
+          songId: SONG_IDS.EMINATOR
+        });
+        console.log("this.idleAnimation");
+        console.log(this.idleAnimation);
         //this.trans4Animation = new EminatorTrans4Animation(this.store, animationParams);
         this.trans4Animation = new SpinnyPluckTrans4Animation(
           this.store,
@@ -237,31 +225,14 @@ class LightingController extends ControllerWithStore {
           this.store,
           animationParams
         );
-        this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {
-          ...animationParams,
-          ...{
-            levelId: "level_4",
-            delayBeats: 8,
-            levelReadySelector: getLevel4Ready
-          }
-        });
-        this.level2ReadyAnimation = new LevelReadyAnimation(this.store, {
-          ...animationParams,
-          ...{
-            levelId: "level_2",
-            delayBeats: 16,
-            levelReadySelector: getLevel2Ready
-          }
-        });
-
         break;
 
       default:
         break;
     }
   }
-  
-  handle_state_change () {
+
+  handle_state_change() {
     const state = getState(this.store.getState());
 
     if (state !== this.lastState) {

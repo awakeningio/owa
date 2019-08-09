@@ -16,3 +16,4 @@ error.log
 owa_env_*
 package-lock.json
 *.swo
+sclang_conf.yaml

@@ -2,17 +2,17 @@
 - hosts: all
   become: yes
   tasks:
-    - include_role:
-        name: base
+    #- include_role:
+        #name: geerlingguy.nodejs
+    #- include_role:
+        #name: conorsch.arduino
     - include_role:
         name: colinsullivan.audio
-    - include_role:
-        name: geerlingguy.nodejs
-    - include_role:
-        name: colinsullivan.fadecandy
-    - include_role:
-        name: colinsullivan.supercollider
-    - include_role:
-        name: conorsch.arduino
+    #- include_role:
+        #name: colinsullivan.fadecandy
+    #- include_role:
+        #name: colinsullivan.supercollider
+    #- include_role:
+        #name: base
 
-- import_playbook: site_deploy.yml
+#- import_playbook: site_deploy.yml

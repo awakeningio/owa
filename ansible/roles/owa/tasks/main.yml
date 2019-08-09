@@ -5,11 +5,6 @@
     path: "/home/{{ owa_deploy_user }}/.config/SuperCollider/"
     state: directory
 
-- name: sclang conf
-  copy:
-    src: sclang_conf.yaml
-    dest: "/home/{{ owa_deploy_user }}/.config/SuperCollider/sclang_conf.yaml"
-
 - name: arduino IDE setup
   shell: /opt/arduino/arduino-1.8.5/arduino --install-boards "arduino:avr"
   args:
@@ -67,8 +62,8 @@
     dest: "{{ owa_project_dir }}/owa_env"
 
 - name: .supercollider.yaml for supercolliderjs
-  copy:
-    src: .supercollider.yaml
+  template:
+    src: supercollider.yaml.j2
     dest: "{{ owa_project_dir }}/.supercollider.yaml"
 
 - name: sync sounds
@@ -87,3 +82,31 @@
     chdir: "{{ owa_project_dir }}"
   tags:
     - deploy_code
+
+- name: sclang conf
+  template:
+    src: sclang_conf.yaml.j2
+    dest: "/home/{{ owa_deploy_user }}/.config/SuperCollider/sclang_conf.yaml"
+
+- name: user owa systemd file
+  template:
+    src: owa.service.j2
+    dest: "/home/{{ owa_deploy_user }}/.local/share/systemd/user/owa.service"
+    owner: "{{ owa_deploy_user }}"
+    group: "{{ owa_deploy_user }}"
+    mode: 0644
+  register: owa_service
+
+- name: systemd daemon-reload
+  become_user: "{{ owa_deploy_user }}"
+  systemd:
+    scope: user
+    daemon_reload: yes
+  when: owa_service.changed
+
+- name: user owa systemd unit enabled
+  become_user: "{{ owa_deploy_user }}"
+  systemd:
+    scope: user
+    enabled: true
+    name: owa.service

@@ -8,38 +8,47 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import { performance } from 'perf_hooks';
-import logger from './logging';
-import ControllerWithStore from './ControllerWithStore';
-import FadecandyController from './FadecandyController';
-import SegmentLightingController from './SegmentLightingController';
+import { performance } from "perf_hooks";
+
+import { createSelector } from 'reselect';
+
+import logger from "./logging";
+
+import ControllerWithStore from "./ControllerWithStore";
+import FadecandyController from "./FadecandyController";
+import SegmentLightingController from "./SegmentLightingController";
 import SpinnyPluckIdleAnimation from "./SpinnyPluckIdleAnimation";
-import SpinnyPluckTrans4Animation from './SpinnyPluckTrans4Animation';
-import SpinnyPluckTrans2Animation from './SpinnyPluckTrans2Animation';
-import SpinnyPluckRevealAnimation from './SpinnyPluckRevealAnimation';
-import LevelReadyAnimation from './LevelReadyAnimation';
-//import EminatorIdleAnimation from './EminatorIdleAnimation';
+import SpinnyPluckTrans4Animation from "./SpinnyPluckTrans4Animation";
+import SpinnyPluckTrans2Animation from "./SpinnyPluckTrans2Animation";
+import SpinnyPluckRevealAnimation from "./SpinnyPluckRevealAnimation";
+import LevelReadyAnimation from "./LevelReadyAnimation";
+import EminatorIdleAnimation from './EminatorIdleAnimation';
 //import EminatorTrans4Animation from './EminatorTrans4Animation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
   NUM_PIXELS,
-  SHELL_PYRAMID_PIXEL_RANGES
+  SHELL_PYRAMID_PIXEL_RANGES,
+  SONG_IDS
   //SESSION_PHASES
-} from 'owa/constants';
-import {
-  getLevel2Ready,
-  getLevel4Ready
-} from './selectors';
-import TWEEN from '@tweenjs/tween.js';
+} from "owa/constants";
+import { getLevel2Ready, getLevel4Ready, getSongId } from "./selectors";
+import TWEEN from "@tweenjs/tween.js";
 
-import createOPCStrand from "opc/strand"
-import { getEnvAsNumber } from './utils';
+import createOPCStrand from "opc/strand";
+import { getEnvAsNumber } from "./utils";
 
-const DISABLE_LIGHTING = getEnvAsNumber('DISABLE_LIGHTING');
-const DEBUG_LIGHTING_PERFORMANCE = getEnvAsNumber('DEBUG_LIGHTING_PERFORMANCE');
+const DISABLE_LIGHTING = getEnvAsNumber("DISABLE_LIGHTING");
+const DEBUG_LIGHTING_PERFORMANCE = getEnvAsNumber("DEBUG_LIGHTING_PERFORMANCE");
 
 const NUM_TWEEN_GROUPS = 2;
+
+const getState = createSelector(
+  getSongId,
+  (songId) => ({
+    songId
+  })
+);
 
 /**
  *  @class        LightingController
@@ -66,7 +75,9 @@ class LightingController extends ControllerWithStore {
     const levelPixels = {};
 
     // ranges of pixel buffer for each pyramid
-    const pyramidPixels = SHELL_PYRAMID_PIXEL_RANGES.map(pixelRange => this.pixels.slice.apply(this.pixels, pixelRange));
+    const pyramidPixels = SHELL_PYRAMID_PIXEL_RANGES.map(pixelRange =>
+      this.pixels.slice.apply(this.pixels, pixelRange)
+    );
 
     const tweenGroups = [];
     for (let i = 0; i < NUM_TWEEN_GROUPS; i++) {
@@ -81,7 +92,7 @@ class LightingController extends ControllerWithStore {
     this.segmentLightingControllers = [];
 
     // for each segment get range of pixels for the ring
-    segmentIds.forEach((segmentId) => {
+    segmentIds.forEach(segmentId => {
       const pixels = this.pixels.slice.apply(
         this.pixels,
         SEGMENTID_TO_PIXEL_RANGE[segmentId]
@@ -98,7 +109,7 @@ class LightingController extends ControllerWithStore {
     });
 
     // for each level get range of pixels for the rings
-    levelIds.forEach((levelId) => {
+    levelIds.forEach(levelId => {
       const pixels = this.pixels.slice.apply(
         this.pixels,
         LEVELID_TO_PIXEL_RANGE[levelId]
@@ -106,7 +117,9 @@ class LightingController extends ControllerWithStore {
       levelPixels[levelId] = pixels;
     });
 
-    const params = {
+    this.lastState = null;
+
+    const animationParams = {
       pixels: this.pixels,
       levelPixels,
       segmentPixels,
@@ -114,28 +127,9 @@ class LightingController extends ControllerWithStore {
       tweenGroup: tweenGroups[0]
     };
 
-    this.idleAnimation = new SpinnyPluckIdleAnimation(this.store, params);
-    //this.idleAnimation = new EminatorIdleAnimation(this.store, params);
-    //this.trans4Animation = new EminatorTrans4Animation(this.store, params);
-    this.trans4Animation = new SpinnyPluckTrans4Animation(this.store, params);
-    this.trans2Animation = new SpinnyPluckTrans2Animation(this.store, params);
-    this.revealAnimation = new SpinnyPluckRevealAnimation(this.store, params);
-    this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {
-      ...params,
-      ...{
-        levelId: 'level_4',
-        delayBeats: 8,
-        levelReadySelector: getLevel4Ready
-      }
-    });
-    this.level2ReadyAnimation = new LevelReadyAnimation(this.store, {
-      ...params,
-      ...{
-        levelId: 'level_2',
-        delayBeats: 16,
-        levelReadySelector: getLevel2Ready
-      }
-    });
+    this.animationParams = animationParams;
+
+    this.handle_state_change();
 
     // create FadecandyController (and initiate connection)
     this.fcController = new FadecandyController(this.store);
@@ -145,8 +139,8 @@ class LightingController extends ControllerWithStore {
       for (i = 0; i < tweenGroups.length; i++) {
         tweenGroups[i].update();
       }
-    }
-    
+    };
+
     this.renderNextFrame = () => setTimeout(this.render, 42);
     //this.renderNextFrame = () => setImmediate(this.render);
 
@@ -169,27 +163,132 @@ class LightingController extends ControllerWithStore {
       }
       this.render();
     }
-
   }
 
-  tick () {
+  stopAllAnimations () {
+    [
+      this.idleAnimation,
+      this.trans4Animation,
+      this.trans2Animation,
+      this.revealAnimation,
+      this.level4ReadyAnimation,
+      this.level2ReadyAnimation
+    ].forEach(a => a && a.stop());
+  }
+
+  handleSongChanged (songId) {
+    this.stopAllAnimations();
+    const animationParams = this.animationParams;
+    switch (songId) {
+      case SONG_IDS.SPINNY_PLUCK:
+
+        this.idleAnimation = new SpinnyPluckIdleAnimation(
+          this.store,
+          animationParams
+        );
+        //this.trans4Animation = new EminatorTrans4Animation(this.store, animationParams);
+        this.trans4Animation = new SpinnyPluckTrans4Animation(
+          this.store,
+          animationParams
+        );
+        this.trans2Animation = new SpinnyPluckTrans2Animation(
+          this.store,
+          animationParams
+        );
+        this.revealAnimation = new SpinnyPluckRevealAnimation(
+          this.store,
+          animationParams
+        );
+        this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {
+          ...animationParams,
+          ...{
+            levelId: "level_4",
+            delayBeats: 8,
+            levelReadySelector: getLevel4Ready
+          }
+        });
+        this.level2ReadyAnimation = new LevelReadyAnimation(this.store, {
+          ...animationParams,
+          ...{
+            levelId: "level_2",
+            delayBeats: 16,
+            levelReadySelector: getLevel2Ready
+          }
+        });
+
+        break;
+
+      case SONG_IDS.EMINATOR:
+        //this.idleAnimation = new SpinnyPluckIdleAnimation(
+          //this.store,
+          //animationParams
+        //);
+        this.idleAnimation = new EminatorIdleAnimation(this.store, animationParams);
+        //this.trans4Animation = new EminatorTrans4Animation(this.store, animationParams);
+        this.trans4Animation = new SpinnyPluckTrans4Animation(
+          this.store,
+          animationParams
+        );
+        this.trans2Animation = new SpinnyPluckTrans2Animation(
+          this.store,
+          animationParams
+        );
+        this.revealAnimation = new SpinnyPluckRevealAnimation(
+          this.store,
+          animationParams
+        );
+        this.level4ReadyAnimation = new LevelReadyAnimation(this.store, {
+          ...animationParams,
+          ...{
+            levelId: "level_4",
+            delayBeats: 8,
+            levelReadySelector: getLevel4Ready
+          }
+        });
+        this.level2ReadyAnimation = new LevelReadyAnimation(this.store, {
+          ...animationParams,
+          ...{
+            levelId: "level_2",
+            delayBeats: 16,
+            levelReadySelector: getLevel2Ready
+          }
+        });
+
+        break;
+
+      default:
+        break;
+    }
+  }
+  
+  handle_state_change () {
+    const state = getState(this.store.getState());
+
+    if (state !== this.lastState) {
+      this.handleSongChanged(getSongId(state));
+      this.lastState = state;
+    }
+  }
+
+  tick() {
     this.update();
     this.fcController.writePixels(this.pixels);
     this.renderNextFrame();
   }
 
-  tickDebug () {
+  tickDebug() {
     const start = performance.now();
     this.update();
     this.fcController.writePixels(this.pixels);
     const end = performance.now();
     this.tickCompletionTimeSum += end - start;
     this.numTickMeasurements += 1;
-    this.tickCompletionTimeAvg = this.tickCompletionTimeSum / this.numTickMeasurements;
+    this.tickCompletionTimeAvg =
+      this.tickCompletionTimeSum / this.numTickMeasurements;
     this.renderNextFrame();
   }
 
-  quit () {
+  quit() {
     this.fcController.quit();
     this.hasQuit = true;
   }

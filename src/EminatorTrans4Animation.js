@@ -25,7 +25,8 @@ import {
 import { beatsToMs } from './utils';
 
 class EminatorTrans4Animation extends Trans4Animation {
-  build() { const { tweenGroup } = this.params;
+  build() {
+    const { tweenGroup } = this.params;
     const initial = {
       brightness: 0
     };

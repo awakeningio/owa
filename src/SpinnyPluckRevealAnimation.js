@@ -12,9 +12,9 @@
 import TWEEN from "@tweenjs/tween.js";
 import Color from "color";
 
-import ControllerWithStore from "./ControllerWithStore";
 import { setPixelsColors } from "./Pixels";
-import { SESSION_PHASES } from "owa/constants";
+
+import RevealAnimation from './RevealAnimation';
 
 const SLOW_FLASH_DUR = 100;
 const SLOW_FLASH_DEL = 50;
@@ -22,16 +22,7 @@ const SLOW_FLASH_DEL = 50;
 const FAST_FLASH_DUR = 50;
 const FAST_FLASH_DEL = 5;
 
-class SpinnyPluckRevealAnimation extends ControllerWithStore {
-  init() {
-    this.prevState = {
-      sessionPhase: null
-    };
-    this.initial = {
-      brightness: 0
-    };
-    this.build();
-  }
+class SpinnyPluckRevealAnimation extends RevealAnimation {
   createSegmentTween(segmentId, dur, delay, easing) {
     const { tweenGroup } = this.params;
     const pixels = this.params.segmentPixels[segmentId];
@@ -53,6 +44,12 @@ class SpinnyPluckRevealAnimation extends ControllerWithStore {
       });
   }
   build() {
+    this.prevState = {
+      sessionPhase: null
+    };
+    this.initial = {
+      brightness: 0
+    };
     this.segmentTweenState = {
       "level_6-segment_0": Object.assign({}, this.initial),
       "level_6-segment_1": Object.assign({}, this.initial),
@@ -507,27 +504,27 @@ class SpinnyPluckRevealAnimation extends ControllerWithStore {
     });
     this.pyramidTweens.forEach(t => t.stop());
   }
-  handle_state_change() {
-    const state = this.store.getState();
+  //handle_state_change() {
+    //const state = this.store.getState();
 
-    if (this.prevState.sessionPhase !== state.sessionPhase) {
-      this.prevState.sessionPhase = state.sessionPhase;
+    //if (this.prevState.sessionPhase !== state.sessionPhase) {
+      //this.prevState.sessionPhase = state.sessionPhase;
 
-      switch (state.sessionPhase) {
-        case SESSION_PHASES.TRANS_ADVICE:
-          this.start();
-          break;
+      //switch (state.sessionPhase) {
+        //case SESSION_PHASES.TRANS_ADVICE:
+          //this.start();
+          //break;
 
-        case SESSION_PHASES.PLAYING_ADVICE:
-          this.startAdvice();
-          break;
+        //case SESSION_PHASES.PLAYING_ADVICE:
+          //this.startAdvice();
+          //break;
 
-        default:
-          this.stop();
-          break;
-      }
-    }
-  }
+        //default:
+          //this.stop();
+          //break;
+      //}
+    //}
+  //}
 }
 
 export default SpinnyPluckRevealAnimation;

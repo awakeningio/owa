@@ -25,6 +25,7 @@ import LevelReadyAnimation from "./LevelReadyAnimation";
 import EminatorIdleAnimation from "./EminatorIdleAnimation";
 import EminatorTrans4Animation from './EminatorTrans4Animation';
 import EminatorTrans2Animation from './EminatorTrans2Animation';
+import EminatorRevealAnimation from './EminatorRevealAnimation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
@@ -219,7 +220,7 @@ class LightingController extends ControllerWithStore {
           this.store,
           animationParams
         );
-        this.revealAnimation = new SpinnyPluckRevealAnimation(
+        this.revealAnimation = new EminatorRevealAnimation(
           this.store,
           animationParams
         );

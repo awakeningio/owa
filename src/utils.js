@@ -38,3 +38,7 @@ export function beatsToMs (beats, bpm) {
 export function constrain (value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
+
+export function choose (list) {
+  return list[Math.round(Math.random() * (list.length - 1))];
+}

@@ -79,12 +79,14 @@
         if (state.idlePlayer.playingState == "PLAYING", {
           "IdlePlayer.playing...".postln();
           if (player.isNil().not(), {
+            player.gate.value = 0;
             player.stop();
           });
           patchesBySongId[songId].gate.value = state.idlePlayer.gate;
           player = patchesBySongId[songId].play();
         }, {
           if (player.isNil().not(), {
+            player.gate.value = 0;
             player.stop();
             player = nil;
           });
@@ -97,9 +99,8 @@
           ++ " for songId: "
           ++ songId
         ).postln();
-        player.gate.value = 0;
+        player.gate.value = state.idlePlayer.gate;
       });
-
       
     }
  }

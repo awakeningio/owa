@@ -30,3 +30,11 @@ export function getEnvAsNumber (envName) {
     return null;
   }
 }
+
+export function beatsToMs (beats, bpm) {
+  return beats / bpm * 60000.0;
+}
+
+export function constrain (value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}

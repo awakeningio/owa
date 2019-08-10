@@ -23,7 +23,7 @@ import SpinnyPluckTrans2Animation from "./SpinnyPluckTrans2Animation";
 import SpinnyPluckRevealAnimation from "./SpinnyPluckRevealAnimation";
 import LevelReadyAnimation from "./LevelReadyAnimation";
 import EminatorIdleAnimation from "./EminatorIdleAnimation";
-//import EminatorTrans4Animation from './EminatorTrans4Animation';
+import EminatorTrans4Animation from './EminatorTrans4Animation';
 import {
   SEGMENTID_TO_PIXEL_RANGE,
   LEVELID_TO_PIXEL_RANGE,
@@ -210,8 +210,7 @@ class LightingController extends ControllerWithStore {
           this.store,
           animationParams
         );
-        //this.trans4Animation = new EminatorTrans4Animation(this.store, animationParams);
-        this.trans4Animation = new SpinnyPluckTrans4Animation(
+        this.trans4Animation = new EminatorTrans4Animation(
           this.store,
           animationParams
         );

@@ -1,19 +1,8 @@
-/**
- *  @file       EminatorTrans4Animation.js
- *
- *
- *  @author     Emma Lefley
- *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
- *
- *  @copyright  2018 Colin Sullivan
- *  @license    Licensed under the GPLv3 license.
- **/
-
 import TWEEN from "@tweenjs/tween.js";
 import Color from "color";
 
 import { setPixelsColors } from "./Pixels";
-import Trans4Animation from "./Trans4Animation";
+import Trans2Animation from "./Trans2Animation";
 
 import {
   SESSION_PHASE_BEATS_PER_BAR_BY_SONGID,
@@ -22,10 +11,11 @@ import {
   SESSION_PHASES
 } from "owa/constants";
 
-import { beatsToMs } from './utils';
+import { beatsToMs } from "./utils";
 
-class EminatorTrans4Animation extends Trans4Animation {
-  build() { const { tweenGroup } = this.params;
+class EminatorTrans2Animation extends Trans2Animation {
+  build() {
+    const { tweenGroup } = this.params;
     const initial = {
       brightness: 0
     };
@@ -84,9 +74,15 @@ class EminatorTrans4Animation extends Trans4Animation {
       )
     };
 
-    const beatsPerBar = SESSION_PHASE_BEATS_PER_BAR_BY_SONGID[SONG_IDS.EMINATOR][SESSION_PHASES.TRANS_4];
+    const beatsPerBar =
+      SESSION_PHASE_BEATS_PER_BAR_BY_SONGID[SONG_IDS.EMINATOR][
+        SESSION_PHASES.TRANS_2
+      ];
 
-    const gestureDur = beatsToMs(4 * beatsPerBar, TEMPO_BY_SONGID[SONG_IDS.EMINATOR]);
+    const gestureDur = beatsToMs(
+      4 * beatsPerBar,
+      TEMPO_BY_SONGID[SONG_IDS.EMINATOR]
+    );
 
     const shellDur = 0.4 * gestureDur;
     const segmentDur = 0.5 * gestureDur;
@@ -98,30 +94,34 @@ class EminatorTrans4Animation extends Trans4Animation {
     const createSegmentTween = segmentId => {
       const segmentPixels = this.params.segmentPixels;
       const segmentColors = this.segmentColors;
-      const segmentAnimationState = {...initial};
+      const segmentAnimationState = { ...initial };
 
       const updateSegment = props => {
-          setPixelsColors(
-            segmentPixels[segmentId],
-            segmentColors[segmentId].value(props.brightness)
-          );
-        };
+        setPixelsColors(
+          segmentPixels[segmentId],
+          segmentColors[segmentId].value(props.brightness)
+        );
+      };
 
-      const pauseTween = new TWEEN.Tween(segmentAnimationState, tweenGroup)
-        .to(segmentAnimationState, 0.5 * shellDur)
-      
+      const pauseTween = new TWEEN.Tween(segmentAnimationState, tweenGroup).to(
+        segmentAnimationState,
+        0.5 * shellDur
+      );
+
       const inTween = new TWEEN.Tween(segmentAnimationState, tweenGroup)
         .to({ ...dest }, 0.5 * segmentDur)
         .easing(TWEEN.Easing.Sinusoidal.In)
         .onUpdate(updateSegment);
 
       const outTween = new TWEEN.Tween(segmentAnimationState, tweenGroup)
-        .to({...initial}, 0.5 * segmentDur)
+        .to({ ...initial }, 0.5 * segmentDur)
         .easing(TWEEN.Easing.Sinusoidal.In)
         .onUpdate(updateSegment);
 
-      const outPauseTween = new TWEEN.Tween(segmentAnimationState, tweenGroup)
-        .to(segmentAnimationState, 0.5 * shellDur);
+      const outPauseTween = new TWEEN.Tween(
+        segmentAnimationState,
+        tweenGroup
+      ).to(segmentAnimationState, 0.5 * shellDur);
 
       pauseTween.chain(inTween);
       inTween.chain(outTween);
@@ -142,9 +142,9 @@ class EminatorTrans4Animation extends Trans4Animation {
         100
       );
 
-      const pyramidAnimationState = {...initial};
+      const pyramidAnimationState = { ...initial };
       const inFrame = new TWEEN.Tween(pyramidAnimationState, tweenGroup)
-        .to({...dest}, 0.5 * shellDur)
+        .to({ ...dest }, 0.5 * shellDur)
         .delay(i * 100)
         .easing(TWEEN.Easing.Sinusoidal.In)
         //.repeat(Math.floor(dur / gestureDur))
@@ -152,11 +152,13 @@ class EminatorTrans4Animation extends Trans4Animation {
           setPixelsColors(p, color.value(props.brightness));
         });
 
-      const stillFrame = new TWEEN.Tween(pyramidAnimationState, tweenGroup)
-        .to(pyramidAnimationState, segmentDur);
+      const stillFrame = new TWEEN.Tween(pyramidAnimationState, tweenGroup).to(
+        pyramidAnimationState,
+        segmentDur
+      );
 
       const outFrame = new TWEEN.Tween(pyramidAnimationState, tweenGroup)
-        .to({...initial}, 0.5 * shellDur)
+        .to({ ...initial }, 0.5 * shellDur)
         .easing(TWEEN.Easing.Sinusoidal.In)
         .onUpdate(props => {
           setPixelsColors(p, color.value(props.brightness));
@@ -172,7 +174,6 @@ class EminatorTrans4Animation extends Trans4Animation {
 
       return inFrame;
     };
-
 
     this.segmentTweens = Object.keys(segmentPixels).reduce(
       (segmentTweens, segmentId) => {
@@ -191,18 +192,18 @@ class EminatorTrans4Animation extends Trans4Animation {
     this.pyramidTweens.forEach(t => t.start());
   }
   stop() {
-    console.log("EminatorTrans4Animation.stop");
+    console.log("EminatorTrans2Animation.stop");
     // Workaround a TWEEN.js bug when chained tweens wont stop.
     this.allTweens.forEach(t => t.stop());
     //Object.keys(this.segmentTweens).forEach(segmentId => {
-      //this.segmentTweens[segmentId].stop();
-      //this.segmentTweens[segmentId].stopChainedTweens();
+    //this.segmentTweens[segmentId].stop();
+    //this.segmentTweens[segmentId].stopChainedTweens();
     //});
     //this.pyramidTweens.forEach(t => {
-      //t.stop();
-      //t.stopChainedTweens();
+    //t.stop();
+    //t.stopChainedTweens();
     //});
   }
 }
 
-export default EminatorTrans4Animation;
+export default EminatorTrans2Animation;

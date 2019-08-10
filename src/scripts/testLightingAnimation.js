@@ -22,12 +22,14 @@ const lightingController = new LightingController(store);
 lightingController.idleAnimation.stop();
 setTimeout(function() {
   console.log("Starting animation...");
-  lightingController.trans4Animation.start();
+  const animation = lightingController.trans2Animation;
+
+  animation.start();
   //lightingController.trans2Animation.start();
 
   //lightingController.revealAnimation.start();
   //setTimeout(() => lightingController.revealAnimation.startAdvice(), 3000);
-  setTimeout(() => lightingController.trans4Animation.stop(), 5000);
+  //setTimeout(() => animation.stop(), 5000);
 
 }, 1000);
 

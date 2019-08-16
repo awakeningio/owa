@@ -151,19 +151,23 @@ class SegmentLightingController extends ControllerWithStore {
         }
       }
     } else {
+      // Handles when playingState changed or queueOnPhaseStart changed
       if (
         sequencer.playingState !== this.lastState.sequencer.playingState ||
         sequencer.queueOnPhaseStart !== this.lastState.sequencer.queueOnPhaseStart
       ) {
         this.lastState.sequencer = sequencer;
-        this.playingAnimation.stop();
+        console.log("sequencer.playingState");
+        console.log(sequencer.playingState);
 
         if (sequencer.queueOnPhaseStart !== false) {
+          this.playingAnimation.stop();
           this.queuedAnimation.start();
         } else if (
           sequencer.playingState == awakeningSequencers.PLAYING_STATES.QUEUED ||
           sequencer.playingState === awakeningSequencers.PLAYING_STATES.REQUEUED
         ) {
+          this.playingAnimation.stop();
           switch (state.sessionPhase) {
             case SESSION_PHASES.PLAYING_6:
             case SESSION_PHASES.PLAYING_4:
@@ -179,7 +183,9 @@ class SegmentLightingController extends ControllerWithStore {
         } else if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
           this.playingAnimation.start();
           this.queuedAnimation.stop();
-        } else if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
+        } else if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.STOP_QUEUED) {
+          // if stop was queued, animation continues to play because sequencer
+          // continues to play.
           return;
         } else {
           this.playingAnimation.stop();

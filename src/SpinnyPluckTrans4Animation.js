@@ -79,8 +79,8 @@ class SpinnyPluckTrans4Animation extends Trans4Animation {
     const createSegmentTween = segmentId => {
       const segmentPixels = this.params.segmentPixels;
       const segmentColors = this.segmentColors;
-      return new TWEEN.Tween(Object.assign({}, initial), tweenGroup)
-        .to(Object.assign({}, dest), 3000)
+      return new TWEEN.Tween({...initial}, tweenGroup)
+        .to({...dest}, 3000)
         .delay(1000)
         .yoyo(true)
         .repeat(1)

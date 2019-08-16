@@ -12,9 +12,9 @@
 import TWEEN from "@tweenjs/tween.js";
 import Color from "color";
 
-import ControllerWithStore from "./ControllerWithStore";
 import { setPixelsColors } from "./Pixels";
-import { SESSION_PHASES } from "owa/constants";
+
+import RevealAnimation from './RevealAnimation';
 
 const SLOW_FLASH_DUR = 100;
 const SLOW_FLASH_DEL = 50;
@@ -22,16 +22,7 @@ const SLOW_FLASH_DEL = 50;
 const FAST_FLASH_DUR = 50;
 const FAST_FLASH_DEL = 5;
 
-class SpinnyPluckRevealAnimation extends ControllerWithStore {
-  init() {
-    this.prevState = {
-      sessionPhase: null
-    };
-    this.initial = {
-      brightness: 0
-    };
-    this.build();
-  }
+class SpinnyPluckRevealAnimation extends RevealAnimation {
   createSegmentTween(segmentId, dur, delay, easing) {
     const { tweenGroup } = this.params;
     const pixels = this.params.segmentPixels[segmentId];
@@ -53,6 +44,12 @@ class SpinnyPluckRevealAnimation extends ControllerWithStore {
       });
   }
   build() {
+    this.prevState = {
+      sessionPhase: null
+    };
+    this.initial = {
+      brightness: 0
+    };
     this.segmentTweenState = {
       "level_6-segment_0": Object.assign({}, this.initial),
       "level_6-segment_1": Object.assign({}, this.initial),
@@ -214,162 +211,6 @@ class SpinnyPluckRevealAnimation extends ControllerWithStore {
           setPixelsColors(p, color.value(props.brightness));
         });
     });
-
-    //this.level6Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.In)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_6-segment_0'],
-    //Color.hsv(26, 100, props.brightness).mix(Color.hsv(22, 82, 100), 0.2)
-    //);
-    //});
-
-    //this.level6Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.InOut)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_6-segment_1'],
-    //Color.hsv(27, 100, props.brightness).mix(Color.hsv(32, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level6Seg2Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.Out)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_6-segment_2'],
-    //Color.hsv(28, 100, props.brightness).mix(Color.hsv(33, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level6Seg3Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.In)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_6-segment_3'],
-    //Color.hsv(29, 100, props.brightness).mix(Color.hsv(34, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level6Seg4Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.InOut)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_6-segment_4'],
-    //Color.hsv(30, 100, props.brightness).mix(Color.hsv(35, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level6Seg5Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.Out)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_6-segment_5'],
-    //Color.hsv(31, 100, props.brightness).mix(Color.hsv(36, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level4Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.In)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_4-segment_0'],
-    //Color.hsv(32, 100, props.brightness).mix(Color.hsv(37, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level4Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.InOut)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_4-segment_1'],
-    //Color.hsv(33, 100, props.brightness).mix(Color.hsv(38, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level4Seg2Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.Out)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_4-segment_2'],
-    //Color.hsv(34, 100, props.brightness).mix(Color.hsv(39, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level4Seg3Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.In)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_4-segment_3'],
-    //Color.hsv(35, 100, props.brightness).mix(Color.hsv(40, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level2Seg0Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.InOut)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_2-segment_0'],
-    //Color.hsv(36, 100, props.brightness).mix(Color.hsv(41, 100, 100), 0.2)
-    //);
-    //});
-
-    //this.level2Seg1Tween = new TWEEN.Tween(Object.assign({}, initial))
-    //.to(Object.assign({}, dest), 50)
-    //.delay(5)
-    //.easing(TWEEN.Easing.Back.Out)
-    //.yoyo(true)
-    //.repeat(Infinity)
-    //.onUpdate((props) => {
-    //setPixelsColors(
-    //segmentPixels['level_2-segment_1'],
-    //Color.hsv(37, 100, props.brightness).mix(Color.hsv(42, 100, 100), 0.2)
-    //);
-    //});
   }
   buildPlayingAdvice() {
     // colors change suddenly
@@ -506,27 +347,6 @@ class SpinnyPluckRevealAnimation extends ControllerWithStore {
       this.segmentTweens[segmentId].stop();
     });
     this.pyramidTweens.forEach(t => t.stop());
-  }
-  handle_state_change() {
-    const state = this.store.getState();
-
-    if (this.prevState.sessionPhase !== state.sessionPhase) {
-      this.prevState.sessionPhase = state.sessionPhase;
-
-      switch (state.sessionPhase) {
-        case SESSION_PHASES.TRANS_ADVICE:
-          this.start();
-          break;
-
-        case SESSION_PHASES.PLAYING_ADVICE:
-          this.startAdvice();
-          break;
-
-        default:
-          this.stop();
-          break;
-      }
-    }
   }
 }
 

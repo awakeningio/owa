@@ -12,7 +12,6 @@
 import configureStore from "../configureStore"
 import LightingController from '../LightingController'
 //import { sessionPhaseAdvanced, buttonPressed } from './actions';
-//import { SESSION_PHASES } from 'owa/constants';
 
 const store = configureStore();
 const lightingController = new LightingController(store);
@@ -23,13 +22,18 @@ const lightingController = new LightingController(store);
 lightingController.idleAnimation.stop();
 setTimeout(function() {
   console.log("Starting animation...");
-  //lightingController.trans4Animation.start();
+  const animation = lightingController.revealAnimation;
+
+  animation.start();
   //lightingController.trans2Animation.start();
 
-  lightingController.revealAnimation.start();
-  setTimeout(() => lightingController.revealAnimation.startAdvice(), 3000);
+  //lightingController.revealAnimation.start();
+  //setTimeout(() => lightingController.revealAnimation.startAdvice(), 3000);
+  //setTimeout(() => animation.stop(), 5000);
+  
+  setTimeout(() => animation.startAdvice(), 8000);
 
-}, 2000);
+}, 1000);
 
 
 

@@ -1,23 +1,15 @@
-/**
- *  @file       Trans4Animation.js
- *
- *
- *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
- *
- *  @copyright  2019 Colin Sullivan
- *  @license    Licensed under the GPLv3 license.
- **/
-
 import ControllerWithStore from "./ControllerWithStore";
+
 import { SESSION_PHASES } from "owa/constants";
 
-class Trans4Animation extends ControllerWithStore {
+class RevealAnimation extends ControllerWithStore {
   init() {
     this.state = this.store.getState();
     this.build();
   }
   build() {}
   start() {}
+  startAdvice() {}
   stop() {}
   handle_state_change() {
     const state = this.store.getState();
@@ -28,11 +20,14 @@ class Trans4Animation extends ControllerWithStore {
       state.songId === songId
     ) {
       switch (state.sessionPhase) {
-        case SESSION_PHASES.QUEUE_TRANS_4:
+        case SESSION_PHASES.PLAYING_2:
           this.build();
           break;
-        case SESSION_PHASES.TRANS_4:
+        case SESSION_PHASES.TRANS_ADVICE:
           this.start();
+          break;
+        case SESSION_PHASES.PLAYING_ADVICE:
+          this.startAdvice();
           break;
         default:
           this.stop();
@@ -46,4 +41,4 @@ class Trans4Animation extends ControllerWithStore {
   }
 }
 
-export default Trans4Animation;
+export default RevealAnimation;

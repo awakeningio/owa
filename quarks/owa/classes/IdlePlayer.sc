@@ -100,6 +100,8 @@
           ++ songId
         ).postln();
         player.gate.value = state.idlePlayer.gate;
+        "player.gate.value:".postln;
+        player.gate.value.postln;
       });
       
     }

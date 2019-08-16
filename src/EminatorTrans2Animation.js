@@ -192,7 +192,7 @@ class EminatorTrans2Animation extends Trans2Animation {
     this.pyramidTweens.forEach(t => t.start());
   }
   stop() {
-    console.log("EminatorTrans2Animation.stop");
+    //console.log("EminatorTrans2Animation.stop");
     // Workaround a TWEEN.js bug when chained tweens wont stop.
     this.allTweens.forEach(t => t.stop());
     //Object.keys(this.segmentTweens).forEach(segmentId => {

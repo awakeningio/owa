@@ -271,7 +271,7 @@ class EminatorRevealAnimation extends RevealAnimation {
     });
   }
   start() {
-    console.log("EminatorRevealAnimation.start");
+    //console.log("EminatorRevealAnimation.start");
     Object.keys(this.segmentTweens).forEach(segmentId => {
       this.segmentTweens[segmentId].start();
     });
@@ -283,7 +283,7 @@ class EminatorRevealAnimation extends RevealAnimation {
     this.start();
   }
   stop() {
-    console.log("EminatorRevealAnimation.stop");
+    //console.log("EminatorRevealAnimation.stop");
     // Workaround a TWEEN.js bug when chained tweens wont stop.
     this.allTweens.forEach(t => t.stop());
     this.allTweens = [];

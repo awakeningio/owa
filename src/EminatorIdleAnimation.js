@@ -229,7 +229,7 @@ class EminatorIdleAnimation extends IdleAnimation {
         this.animationState.transHueOffset = props.transHueOffset;
       });
 
-    this.firstSegmentColor = Color.hsv(0, 97, 100);
+    this.firstSegmentColor = Color.hsv(135, 97, 100);
 
     this.firstSegmentPulsingTween = new TWEEN.Tween(
       { brightness: 0.8 },

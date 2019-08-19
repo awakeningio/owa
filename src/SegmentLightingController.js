@@ -157,8 +157,6 @@ class SegmentLightingController extends ControllerWithStore {
         sequencer.queueOnPhaseStart !== this.lastState.sequencer.queueOnPhaseStart
       ) {
         this.lastState.sequencer = sequencer;
-        console.log("sequencer.playingState");
-        console.log(sequencer.playingState);
 
         if (sequencer.queueOnPhaseStart !== false) {
           this.playingAnimation.stop();

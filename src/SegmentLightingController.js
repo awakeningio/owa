@@ -15,6 +15,7 @@ import SegmentQueuedAnimation from "./SegmentQueuedAnimation";
 import SegmentPlayingAnimation from "./SegmentPlayingAnimation";
 import SegmentNoopAnimation from "./SegmentNoopAnimation";
 import { SESSION_PHASES } from "owa/constants";
+import { setPixelsOff } from './Pixels';
 import {
   getSegmentIdToBufName,
   getLevel4Sequencer,
@@ -76,6 +77,11 @@ class SegmentLightingController extends ControllerWithStore {
   //}
 
   //}
+  //
+  turnPixelsOff () {
+    const { pixels } = this.params;
+    setPixelsOff(pixels);
+  }
 
   handle_state_change() {
     const state = this.store.getState();
@@ -89,7 +95,8 @@ class SegmentLightingController extends ControllerWithStore {
       if (
         segment.lastButtonPressTime !==
           this.lastState.segment.lastButtonPressTime &&
-        sequencer.playingState === PLAYING_STATES.STOPPED
+        sequencer.playingState === PLAYING_STATES.STOPPED &&
+        sequencer.queueOnPhaseStart === false
       ) {
         // segment button was pressed and sequencer is still stopped,
         // means this was a no-op
@@ -99,10 +106,30 @@ class SegmentLightingController extends ControllerWithStore {
       this.lastState.segment = segment;
     }
 
+    // Watches the sessionPhase, when the SegmentLightingController 
+    // takes back "control" once a sessionPhase transitions, if sequencer
+    // is not playing, black out the pixels so previous animation state doesn't
+    // remain on sequencers not yet playing
+    const sessionPhase = state.sessionPhase;
+    if (sessionPhase !== this.lastState.sessionPhase) {
+      this.lastState.sessionPhase = sessionPhase;
+
+      switch (sessionPhase) {
+        case SESSION_PHASES.PLAYING_6:
+        case SESSION_PHASES.PLAYING_4:
+        case SESSION_PHASES.PLAYING_2:
+          this.turnPixelsOff();
+          break;
+        default:
+          break;
+      }
+    }
+
     if (sequencer === level4Sequencer) {
       if (
         sequencer.playingState !== this.lastState.sequencer.playingState ||
-        sequencer.queueOnPhaseStart !== this.lastState.sequencer.queueOnPhaseStart ||
+        sequencer.queueOnPhaseStart !==
+          this.lastState.sequencer.queueOnPhaseStart ||
         sequencer.event.bufName !== this.lastState.sequencer.event.bufName ||
         sequencer.bufSequence !== this.lastState.sequencer.bufSequence
       ) {
@@ -154,7 +181,8 @@ class SegmentLightingController extends ControllerWithStore {
       // Handles when playingState changed or queueOnPhaseStart changed
       if (
         sequencer.playingState !== this.lastState.sequencer.playingState ||
-        sequencer.queueOnPhaseStart !== this.lastState.sequencer.queueOnPhaseStart
+        sequencer.queueOnPhaseStart !==
+          this.lastState.sequencer.queueOnPhaseStart
       ) {
         this.lastState.sequencer = sequencer;
 
@@ -178,10 +206,15 @@ class SegmentLightingController extends ControllerWithStore {
               this.queuedAnimation.stop();
               break;
           }
-        } else if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
+        } else if (
+          sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
+        ) {
           this.playingAnimation.start();
           this.queuedAnimation.stop();
-        } else if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.STOP_QUEUED) {
+        } else if (
+          sequencer.playingState ===
+          awakeningSequencers.PLAYING_STATES.STOP_QUEUED
+        ) {
           // if stop was queued, animation continues to play because sequencer
           // continues to play.
           return;

@@ -14,6 +14,5 @@ arduino/serial_monitor.sh
 combined.log
 error.log
 owa_env_*
-package-lock.json
 *.swo
 sclang_conf.yaml

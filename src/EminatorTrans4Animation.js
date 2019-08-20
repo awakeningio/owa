@@ -192,7 +192,7 @@ class EminatorTrans4Animation extends Trans4Animation {
     this.pyramidTweens.forEach(t => t.start());
   }
   stop() {
-    console.log("EminatorTrans4Animation.stop");
+    //console.log("EminatorTrans4Animation.stop");
     // Workaround a TWEEN.js bug when chained tweens wont stop.
     this.allTweens.forEach(t => t.stop());
     //Object.keys(this.segmentTweens).forEach(segmentId => {

@@ -29,15 +29,18 @@
   //}
   //return rgb;
 //}
-export function setPixelsColors (pixels, color) {
+function setPixelsRGB (pixels, colorArray) {
   var i;
+  for (i = 0; i < pixels.length; i++) {
+    pixels.setPixel(i, colorArray[0], colorArray[1], colorArray[2]);
+  }
+}
+export function setPixelsColors (pixels, color) {
   //var colorArray = applyLowCutoff(
     //applyMasterBrightness(color).rgb().round().color
   //);
   const colorArray = color.rgb().color;
-  for (i = 0; i < pixels.length; i++) {
-    pixels.setPixel(i, colorArray[0], colorArray[1], colorArray[2]);
-  }
+  setPixelsRGB(pixels, colorArray);
 }
 
 export function setPixelColors (pixels, i, color) {
@@ -48,4 +51,9 @@ export function setPixelColors (pixels, i, color) {
       //applyLowCutoff(applyMasterBrightness(color).rgb().round().color)
     )
   );
+}
+
+const black = [0, 0, 0];
+export function setPixelsOff (pixels) {
+  setPixelsRGB(pixels, black);
 }

@@ -137,7 +137,6 @@ class SegmentLightingController extends ControllerWithStore {
         sequencer.event.bufName !== this.lastState.sequencer.event.bufName ||
         sequencer.bufSequence !== this.lastState.sequencer.bufSequence
       ) {
-        this.lastState.sequencer = sequencer;
 
         if (
           // If the first level4 segment was queued
@@ -174,8 +173,7 @@ class SegmentLightingController extends ControllerWithStore {
             this.queuedAnimation.start();
             this.activeAnimation.stop();
           } else if (
-            // Determines if this segment has been activated
-            // but is not next
+            // Determines if this segment has been activated but is not next
             ourBufNameIndex > -1
           ) {
             this.playingAnimation.stop();
@@ -198,6 +196,7 @@ class SegmentLightingController extends ControllerWithStore {
           this.queuedAnimation.stop();
           this.activeAnimation.stop();
         }
+        this.lastState.sequencer = sequencer;
       }
     } else {
       // Handles when playingState changed or queueOnPhaseStart changed

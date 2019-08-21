@@ -38,6 +38,9 @@ class SegmentActiveAnimation {
     });
   }
   start () {
+    if (this.tween) {
+      this.tween.stop();
+    }
     this.build();
     this.tween.start();
   }

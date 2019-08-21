@@ -147,6 +147,9 @@ class SegmentLightingController extends ControllerWithStore {
           // Start queued animation for this segment
           this.queuedAnimation.start();
         } else if (sequencer.playingState === PLAYING_STATES.PLAYING) {
+          // TODO: This is called too frequently, it should track when
+          // `bufName` changes to determine playback changes or `playingState`
+          // changes to determine entire level 4 start / stop
           // Determines which chord in progression is playing and plays
           // the playingAnimation or queuedAnimation appropriately.  If not
           // next or currently playing, segment should be cleared.

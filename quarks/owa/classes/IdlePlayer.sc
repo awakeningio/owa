@@ -44,7 +44,7 @@
     }
     initPatch {
       //var bufSym;
-      //"IdlePlayer.initPatch".postln();
+      "IdlePlayer.initPatch".postln();
       //bufSym = state.idlePlayer.bufName.asSymbol();
       patchesBySongId['spinny_pluck'] = Patch("owa.IdleLooper", (
         buf: bufManager.bufs['eerie_idle_loop'],
@@ -78,10 +78,10 @@
       if (prevState.idlePlayer.playingState != state.idlePlayer.playingState, {
         if (state.idlePlayer.playingState == "PLAYING", {
           "IdlePlayer.playing...".postln();
-          if (player.isNil().not(), {
-            player.gate.value = 0;
-            player.stop();
-          });
+          //if (player.isNil().not(), {
+            //player.gate.value = 0;
+            //player.stop();
+          //});
           patchesBySongId[songId].gate.value = state.idlePlayer.gate;
           player = patchesBySongId[songId].play();
         }, {

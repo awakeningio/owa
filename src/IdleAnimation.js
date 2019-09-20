@@ -14,6 +14,7 @@ class IdleAnimation extends ControllerWithStore {
   init() {
 
     this.state = {sessionPhase: null, songId: null};
+    this.firstUpdate = true;
     this.handle_state_change();
 
   }
@@ -30,6 +31,11 @@ class IdleAnimation extends ControllerWithStore {
     // appropriate.
     if (this.state.sessionPhase !== state.sessionPhase) {
       this.state = state;
+
+      if (this.firstUpdate) {
+        this.build();
+        this.firstUpdate = false;
+      }
 
       if (state.songId === songId) {
         switch (state.sessionPhase) {

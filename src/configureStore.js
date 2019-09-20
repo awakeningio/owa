@@ -25,12 +25,10 @@ const middleware = [storeLogger];
 export default function configureStore(additionalInitialState = {}) {
   const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
-  const initialState = { ...createInitialState(), ...additionalInitialState };
-
   //initialState.sessionPhase = SESSION_PHASES.PLAYING_6;
   //initialState.sequencers['6_1'].playingState = PLAYING_STATES.QUEUED;
 
-  return createStoreWithMiddleware(rootReducer, initialState);
+  return createStoreWithMiddleware(rootReducer, createInitialState(additionalInitialState));
 }
 
 //export function configureLinkStore () {

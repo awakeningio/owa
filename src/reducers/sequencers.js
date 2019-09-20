@@ -25,7 +25,6 @@ import {
   getSegmentIdToSequencerId,
   getButtonSequencers
 } from "../selectors";
-import sequencersInitialState from "owa/state/sequencersInitialState";
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
@@ -465,7 +464,7 @@ function l2Sequencer(state, action, fullState, prevSessionPhase) {
 }
 
 export default function sequencers(
-  state = sequencersInitialState,
+  state,
   action,
   fullState,
   prevSessionPhase

@@ -14,9 +14,14 @@ import ControllerWithStore from "./ControllerWithStore";
 import SegmentQueuedAnimation from "./SegmentQueuedAnimation";
 import SegmentPlayingAnimation from "./SegmentPlayingAnimation";
 import SegmentNoopAnimation from "./SegmentNoopAnimation";
-import SegmentActiveAnimation from './SegmentActiveAnimation';
-import { SESSION_PHASES } from "owa/constants";
-import { setPixelsOff } from './Pixels';
+import SegmentActiveAnimation from "./SegmentActiveAnimation";
+import SegmentVariationMenuAnimation from "./SegmentVariationMenuAnimation";
+import {
+  SESSION_PHASES,
+  VARIATION_MENU_TYPES,
+  VARIATION_INTERACTION_STATES
+} from "owa/constants";
+import { setPixelsOff } from "./Pixels";
 import {
   getSegmentIdToBufName,
   getLevel4Sequencer,
@@ -56,7 +61,14 @@ class SegmentLightingController extends ControllerWithStore {
       pixels,
       tweenGroup
     });
-
+    this.variationMenuAnimation = new SegmentVariationMenuAnimation(
+      this.store,
+      {
+        pixels,
+        segmentId,
+        tweenGroup
+      }
+    );
     this.lastState = {
       sequencer,
       segment
@@ -83,7 +95,7 @@ class SegmentLightingController extends ControllerWithStore {
 
   //}
   //
-  turnPixelsOff () {
+  turnPixelsOff() {
     const { pixels } = this.params;
     setPixelsOff(pixels);
   }
@@ -102,7 +114,8 @@ class SegmentLightingController extends ControllerWithStore {
           this.lastState.segment.lastButtonPressTime &&
         sequencer.playingState === PLAYING_STATES.STOPPED &&
         sequencer.queueOnPhaseStart === false &&
-      sequencer.variationInteractionState === this.lastState.sequencer.variationInteractionState
+        sequencer.variationInteractionState ===
+          this.lastState.sequencer.variationInteractionState
       ) {
         // segment button was pressed and sequencer is still stopped,
         // means this was a no-op
@@ -112,7 +125,7 @@ class SegmentLightingController extends ControllerWithStore {
       this.lastState.segment = segment;
     }
 
-    // Watches the sessionPhase, when the SegmentLightingController 
+    // Watches the sessionPhase, when the SegmentLightingController
     // takes back "control" once a sessionPhase transitions, clear the pixels
     // for this segment (a "re-paint")
     const sessionPhase = state.sessionPhase;
@@ -138,7 +151,6 @@ class SegmentLightingController extends ControllerWithStore {
         sequencer.event.bufName !== this.lastState.sequencer.event.bufName ||
         sequencer.bufSequence !== this.lastState.sequencer.bufSequence
       ) {
-
         if (
           // If the first level4 segment was queued
           sequencer.queueOnPhaseStart !== false &&
@@ -183,7 +195,6 @@ class SegmentLightingController extends ControllerWithStore {
             this.playingAnimation.stop();
             this.queuedAnimation.stop();
             this.activeAnimation.start();
-            
           } else {
             // Determines, by default, that this segment is not playing or
             // next.
@@ -215,7 +226,8 @@ class SegmentLightingController extends ControllerWithStore {
           this.playingAnimation.stop();
           this.queuedAnimation.start();
         } else if (
-          sequencer.playingState == awakeningSequencers.PLAYING_STATES.QUEUED ||
+          sequencer.playingState ===
+            awakeningSequencers.PLAYING_STATES.QUEUED ||
           sequencer.playingState === awakeningSequencers.PLAYING_STATES.REQUEUED
         ) {
           this.playingAnimation.stop();
@@ -246,6 +258,30 @@ class SegmentLightingController extends ControllerWithStore {
         } else {
           this.playingAnimation.stop();
           this.queuedAnimation.stop();
+        }
+      } else if (
+        sequencer.playingState === PLAYING_STATES.PLAYING &&
+        sequencer.variationMenuType !== VARIATION_MENU_TYPES.NONE &&
+        sequencer.variationInteractionState !==
+          this.lastState.sequencer.variationInteractionState
+      ) {
+        if (
+          sequencer.variationInteractionState !==
+          this.lastState.sequencer.variationInteractionState
+        ) {
+          switch (sequencer.variationInteractionState) {
+            case VARIATION_INTERACTION_STATES.NONE:
+              this.variationMenuAnimation.stop();
+              break;
+            case VARIATION_INTERACTION_STATES.CHOOSING:
+              this.variationMenuAnimation.startChoosing();
+              break;
+            case VARIATION_INTERACTION_STATES.CHOSEN:
+              this.variationMenuAnimation.startChosen();
+              break;
+            default:
+              break;
+          }
         }
       }
     }

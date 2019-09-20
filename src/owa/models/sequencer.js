@@ -7,20 +7,6 @@ import {
 } from 'owa/constants';
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
-export function create_owa_sequencer (sequencerId, type, defaults = {}) {
-  return {
-    ...awakeningSequencers.create_default_sequencer(sequencerId, type),
-    queueOnPhaseStart: false,
-    phaseProps: {},
-    variationProps: [],
-    currentVariationIndex: 0,
-    variationMenuType: VARIATION_MENU_TYPES.NONE,
-    variationInteractionState: VARIATION_INTERACTION_STATES.NONE,
-    lastButtonPressTime: 0,
-    ...defaults,
-  };
-}
-
 export function apply_phase_props (sequencer, sessionPhase) {
   let newSequencer = sequencer;
   if (sequencer.phaseProps.hasOwnProperty(sessionPhase)) {
@@ -47,3 +33,24 @@ export function do_queue_on_phase_start (sequencer, sessionPhase, songId) {
   }
   return newSequencer;
 }
+
+export function create_owa_sequencer (sequencerId, type, defaults = {}, additionalInitialState) {
+  let sequencer = {
+    ...awakeningSequencers.create_default_sequencer(sequencerId, type),
+    queueOnPhaseStart: false,
+    phaseProps: {},
+    variationProps: [],
+    currentVariationIndex: 0,
+    variationMenuType: VARIATION_MENU_TYPES.NONE,
+    variationInteractionState: VARIATION_INTERACTION_STATES.NONE,
+    lastButtonPressTime: 0,
+    ...defaults,
+  };
+  if (additionalInitialState && additionalInitialState.hasOwnProperty('sessionPhase')) {
+    const { sessionPhase, songId } = additionalInitialState;
+    sequencer = apply_phase_props(sequencer, sessionPhase);
+    sequencer = do_queue_on_phase_start(sequencer, sessionPhase, songId);
+  }
+  return sequencer;
+}
+

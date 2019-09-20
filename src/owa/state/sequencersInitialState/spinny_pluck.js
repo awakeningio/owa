@@ -5,16 +5,16 @@ import {
 
 import { SESSION_PHASES } from 'owa/constants'
 
-export function createSpinnyPluckState () {
+export function createSpinnyPluckState (additionalInitialState) {
   const sequencers = {
     'spinny_pluck-6_0': create_owa_sequencer('spinny_pluck-6_0', 'BassSequencer', {
       numBeats: 2 * 4,
       playQuant: [4, 4]
-    }),
+    }, additionalInitialState),
     'spinny_pluck-6_1': create_owa_sequencer('spinny_pluck-6_1', 'KickSequencer', {
       numBeats: 2 * 4,
       playQuant: [4, 4]
-    }),
+    }, additionalInitialState),
     'spinny_pluck-6_2': create_owa_sequencer('spinny_pluck-6_2', 'HiHatSequencer', {
       numBeats: 8 * 4,
       playQuant: [4, 4],
@@ -24,20 +24,20 @@ export function createSpinnyPluckState () {
           midiName: 'spinny-pluck_L2_hats'
         }
       }
-    }),
+    }, additionalInitialState),
     'spinny_pluck-6_3': create_owa_sequencer('spinny_pluck-6_3', 'LeadPopSequencer', {
       numBeats: 4 * 4,
       playQuant: [4, 4]
-    }),
+    }, additionalInitialState),
     'spinny_pluck-6_4': create_owa_sequencer('spinny_pluck-6_4', 'ChimeSequencer', {
       numBeats: 2 * 4,
       playQuant: [4, 4]
-    }),
+    }, additionalInitialState),
     'spinny_pluck-6_5': create_owa_sequencer('spinny_pluck-6_5', 'SfxSequencer', {
       numBeats: 8 * 4,
       playQuant: [4, 4],
       stopQuant: [4, 4]
-    }),
+    }, additionalInitialState),
     'spinny_pluck-2_0': create_owa_sequencer('spinny_pluck-2_0', 'KalimbaSequencer', {
       numBeats: 8,
       releaseTime: 1.2,
@@ -45,7 +45,7 @@ export function createSpinnyPluckState () {
         degree: [8, 4, 4, 8, 4, 4],
         octave: 2
       }
-    }),
+    }, additionalInitialState),
     'spinny_pluck-2_1': create_owa_sequencer('spinny_pluck-2_1', 'OrganicPercSequencer', {
       numBeats: 8,
       releaseTime: 1.2,
@@ -53,7 +53,7 @@ export function createSpinnyPluckState () {
         degree: [8, 4, 4, 8, 4, 4],
         octave: 3
       }
-    })
+    }, additionalInitialState)
   };
 
   const playingLevel4SegmentToBufName = {
@@ -109,7 +109,7 @@ export function createSpinnyPluckState () {
           segmentIdToBufName: playingLevel4SegmentToBufName
         }
       }
-    }
+      , additionalInitialState}
   );
   sequencers['spinny_pluck-reveal'] = create_owa_sequencer(
     'spinny_pluck-reveal',
@@ -124,7 +124,7 @@ export function createSpinnyPluckState () {
       numBeats: 55 * 4,
       amp: 1.0
     }
-  );
+    , additionalInitialState);
   
   sequencers['spinny_pluck-trans'] = create_owa_sequencer(
     'spinny_pluck-trans',
@@ -167,7 +167,7 @@ export function createSpinnyPluckState () {
         }
       }
     }
-  );
+    , additionalInitialState);
   sequencers['spinny_pluck-trans'] = {
     ...sequencers['spinny_pluck-trans'],
     ...sequencers['spinny_pluck-trans'].phaseProps[SESSION_PHASES.QUEUE_TRANS_6]

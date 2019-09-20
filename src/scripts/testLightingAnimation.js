@@ -11,9 +11,13 @@
 
 import configureStore from "../configureStore"
 import LightingController from '../LightingController'
+import { SESSION_PHASES, SONG_IDS } from 'owa/constants';
 //import { sessionPhaseAdvanced, buttonPressed } from './actions';
 
-const store = configureStore();
+const store = configureStore({
+  sessionPhase: SESSION_PHASES.TRANS_6,
+  songId: SONG_IDS.EMINATOR
+});
 const lightingController = new LightingController(store);
 
 //lightingController.idleAnimation.startIdle();
@@ -22,16 +26,19 @@ const lightingController = new LightingController(store);
 lightingController.idleAnimation.stop();
 setTimeout(function() {
   console.log("Starting animation...");
-  const animation = lightingController.revealAnimation;
+  console.log(store.getState().segments.allIds);
+  const animation = lightingController.segmentLightingControllers[0].variationMenuAnimation;
 
-  animation.start();
+  //animation.startChoosing();
+  animation.startChosen();
+
   //lightingController.trans2Animation.start();
 
   //lightingController.revealAnimation.start();
   //setTimeout(() => lightingController.revealAnimation.startAdvice(), 3000);
   //setTimeout(() => animation.stop(), 5000);
   
-  setTimeout(() => animation.startAdvice(), 8000);
+  //setTimeout(() => animation.startAdvice(), 8000);
 
 }, 1000);
 

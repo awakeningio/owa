@@ -15,7 +15,11 @@ import {
   apply_phase_props,
   do_queue_on_phase_start
 } from "owa/models/sequencer";
-import { SESSION_PHASES, VARIATION_MENU_TYPES, VARIATION_INTERACTION_STATES } from "owa/constants";
+import {
+  SESSION_PHASES,
+  VARIATION_MENU_TYPES,
+  VARIATION_INTERACTION_STATES
+} from "owa/constants";
 import {
   getLevel6Sequencers,
   getLevel4Sequencer,
@@ -26,10 +30,12 @@ import {
   getButtonSequencers
 } from "../selectors";
 
+import { seconds_timestamp } from "../utils";
+
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 // Handles commonalities for any button-based sequencer
-function owaButtonSequencer (state, action, fullState) {
+function owaButtonSequencer(state, action, fullState) {
   let newState = state;
 
   switch (action.type) {
@@ -57,7 +63,7 @@ function owaButtonSequencer (state, action, fullState) {
         newState = {
           ...newState,
           ...newState.variationProps[newState.currentVariationIndex],
-          lastPropChangeQueuedAt: (new Date()).getTime(),
+          lastPropChangeQueuedAt: seconds_timestamp(),
           variationInteractionState: VARIATION_INTERACTION_STATES.CHOSEN
         };
       }
@@ -74,7 +80,7 @@ function owaButtonSequencer (state, action, fullState) {
       ) {
         newState = {
           ...newState,
-          lastButtonPressTime: (new Date()).getTime()
+          lastButtonPressTime: seconds_timestamp()
         };
       }
       break;
@@ -259,26 +265,25 @@ function l6Sequencer(state, action, fullState, prevSessionPhase) {
           // If sequencer is already playing and was pressed again, determines
           // if sequencer has variations available and if menu is open.
           if (state.variationMenuType !== VARIATION_MENU_TYPES.NONE) {
-
             // Opens menu if it is not open, selects next variation if
             // menu is open.
             switch (state.variationInteractionState) {
               case VARIATION_INTERACTION_STATES.NONE:
                 newState = {
                   ...newState,
-                  variationInteractionState: VARIATION_INTERACTION_STATES.CHOOSING
+                  variationInteractionState:
+                    VARIATION_INTERACTION_STATES.CHOOSING
                 };
                 break;
               case VARIATION_INTERACTION_STATES.CHOOSING:
                 newState = {
                   ...newState,
-                  currentVariationIndex: (
-                    (state.currentVariationIndex + 1)
-                    % state.variationProps.length
-                  )
+                  currentVariationIndex:
+                    (state.currentVariationIndex + 1) %
+                    state.variationProps.length
                 };
                 break;
-              
+
               default:
                 break;
             }
@@ -370,9 +375,9 @@ function chordProgSequencer(state, action, fullState, prevSessionPhase) {
           }
         }
       } else if (
-        sessionPhase === SESSION_PHASES.PLAYING_4
+        sessionPhase === SESSION_PHASES.PLAYING_4 &&
         // button press was for this sequencer
-        && buttonSequencerId === newState.sequencerId
+        buttonSequencerId === newState.sequencerId
       ) {
         const segmentBuf = newState.segmentIdToBufName[segment.segmentId];
         if (newState.bufSequence.indexOf(segmentBuf) < 0) {
@@ -463,20 +468,20 @@ function l2Sequencer(state, action, fullState, prevSessionPhase) {
   return newState;
 }
 
-export default function sequencers(
-  state,
-  action,
-  fullState,
-  prevSessionPhase
-) {
+export default function sequencers(state, action, fullState, prevSessionPhase) {
   let newFullState = fullState;
   // Handles basic , stopping, queueing of all sequencers
   state = awakeningSequencers.reducer(state, action);
+  newFullState.sequencers = state;
 
   // Handles OWA specific sequencer manipulations for reveal, transition,
   // and all levels (for current song)
   const currentRevealSequencer = getRevealSequencer(newFullState);
-  const newReveal = revealSequencer(currentRevealSequencer, action, newFullState);
+  const newReveal = revealSequencer(
+    currentRevealSequencer,
+    action,
+    newFullState
+  );
   if (newReveal !== currentRevealSequencer) {
     state = {
       ...state,
@@ -511,7 +516,7 @@ export default function sequencers(
   }
 
   const buttonSequencers = getButtonSequencers(newFullState);
-  buttonSequencers.forEach(function (seq) {
+  buttonSequencers.forEach(function(seq) {
     const newSeq = owaButtonSequencer(seq, action, newFullState);
     if (newSeq !== seq) {
       state = {

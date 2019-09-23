@@ -16,3 +16,4 @@ error.log
 owa_env_*
 *.swo
 sclang_conf.yaml
+sounds_*.zip

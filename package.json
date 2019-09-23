@@ -18,7 +18,9 @@
     "test_sequencer": "babel-node src/scripts/testSequencer.js",
     "serialport-list": "serialport-list",
     "upload_arduino": "bash arduino/upload_arduino.sh",
-    "serial_monitor": "bash arduino/serial_monitor.sh"
+    "serial_monitor": "bash arduino/serial_monitor.sh",
+    "publish_sounds": "./publish_sounds.sh",
+    "retrieve_sounds": "./retrieve_sounds.sh"
   },
   "watch": {
     "build_docs": {

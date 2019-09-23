@@ -1,5 +1,5 @@
 /**
- *  @file       LeadPopSequencer.sc
+ *  @file       SpinnyLeadPopSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-LeadPopSequencer : AwakenedSequencer {
+SpinnyLeadPopSequencer : AwakenedSequencer {
   var patch,
     synthdef;
   initStream {

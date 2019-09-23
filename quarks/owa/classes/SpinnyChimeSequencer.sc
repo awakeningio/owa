@@ -1,5 +1,5 @@
 /**
- *  @file       ChimeSequencer.sc
+ *  @file       SpinnyChimeSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-ChimeSequencer : AwakenedSequencer {
+SpinnyChimeSequencer : AwakenedSequencer {
   initStream {
     var originalFreq = "C4".notemidi().midicps(),
       patch,

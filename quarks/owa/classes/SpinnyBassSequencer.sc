@@ -1,5 +1,5 @@
 /**
- *  @file       BassSequencer.sc
+ *  @file       SpinnyBassSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-BassSequencer : AwakenedSequencer {
+SpinnyBassSequencer : AwakenedSequencer {
   initStream {
     var pat,
       notes,

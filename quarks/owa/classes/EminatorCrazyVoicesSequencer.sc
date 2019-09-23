@@ -20,7 +20,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
     switch(sessionPhase, 
       \QUEUE_TRANS_6, {
         Pdefn(
-          'EminatorCrazyVoices',
+          'EminatorCrazyVoicesDur',
           Prand([
             Pseq([1, Rest(6)]),
             Pseq([0.5, Rest(6.5)]),
@@ -31,7 +31,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
       },
       \TRANS_4, {
         Pdefn(
-          'EminatorCrazyVoices',
+          'EminatorCrazyVoicesDur',
           Prand([
             Pseq([1, Rest(3)]),
             Pseq([0.5, Rest(3.5)]),
@@ -41,7 +41,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
         );
       }
     );
-    Pdefn('EminatorCrazyVoices').quant = currentState.playQuant;
+    Pdefn('EminatorCrazyVoicesDur').quant = currentState.playQuant;
   }
 
 
@@ -56,7 +56,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
       \mtranspose, 2,
       //\dur, Prand([0.5, Rest(0.5)], inf),
       //\dur, Prand([0.25, Rest(0.25), 0.5, Rest(0.5)], inf),
-      \dur, Pdefn('EminatorCrazyVoices'),
+      \dur, Pdefn('EminatorCrazyVoicesDur'),
       \amp, Prand([-10.0.dbamp(), -16.0.dbamp()], inf),
       \vibratoSpeed, clock.tempo * 4,
       \vibratoDepth, 2, // in semitones

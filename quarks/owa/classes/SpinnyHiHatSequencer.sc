@@ -1,5 +1,5 @@
 /**
- *  @file       HiHatSequencer.sc
+ *  @file       SpinnyHiHatSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-HiHatSequencer : AwakenedSequencer {
+SpinnyHiHatSequencer : AwakenedSequencer {
   var pat,
     bufs,
     patch,

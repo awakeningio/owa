@@ -1,5 +1,5 @@
 /**
- *  @file       SfxSequencer.sc
+ *  @file       SpinnySfxSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SfxSequencer : AwakenedSequencer {
+SpinnySfxSequencer : AwakenedSequencer {
   var patch,
     synthdef;
   initPatch {

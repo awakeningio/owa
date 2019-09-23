@@ -1,5 +1,5 @@
 /**
- *  @file       KickSequencer.sc
+ *  @file       SpinnyKickSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-KickSequencer : AwakenedSequencer {
+SpinnyKickSequencer : AwakenedSequencer {
   initStream {
     var note = "C1".notemidi(),
       patch,

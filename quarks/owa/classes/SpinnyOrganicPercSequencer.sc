@@ -1,5 +1,5 @@
 /**
- *  @file       OrganicPercSequencer.sc
+ *  @file       SpinnyOrganicPercSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-OrganicPercSequencer : AwakenedSequencer {
+SpinnyOrganicPercSequencer : AwakenedSequencer {
   var synthdef;
   initPatch {
     synthdef = Patch("cs.fm.OrganicPercussion", (

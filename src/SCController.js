@@ -70,13 +70,14 @@ class SCController {
         return resolve();
       } else {
         logger.debug("Booting SuperCollider...");
-        var sclangOptions = {
-          debug: process.env.NODE_ENV == "development"
-        };
-        return sc.lang.boot(sclangOptions).then((sclang) => {
-          logger.debug("sclang booted.");
-          this.sclang = sclang;
-          var scBootScript = `
+        sc.resolveOptions().then(sclangOptions => {
+          sc.lang.boot({
+            ...sclangOptions,
+            debug: process.env.NODE_ENV == "development"
+          }).then((sclang) => {
+            logger.debug("sclang booted.");
+            this.sclang = sclang;
+            var scBootScript = `
 MIDIClient.init;
 MIDIIn.connectAll;
 Instr.loadAll();
@@ -86,39 +87,39 @@ s.options.outDevice = "JackRouter";
 s.options.memSize = 65536 * 4;
 //s.options.blockSize = 128;
 s.waitForBoot({
-          `;
-          if (process.env.DEBUG_SC === "1") {
-            if (process.env.DISABLE_GUI === "0") {
-              scBootScript += `
+            `;
+            if (process.env.DEBUG_SC === "1") {
+              if (process.env.DISABLE_GUI === "0") {
+                scBootScript += `
   s.meter();
   s.plotTree();
-              `;
-            } else {
+                `;
+              } else {
 
-              scBootScript += `
-    Routine {
-      loop {
-        s.queryAllNodes();
+                scBootScript += `
+  Routine {
+    loop {
+      s.queryAllNodes();
 
-        10.0.wait();
-      }
-    }.play();
+      10.0.wait();
+    }
+  }.play();
   //s.dumpOSC();
-              `;
+                `;
+              }
             }
-          }
 
-          scBootScript += `
+            scBootScript += `
   OWAController.initInstance();
 });
-          `;
-          return sclang.interpret(scBootScript).then(() => {
-            this.handleBooted();
-            resolve(sclang);
-          });
-        }).catch(reject);
+            `;
+            return sclang.interpret(scBootScript).then(() => {
+              this.handleBooted();
+              resolve(sclang);
+            });
+          }).catch(reject);
+        });
       }
-      
     });
   }
 }

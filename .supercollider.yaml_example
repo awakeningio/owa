@@ -4,3 +4,4 @@ sclang_conf: /Users/colin/Library/Application Support/SuperCollider/sclang_conf.
 debug: true
 echo: true
 stdin: false
+langPort: 57120

@@ -16,6 +16,7 @@
     "test_lighting_animation": "babel-node src/scripts/testLightingAnimation.js",
     "test_buttons": "DEBUG_INPUT=1 babel-node src/scripts/testButtons.js",
     "test_sequencer": "babel-node src/scripts/testSequencer.js",
+    "test_supercolliderjs": "babel-node src/scripts/testSupercolliderJSConfig.js",
     "serialport-list": "serialport-list",
     "upload_arduino": "bash arduino/upload_arduino.sh",
     "serial_monitor": "bash arduino/serial_monitor.sh",
@@ -91,7 +92,7 @@
     "serialport": "^7.1.5",
     "sinon": "^7.2.7",
     "supercollider-redux": "0.0.97",
-    "supercolliderjs": "file:../patches/supercolliderjs",
+    "supercolliderjs": "github:colinsullivan/supercolliderjs#23b1a67c77ebc61c3fd930052bb73f9aa9ba73df",
     "winston": "^3.2.1"
   },
   "eslintConfig": {

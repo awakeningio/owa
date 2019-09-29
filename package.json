@@ -9,6 +9,7 @@
     "build_docs": "plantuml -tsvg docs/*.puml",
     "watch_docs": "npm-watch build_docs",
     "build": "babel src -d build",
+    "sc_install": "sclang install.sc",
     "watch": "npm-watch build",
     "start": "node build/main.js",
     "start_dev": "NODE_ENV=development babel-node --inspect src/main.js",

@@ -13,38 +13,6 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
     ^patch;
   }
 
-  updateNotes {
-    var state = store.getState();
-    var sessionPhase = state.sessionPhase.asSymbol();
-
-    switch(sessionPhase, 
-      \QUEUE_TRANS_6, {
-        Pdefn(
-          'EminatorCrazyVoicesDur',
-          Prand([
-            Pseq([1, Rest(6)]),
-            Pseq([0.5, Rest(6.5)]),
-            Pseq([Rest(7)]),
-            Pseq([Rest(7)])
-          ], inf)
-        );
-      },
-      \TRANS_4, {
-        Pdefn(
-          'EminatorCrazyVoicesDur',
-          Prand([
-            Pseq([1, Rest(3)]),
-            Pseq([0.5, Rest(3.5)]),
-            Pseq([Rest(4)]),
-            Pseq([Rest(4)])
-          ], inf)
-        );
-      }
-    );
-    Pdefn('EminatorCrazyVoicesDur').quant = currentState.playQuant;
-  }
-
-
   initStream {
     ^Pbind(
       \instrument, synthdef.name,
@@ -85,8 +53,33 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
     super.handleStateChange();
 
     if (lastSessionPhase !== sessionPhase, {
-      this.updateNotes();
+      switch(sessionPhase, 
+        \QUEUE_TRANS_6, {
+          Pdefn(
+            'EminatorCrazyVoicesDur',
+            Prand([
+              Pseq([1, Rest(6)]),
+              Pseq([0.5, Rest(6.5)]),
+              Pseq([Rest(7)]),
+              Pseq([Rest(7)])
+            ], inf)
+          );
+        },
+        \TRANS_4, {
+          Pdefn(
+            'EminatorCrazyVoicesDur',
+            Prand([
+              Pseq([1, Rest(3)]),
+              Pseq([0.5, Rest(3.5)]),
+              Pseq([Rest(4)]),
+              Pseq([Rest(4)])
+            ], inf)
+          );
+        }
+      );
       lastSessionPhase = sessionPhase;
     });
+    
+    Pdefn('EminatorCrazyVoicesDur').quant = currentState.playQuant;
   }
 }

@@ -97,7 +97,7 @@ OWAController {
     ));
     
 
-    bufManager.load_bufs([
+    bufManager.load_bufs(([
       ["kick_01 [2018-05-20 115711].wav", \kick_01],
       ["hhclosed_96 [2018-05-20 155504].wav", \hhclosed_96],
       ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83],
@@ -127,7 +127,7 @@ OWAController {
       'spinny-pluck_L2_chords-3'],
       ["spinny-pluck_L2_chords-4 [2018-08-03 182410]_mono.wav",
       'spinny-pluck_L2_chords-4'],
-      
+
       [
         "eminator_floortom_01 [2019-03-23 192053].aif",
         'eminator_floortom_01'
@@ -148,15 +148,6 @@ OWAController {
         "eminator_snareroll_01 [2019-03-23 192053].aif",
         'eminator_snareroll_01'
       ],
-      ["sharp_eerie/eerie_L6_01 [2019-05-10 104045]_mono.aif", \sharp_eerie_01],
-      ["sharp_eerie/eerie_L6_02 [2019-05-10 104045]_mono.aif", \sharp_eerie_02],
-      ["sharp_eerie/eerie_L6_03 [2019-05-10 104045]_mono.aif", \sharp_eerie_03],
-      ["sharp_eerie/eerie_L6_04 [2019-05-10 104045]_mono.aif", \sharp_eerie_04],
-      ["sharp_eerie/eerie_L6_05 [2019-05-10 104045]_mono.aif", \sharp_eerie_05],
-      ["sharp_eerie/eerie_L6_06 [2019-05-10 104045]_mono.aif", \sharp_eerie_06],
-      ["sharp_eerie/eerie_L6_07 [2019-05-10 104045]_mono.aif", \sharp_eerie_07],
-      ["sharp_eerie/eerie_L6_08 [2019-05-10 104045]_mono.aif", \sharp_eerie_08],
-      ["sharp_eerie/eerie_L6_09 [2019-05-10 104045]_mono.aif", \sharp_eerie_09],
       ["eminator-chords/render chords L2 01 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_01],
       ["eminator-chords/render chords L2 02 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_02],
       ["eminator-chords/render chords L2 03 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_03],
@@ -166,7 +157,9 @@ OWAController {
       ["eminator-chords/render chords L4 03 [2019-05-19 204530]__mono.wav", \eminator_chords_L4_03],
       ["eminator-chords/render chords L4 04 [2019-05-19 204530]__mono.wav", \eminator_chords_L4_04],
 
-    ], ({
+    ]
+    ++ EminatorSharpEerieInstrument.getBufsToLoadList()
+  ), ({
       // when buffers are done loading
       // load midi files
       bufManager.load_midi([

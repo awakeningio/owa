@@ -47,13 +47,13 @@ EminatorSharpEerieInstrument {
 
     pattern = Pbind(
       \instrument, synthdef.name,
-      \sampleBufnumIndex, Pseq([0, 1, 2, 3, 4, 5, 6, 7, 8], inf),
+      \sampleBufnumIndex, Prand([0, 1, 2, 3, 4, 5, 6, 7, 8], inf),
       \sampleBufnum, Pfunc({
         arg e;
         bufnums[e[\sampleBufnumIndex]]
       }),
       \midinote, "C1".notemidi(),
-      \dur, Pdefn('EminatorSharpEerieDurs')
+      [\dur, \rate], Pdefn('EminatorSharpEerieNotes'),
     );
   }
 

@@ -46,3 +46,9 @@ export function choose(list) {
 export function seconds_timestamp() {
   return new Date().getTime() / 1000.0;
 }
+
+export function isRest (event) {
+  return event.midinote === "rest" || (
+    typeof event.dur === "object" && event.dur.class === "Rest"
+  )
+}

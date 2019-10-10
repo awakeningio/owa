@@ -36,22 +36,19 @@ const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
 
 // Handles commonalities for any button-based sequencer
 function owaButtonSequencer(state, action, fullState) {
-  let newState = state;
-
   switch (action.type) {
     case actionTypes.INACTIVITY_TIMEOUT_EXCEEDED:
-      newState = {
-        ...newState,
+      return {
+        ...state,
         playingState: PLAYING_STATES.STOP_QUEUED,
         stopQuant: [4, 4]
       };
-      break;
     // When a sequencer parameter change goes into effect, if it was for this
     // sequencer, reset menu
     case awakeningSequencers.actionTypes.SEQUENCER_PROP_CHANGED:
       if (action.payload.sequencerId === state.sequencerId) {
-        newState = {
-          ...newState,
+        return {
+          ...state,
           variationInteractionState: VARIATION_INTERACTION_STATES.NONE
         };
       }
@@ -60,9 +57,9 @@ function owaButtonSequencer(state, action, fullState) {
     // the variations, changing the sequencer, and closing the menu
     case actionTypes.VARIATION_MENU_TIMEOUT_EXCEEDED:
       if (action.payload.sequencerId === state.sequencerId) {
-        newState = {
-          ...newState,
-          ...newState.variationProps[newState.currentVariationIndex],
+        return {
+          ...state,
+          ...state.variationProps[state.currentVariationIndex],
           lastPropChangeQueuedAt: seconds_timestamp(),
           variationInteractionState: VARIATION_INTERACTION_STATES.CHOSEN
         };
@@ -78,8 +75,8 @@ function owaButtonSequencer(state, action, fullState) {
         // button press was for this sequencer
         buttonSequencerId === state.sequencerId
       ) {
-        newState = {
-          ...newState,
+        return {
+          ...state,
           lastButtonPressTime: seconds_timestamp()
         };
       }
@@ -88,19 +85,17 @@ function owaButtonSequencer(state, action, fullState) {
       break;
   }
 
-  return newState;
+  return state;
 }
 
 function revealSequencer(state, action, fullState) {
   const { songId } = fullState;
 
-  let newState = state;
-
   switch (action.type) {
     case actionTypes.SESSION_PHASE_ADVANCED:
       if (action.payload.phase === SESSION_PHASES.TRANS_ADVICE) {
-        newState = {
-          ...newState,
+        return {
+          ...state,
           playingState: PLAYING_STATES.QUEUED,
           playQuant: createPhaseEndQuant(action.payload.phase, songId)
         };
@@ -109,7 +104,7 @@ function revealSequencer(state, action, fullState) {
     default:
       break;
   }
-  return newState;
+  return state;
 }
 
 function transSequencer(state, action, fullState, prevSessionPhase) {
@@ -470,9 +465,13 @@ function l2Sequencer(state, action, fullState, prevSessionPhase) {
 
 export default function sequencers(state, action, fullState, prevSessionPhase) {
   let newFullState = fullState;
+  let newState = state;
   // Handles basic , stopping, queueing of all sequencers
-  state = awakeningSequencers.reducer(state, action);
-  newFullState.sequencers = state;
+  newState = awakeningSequencers.reducer(newState, action);
+  newFullState = {
+    ...newFullState,
+    sequencers: newState
+  };
 
   // Handles OWA specific sequencer manipulations for reveal, transition,
   // and all levels (for current song)
@@ -483,16 +482,11 @@ export default function sequencers(state, action, fullState, prevSessionPhase) {
     newFullState
   );
   if (newReveal !== currentRevealSequencer) {
-    state = {
-      ...state,
-      ...{
-        [newReveal.sequencerId]: newReveal
-      }
+    newState = {
+      ...newState,
+      [newReveal.sequencerId]: newReveal
     };
-    newFullState = {
-      ...newFullState,
-      sequencers: state
-    };
+    newFullState.sequencers = newState;
   }
 
   const currentTransSequencer = getTransSequencer(newFullState);
@@ -503,30 +497,24 @@ export default function sequencers(state, action, fullState, prevSessionPhase) {
     prevSessionPhase
   );
   if (newTrans !== currentTransSequencer) {
-    state = {
-      ...state,
+    newState = {
+      ...newState,
       ...{
         [newTrans.sequencerId]: newTrans
       }
     };
-    newFullState = {
-      ...newFullState,
-      sequencers: state
-    };
+    newFullState.sequencers = newState;
   }
 
   const buttonSequencers = getButtonSequencers(newFullState);
   buttonSequencers.forEach(function(seq) {
     const newSeq = owaButtonSequencer(seq, action, newFullState);
     if (newSeq !== seq) {
-      state = {
-        ...state,
+      newState = {
+        ...newState,
         [seq.sequencerId]: newSeq
       };
-      newFullState = {
-        ...newFullState,
-        sequencers: state
-      };
+      newFullState.sequencers = newState;
     }
   });
 
@@ -534,13 +522,11 @@ export default function sequencers(state, action, fullState, prevSessionPhase) {
   l6Sequencers.forEach(function(seq) {
     const newSeq = l6Sequencer(seq, action, newFullState, prevSessionPhase);
     if (newSeq !== seq) {
-      state = Object.assign({}, state, {
+      newState = {
+        ...newState,
         [seq.sequencerId]: newSeq
-      });
-      newFullState = {
-        ...newFullState,
-        sequencers: state
       };
+      newFullState.sequencers = newState;
     }
   });
 
@@ -552,26 +538,22 @@ export default function sequencers(state, action, fullState, prevSessionPhase) {
     prevSessionPhase
   );
   if (level4Sequencer !== newLevel4Sequencer) {
-    state = Object.assign({}, state, {
+    newState = {
+      ...newState,
       [level4Sequencer.sequencerId]: newLevel4Sequencer
-    });
-    newFullState = {
-      ...newFullState,
-      sequencers: state
     };
+    newFullState.sequencers = newState;
   }
 
   const level2Sequencers = getLevel2Sequencers(newFullState);
   level2Sequencers.forEach(function(seq) {
     const newSeq = l2Sequencer(seq, action, newFullState, prevSessionPhase);
     if (seq !== newSeq) {
-      state = Object.assign({}, state, {
+      newState = {
+        ...newState,
         [seq.sequencerId]: newSeq
-      });
-      newFullState = {
-        ...newFullState,
-        sequencers: state
       };
+      newFullState.sequencers = newState;
     }
   });
 
@@ -615,5 +597,5 @@ export default function sequencers(state, action, fullState, prevSessionPhase) {
   //default:
   //break;
   //}
-  return state;
+  return newState;
 }

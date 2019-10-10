@@ -16,6 +16,7 @@ import ControllerWithStore from "./ControllerWithStore";
 import { setPixelColors, setPixelsColors } from "./Pixels";
 import { getSegmentIdToSequencerId } from "./selectors";
 import { SEGMENTID_TO_PYRAMID_INDEX } from 'owa/constants';
+import { isRest } from './utils';
 
 const dimLayerColor = Color.hsv([0.72 * 360, 20, 20]);
 const playingLayerColor = Color.hsv([0.72 * 360, 50, 50]);
@@ -130,7 +131,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
       sequencer.event !== this.lastState.sequencer.event
     ) {
       const event = sequencer.event;
-      if (event.midinote !== "rest") {
+      if (!isRest(event)) {
         if (this.beatPulseTween) {
           this.beatPulseTween.stop();
         }

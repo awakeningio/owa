@@ -2,6 +2,7 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
   var synthdef,
 		bufnums,
     lastSessionPhase,
+    lastVariationIndex,
     instrument;
   init {
     arg params;
@@ -18,14 +19,17 @@ EminatorSharpEerieSequencer : AwakenedSequencer {
   handleStateChange {
     var state = store.getState();
     var sessionPhase = state.sessionPhase.asSymbol();
+    lastVariationIndex = currentState.variationIndex;
     
     super.handleStateChange();
 
+    instrument.updatePropQuant(currentState.propQuant);
     if (lastSessionPhase !== sessionPhase, {
       instrument.handleSessionPhaseChanged(sessionPhase);
-      instrument.updatePlayQuant(currentState.playQuant);
       lastSessionPhase = sessionPhase;
     });
-    instrument.updatePlayQuant(currentState.playQuant);
+    if (lastVariationIndex !== currentState.variationIndex, {
+      instrument.useVariation(currentState.variationIndex);    
+    });
   }
 }

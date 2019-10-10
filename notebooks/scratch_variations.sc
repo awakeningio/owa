@@ -18,6 +18,9 @@
     ~bufManager = BufferManager.new((
       rootDir: ~projectDir +/+ "sounds"
     ));
+    ~bufManager.load_bufs(
+      EminatorSharpEerieInstrument.getBufsToLoadList()
+    );
   });
   
   s.boot();
@@ -26,9 +29,6 @@
 )
 
 (
-  ~bufManager.load_bufs(
-    EminatorSharpEerieInstrument.getBufsToLoadList()
-  );
 )
 
 (
@@ -38,8 +38,12 @@
 )
 
 (
-  //~sharp.handleSessionPhaseChanged('TRANS_6');
+  ~sharp.handleSessionPhaseChanged('TRANS_6');
   ~player = ~sharp.pattern.play();
+)
+
+(
+  ~sharp.useVariation(2)
 )
 
 (

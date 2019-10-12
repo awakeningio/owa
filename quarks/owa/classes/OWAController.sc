@@ -349,23 +349,10 @@ OWAController {
       ]);
 
       bufManager.load_sample_providers_from_metadata(
-        [
-          'acoustic_kick',
-          'electronic_snare',
-          'acoustic_snare',
-          'acoustic_hat',
-          'acoustic_hat_open',
-          'electronic_hat',
-          'electronic_hat_open'
-        ].collect({
-          arg voiceName;
-
-          (
-            name: voiceName,
-            metadataFilePath: voiceName.asString() ++ ".json",
-            class: PercussionVoiceSampleManager
-          );
-        }) ++ [
+        EminatorKickInstrument.getSampleProviderMetadatasToLoadList()
+        ++ EminatorSnareInstrument.getSampleProviderMetadatasToLoadList()
+        ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList()
+        ++ [
           'wub-buzz-slices'
         ].collect({
           arg voiceName;

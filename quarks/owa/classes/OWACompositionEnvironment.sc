@@ -31,11 +31,11 @@ OWACompositionEnvironment {
       rootDir: soundsDir
     ));
 
-    // TODO: refactor this
-    percussionKitSampleManager = OWASampleManager.new((
-      bufManager: bufManager,
-      soundsDir: soundsDir,
-      onDoneLoading: {
+    bufManager.load_sample_providers_from_metadata(
+      EminatorKickInstrument.getSampleProviderMetadatasToLoadList()
+      ++ EminatorSnareInstrument.getSampleProviderMetadatasToLoadList()
+      ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList(),
+      {
         owaKickEnvironment = OWAKickEnvironment.new((
           inChannel: 6,
           outputBus: 24,
@@ -56,8 +56,7 @@ OWACompositionEnvironment {
           bufManager: bufManager
         ));
       }
-    ));
-
+    );
 
     ^this;  
   }

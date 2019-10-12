@@ -3,7 +3,6 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
     lastSessionPhase;
 
   initPatch {
-    var sampleManager = OWASampleManager.getInstance();
     var patch;
     patch = Patch("owa.EminatorHiHat", (
       velocity: KrNumberEditor(0, [0, 127]),
@@ -11,10 +10,10 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
       amp: KrNumberEditor(-11.0.dbamp(), \amp),
       openHat: KrNumberEditor(0, [0, 1]),
       sustainTime: KrNumberEditor(1, [0, 100]),
-      acousticClosedStartTimes: sampleManager.getVoiceSampleManager('acoustic_hat').startTimesBuf.bufnum,
-      acousticOpenStartTimes: sampleManager.getVoiceSampleManager('acoustic_hat_open').startTimesBuf.bufnum,
-      electronicClosedStartTimes: sampleManager.getVoiceSampleManager('electronic_hat').startTimesBuf.bufnum,
-      electronicOpenStartTimes: sampleManager.getVoiceSampleManager('electronic_hat_open').startTimesBuf.bufnum,
+      acousticClosedStartTimes: bufManager.getSampleProvider('acoustic_hat').startTimesBuf.bufnum,
+      acousticOpenStartTimes: bufManager.getSampleProvider('acoustic_hat_open').startTimesBuf.bufnum,
+      electronicClosedStartTimes: bufManager.getSampleProvider('electronic_hat').startTimesBuf.bufnum,
+      electronicOpenStartTimes: bufManager.getSampleProvider('electronic_hat_open').startTimesBuf.bufnum,
       sustained: false
     ));
     patch.gate.lag = 0;
@@ -49,8 +48,6 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
   }
 
   initStream {
-    var sampleManager = OWASampleManager.getInstance();
-
     ^Pbind(
       \instrument, hatsSynthdef.name,
       [\midinote, \dur], Pdefn('EminatorHatsEtcSequencerNotes'),
@@ -67,10 +64,10 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
         arg e;
         (e[\dur] / clock.tempo);
       }),
-      \acousticClosedSample, sampleManager.getVoiceSampleManager('acoustic_hat').sampleBufnumPattern(),
-      \electronicClosedSample, sampleManager.getVoiceSampleManager('electronic_hat').sampleBufnumPattern(),
-      \acousticOpenSample, sampleManager.getVoiceSampleManager('acoustic_hat_open').sampleBufnumPattern(),
-      \electronicOpenSample, sampleManager.getVoiceSampleManager('electronic_hat_open').sampleBufnumPattern()
+      \acousticClosedSample, bufManager.getSampleProvider('acoustic_hat').sampleBufnumPattern(),
+      \electronicClosedSample, bufManager.getSampleProvider('electronic_hat').sampleBufnumPattern(),
+      \acousticOpenSample, bufManager.getSampleProvider('acoustic_hat_open').sampleBufnumPattern(),
+      \electronicOpenSample, bufManager.getSampleProvider('electronic_hat_open').sampleBufnumPattern()
     ).asStream();
   }
 

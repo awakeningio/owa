@@ -3,8 +3,7 @@ EminatorWhispPopSequencer : AwakenedSequencer {
 
   initPatch {
     var patch;
-    var sampleManager = OWASampleManager.getInstance(); 
-    var highPopSamplerManager = sampleManager.getVoiceSampleManager('high-pop');
+    var highPopSamplerManager = bufManager.getSampleProvider('high-pop');
    
     patch =  Patch("owa.eminator.HighPop", (
       velocity: KrNumberEditor(0, [0, 127]),
@@ -16,8 +15,7 @@ EminatorWhispPopSequencer : AwakenedSequencer {
   }
 
   initStream {
-    var sampleManager = OWASampleManager.getInstance(); 
-    var highPopSamplerManager = sampleManager.getVoiceSampleManager('high-pop');
+    var highPopSamplerManager = bufManager.getSampleProvider('high-pop');
     ^Pbind(
       \instrument, synthdef.name,
       \midinote, Pseq([Pseq([\rest, "D5".notemidi()], 7), Pseq([\rest, "D4".notemidi()], 7)], inf),

@@ -4,8 +4,7 @@ EminatorNoisySFXSequencer : AwakenedSequencer {
 
   initPatch {
     var patch;
-    wubBuzzSampleManager = OWASampleManager.getInstance()
-      .getVoiceSampleManager('wub-buzz-slices');
+    wubBuzzSampleManager = bufManager.getSampleProvider('wub-buzz-slices');
 
     patch = Patch("owa.eminator.WubBuzzSampler", (
       gate: KrNumberEditor(1.0, \gate),

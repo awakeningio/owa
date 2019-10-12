@@ -7,11 +7,9 @@ EminatorKickSnareSequencer : AwakenedSequencer {
     lastSessionPhase;
 
   initPatch {
-    var sampleManager = OWASampleManager.getInstance();
-
-    acousticKickSamplerManager = sampleManager.getVoiceSampleManager('acoustic_kick');
-    electronicSnareSampleManager = sampleManager.getVoiceSampleManager('electronic_snare');
-    acousticSnareSampleManager = sampleManager.getVoiceSampleManager('acoustic_snare');
+    acousticKickSamplerManager = bufManager.getSampleProvider('acoustic_kick');
+    electronicSnareSampleManager = bufManager.getSampleProvider('electronic_snare');
+    acousticSnareSampleManager = bufManager.getSampleProvider('acoustic_snare');
 
     kickSynthdef = Patch("owa.EminatorKick", (
       velocity: KrNumberEditor(0, [0, 127]),

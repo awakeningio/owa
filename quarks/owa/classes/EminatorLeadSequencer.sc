@@ -2,8 +2,7 @@ EminatorLeadSequencer : AwakenedSequencer {
   var synthdef;
 
   initPatch {
-    var sampleManager = OWASampleManager.getInstance(); 
-    var leadSamplerManager = sampleManager.getVoiceSampleManager('lead');
+    var leadSamplerManager = bufManager.getSampleProvider('lead');
     var patch = Patch("owa.eminator.Lead", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
@@ -16,8 +15,7 @@ EminatorLeadSequencer : AwakenedSequencer {
   }
 
   initStream {
-    var sampleManager = OWASampleManager.getInstance(); 
-    var leadSamplerManager = sampleManager.getVoiceSampleManager('lead');
+    var leadSamplerManager = bufManager.getSampleProvider('lead');
     ^Pbind(
       \instrument, synthdef.name,
       //\midinote, Pseq(["D4".notemidi(), \rest], inf),

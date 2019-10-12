@@ -4,15 +4,15 @@ OWAHatsEnvironment : VoicerEnvironmentComponent {
 
     var voicer,
       sock,
-      percussionKitSampleManager = params['percussionKitSampleManager'];
+      bufManager = params['bufManager'];
 
     params['numVoices'] = 1;
     params['instr'] = Instr("owa.EminatorHiHat");
     params['instrArgs'] = [
-      \acousticClosedStartTimes, percussionKitSampleManager.getVoiceSampleManager('acoustic_hat').startTimesBuf.bufnum,
-      \acousticOpenStartTimes, percussionKitSampleManager.getVoiceSampleManager('acoustic_hat_open').startTimesBuf.bufnum,
-      \electronicClosedStartTimes, percussionKitSampleManager.getVoiceSampleManager('electronic_hat').startTimesBuf.bufnum,
-      \electronicOpenStartTimes, percussionKitSampleManager.getVoiceSampleManager('electronic_hat_open').startTimesBuf.bufnum,
+      \acousticClosedStartTimes, bufManager.getSampleProvider('acoustic_hat').startTimesBuf.bufnum,
+      \acousticOpenStartTimes, bufManager.getSampleProvider('acoustic_hat_open').startTimesBuf.bufnum,
+      \electronicClosedStartTimes, bufManager.getSampleProvider('electronic_hat').startTimesBuf.bufnum,
+      \electronicOpenStartTimes, bufManager.getSampleProvider('electronic_hat_open').startTimesBuf.bufnum,
       \sustained, true
     ];
 
@@ -30,10 +30,10 @@ OWAHatsEnvironment : VoicerEnvironmentComponent {
           0
         });
       }),
-      \acousticClosedSample, percussionKitSampleManager.getVoiceSampleManager('acoustic_hat').sampleBufnumPattern(),
-      \electronicClosedSample, percussionKitSampleManager.getVoiceSampleManager('electronic_hat').sampleBufnumPattern(),
-      \acousticOpenSample, percussionKitSampleManager.getVoiceSampleManager('acoustic_hat_open').sampleBufnumPattern(),
-      \electronicOpenSample, percussionKitSampleManager.getVoiceSampleManager('electronic_hat_open').sampleBufnumPattern()
+      \acousticClosedSample, bufManager.getSampleProvider('acoustic_hat').sampleBufnumPattern(),
+      \electronicClosedSample, bufManager.getSampleProvider('electronic_hat').sampleBufnumPattern(),
+      \acousticOpenSample, bufManager.getSampleProvider('acoustic_hat_open').sampleBufnumPattern(),
+      \electronicOpenSample, bufManager.getSampleProvider('electronic_hat_open').sampleBufnumPattern()
     );
   }
 }

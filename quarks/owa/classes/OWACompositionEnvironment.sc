@@ -31,6 +31,7 @@ OWACompositionEnvironment {
       rootDir: soundsDir
     ));
 
+    // TODO: refactor this
     percussionKitSampleManager = OWASampleManager.new((
       bufManager: bufManager,
       soundsDir: soundsDir,
@@ -38,12 +39,12 @@ OWACompositionEnvironment {
         owaKickEnvironment = OWAKickEnvironment.new((
           inChannel: 6,
           outputBus: 24,
-          percussionKitSampleManager: percussionKitSampleManager
+          bufManager: bufManager
         ));
         owaSnareEnvironment = OWASnareEnvironment.new((
           inChannel: 7,
           outputBus: 26,
-          percussionKitSampleManager: percussionKitSampleManager
+          bufManager: bufManager
         ));
         owaBassEnvironment = OWABassVoicerEnvironment.new((
           inChannel: 5,
@@ -52,7 +53,7 @@ OWACompositionEnvironment {
         owaHatsEnvironment = OWAHatsEnvironment.new((
           inChannel: 8,
           outputBus: 30,
-          percussionKitSampleManager: percussionKitSampleManager
+          bufManager: bufManager
         ));
       }
     ));

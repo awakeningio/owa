@@ -4,11 +4,11 @@ OWAKickEnvironment : VoicerEnvironmentComponent {
 
     var voicer,
       sock,
-      percussionKitSampleManager = params['percussionKitSampleManager'],
+      bufManager = params['bufManager'],
       gui,
       acousticKickSamplerManager;
 
-    acousticKickSamplerManager = percussionKitSampleManager.getVoiceSampleManager('acoustic_kick');
+    acousticKickSamplerManager = bufManager.getSampleProvider('acoustic_kick');
     params['numVoices'] = 1;
     params['instr'] = Instr("owa.EminatorKick");
     params['instrArgs'] = [

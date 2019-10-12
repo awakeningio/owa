@@ -20,8 +20,7 @@ OWAController {
     bufManager,
     clockController,
     seqFactory,
-    idlePlayer,
-    sampleManager;
+    idlePlayer;
 
 
   *new {
@@ -349,10 +348,44 @@ OWAController {
         )
       ]);
 
-      sampleManager = OWASampleManager.new((
-        bufManager: bufManager,
-        soundsDir: "SOUNDS_DIRECTORY_PATH".getenv(),
-        onDoneLoading: {
+      bufManager.load_sample_providers_from_metadata(
+        [
+          'acoustic_kick',
+          'electronic_snare',
+          'acoustic_snare',
+          'acoustic_hat',
+          'acoustic_hat_open',
+          'electronic_hat',
+          'electronic_hat_open'
+        ].collect({
+          arg voiceName;
+
+          (
+            name: voiceName,
+            metadataFilePath: voiceName.asString() ++ ".json",
+            class: PercussionVoiceSampleManager
+          );
+        }) ++ [
+          'wub-buzz-slices'
+        ].collect({
+          arg voiceName;
+          (
+            name: voiceName,
+            metadataFilePath: voiceName.asString() ++ ".json",
+            class: SlicedVoiceSampleManager
+          );
+        }) ++ [
+          'high-pop',
+          'lead'
+        ].collect({
+          arg voiceName;
+          (
+            name: voiceName,
+            metadataFilePath: voiceName.asString() ++ ".json",
+            class: PitchedVoiceSampleManager
+          );
+        }),
+        {
           // initialize sequencers
           seqFactory.setStore(store);
 
@@ -368,9 +401,7 @@ OWAController {
             type: "OWA_SOUND_INIT_DONE"
           ));
         }
-      ));
-
-
+      );
     }));
 
 

@@ -77,20 +77,7 @@ export default function createEminatorState(additionalInitialState) {
           [SESSION_PHASES.TRANS_6]: {
             ...sessionPhaseDefaults[SESSION_PHASES.TRANS_6],
             numBeats: 4 * 7,
-          },
-        },
-      },
-      additionalInitialState
-    ),
-    create_owa_sequencer(
-      "eminator-6_2",
-      "EminatorSharpEerieSequencer",
-      {
-        variationIndex: 0,
-        phaseProps: {
-          [SESSION_PHASES.TRANS_6]: {
-            ...sessionPhaseDefaults[SESSION_PHASES.TRANS_6],
-            numBeats: 2 * 7,
+            variationIndex: 0,
             variationProps: [
               {
                 variationIndex: 0
@@ -110,6 +97,39 @@ export default function createEminatorState(additionalInitialState) {
           [SESSION_PHASES.TRANS_4]: {
             variationMenuType: VARIATION_MENU_TYPES.NONE
           }
+        },
+      },
+      additionalInitialState
+    ),
+    create_owa_sequencer(
+      "eminator-6_2",
+      "EminatorSharpEerieSequencer",
+      {
+        phaseProps: {
+          [SESSION_PHASES.TRANS_6]: {
+            ...sessionPhaseDefaults[SESSION_PHASES.TRANS_6],
+            variationIndex: 0,
+            numBeats: 2 * 7,
+            variationProps: [
+              {
+                variationIndex: 0
+              },
+              {
+                variationIndex: 1
+              },
+              {
+                variationIndex: 2
+              },
+              {
+                variationIndex: 3
+              }
+            ],
+            variationMenuType: VARIATION_MENU_TYPES.SECTIONS
+          },
+          [SESSION_PHASES.TRANS_4]: {
+            ...sessionPhaseDefaults[SESSION_PHASES.TRANS_4],
+            variationMenuType: VARIATION_MENU_TYPES.NONE
+          }
         }
       },
       additionalInitialState
@@ -122,6 +142,10 @@ export default function createEminatorState(additionalInitialState) {
           [SESSION_PHASES.TRANS_6]: {
             ...sessionPhaseDefaults[SESSION_PHASES.TRANS_6],
             numBeats: 2 * 7
+          },
+          [SESSION_PHASES.TRANS_4]: {
+            ...sessionPhaseDefaults[SESSION_PHASES.TRANS_4],
+            variationMenuType: VARIATION_MENU_TYPES.NONE
           }
         }
       },
@@ -135,6 +159,10 @@ export default function createEminatorState(additionalInitialState) {
           [SESSION_PHASES.TRANS_6]: {
             ...sessionPhaseDefaults[SESSION_PHASES.TRANS_6],
             numBeats: 2 * 7
+          },
+          [SESSION_PHASES.TRANS_4]: {
+            ...sessionPhaseDefaults[SESSION_PHASES.TRANS_4],
+            variationMenuType: VARIATION_MENU_TYPES.NONE
           }
         }
       },
@@ -148,6 +176,10 @@ export default function createEminatorState(additionalInitialState) {
           [SESSION_PHASES.TRANS_6]: {
             ...sessionPhaseDefaults[SESSION_PHASES.TRANS_6],
             numBeats: 2 * 7
+          },
+          [SESSION_PHASES.TRANS_4]: {
+            ...sessionPhaseDefaults[SESSION_PHASES.TRANS_4],
+            variationMenuType: VARIATION_MENU_TYPES.NONE
           }
         }
       },

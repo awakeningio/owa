@@ -352,16 +352,8 @@ OWAController {
         EminatorKickInstrument.getSampleProviderMetadatasToLoadList()
         ++ EminatorSnareInstrument.getSampleProviderMetadatasToLoadList()
         ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList()
+        ++ EminatorWubBuzzInstrument.getSampleProviderMetadatasToLoadList()
         ++ [
-          'wub-buzz-slices'
-        ].collect({
-          arg voiceName;
-          (
-            name: voiceName,
-            metadataFilePath: voiceName.asString() ++ ".json",
-            class: SlicedVoiceSampleManager
-          );
-        }) ++ [
           'high-pop',
           'lead'
         ].collect({

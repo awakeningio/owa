@@ -349,11 +349,11 @@ OWAController {
       ]);
 
       bufManager.load_sample_providers_from_metadata(
-        EminatorKickInstrument.getSampleProviderMetadatasToLoadList()
-        ++ EminatorSnareInstrument.getSampleProviderMetadatasToLoadList()
+        EminatorKickSnareInstrument.getSampleProviderMetadatasToLoadList()
         ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList()
         ++ EminatorWubBuzzInstrument.getSampleProviderMetadatasToLoadList()
         ++ [
+          // TODO move these to their respective instruments
           'high-pop',
           'lead'
         ].collect({

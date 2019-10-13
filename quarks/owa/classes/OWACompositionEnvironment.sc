@@ -32,8 +32,7 @@ OWACompositionEnvironment {
     ));
 
     bufManager.load_sample_providers_from_metadata(
-      EminatorKickInstrument.getSampleProviderMetadatasToLoadList()
-      ++ EminatorSnareInstrument.getSampleProviderMetadatasToLoadList()
+      EminatorKickSnareInstrument.getSampleProviderMetadatasToLoadList()
       ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList(),
       {
         owaKickEnvironment = OWAKickEnvironment.new((

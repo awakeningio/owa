@@ -1,23 +1,15 @@
 EminatorKickSnareSequencer : AwakenedSequencer {
   var 
     snareSynthdef,
-    acousticKickSamplerManager,
-    electronicSnareSampleManager,
-    acousticSnareSampleManager,
     lastSessionPhase,
-    kickInstrument,
-    snareInstrument;
+    instrument;
 
   initPatch {
-    kickInstrument = EminatorKickInstrument.new(params);
-    snareInstrument = EminatorSnareInstrument.new(params);
+    instrument = EminatorKickSnareInstrument.new(params);
   }
 
   initStream {
-    ^Ppar([
-      kickInstrument.pattern,
-      snareInstrument.pattern
-    ]).asStream();
+    ^instrument.pattern.asStream();
   }
 
   handleStateChange {
@@ -28,14 +20,12 @@ EminatorKickSnareSequencer : AwakenedSequencer {
     super.handleStateChange();
 
     if (lastSessionPhase !== sessionPhase, {
-      kickInstrument.updateForSessionPhase(sessionPhase);
-      snareInstrument.updateForSessionPhase(sessionPhase);
+      instrument.updateForSessionPhase(sessionPhase);
       lastSessionPhase = sessionPhase;
     });
 
     if (currentState.propQuant !== lastPropQuant, {
-      kickInstrument.updatePropQuant(currentState.propQuant);    
-      snareInstrument.updatePropQuant(currentState.propQuant);    
+      instrument.updatePropQuant(currentState.propQuant);    
     });
   }
 }

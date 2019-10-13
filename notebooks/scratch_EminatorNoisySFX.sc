@@ -18,8 +18,8 @@
     ~bufManager = BufferManager.new((
       rootDir: ~projectDir +/+ "sounds"
     ));
-    ~bufManager.load_bufs(
-      EminatorSharpEerieInstrument.getBufsToLoadList()
+    ~bufManager.load_sample_providers_from_metadata(
+      EminatorWubBuzzInstrument.getSampleProviderMetadatasToLoadList()
     );
   });
   
@@ -27,4 +27,69 @@
 
 
 )
+(
+  var wubBuzzSampleProvider = ~bufManager.getSampleProvider('wub-buzz-slices');
+  var patch = Patch("owa.eminator.WubBuzzSampler", (
+      gate: KrNumberEditor(1.0, \gate),
+      amp: KrNumberEditor(-18.0.dbamp(), \amp),
+      startTimes: wubBuzzSampleProvider.startTimesBuf.bufnum,
+      sample: wubBuzzSampleProvider.sample.bufnum
+    ));
+    patch.gate.lag = 0;
+    ~synthdef = patch.asSynthDef().add();
+)
 
+(
+  Pdefn(
+    'WubBuzzRhythm',
+    Pseq([0.5].stutter(14) ++ [Rest(7.0)], inf)
+  );
+  Pdefn('WubBuzzIndex', Pseq((0..25), inf));
+)
+(
+  Pdefn(
+    'WubBuzzRhythm',
+    Pseq([0.25].stutter(14) ++ [0.5].stutter(7) ++ [Rest(7.0)], inf)
+  );
+  Pdefn('WubBuzzIndex', Prand((0..25), inf));
+)
+(
+  Pdefn(
+    'WubBuzzRhythm',
+    Pwrand(
+      [
+        Pseq([0.25, 0.25, Rest(0.5)]),
+        Pseq([0.5, Rest(0.5)]),
+        Pseq([1.0]),
+        Pseq([2.0]),
+        Pseq([Rest(1.0)])
+      ],
+      [
+        3,
+        3,
+        2,
+        1,
+        1
+      ].normalizeSum(),
+      inf
+    )
+  );
+  Pdefn('WubBuzzIndex', Prand((0..25), inf));
+)
+(
+
+
+    ~pattern = Pbind(
+      \instrument, ~synthdef.name,
+      \dur, Pdefn('WubBuzzRhythm'),
+      \index, Pdefn('WubBuzzIndex'),
+      //\amp, -10.0.dbamp()
+    );
+    ~player = ~pattern.play();
+)
+(
+)
+
+(
+  ~player.stop();
+)

@@ -29,11 +29,61 @@ EminatorWubBuzzInstrument {
 
     pattern = Pbind(
       \instrument, synthdef.name,
-      \dur, Pseq([0.5].stutter(2 * 7) ++ [Rest(7.0)], inf),
-      \index, Pseq((0..25), inf),
-      //\index, Pseq([(0..25), 0].lace(26), inf),
+      \dur, Pdefn('WubBuzzRhythm'),
+      \index, Pdefn('WubBuzzIndex'),
       //\amp, -10.0.dbamp()
     );
 //[0.5].stutter(2 * 7) ++ [Rest(7.0)]
+  }
+
+  useVariation {
+    arg variationIndex;
+
+    switch(variationIndex,
+      0, {
+        Pdefn(
+          'WubBuzzRhythm',
+          Pseq([0.5].stutter(14) ++ [Rest(7.0)], inf)
+        );
+        Pdefn('WubBuzzIndex', Pseq((0..25), inf));
+      },
+      1, {
+        Pdefn(
+          'WubBuzzRhythm',
+          Pseq([0.25].stutter(14) ++ [0.5].stutter(7) ++ [Rest(7.0)], inf)
+        );
+        Pdefn('WubBuzzIndex', Prand((0..25), inf));
+      },
+      2, {
+        Pdefn(
+          'WubBuzzRhythm',
+          Pwrand(
+            [
+              Pseq([0.25, 0.25, Rest(0.5)]),
+              Pseq([0.5, Rest(0.5)]),
+              Pseq([1.0]),
+              Pseq([2.0]),
+              Pseq([Rest(1.0)])
+            ],
+            [
+              3,
+              3,
+              2,
+              1,
+              1
+            ].normalizeSum(),
+            inf
+          )
+        );
+        Pdefn('WubBuzzIndex', Prand((0..25), inf));
+      }
+    );
+  }
+
+  updatePropQuant {
+    arg quant;
+
+    Pdefn('WubBuzzRhythm').quant = quant;
+    Pdefn('WubBuzzIndex').quant = quant;
   }
 }

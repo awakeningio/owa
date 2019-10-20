@@ -34,14 +34,239 @@
     ));
     ~bufManager.load_midi(
       EminatorKickSnareInstrument.getMidiToLoadList()
+      ++ EminatorHatsInstrument.getMidiToLoadList()
     );
     ~bufManager.load_sample_providers_from_metadata(
       EminatorKickSnareInstrument.getSampleProviderMetadatasToLoadList()
+      ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList()
     );
   });
   
   s.boot();
 )
+
+(
+  var bufManager = ~bufManager,
+    acousticOpenProvider,
+    acousticClosedProvider,
+    electronicOpenProvider,
+    electronicClosedProvider,
+    patch,
+    pattern,
+    synthdef,
+    clock = TempoClock.default;
+
+  acousticOpenProvider = bufManager.getSampleProvider('acoustic_hat_open');
+  acousticClosedProvider = bufManager.getSampleProvider('acoustic_hat');
+  electronicOpenProvider = bufManager.getSampleProvider('electronic_hat_open');
+  electronicClosedProvider = bufManager.getSampleProvider('electronic_hat');
+
+  patch = Patch("owa.EminatorHiHat", (
+    velocity: KrNumberEditor(0, [0, 127]),
+    gate: KrNumberEditor(1, \gate),
+    amp: KrNumberEditor(-11.0.dbamp(), \amp),
+    openHat: KrNumberEditor(0, [0, 1]),
+    sustainTime: KrNumberEditor(1, [0, 100]),
+    acousticClosedStartTimes: acousticClosedProvider.startTimesBuf.bufnum,
+    acousticOpenStartTimes: acousticOpenProvider.startTimesBuf.bufnum,
+    electronicClosedStartTimes: electronicClosedProvider.startTimesBuf.bufnum,
+    electronicOpenStartTimes: electronicOpenProvider.startTimesBuf.bufnum,
+    sustained: false
+  ));
+  patch.gate.lag = 0;
+  synthdef = patch.asSynthDef().add();
+
+  pattern = Pbind(
+    \instrument, synthdef.name,
+    [\note, \dur, \velocity], Pdefn('EminatorHats'),
+    \openHat, Pfunc({
+      arg e;
+
+      if (e[\note] == 9, {
+        1    
+      }, {
+        0
+      });
+    }),
+    \sustainTime, Pfunc({
+      arg e;
+      (e[\dur] / clock.tempo);
+    }),
+    \acousticClosedSample, acousticClosedProvider.sampleBufnumPattern(),
+    \electronicClosedSample, electronicClosedProvider.sampleBufnumPattern(),
+    \acousticOpenSample, acousticOpenProvider.sampleBufnumPattern(),
+    \electronicOpenSample, electronicOpenProvider.sampleBufnumPattern()
+  );
+
+  ~pattern = pattern;
+)
+
+(
+  var bufManager = ~bufManager;
+  Pdefn(
+    'EminatorHats',
+    Pseq(bufManager.midiSequencesWithVel['eminator_hats_L2'], inf)
+  );
+)
+
+(
+  var o = 9,
+    c = 10;
+
+  // variation 1
+  Pdefn(
+    'EminatorHats',
+    Ptuple([
+      Pseq([
+        0,          c,    o,    c,  0,
+        c,  0,          c,  0,          o,  c,    0,
+        c,  0,        0,          c,    o,  c,    c,  c,    0,
+        c,  0,        c,    0,        o,    c,  0
+      ], inf),
+      Pseq([
+        // 1.1 - 1.5
+        Rest(1.75), 1/4,  3/4,  1/4, Rest(1),
+        // 1.5 - 2.1
+        1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4),
+        // 2.1 - 2.5
+        1/4, Rest(3/4), Rest(3/4), 1/4, 1/4, 1/4, 1/4, 1/4, Rest(1),
+        // 2.5 - 3.1
+        1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4)
+      ], inf),
+      Pmeanrand(75, 100, inf)
+    ])
+  );
+)
+(
+  var o = 9,
+    c = 10;
+
+  // variation 2
+  Pdefn(
+    'EminatorHats',
+    Prand([
+      Ptuple([
+        Pseq([
+          o, c, c, c,     0,        c,    0,        c,    o,    c,  0,
+          c,  0,          c,  0,        o,    c,  0,
+        ]),
+        Pseq([
+          // 1.1 - 1.5
+          Pseq([1/4], 4), Rest(1/4), 1/4, Rest(1/4), 1/4, 1/4, 1/4, Rest(6/4),
+          // 1.5 - 2.1
+          1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4)
+          // 2.1 - 2.5
+          // 2.5 - 3.1
+        ]),
+        Pmeanrand(75, 100, inf)
+      ]),
+      Ptuple([
+        Pseq([
+          o, c, c, c,     o,  c,    0,        c,  0,
+          c,  0,          c,  0,        o,    c,  0,
+        ]),
+        Pseq([
+          // 1.1 - 1.5
+          Pseq([1/4], 4), 3/4, 1/4, Rest(2/4), 1/4, Rest(5/4),
+          // 1.5 - 2.1
+          1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4)
+          // 2.1 - 2.5
+          // 2.5 - 3.1
+        ]),
+        Pmeanrand(75, 100, inf)
+      ])
+    ], inf)
+  );
+)
+(
+  var o = 9,
+    c = 10;
+
+  // variation 3
+  Pdefn(
+    'EminatorHats',
+    Prand([
+      Ptuple([
+        Pseq([
+          c,  c, o, c, c, c, o, c, 0,
+          o, c, o, o, c, c, c, o,   0,      o,  o
+        ]),
+        Pseq([
+          // 1.1 - 2.1
+          1, Pseq([1/2], 6), 1, Rest(1),
+          Pseq([1/2], 8),           Rest(1), 1/4, 3/4
+          // 1.5 - 2.1
+          //1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4)
+          // 2.1 - 2.5
+          // 2.5 - 3.1
+        ]),
+        Pmeanrand(75, 100, inf)
+      ]),
+      Ptuple([
+        Pseq([
+          c,  c, o, c, c, c, o, c, 0,
+          o, c, o, o, c, c, c, o,   0,      c,  c,    o
+        ]),
+        Pseq([
+          // 1.1 - 2.1
+          1, Pseq([1/2], 6), 1, Rest(1),
+          Pseq([1/2], 8),           Rest(1), 1/8, 1/8, 3/4
+          // 1.5 - 2.1
+          //1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4)
+          // 2.1 - 2.5
+          // 2.5 - 3.1
+        ]),
+        Pmeanrand(75, 100, inf)
+      ]),
+      Ptuple([
+        Pseq([
+          c,  c, c, c, c, c, c, c, 0,
+          o, c, o, o, c, c, c, o,   0,      c,  c,    o
+        ]),
+        Pseq([
+          // 1.1 - 2.1
+          1, Pseq([1/3], 6), 1, Rest(2),
+          Pseq([1/2], 8),           Rest(1), 1/8, 1/8, 3/4
+          // 1.5 - 2.1
+          //1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4)
+          // 2.1 - 2.5
+          // 2.5 - 3.1
+        ]),
+        Pmeanrand(75, 100, inf)
+      ])
+    ], inf)
+  );
+)
+//(
+  //var o = 9,
+    //c = 10;
+
+  //// variation 4
+  //Pdefn(
+    //'EminatorHats',
+    //Ptuple([
+      //Pseq([
+        //0,          c,    o,    c,  0,
+        //c,  0,          c,  0,          o,  c,    0,
+        //c,  0,        0,          c,    o,  c,    c,  c,    0,
+        //c,  0,        c,    0,        o,    c,  0
+      //], inf),
+      //Pseq([
+        //// 1.1 - 1.5
+        //Rest(1.75), 1/4,  3/4,  1/4, Rest(1),
+        //// 1.5 - 2.1
+        //1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4),
+        //// 2.1 - 2.5
+        //1/4, Rest(3/4), Rest(3/4), 1/4, 1/4, 1/4, 1/4, 1/4, Rest(1),
+        //// 2.5 - 3.1
+        //1/4, Rest(3/4), 1/4, Rest(1/4), 2/4, 1/4, Rest(3/4)
+      //], inf),
+      //Pmeanrand(75, 100, inf)
+    //])
+  //);
+//)
+
+
 
 (
   var bufManager = ~bufManager,
@@ -250,9 +475,6 @@
   );
 )
 
-50 + ((1..7)*10)
-[Rest(4)] ++ [1/2].stutter(6)
-[0] ++ Env.new([100, 20]).asSignal(5)
 ~player = ~pattern.play()
 ~player.stop()
 

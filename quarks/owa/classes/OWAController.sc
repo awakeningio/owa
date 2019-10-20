@@ -229,36 +229,15 @@ OWAController {
           tempoBPM: OWAConstants.tempoBySongId['eminator']
         ),
         (
-          midiFileName: "eminator_L2_hats.mid",
-          midiKey: 'eminator_hats_L2',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_L4_hats.mid",
-          midiKey: 'eminator_hats_L4',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_L6_hats.mid",
-          midiKey: 'eminator_hats_L6',
-          makeDuration: 2 * 7,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_snare_L6.mid",
-          midiKey: 'eminator_snare_L6',
-          makeDuration: 2 * 7,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
           midiFileName: "eminator_lead_L2.mid",
           midiKey: 'eminator_lead_L2',
           makeDuration: 4 * 16,
           tempoBPM: OWAConstants.tempoBySongId['eminator']
         )
-      ] ++ EminatorKickSnareInstrument.getMidiToLoadList());
+      ]
+      ++ EminatorKickSnareInstrument.getMidiToLoadList()
+      ++ EminatorHatsInstrument.getMidiToLoadList()
+    );
 
       bufManager.cue_bufs([
         (

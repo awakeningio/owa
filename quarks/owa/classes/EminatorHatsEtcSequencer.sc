@@ -17,6 +17,7 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
     var state = store.getState();
     var sessionPhase = state.sessionPhase.asSymbol();
     var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
     
     super.handleStateChange();
 
@@ -27,6 +28,10 @@ EminatorHatsEtcSequencer : AwakenedSequencer {
 
     if (lastPropQuant !== currentState.propQuant, {
       hatsInstrument.updatePropQuant(currentState.propQuant);
+    });
+
+    if (lastVariationIndex !== currentState.variationIndex, {
+      hatsInstrument.useLevel6Variation(currentState.variationIndex);    
     });
   }
 }

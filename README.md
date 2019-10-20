@@ -98,3 +98,6 @@ Set your `ansible/hosts` files with your deployment machine's hostname.
 
     $ ansible-playbook ansible/site.yml
 
+## Raspberry Pi
+
+A few notes on managing a Raspberry Pi post-deployment on the [owapi](https://github.com/awakeningio/owa/wiki/owapi) wiki page.

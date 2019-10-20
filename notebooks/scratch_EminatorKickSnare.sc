@@ -18,6 +18,23 @@
     ~bufManager = BufferManager.new((
       rootDir: ~projectDir +/+ "sounds"
     ));
+    OWAConstants.init((
+      constants: (
+        'AUTO_TRANS_SESSION_PHASES': [],
+        'SESSION_PHASES': [],
+        'NEXT_SESSION_PHASES': [],
+        'SONG_IDS': [],
+        'SONG_IDS_LIST': [],
+        'TEMPO_BY_SONGID': (
+          'eminator': 140.0
+        ),
+        'SESSION_PHASE_BEATS_PER_BAR_BY_SONGID': Dictionary.new(),
+        'SESSION_PHASE_DURATIONS_BY_SONGID': Dictionary.new()
+      )
+    ));
+    ~bufManager.load_midi(
+      EminatorKickSnareInstrument.getMidiToLoadList()
+    );
     ~bufManager.load_sample_providers_from_metadata(
       EminatorKickSnareInstrument.getSampleProviderMetadatasToLoadList()
     );
@@ -64,31 +81,15 @@
     pattern = Ppar([
       Pbind(
         \instrument, snareSynthDef.name,
-        [\dur, \velocity], Pdefn('EminatorSnare'),
+        [\note, \dur, \velocity], Pdefn('EminatorSnare'),
         \midinote, "D1".notemidi(),
-        //[\midinote, \dur], Pdefn('EminatorSnareNotes'),
-        //\velocity, Pseq([110], inf),
         \electronicSampleBufnum, electSnareSampleProvider.sampleBufnumPattern(),
-        \acousticSampleBufnum, acoustSnareSampleProvider.sampleBufnumPattern(),
-        \test, Pfunc({
-          arg e;
-          "e['velocity']:".postln;
-          e['velocity'].postln;
-          0.0;
-        })
+        \acousticSampleBufnum, acoustSnareSampleProvider.sampleBufnumPattern()
       ),
       Pbind(
         \instrument, kickSynthDef.name,
-        //\velocity, Pseq([110], inf),
-        //[\midinoteFromFile, \dur], Pdefn('EminatorKickNotes'),
-        [\dur, \velocity], Pdefn('EminatorKick'),
+        [\note, \dur, \velocity], Pdefn('EminatorKick'),
         \midinote, "D0".notemidi(),
-        //\midinote, Pfunc({
-          //arg e;
-          ////"e['midinoteFromFile']:".postln;
-          ////e['midinoteFromFile'].postln;
-          //"D0".notemidi();
-        //}),
         \acousticSampleBufnum, acousticKickSampleProvider.sampleBufnumPattern(),
       )
     ]);
@@ -100,12 +101,14 @@
   // test
   Pdefn('EminatorKick', 
     Ptuple([
+      "D1".notemidi(),
       Pseq([1, Rest(1), 1, Rest(1), 1, 1, 1], inf),
       Pseq(50 + ((1..7)*10), inf),
     ])
   );
   Pdefn('EminatorSnare', 
     Ptuple([
+      "D0".notemidi(),
       Pseq([1, Rest(1), 1, Rest(1), 1, 1, 1], inf),
       Pseq(50 + ((1..7)*10), inf),
     ])
@@ -113,9 +116,19 @@
 )
 
 (
+  var bufManager = ~bufManager;
+  
+  // midinote
+  Pdefn('EminatorKick', Pseq(bufManager.midiSequencesWithVel[\eminator_kick_L4], inf));
+  Pdefn('EminatorSnare', Pseq(bufManager.midiSequencesWithVel[\eminator_snare_L4], inf));
+  bufManager.midiSequences[\eminator_kick_L4];
+)
+
+(
   // variation 1
   Pdefn('EminatorKick', 
     Ptuple([
+      "D1".notemidi(),
       // kick dur
       Pseq([1, Rest(2), 1, 1, Rest(1), 1], inf),
       // kick vel
@@ -125,6 +138,7 @@
 
   Pdefn('EminatorSnare', 
     Ptuple([
+      "D0".notemidi(),
       // snare dur
       Pseq([Rest(1), 1, Rest(5)], inf),
       // snare vel
@@ -137,6 +151,7 @@
   // variation 2
   Pdefn('EminatorKick', 
     Ptuple([
+      "D1".notemidi(),
       // kick dur
       Pseq([
         Pwrand([
@@ -166,6 +181,7 @@
 
   Pdefn('EminatorSnare', 
     Ptuple([
+      "D0".notemidi(),
       // snare dur
       Pseq([
         Rest(1),
@@ -184,6 +200,7 @@
   // variation 3
   Pdefn('EminatorKick', 
     Ptuple([
+      "D1".notemidi(),
       // kick dur
       Pseq([
         1/4, 1/4, Rest(1/2),
@@ -202,24 +219,28 @@
   Pdefn('EminatorSnare',
     Pwrand([
       Ptuple([
+        "D0".notemidi(),
         // snare dur
         Pseq([Rest(2.5), 1, 1, Rest(2), 1/2]),
         // snare vel
         Pseq([0] ++ Env.new([100, 20]).asSignal(4))
       ]),
       Ptuple([
+        "D0".notemidi(),
         // snare dur
         Pseq([Rest(4.5), 1, 1, 1/2]),
         // snare vel
         Pseq([0] ++ Env.new([100, 20]).asSignal(3))
       ]),
       Ptuple([
+        "D0".notemidi(),
         // snare dur
         Pseq([Rest(4)] ++ [1/2].stutter(6)),
         // snare vel
         Pseq([0] ++ Env.new([100, 20]).asSignal(6))
       ]),
       Ptuple([
+        "D0".notemidi(),
         // snare dur
         Pseq([Rest(4)] ++ [1/4].stutter(3) ++ [Rest(1/4), Rest(2)]),
         // snare vel

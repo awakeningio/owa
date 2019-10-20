@@ -27,6 +27,34 @@ EminatorKickSnareInstrument {
       ),
     ]
   }
+  *getMidiToLoadList {
+    ^[
+      (
+        midiFileName: "eminator_kick_L2.mid",
+        midiKey: 'eminator_kick_L2',
+        makeDuration: 8 * 4,
+        tempoBPM: OWAConstants.tempoBySongId['eminator']
+      ),
+      (
+        midiFileName: "eminator_kick_L4.mid",
+        midiKey: 'eminator_kick_L4',
+        makeDuration: 8 * 4,
+        tempoBPM: OWAConstants.tempoBySongId['eminator']
+      ),
+      (
+        midiFileName: "eminator_snare_L2.mid",
+        midiKey: 'eminator_snare_L2',
+        makeDuration: 8 * 4,
+        tempoBPM: OWAConstants.tempoBySongId['eminator']
+      ),
+      (
+        midiFileName: "eminator_snare_L4.mid",
+        midiKey: 'eminator_snare_L4',
+        makeDuration: 8 * 4,
+        tempoBPM: OWAConstants.tempoBySongId['eminator']
+      )
+    ];
+  }
   init {
     arg params;
     var kickPatch, snarePatch, snareSynthDef, kickSynthDef;
@@ -56,64 +84,175 @@ EminatorKickSnareInstrument {
     pattern = Ppar([
       Pbind(
         \instrument, snareSynthDef.name,
-        [\midinote, \dur], Pdefn('EminatorSnareNotes'),
-        \velocity, Pseq([110], inf),
+        [\note, \dur, \velocity], Pdefn('EminatorSnare'),
+        \midinote, "D1".notemidi(),
         \electronicSampleBufnum, electSnareSampleProvider.sampleBufnumPattern(),
         \acousticSampleBufnum, acoustSnareSampleProvider.sampleBufnumPattern()
       ),
       Pbind(
         \instrument, kickSynthDef.name,
-        \velocity, Pseq([110], inf),
-        [\midinoteFromFile, \dur], Pdefn('EminatorKickNotes'),
-        \midinote, Pfunc({
-          arg e;
-          //"e['midinoteFromFile']:".postln;
-          //e['midinoteFromFile'].postln;
-          "D0".notemidi();
-        }),
+        [\note, \dur, \velocity], Pdefn('EminatorKick'),
+        \midinote, "D0".notemidi(),
         \acousticSampleBufnum, acousticKickSampleProvider.sampleBufnumPattern(),
       )
     ]);
   }
-  updateForSessionPhase {
-    arg sessionPhase;
+  useLevel6Variation {
+    arg variationIndex;
+    switch(variationIndex,
+      0, {
+        Pdefn('EminatorKick', 
+          Ptuple([
+            "D1".notemidi(),
+            // kick dur
+            Pseq([1, Rest(2), 1, 1, Rest(1), 1], inf),
+            // kick vel
+            Pmeanrand(50, 80, inf),
+          ])
+        );
 
-    var snareMidiKey;
-    var kickMidiKey = switch(sessionPhase, 
+        Pdefn('EminatorSnare', 
+          Ptuple([
+            "D0".notemidi(),
+            // snare dur
+            Pseq([Rest(1), 1, Rest(5)], inf),
+            // snare vel
+            Pmeanrand(50, 80, inf),
+          ])
+        );
+      },
+      1, {
+        Pdefn('EminatorKick', 
+          Ptuple([
+            "D1".notemidi(),
+            // kick dur
+            Pseq([
+              Pwrand([
+                  Pseq([1/4, 1/4, 1/4, Rest(1/4)]),
+                  Pseq([1])
+                ],
+                [
+                  3, 1
+                ].normalizeSum()
+              ),
+              1/4, Rest(3/4),
+              1,
+              1/2, 1/2,
+              Pwrand([
+                Pseq([Rest(1), 1/2, 1/2]),
+                Pseq([Rest(1/2), 1/2, Rest(1/2), 1/2]),
+              ], [
+                3,
+                1
+              ].normalizeSum()),
+              Rest(1/2), 1/2
+            ], inf),
+            // kick vel
+            Pmeanrand(50, 80, inf),
+          ])
+        );
+
+        Pdefn('EminatorSnare', 
+          Ptuple([
+            "D0".notemidi(),
+            // snare dur
+            Pseq([
+              Rest(1),
+              Pwrand([1, Rest(1)], [4, 1].normalizeSum()),
+              Rest(2),
+              Pwrand([1, Pseq([0.5, 0.5])], [4, 1].normalizeSum()),
+              Rest(2)
+            ], inf),
+            // snare vel
+            Pmeanrand(50, 80, inf),
+          ])
+        );
+      },
+      2, {
+        // variation 3
+        Pdefn('EminatorKick', 
+          Ptuple([
+            "D1".notemidi(),
+            // kick dur
+            Pseq([
+              1/4, 1/4, Rest(1/2),
+              1/2, 1/2,
+              1,
+              1/2, 1/2,
+              Rest(1),
+              1/2, 1/2,
+              Rest(1/4), 1/4, Rest(1/2)
+            ], inf),
+            // kick vel
+            Pmeanrand(50, 80, inf),
+          ])
+        );
+
+        Pdefn('EminatorSnare',
+          Pwrand([
+            Ptuple([
+              "D0".notemidi(),
+              // snare dur
+              Pseq([Rest(2.5), 1, 1, Rest(2), 1/2]),
+              // snare vel
+              Pseq([0] ++ Env.new([100, 20]).asSignal(4))
+            ]),
+            Ptuple([
+              "D0".notemidi(),
+              // snare dur
+              Pseq([Rest(4.5), 1, 1, 1/2]),
+              // snare vel
+              Pseq([0] ++ Env.new([100, 20]).asSignal(3))
+            ]),
+            Ptuple([
+              "D0".notemidi(),
+              // snare dur
+              Pseq([Rest(4)] ++ [1/2].stutter(6)),
+              // snare vel
+              Pseq([0] ++ Env.new([100, 20]).asSignal(6))
+            ]),
+            Ptuple([
+              "D0".notemidi(),
+              // snare dur
+              Pseq([Rest(4)] ++ [1/4].stutter(3) ++ [Rest(1/4), Rest(2)]),
+              // snare vel
+              Pseq([0] ++ Env.new([100, 20]).asSignal(3))
+            ]),
+          ], [2, 2, 1, 1].normalizeSum(), inf)
+        );
+      }
+    );
+  }
+  updateForSessionPhase {
+    arg sessionPhase,
+      snareMidiKey = nil,
+      kickMidiKey = nil;
+
+    switch(sessionPhase,
       \TRANS_6, {
-        'eminator_kick_L6';
+        this.useLevel6Variation(0);
       },
       \TRANS_4, {
-        'eminator_kick_L4';
+        kickMidiKey = 'eminator_kick_L4';
+        snareMidiKey = 'eminator_snare_L4';
       },
       \TRANS_2, {
-        'eminator_kick_L2'
+        kickMidiKey = 'eminator_kick_L2';
+        snareMidiKey = 'eminator_snare_L2';
       }
     );
 
     if (kickMidiKey !== nil, {
       Pdefn(
-        'EminatorKickNotes',
-        Pseq(bufManager.midiSequences[kickMidiKey], inf)
+        'EminatorKick',
+        Pseq(bufManager.midiSequencesWithVel[kickMidiKey], inf)
       );
     });
 
-    snareMidiKey = switch(sessionPhase,
-      \TRANS_6, {
-        'eminator_snare_L6';
-      },
-      \TRANS_4, {
-        'eminator_snare_L4';
-      },
-      \TRANS_2, {
-        'eminator_snare_L2';
-      }
-    );
-
     if (snareMidiKey !== nil, {
       Pdefn(
-        'EminatorSnareNotes',
-        Pseq(bufManager.midiSequences[snareMidiKey], inf)
+        'EminatorSnare',
+        Pseq(bufManager.midiSequencesWithVel[snareMidiKey], inf)
       );
     });
   }
@@ -121,7 +260,7 @@ EminatorKickSnareInstrument {
   updatePropQuant {
     arg quant;
 
-    Pdefn('EminatorKickNotes').quant = quant;
-    Pdefn('EminatorSnareNotes').quant = quant;
+    Pdefn('EminatorKick').quant = quant;
+    Pdefn('EminatorSnare').quant = quant;
   }
 }

@@ -16,6 +16,7 @@ EminatorKickSnareSequencer : AwakenedSequencer {
     var state = store.getState();
     var sessionPhase = state.sessionPhase.asSymbol();
     var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
     
     super.handleStateChange();
 
@@ -26,6 +27,12 @@ EminatorKickSnareSequencer : AwakenedSequencer {
 
     if (currentState.propQuant !== lastPropQuant, {
       instrument.updatePropQuant(currentState.propQuant);    
+    });
+
+    if (lastVariationIndex !== currentState.variationIndex, {
+      if ((sessionPhase == 'QUEUE_TRANS_6').or(sessionPhase == 'TRANS_6').or(sessionPhase == 'PLAYING_6'), {
+        instrument.useLevel6Variation(currentState.variationIndex);    
+      });
     });
   }
 }

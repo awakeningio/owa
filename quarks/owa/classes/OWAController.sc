@@ -163,18 +163,6 @@ OWAController {
       // load midi files
       bufManager.load_midi([
         (
-          midiFileName: "spinny-pluck_L6_hats.mid",
-          midiKey: 'spinny-pluck_L6_hats',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['spinny_pluck']
-        ),
-        (
-          midiFileName: "spinny-pluck_L2_hats.mid",
-          midiKey: 'spinny-pluck_L2_hats',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['spinny_pluck']
-        ),
-        (
           midiFileName: "spinny-pluck_L6_lead.mid",
           midiKey: 'spinny-pluck_L6_lead',
           makeDuration: 4 * 4,
@@ -237,6 +225,7 @@ OWAController {
       ]
       ++ EminatorKickSnareInstrument.getMidiToLoadList()
       ++ EminatorHatsInstrument.getMidiToLoadList()
+      ++ SpinnyHatsInstrument.getMidiToLoadList()
     );
 
       bufManager.cue_bufs([
@@ -301,6 +290,7 @@ OWAController {
         EminatorKickSnareInstrument.getSampleProviderMetadatasToLoadList()
         ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList()
         ++ EminatorWubBuzzInstrument.getSampleProviderMetadatasToLoadList()
+        ++ SpinnyHatsInstrument.getSampleProviderMetadatasToLoadList()
         ++ [
           // TODO move these to their respective instruments
           'high-pop',

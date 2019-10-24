@@ -49,7 +49,7 @@ export function seconds_timestamp() {
 
 // Determine if a SC event was a rest, there are many ways...
 export function isRest (event) {
-  return event.midinote === "rest" || event.note === "rest" || (
+  return event.midinote === "rest" || event.note === "rest" || event.degree === "rest" || (
     typeof event.dur === "object" && event.dur.class === "Rest"
   )
 }

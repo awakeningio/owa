@@ -9,32 +9,38 @@
  **/
 
 SpinnyKickSequencer : AwakenedSequencer {
+  var inst,
+    lastSessionPhase;
+
+  initPatch {
+    inst = SpinnyKickInstrument.new(params);
+  }
+
   initStream {
-    var note = "C1".notemidi(),
-      patch,
-      synthdef;
+    ^inst.pattern.asStream();
+  }
 
-    patch = Patch("cs.sfx.PlayBuf", (
-      buf: bufManager.bufs[\kick_01],
-      convertToStereo: 1,
-      attackTime: 0.0,
-      releaseTime: 0.0,
-      amp: 1.0.dbamp(),
-      gate: KrNumberEditor(1, \gate)
-    ));
-    patch.gate.lag = 0;
-    synthdef = patch.asSynthDef().add();
+  handleStateChange {
+    var state = store.getState();
+    var sessionPhase = state.sessionPhase.asSymbol();
+    var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
+    
+    super.handleStateChange();
 
-    ^Pbind(
-      //\type, \instr,
-      //\instr, "cs.sfx.PlayBuf",
-      //\buf, bufManager.bufs[\kick_01],
-      //\convertToStereo, 1,
-      \instrument, synthdef.name,
-      \midinote, Pseq([
-        note, \rest, \rest, note, note, \rest, \rest, note
-      ], inf),
-      \dur, Pseq([1], inf)
-    ).asStream();
+    if (lastSessionPhase !== sessionPhase, {
+      inst.updateForSessionPhase(sessionPhase);
+      lastSessionPhase = sessionPhase;
+    });
+
+    if (currentState.propQuant !== lastPropQuant, {
+      inst.updatePropQuant(currentState.propQuant);    
+    });
+
+    if (lastVariationIndex !== currentState.variationIndex, {
+      if ((sessionPhase == 'QUEUE_TRANS_6').or(sessionPhase == 'TRANS_6').or(sessionPhase == 'PLAYING_6'), {
+        inst.useLevel6Variation(currentState.variationIndex);    
+      });
+    });
   }
 }

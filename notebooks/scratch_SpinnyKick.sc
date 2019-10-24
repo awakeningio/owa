@@ -71,6 +71,20 @@
 )
 
 (
+  ~instr = SpinnyKickInstrument.new((
+    bufManager: ~bufManager
+  ));
+)
+
+(
+  ~instr.useLevel6Variation(0);
+)
+
+(
+  ~instr.pattern.play();
+)
+
+(
   var note = "D0".notemidi();
 
   Pdefn('SpinnyKick', Ptuple([

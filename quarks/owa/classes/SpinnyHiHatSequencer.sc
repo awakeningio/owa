@@ -9,82 +9,38 @@
  **/
 
 SpinnyHiHatSequencer : AwakenedSequencer {
-  var pat,
-    bufs,
-    patch,
-    synthdefs;
+  var inst,
+    lastSessionPhase;
 
   initPatch {
-    var patch, openPatch, restPatch;
-    
-    patch = Patch("owa.HiHatSampler", (
-      bufnum: bufManager.bufs[\hhclosed_96].bufnum,
-      gate: 1
-    ));
-
-    openPatch = Patch("owa.HiHatSampler", (
-      bufnum: bufManager.bufs[\hhopen_83].bufnum,
-      gate: 1
-    ));
-
-    restPatch = Patch("owa.HiHatSampler", (
-      bufnum: -1,
-      gate: 1
-    ));
-
-    synthdefs = (
-      22: patch.asSynthDef().add(),
-      25: openPatch.asSynthDef().add(),
-      rest: restPatch.asSynthDef().add()
-    );
-
+    inst = SpinnyHatsInstrument.new(params);
   }
+
   initStream {
-    bufs = (
-      22: bufManager.bufs[\hhclosed_96].bufnum,
-      25: bufManager.bufs[\hhopen_83].bufnum,
-      rest: -1
-    );
-    Pdefn('HiHatNotes').quant = currentState.playQuant;
-    Pdefn('HiHatNotes', Pseq(
-      bufManager.midiSequences[currentState.midiName.asSymbol()],
-      inf
-    ));
-    pat = Pbind(
-      //\type, \instr,
-      //\instr, "owa.HiHatSampler",
-      [\midinote, \dur], Pdefn('HiHatNotes'),
-      \instrument, Pfunc({
-        arg event;
-
-        synthdefs[event[\midinote]].name;
-      }),
-      \sustainTime, Pfunc({
-        arg event;
-
-        (event[\dur] / clock.tempo);
-      }),
-      //\legato, Pfunc({
-        //arg event;
-        //if (event[\midinote] === 25, {
-          //0.75;
-        //}, {
-          //1.0;
-        //});
-      //}),
-      \sendGate, false
-      //\bufnum, Pfunc({
-        //arg event;
-        //bufs[event[\midinote]];
-      //})
-    );
-    ^pat.asStream();
+    ^inst.pattern.asStream();
   }
+
   handleStateChange {
+    var state = store.getState();
+    var sessionPhase = state.sessionPhase.asSymbol();
+    var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
+    
     super.handleStateChange();
-    Pdefn('HiHatNotes', Pseq(
-      bufManager.midiSequences[currentState.midiName.asSymbol()],
-      inf
-    ));
+
+    if (lastSessionPhase !== sessionPhase, {
+      inst.updateForSessionPhase(sessionPhase);
+      lastSessionPhase = sessionPhase;
+    });
+
+    if (currentState.propQuant !== lastPropQuant, {
+      inst.updatePropQuant(currentState.propQuant);    
+    });
+
+    if (lastVariationIndex !== currentState.variationIndex, {
+      if ((sessionPhase == 'QUEUE_TRANS_6').or(sessionPhase == 'TRANS_6').or(sessionPhase == 'PLAYING_6'), {
+        inst.useLevel6Variation(currentState.variationIndex);    
+      });
+    });
   }
 }

@@ -3,17 +3,40 @@ import {
   create_segmentId,
 } from 'owa/models'
 
-import { SESSION_PHASES } from 'owa/constants'
+import { SESSION_PHASES, VARIATION_MENU_TYPES } from 'owa/constants'
 
 export function createSpinnyPluckState (additionalInitialState) {
   const sequencers = {
     'spinny_pluck-6_0': create_owa_sequencer('spinny_pluck-6_0', 'SpinnyBassSequencer', {
       numBeats: 2 * 4,
-      playQuant: [4, 4]
+      playQuant: [4, 4],
     }, additionalInitialState),
     'spinny_pluck-6_1': create_owa_sequencer('spinny_pluck-6_1', 'SpinnyKickSequencer', {
       numBeats: 2 * 4,
-      playQuant: [4, 4]
+      playQuant: [4, 4],
+      phaseProps: {
+        [SESSION_PHASES.TRANS_6]: {
+          variationIndex: 0,
+          variationProps: [
+            {
+              variationIndex: 0
+            },
+            {
+              variationIndex: 1
+            },
+            {
+              variationIndex: 2
+            },
+            {
+              variationIndex: 3
+            }
+          ],
+          variationMenuType: VARIATION_MENU_TYPES.SECTIONS
+        },
+        [SESSION_PHASES.TRANS_4]: {
+          variationMenuType: VARIATION_MENU_TYPES.NONE
+        }
+      }
     }, additionalInitialState),
     'spinny_pluck-6_2': create_owa_sequencer('spinny_pluck-6_2', 'SpinnyHiHatSequencer', {
       numBeats: 8 * 4,

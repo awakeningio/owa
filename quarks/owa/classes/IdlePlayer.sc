@@ -64,6 +64,12 @@
       ));
       patchesBySongId['eminator'].gate.lag = 0;
     }
+    stop {
+      if (player.isNil().not(), {
+        player.stop();
+        player = nil;
+      });
+    }
     handle_state_change {
       var songId;
       //"IdlePlayer.handle_state_change".postln();
@@ -76,20 +82,11 @@
       //});
 
       if (prevState.idlePlayer.playingState != state.idlePlayer.playingState, {
+        this.stop();
         if (state.idlePlayer.playingState == "PLAYING", {
           "IdlePlayer.playing...".postln();
-          //if (player.isNil().not(), {
-            //player.gate.value = 0;
-            //player.stop();
-          //});
           patchesBySongId[songId].gate.value = state.idlePlayer.gate;
           player = patchesBySongId[songId].play();
-        }, {
-          if (player.isNil().not(), {
-            player.gate.value = 0;
-            player.stop();
-            player = nil;
-          });
         });
       });
       if (player.isNil().not().and(state.idlePlayer.gate != prevState.idlePlayer.gate), {

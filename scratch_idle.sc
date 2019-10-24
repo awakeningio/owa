@@ -27,16 +27,21 @@
 
 
 (
+  var clock = TempoClock.default;
   ~patch = Patch("owa.EminatorIdle", (
     gate: KrNumberEditor(0, \gate),
-    attackTime: 4.0,
-    releaseTime: 1 * ~clock.tempo,
-    transitionGate: KrNumberEditor(0, \gate),
-    transitionDuration: 7 * 4 * ~clock.tempo
+    attackTime: 1.0,
+    releaseTime: 16.0 * clock.tempo,
+    amp: -3.0.dbamp(),
+    transitionGate: 0,
+    transitionDuration: 0
   ));
+)
+
+(
   ~patch.gate.value = 1;
   ~player = ~patch.play();
-);
+)
 
 (
   ~player.gate.value = 0;

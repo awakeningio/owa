@@ -9,55 +9,38 @@
  **/
 
 SpinnyChimeSequencer : AwakenedSequencer {
+  var inst,
+    lastSessionPhase;
+
+  initPatch {
+    inst = SpinnyChimeInstrument.new(params);
+  }
+
   initStream {
-    var originalFreq = "C4".notemidi().midicps(),
-      patch,
-      synthdef;
+    ^inst.pattern.asStream();
+  }
 
-    patch = Patch("owa.PitchedSampler", (
-      originalFreq: originalFreq,
-      bufnum: bufManager.bufs[\chime_ring_d].bufnum,
-      amp: -20.dbamp(),
-      releaseTime: 5.0,
-      gate: KrNumberEditor(1, \gate)
-    ));
-    patch.gate.lag = 0;
-    synthdef = patch.asSynthDef().add();
+  handleStateChange {
+    var state = store.getState();
+    var sessionPhase = state.sessionPhase.asSymbol();
+    var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
+    
+    super.handleStateChange();
 
-    ^Ppar([
-      Pbind(
-        \instrument, synthdef.name,
-        \scale, Scale.minor,
-        \root, 2,
-        \octave, 5,
-        \degree, Pseq([
-          \rest,  0,   \rest
-        ], inf),
-        \dur, Pseq([
-          7,      0.5,  0.5
-        ], inf),
-        \reversed, Pseq([
-          0
-        ], inf),
-        \attackTime, 0.3,
-      ),
-      Pbind(
-        \instrument, synthdef.name,
-        \scale, Scale.minor,
-        \root, 2,
-        \octave, 4,
-        \degree, Pseq([
-          \rest,  4,  \rest,
-        ], inf),
-        \dur, Pseq([
-          1,      6,  1
-        ], inf),
-        \reversed, Pseq([
-          1
-        ], inf),
-        \attackTime, 0.3,
-        \startTime, 3.5,
-      )
-    ]).asStream();
+    if (lastSessionPhase !== sessionPhase, {
+      inst.updateForSessionPhase(sessionPhase);
+      lastSessionPhase = sessionPhase;
+    });
+
+    if (currentState.propQuant !== lastPropQuant, {
+      inst.updatePropQuant(currentState.propQuant);    
+    });
+
+    if (lastVariationIndex !== currentState.variationIndex, {
+      if ((sessionPhase == 'QUEUE_TRANS_6').or(sessionPhase == 'TRANS_6').or(sessionPhase == 'PLAYING_6'), {
+        inst.useLevel6Variation(currentState.variationIndex);    
+      });
+    });
   }
 }

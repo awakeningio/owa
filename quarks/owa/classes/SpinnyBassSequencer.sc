@@ -9,38 +9,38 @@
  **/
 
 SpinnyBassSequencer : AwakenedSequencer {
+  var inst,
+    lastSessionPhase;
+
+  initPatch {
+    inst = SpinnyBassInstrument.new(params);
+  }
+
   initStream {
-    var pat,
-      notes,
-      patch,
-      synthdef;
+    ^inst.pattern.asStream();
+  }
 
-    patch = Patch("cs.fm.WideBass", (
-      amp: -24.dbamp(),
-      gate: 1,
-      useSustain: 1
-    ));
-    synthdef = patch.asSynthDef().add();
+  handleStateChange {
+    var state = store.getState();
+    var sessionPhase = state.sessionPhase.asSymbol();
+    var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
+    
+    super.handleStateChange();
 
-    notes = ["C#0", "D0"].notemidi();
+    if (lastSessionPhase !== sessionPhase, {
+      inst.updateForSessionPhase(sessionPhase);
+      lastSessionPhase = sessionPhase;
+    });
 
-    pat = Pbind(
-      \instrument, synthdef.name,
-      \note, Pseq(notes, inf),
-      \octave, 2,
-      \dur, 4,
-      \sustain, 3.5,
-      \sustainTime, Pfunc({
-        arg event;
-        (event[\sustain] / clock.tempo);
-      }),
-      \attackModFreq, Pseq(12 + notes, inf),
-      \toneModulatorGainMultiplier, 1.0,
-      \toneModulatorLFOAmount, 2.0,
-      \toneModulatorLFORate, 1.5,
-      \sendGate, true
-    );
+    if (currentState.propQuant !== lastPropQuant, {
+      inst.updatePropQuant(currentState.propQuant);    
+    });
 
-    ^pat.asStream();
+    if (lastVariationIndex !== currentState.variationIndex, {
+      if ((sessionPhase == 'QUEUE_TRANS_6').or(sessionPhase == 'TRANS_6').or(sessionPhase == 'PLAYING_6'), {
+        inst.useLevel6Variation(currentState.variationIndex);    
+      });
+    });
   }
 }

@@ -97,9 +97,6 @@ OWAController {
     
 
     bufManager.load_bufs(([
-      ["kick_01 [2018-05-20 115711].wav", \kick_01],
-      ["hhclosed_96 [2018-05-20 155504].wav", \hhclosed_96],
-      ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83],
       ["spinny-pluck_L6_sfx [2018-05-27 133232].wav", 'spinny-pluck_L6_sfx'],
       [
         "spinny-pluck_L4_chords-1 [2018-07-07 122629]_mono.wav",
@@ -291,6 +288,7 @@ OWAController {
         ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList()
         ++ EminatorWubBuzzInstrument.getSampleProviderMetadatasToLoadList()
         ++ SpinnyHatsInstrument.getSampleProviderMetadatasToLoadList()
+        ++ SpinnyKickInstrument.getSampleProviderMetadatasToLoadList()
         ++ [
           // TODO move these to their respective instruments
           'high-pop',

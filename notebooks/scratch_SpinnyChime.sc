@@ -107,19 +107,19 @@
   Pdefn('SpinnyChimeOne', Ptuple([
     Pseq([
       \rest,  1,   \rest, 6, 3
-    ].scramble),
+    ].scramble, inf),
     Pseq([
       7,      0.5,  0.5, 3, 3, 2
-    ].scramble),
-  ], inf));
+    ].scramble, inf),
+  ]));
   Pdefn('SpinnyChimeTwo', Ptuple([
     Pseq([
       \rest,  4,  \rest, 3, 1
-    ].scramble),
+    ].scramble, inf),
     Pseq([
       1,      3, 3,  1, 6, 2
-    ].scramble),
-  ], inf));
+    ].scramble, inf),
+  ]));
 )
 
 ~pattern.play();

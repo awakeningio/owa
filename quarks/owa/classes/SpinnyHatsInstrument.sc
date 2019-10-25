@@ -50,7 +50,6 @@ SpinnyHatsInstrument {
     patch = Patch("owa.spinny.SpinnyHiHat", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(-6.0.dbamp(), \amp),
       openHat: KrNumberEditor(0, [0, 1]),
       sustainTime: KrNumberEditor(1, [0, 100]),
       sustained: false,
@@ -124,7 +123,7 @@ SpinnyHatsInstrument {
               // 4.1 - 4.4
               3/4, 1/4, 1, 3/4, 2/4, 2/4, 1/4,
             ]),
-            Pmeanrand(80, 90, inf)
+            Pmeanrand(90, 110, inf)
           ]),
           Ptuple([
             Pseq([
@@ -147,7 +146,7 @@ SpinnyHatsInstrument {
               // 8.1 - 8.4
               1/2, 1/2, 1, 2
             ]),
-            Pmeanrand(80, 90, inf)
+            Pmeanrand(90, 110, inf)
           ])
         ], inf));
       },
@@ -175,7 +174,7 @@ SpinnyHatsInstrument {
               // 4.1 - 4.4
               3/4, 1/4, 1/3, 1/3, 1/3, 3/4, Pseq([1/16], 16), 1/4,
             ]),
-            Pmeanrand(90, 100, inf)
+            Pmeanrand(90, 110, inf)
           ]),
           Ptuple([
             Pseq([
@@ -198,7 +197,7 @@ SpinnyHatsInstrument {
               // 4.1 - 4.4
               3/4, 1/4, 1/3, 1/3, 1/3, 3/4, Pseq([1/16], 16), 1/4,
             ]),
-            Pmeanrand(90, 100, inf)
+            Pmeanrand(90, 110, inf)
           ]),
         ], inf));
       },
@@ -225,7 +224,7 @@ SpinnyHatsInstrument {
               // 4.1 - 4.4
               3/4, 1/4, 1/3, 1/3, 1/3, 3/4, Pseq([1/16], 16), 1/4,
             ]),
-            Pmeanrand(90, 100, inf)
+            Pmeanrand(90, 110, inf)
           ]),
           Ptuple([
             Pseq([
@@ -248,7 +247,7 @@ SpinnyHatsInstrument {
               // 4.1 - 4.4
               3/4, 1/4, 2/3, 1/3, 3/4, Pseq([1/16], 16), 1/4,
             ]),
-            Pmeanrand(90, 100, inf)
+            Pmeanrand(90, 110, inf)
           ]),
         ], inf));
       }

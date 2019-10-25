@@ -52,7 +52,7 @@ SpinnyKickInstrument {
           note, \rest, \rest, note, note, \rest, \rest, note
         ], inf),
         Pseq([1], inf),
-        Pmeanrand(60, 80, inf)
+        Pmeanrand(80, 100, inf)
       ]));
     }, {
       Pdefn('SpinnyKick', Ptuple([
@@ -60,7 +60,7 @@ SpinnyKickInstrument {
           note, \rest, \rest, note, note, \rest, \rest, note
         ].scramble, inf),
         Pseq([1, 1, 1, 0.5, 0.5].scramble, inf),
-        Pmeanrand(60, 80, inf)
+        Pmeanrand(80, 100, inf)
       ]));
     });
   }

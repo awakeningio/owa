@@ -183,7 +183,7 @@ export function createSpinnyPluckState (additionalInitialState) {
       playQuant: [8, 8],
       defaultPlayQuant: [8, 8],
       stopQuant: [numBeats, numBeats],
-      ampDb: 8.0,
+      ampDb: 2.0,
       sustain: numBeats + 2,
       bufNames: [
         'spinny-pluck_L4_chords-1',
@@ -254,21 +254,21 @@ export function createSpinnyPluckState (additionalInitialState) {
           attackTime: 0.01,
           releaseTime: 0.01,
           numBeats: 6 * 4,
-          amp: 0.4
+          amp: 0.2
         },
         [SESSION_PHASES.QUEUE_TRANS_2]: {
           bufName: 'spinny-pluck_L4-L2',
           attackTime: 0.01,
           releaseTime: 0.01,
           numBeats: 5 * 4,
-          amp: 0.3
+          amp: 0.2
         },
         [SESSION_PHASES.QUEUE_TRANS_ADVICE]: {
           bufName: 'spinny-pluck_L2-reveal',
           attackTime: 0.01,
           releaseTime: 0.01,
           numBeats: 7 * 4,
-          amp: 0.5
+          amp: 0.2
         }
       }
     }

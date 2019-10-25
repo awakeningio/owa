@@ -20,7 +20,7 @@ SpinnyChimeInstrument {
     patch = Patch("owa.PitchedSampler", (
       originalFreq: originalFreq,
       bufnum: bufManager.bufs[\chime_ring_d].bufnum,
-      amp: -20.dbamp(),
+      amp: -26.dbamp(),
       releaseTime: 5.0,
       gate: KrNumberEditor(1, \gate),
       attackTime: 0.3

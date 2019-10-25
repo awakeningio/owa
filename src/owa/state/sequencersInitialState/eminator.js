@@ -233,7 +233,7 @@ export default function createEminatorState(additionalInitialState) {
         attackTime: 0.0,
         releaseTime: 0.0,
         numBeats: 112 * 4,
-        amp: 1.0
+        amp: 0.7
       },
       additionalInitialState
     ),
@@ -281,7 +281,7 @@ export default function createEminatorState(additionalInitialState) {
             attackTime: 0.0,
             releaseTime: 0.0,
             numBeats: 9 * 4,
-            amp: 0.5
+            amp: 0.7
           }
         }
       },
@@ -351,9 +351,6 @@ export default function createEminatorState(additionalInitialState) {
       additionalInitialState
     )
   ];
-
-  console.log("sequencerList");
-  console.log(sequencerList);
 
   return sequencerList.reduce((acc, sequencer) => {
     acc[sequencer.sequencerId] = sequencer;

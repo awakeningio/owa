@@ -58,7 +58,7 @@ Instr("owa.EminatorKick", {
     slopeAbove: 0.4,
     clampTime: 0.005,
     relaxTime: 0.01
-  );
+  ) * 10.0.dbamp();
 
   out = amp * env * out;
   [out, out];

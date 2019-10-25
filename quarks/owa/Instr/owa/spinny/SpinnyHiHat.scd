@@ -1,6 +1,6 @@
 Instr("owa.spinny.SpinnyHiHat", {
   arg gate = 1,
-    amp = 0.0.dbamp(),
+    amp = 6.0.dbamp(),
     velocity,
     sustainTime = 1,
     openHat = 0, // 0 is closed hihat, 1 is open

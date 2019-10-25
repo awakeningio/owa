@@ -109,7 +109,7 @@ EminatorKickSnareInstrument {
             // kick dur
             Pseq([1, Rest(2), 1, 1, Rest(1), 1], inf),
             // kick vel
-            Pmeanrand(50, 80, inf),
+            Pmeanrand(90, 100, inf),
           ])
         );
 
@@ -119,7 +119,7 @@ EminatorKickSnareInstrument {
             // snare dur
             Pseq([Rest(1), 1, Rest(5)], inf),
             // snare vel
-            Pmeanrand(50, 80, inf),
+            Pmeanrand(90, 100, inf),
           ])
         );
       },
@@ -150,7 +150,7 @@ EminatorKickSnareInstrument {
               Rest(1/2), 1/2
             ], inf),
             // kick vel
-            Pmeanrand(50, 80, inf),
+            Pmeanrand(90, 100, inf),
           ])
         );
 
@@ -166,7 +166,7 @@ EminatorKickSnareInstrument {
               Rest(2)
             ], inf),
             // snare vel
-            Pmeanrand(50, 80, inf),
+            Pmeanrand(90, 100, inf),
           ])
         );
       },
@@ -186,7 +186,7 @@ EminatorKickSnareInstrument {
               Rest(1/4), 1/4, Rest(1/2)
             ], inf),
             // kick vel
-            Pmeanrand(50, 80, inf),
+            Pmeanrand(90, 100, inf),
           ])
         );
 

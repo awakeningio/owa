@@ -88,7 +88,6 @@ API.mountDuplexOSC();
 //s.options.maxNodes = 2048;
 //s.options.blockSize = 128;
 s.waitForBoot({
-  s.latency = 0.5;
 `;
             if (process.env.DEBUG_SC === "1") {
               if (process.env.DISABLE_GUI === "0") {

@@ -79,7 +79,7 @@ Instr("owa.EminatorIdle", {
     0
   );
   drone = 24.0.dbamp() * BLowShelf.ar(drone, 150, 0.8, -24.0);
-  drone = -13.0.dbamp() * LPF.ar(
+  drone = -6.0.dbamp() * LPF.ar(
     in: drone,
     freq: SinOsc.kr(
       transitionEnvExp * 3.99 + 0.01

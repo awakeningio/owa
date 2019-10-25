@@ -14,6 +14,7 @@ import {
 } from "reselect";
 import isEqual from "lodash/isEqual";
 import every from "lodash/every";
+import some from "lodash/some";
 
 import awakeningSequencers from "awakening-sequencers";
 
@@ -22,7 +23,8 @@ import {
   SESSION_PHASES,
   SEGMENTID_TO_SEQUENCERID_BY_SONGID,
   REVEAL_SEQUENCERID_BY_SONGID,
-  TRANS_SEQUENCERID_BY_SONGID
+  TRANS_SEQUENCERID_BY_SONGID,
+  VARIATION_MENU_TYPES
 } from "owa/constants";
 
 const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
@@ -161,9 +163,17 @@ export const getLevel4Ready = createSelector(
   getLevel6Sequencers,
   getSessionPhase,
   function(level6Sequencers, sessionPhase) {
+    const level6SequencersWithVariations = level6Sequencers.filter(seq => (
+      seq.variationMenuType !== VARIATION_MENU_TYPES.NONE
+    ))
     if (sessionPhase === SESSION_PHASES.PLAYING_6) {
-      // Returns true if all level 6 sequencers are playing.
-      return every(level6Sequencers, ["playingState", PLAYING_STATES.PLAYING]);
+      // Returns true if
+      return (
+        // all level 6 sequencers are playing.
+        every(level6Sequencers, ["playingState", PLAYING_STATES.PLAYING])
+        // And some have changed variations
+        && some(level6SequencersWithVariations, "lastPropChangeAt")
+      );
     } else {
       // we aren't on PLAYING_6, so level 4 cannot be ready.
       return false;

@@ -72,11 +72,19 @@ class SerialInputController extends ControllerWithStore {
   }
 
   handleButtonMessage (data) {
+    const buttonId = data.trim();
     this.store.dispatch(
       buttonPressed(
         ...(this.buttonDataToLevelSegment(data))
       )
     );
+    if (buttonId === "B00") {
+      this.store.dispatch(
+        buttonPressed(
+          ...(this.buttonDataToLevelSegment("B01"))
+        )
+      );
+    }
   }
 
   handleIncomingData (data) {

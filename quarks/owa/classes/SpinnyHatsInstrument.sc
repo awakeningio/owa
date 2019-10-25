@@ -50,7 +50,7 @@ SpinnyHatsInstrument {
     patch = Patch("owa.spinny.SpinnyHiHat", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(-11.0.dbamp(), \amp),
+      amp: KrNumberEditor(-6.0.dbamp(), \amp),
       openHat: KrNumberEditor(0, [0, 1]),
       sustainTime: KrNumberEditor(1, [0, 100]),
       sustained: false,

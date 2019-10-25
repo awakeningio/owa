@@ -31,7 +31,7 @@ SpinnySfxSequencer : AwakenedSequencer {
       \midinote, Pseq(["C3".notemidi()], inf),
       \dur, Pseq([currentState.numBeats], inf),
       \legato, 1.0,
-      \amp, 3.0.dbamp(),
+      \amp, -4.0.dbamp(),
       \sendGate, true
     ).asStream();
   }

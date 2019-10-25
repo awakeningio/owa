@@ -160,7 +160,7 @@ class LightingController extends ControllerWithStore {
       }
     };
 
-    this.renderNextFrame = () => setTimeout(this.render, 80);
+    this.renderNextFrame = () => setTimeout(this.render, 42);
     //this.renderNextFrame = () => setImmediate(this.render);
 
     // start render loop

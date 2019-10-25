@@ -85,32 +85,37 @@ API.mountDuplexOSC();
 s.options.inDevice = "JackRouter";
 s.options.outDevice = "JackRouter";
 s.options.memSize = 65536 * 4;
+s.options.maxNodes = 2048;
 //s.options.blockSize = 128;
 s.waitForBoot({
-            `;
+  s.reboot({  
+    s.waitForBoot({
+      s.latency = 0.5;
+`;
             if (process.env.DEBUG_SC === "1") {
               if (process.env.DISABLE_GUI === "0") {
                 scBootScript += `
-  s.meter();
-  s.plotTree();
+      s.meter();
+      s.plotTree();
                 `;
               } else {
 
                 scBootScript += `
-  Routine {
-    loop {
-      s.queryAllNodes();
-
-      10.0.wait();
-    }
-  }.play();
-  //s.dumpOSC();
+      Routine {
+        loop {
+          s.queryAllNodes();
+          10.0.wait();
+        }
+      }.play();
+      //s.dumpOSC();
                 `;
               }
             }
 
             scBootScript += `
-  OWAController.initInstance();
+      OWAController.initInstance();
+    });
+  });
 });
             `;
             return sclang.interpret(scBootScript).then(() => {

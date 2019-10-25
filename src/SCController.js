@@ -52,7 +52,7 @@ class SCController {
       'avgCPU': s.avgCPU()
     );
 `;
-    if (process.env.DEBUG_SC === "1" && process.env.DISABLE_GUI === "1") {
+    if (process.env.DEBUG_SC === "1") {
       this.debugSCInterval = setInterval(() => {
         this.sclang.interpret(scsynthGetInfo).then((result) => {
           logger.debug(
@@ -82,12 +82,14 @@ MIDIClient.init;
 MIDIIn.connectAll;
 Instr.loadAll();
 API.mountDuplexOSC();
-s.options.inDevice = "JackRouter";
-s.options.outDevice = "JackRouter";
-s.options.memSize = 65536 * 4;
+//s.options.inDevice = "JackRouter";
+//s.options.outDevice = "JackRouter";
+//s.options.memSize = 65536 * 4;
+//s.options.maxNodes = 2048;
 //s.options.blockSize = 128;
 s.waitForBoot({
-            `;
+  s.latency = 0.5;
+`;
             if (process.env.DEBUG_SC === "1") {
               if (process.env.DISABLE_GUI === "0") {
                 scBootScript += `
@@ -100,7 +102,6 @@ s.waitForBoot({
   Routine {
     loop {
       s.queryAllNodes();
-
       10.0.wait();
     }
   }.play();
@@ -111,8 +112,7 @@ s.waitForBoot({
 
             scBootScript += `
   OWAController.initInstance();
-});
-            `;
+});         `;
             return sclang.interpret(scBootScript).then(() => {
               this.handleBooted();
               resolve(sclang);

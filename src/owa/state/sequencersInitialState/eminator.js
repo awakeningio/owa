@@ -267,21 +267,21 @@ export default function createEminatorState(additionalInitialState) {
             attackTime: 0.0,
             releaseTime: 0.0,
             numBeats: 8 * 4,
-            amp: 1.0
+            amp: 0.5
           },
           [SESSION_PHASES.QUEUE_TRANS_2]: {
             bufName: "eminator_trans_L4_L2",
             attackTime: 0.0,
             releaseTime: 0.0,
             numBeats: 8 * 4,
-            amp: 1.0
+            amp: 0.5
           },
           [SESSION_PHASES.QUEUE_TRANS_ADVICE]: {
             bufName: "eminator_trans_L2_reveal",
             attackTime: 0.0,
             releaseTime: 0.0,
             numBeats: 9 * 4,
-            amp: 1.0
+            amp: 0.5
           }
         }
       },

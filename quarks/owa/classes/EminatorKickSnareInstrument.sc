@@ -71,6 +71,7 @@ EminatorKickSnareInstrument {
       electronicStartTimesBufnum: electSnareSampleProvider.startTimesBuf.bufnum,
       acousticStartTimesBufnum: acoustSnareSampleProvider.startTimesBuf.bufnum
     ));
+    snarePatch.gate.lag = 0;
     snareSynthDef = snarePatch.asSynthDef().add();
 
     kickPatch = Patch("owa.EminatorKick", (
@@ -79,6 +80,7 @@ EminatorKickSnareInstrument {
       amp: KrNumberEditor(-0.0.dbamp(), \amp),
       acousticStartTimesBufnum: acousticKickSampleProvider.startTimesBuf.bufnum
     ));
+    kickPatch.gate.lag = 0;
     kickSynthDef = kickPatch.asSynthDef().add();
 
     pattern = Ppar([

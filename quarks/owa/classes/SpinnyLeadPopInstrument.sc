@@ -20,7 +20,7 @@ SpinnyLeadPopInstrument {
       \root, 2,
       \octave, 6,
       [\degree, \dur], Pdefn('SpinnyLeadPop'),
-      \amp, 1.0.dbamp()
+      \amp, -14.0.dbamp()
     );
   }
   updatePropQuant {

@@ -1,6 +1,6 @@
 Instr("owa.spinny.SpinnyHiHat", {
   arg gate = 1,
-    amp = -12.0.dbamp(),
+    amp = 0.0.dbamp(),
     velocity,
     sustainTime = 1,
     openHat = 0, // 0 is closed hihat, 1 is open
@@ -55,6 +55,10 @@ Instr("owa.spinny.SpinnyHiHat", {
   );
 
   out = closed + open;
+
+  out = RHPF.ar(in: out, freq: 2.5*1000, rq: 0.6134);
+  out = -0.0.dbamp() * BHiShelf.ar(in: out, freq: 2670, rs: 1.0, db: 5.0);
+
   out = env * amp * out;
 
   [out, out];

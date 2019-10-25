@@ -76,7 +76,7 @@ OneShotSamplerSequencer : AwakenedSequencer {
     if (lastAmp != currentState.amp, {
       lastAmp = currentState.amp;
       ampProxy.quant = currentState.playQuant;
-      ampProxy.source = currentState.amp;
+      ampProxy.source = Pseq([currentState.amp]);
     });
 
     if (lastReleaseTime != currentState.releaseTime, {

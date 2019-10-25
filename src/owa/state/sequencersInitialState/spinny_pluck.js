@@ -227,7 +227,7 @@ export function createSpinnyPluckState (additionalInitialState) {
       attackTime: 0.0,
       releaseTime: 0.0,
       numBeats: 55 * 4,
-      amp: 1.0
+      amp: 0.4
     }
     , additionalInitialState);
   

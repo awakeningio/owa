@@ -29,7 +29,7 @@ var owaStateStore = configureStore({
 });
 //
 const main = function () {
-  owaStateStore.dispatch(buttonPressed('level_6', 0));
+  owaStateStore.dispatch(buttonPressed('level_6', 3));
   setTimeout(function () {
     //store.dispatch(awakeningSequencers.actions.sequencerQueued('2_0'));
     //store.dispatch(awakeningSequencers.actions.sequencerQueued('2_1'));

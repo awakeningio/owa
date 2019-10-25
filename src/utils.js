@@ -21,7 +21,7 @@ export function getEnvOrError(envName) {
   }
 }
 
-export function getEnvAsNumber (envName) {
+export function getEnvAsNumber(envName) {
   var result = process.env[envName];
 
   if (result) {
@@ -31,14 +31,25 @@ export function getEnvAsNumber (envName) {
   }
 }
 
-export function beatsToMs (beats, bpm) {
-  return beats / bpm * 60000.0;
+export function beatsToMs(beats, bpm) {
+  return (beats / bpm) * 60000.0;
 }
 
-export function constrain (value, min, max) {
+export function constrain(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
 
-export function choose (list) {
+export function choose(list) {
   return list[Math.round(Math.random() * (list.length - 1))];
+}
+
+export function seconds_timestamp() {
+  return new Date().getTime() / 1000.0;
+}
+
+// Determine if a SC event was a rest, there are many ways...
+export function isRest (event) {
+  return event.midinote === "rest" || event.note === "rest" || event.degree === "rest" || (
+    typeof event.dur === "object" && event.dur.class === "Rest"
+  )
 }

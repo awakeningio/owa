@@ -19,7 +19,7 @@ import songIdInitialState from './songIdInitialState';
 import tempoInitialState from './tempoInitialState';
 import sessionPhaseDurationsInitialState from './sessionPhaseDurationsInitialState';
 
-export function createInitialState () {
+export function createInitialState (additionalInitialState) {
   // create levels
   const levelsById = {
     'level_6': create_simultaneous_level('level_6', 6),
@@ -49,9 +49,10 @@ export function createInitialState () {
       byId: segmentsById,
       allIds: Object.keys(segmentsById)
     },
-    sequencers: createSequencersInitialState(),
+    sequencers: createSequencersInitialState(additionalInitialState),
     songId: songIdInitialState,
     tempo: tempoInitialState,
-    sessionPhaseDurations: sessionPhaseDurationsInitialState
+    sessionPhaseDurations: sessionPhaseDurationsInitialState,
+    ...additionalInitialState
   };
 }

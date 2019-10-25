@@ -1,88 +1,37 @@
 EminatorHatsEtcSequencer : AwakenedSequencer {
-  var hatsSynthdef,
-    lastSessionPhase;
+  var lastSessionPhase,
+    hatsInstrument;
 
   initPatch {
-    var sampleManager = OWASampleManager.getInstance();
-    var patch;
-    patch = Patch("owa.EminatorHiHat", (
-      velocity: KrNumberEditor(0, [0, 127]),
-      gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(-11.0.dbamp(), \amp),
-      openHat: KrNumberEditor(0, [0, 1]),
-      sustainTime: KrNumberEditor(1, [0, 100]),
-      acousticClosedStartTimes: sampleManager.getVoiceSampleManager('acoustic_hat').startTimesBuf.bufnum,
-      acousticOpenStartTimes: sampleManager.getVoiceSampleManager('acoustic_hat_open').startTimesBuf.bufnum,
-      electronicClosedStartTimes: sampleManager.getVoiceSampleManager('electronic_hat').startTimesBuf.bufnum,
-      electronicOpenStartTimes: sampleManager.getVoiceSampleManager('electronic_hat_open').startTimesBuf.bufnum,
-      sustained: false
+    hatsInstrument = EminatorHatsInstrument.new((
+      bufManager: bufManager,
+      clock: clock
     ));
-    patch.gate.lag = 0;
-    hatsSynthdef = patch.asSynthDef().add();
-  }
-
-  updateNotes {
-
-    var state = store.getState();
-    var hatsMidiKey;
-
-    hatsMidiKey = switch(state.sessionPhase.asSymbol(),
-      \QUEUE_TRANS_6, {
-        'eminator_hats_L6';
-      },
-      \TRANS_4, {
-        'eminator_hats_L4';
-      },
-      \TRANS_2, {
-        'eminator_hats_L2';
-      }
-    );
-
-    if (hatsMidiKey != nil, {
-      Pdefn(
-        'EminatorHatsEtcSequencerNotes',
-        Pseq(bufManager.midiSequences[hatsMidiKey], inf)
-      );
-    });
-
-    Pdefn('EminatorHatsEtcSequencerNotes').quant = currentState.playQuant;
   }
 
   initStream {
-    var sampleManager = OWASampleManager.getInstance();
-
-    ^Pbind(
-      \instrument, hatsSynthdef.name,
-      [\midinote, \dur], Pdefn('EminatorHatsEtcSequencerNotes'),
-      \openHat, Pfunc({
-        arg e;
-
-        if (e[\midinote] == 9, {
-          1    
-        }, {
-          0
-        });
-      }),
-      \sustainTime, Pfunc({
-        arg e;
-        (e[\dur] / clock.tempo);
-      }),
-      \acousticClosedSample, sampleManager.getVoiceSampleManager('acoustic_hat').sampleBufnumPattern(),
-      \electronicClosedSample, sampleManager.getVoiceSampleManager('electronic_hat').sampleBufnumPattern(),
-      \acousticOpenSample, sampleManager.getVoiceSampleManager('acoustic_hat_open').sampleBufnumPattern(),
-      \electronicOpenSample, sampleManager.getVoiceSampleManager('electronic_hat_open').sampleBufnumPattern()
-    ).asStream();
+    ^hatsInstrument.pattern.asStream();
   }
 
   handleStateChange {
     var state = store.getState();
     var sessionPhase = state.sessionPhase.asSymbol();
+    var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
     
     super.handleStateChange();
 
     if (lastSessionPhase !== sessionPhase, {
-      this.updateNotes();
+      hatsInstrument.updateForSessionPhase(sessionPhase);
       lastSessionPhase = sessionPhase;
+    });
+
+    if (lastPropQuant !== currentState.propQuant, {
+      hatsInstrument.updatePropQuant(currentState.propQuant);
+    });
+
+    if (lastVariationIndex !== currentState.variationIndex, {
+      hatsInstrument.useLevel6Variation(currentState.variationIndex);    
     });
   }
 }

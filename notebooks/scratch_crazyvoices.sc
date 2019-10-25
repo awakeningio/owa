@@ -1,0 +1,191 @@
+(
+  ~projectDir = "/Users/colin/Projects/owa";
+
+  MIDIClient.init;
+  MIDIIn.connectAll;
+  API.mountDuplexOSC();
+  s.options.inDevice = "JackRouter";
+  s.options.outDevice = "JackRouter";
+  s.options.memSize = 8192 * 2 * 2 * 2;
+  s.options.blockSize = 8;
+  s.meter();
+  s.plotTree();
+  //s.dumpOSC();
+
+
+  s.waitForBoot({
+    TempoClock.default.tempo = 140.0 / 60.0;
+  });
+  
+  s.boot();
+)
+
+(
+  var patch;
+  patch = Patch("owa.eminator.CrazyVoices", (
+    gate: KrNumberEditor(1, \gate),
+    freq: KrNumberEditor(440, \freq),
+    amp: KrNumberEditor(-3.0.dbamp(), \amp),
+    phasingAmt: KrNumberEditor(0.0, \unipolar)
+  ));
+  patch.gate.lag = 0;
+  ~synthdef = patch.asSynthDef().add();
+)
+
+(
+  var clock = TempoClock.default;
+  var synthdef = ~synthdef;
+  ~pat = Pbind(
+    \instrument, synthdef.name,
+    //\degree, Pseq([0, 5, 3, 8, 7, 0, 7, 5], inf),
+    \scale, Scale.minor,
+    // D
+    \mtranspose, 2,
+    //\dur, Prand([0.5, Rest(0.5)], inf),
+    //\dur, Prand([0.25, Rest(0.25), 0.5, Rest(0.5)], inf),
+    [\dur, \legato, \degree, \octave], Pdefn('EminatorCrazyVoices'),
+    \amp, Prand([-10.0.dbamp(), -12.0.dbamp()], inf),
+    \vibratoSpeed, clock.tempo * 4,
+    \vibratoDepth, 2, // in semitones
+    \vowel, Prand([0, 1, 2, 3, 4], inf),
+    \phasingAmt, 0.0,
+    //\phasingAmt, Prand([0.0, 0.5, 1.0], inf),
+    \att, 0.05,
+    \rel, 0.25,
+    //\filterFreq, Pfunc({
+    //arg e;
+
+    //e[\scale].degreeToFreq(
+    //e[\degree],
+    //"D2".notemidi().midicps(),
+    //e[\octave]
+    //);
+    //})
+  );
+)
+
+(
+  // level4 and onwards
+  Pdefn(
+    'EminatorCrazyVoices',
+    Ptuple([
+      // dur
+      Prand([
+        Pseq([1, Rest(3)]),
+        Pseq([0.5, Rest(3.5)]),
+        Pseq([Rest(4)]),
+        Pseq([Rest(4)])
+      ], inf),
+
+      // legato
+      1.0,
+
+      // degree
+      Pseq([0, 7, 2, 0, 7, 0, 2, 2], inf),
+      // octave
+      Prand([1, 2, 3, 4], inf)
+
+    ], inf)
+  );
+)
+
+(
+  Pdefn(
+    'EminatorCrazyVoices',
+    Prand([
+      Ptuple([
+        // dur
+        Pseq([1, Rest(6)], inf),
+        // legato
+        1.0,
+        // degree
+        Pseq([0, 7, 2, 0, 7, 0, 2, 2], inf),
+        // octave
+        Prand([1, 2, 3, 4], inf)
+      ])
+    ])
+  );
+)
+(
+  Pdefn(
+    'EminatorCrazyVoices',
+    Prand([
+      Ptuple([
+        // dur
+        Prand([
+          Pseq([1, Rest(6)]),
+          Pseq([1, Rest(2), 1, Rest(2)]),
+        ], inf),
+        // legato
+        Prand([0.75, 0.25], inf),
+        // degree
+        Pseq([0, 7, 2, 0, 7, 0, 2, 2], inf),
+        // octave
+        Prand([1, 2, 3, 4], inf)
+      ])
+    ])
+  );
+)
+(
+  Pdefn(
+    'EminatorCrazyVoices',
+    Prand([
+      Ptuple([
+        // dur
+        Pwrand([
+          Pseq([1, Rest(6)]),
+          Pseq([1, Rest(2), 1, Rest(2)]),
+          Pseq([Rest(0.5), 1, Rest(1), 1, 1, Rest(1.5)]),
+        ], [
+          1,
+          2,
+          3
+        ].normalizeSum(),
+        inf),
+        // legato
+        Pwrand([0.75, 0.5, 0.25], [1, 2, 3].normalizeSum(), inf),
+        // degree
+        Prand([0, 7, 2, 0, 7, 0, 2, 2], inf),
+        // octave
+        Prand([1, 2, 3, 4], inf)
+      ])
+    ])
+  );
+)
+(
+  Pdefn(
+    'EminatorCrazyVoices',
+    Prand([
+      Ptuple([
+        // dur
+        Pwrand([
+          Pseq([1, Rest(6)]),
+          Pseq([1, Rest(2), 1, Rest(2)]),
+          Pseq([1, Rest(1), 1, 1, Rest(2)]),
+          Pseq([Rest(0.5), 1/2, Rest(1/2), Rest(1), 1/16, Rest(15/16), 1, Rest(1.5)]),
+        ], [
+          1,
+          4,
+          4,
+          6
+        ].normalizeSum(),
+        inf),
+        // legato
+        Pwrand([0.75, 0.5, 0.25, 1/16], [1, 4, 6, 8].normalizeSum(), inf),
+        // degree
+        Prand([0, 7, 2, 0, 7, 0, 2, 2], inf),
+        // octave
+        Prand([1, 3, 4], inf)
+      ])
+    ])
+  );
+)
+
+(
+  ~player = ~pat.play(quant: 4);
+)
+
+(
+  ~player.stop();
+)
+

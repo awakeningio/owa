@@ -257,13 +257,14 @@
       patch,
       synthdef,
       tempoBPM = 140,
-      loadedSequence = 'eminator_bass_L6',
+      loadedSequence = 'eminator_bass_L6_03',
       control15Patch,
       control15Bus = Bus.control(Server.default, 1),
       control16Patch,
       control16Bus = Bus.control(Server.default, 1),
       envsPat,
-      outputChannel;
+      outputChannel,
+      legatoBySequenceName;
     
     TempoClock.default.tempo = tempoBPM / 60.0;
     outputChannel = MixerChannel.new(
@@ -292,8 +293,36 @@
         makeDuration: 4 * 7,
         ccsToEnv: [15, 16],
         tempoBPM: tempoBPM
-      )
+      ),
+        (
+          midiFileName: "eminator_bass_L6-01.mid",
+          midiKey: 'eminator_bass_L6_01',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
+          tempoBPM: tempoBPM
+        ),
+        (
+          midiFileName: "eminator_bass_L6-02.mid",
+          midiKey: 'eminator_bass_L6_02',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
+          tempoBPM: tempoBPM
+        ),
+        (
+          midiFileName: "eminator_bass_L6-03.mid",
+          midiKey: 'eminator_bass_L6_03',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
+          tempoBPM: tempoBPM
+        ),
     ]);
+
+    legatoBySequenceName = (
+      eminator_bass_L6: 1.1,
+      eminator_bass_L6_01: 1.1,
+      eminator_bass_L6_02: 0.99,
+      eminator_bass_L6_03: 0.99
+    );
 
     control15Patch = Patch({
       arg gate, env;
@@ -324,11 +353,15 @@
       useSustain: 0,
       gate: KrNumberEditor(1, \gate),
       useModulatorBus: 1,
-
     ));
+    patch.gate.lag = 0;
     synthdef = patch.asSynthDef().add();
 
     bufManager.midiCCEnvs[loadedSequence][15].plot();
+    bufManager.midiCCEnvs[loadedSequence][16].plot();
+
+    "bufManager.midiSequences[loadedSequence]:".postln;
+    bufManager.midiSequences[loadedSequence].postln;
  
     envsPat = Ppar([
       Pbind(
@@ -345,23 +378,30 @@
     pat = PmonoArtic(
       synthdef.name,
       [\midinoteFromFile, \dur], Pseq(bufManager.midiSequences[loadedSequence], inf),
-      \legato, 1.1,
+      \legato, legatoBySequenceName[loadedSequence],
       \midinote, Pfunc({
         arg event;
-        (event['midinoteFromFile'] - 24);
+        if (event['midinoteFromFile'] == \rest, {
+          \rest;
+        }, {
+          (event['midinoteFromFile'] - 24);
+        });
       }),
       \attackModFreq, Pfunc({
         arg event;
-        (event[\midinote] + 12).midicps();
+        if (event['midinoteFromFile'] == 'rest', {
+          0;
+        }, {
+          (event[\midinote] + 12).midicps();
+        });
       }),
       //\toneModulatorGainMultiplier, 1.0,
       //\toneModulatorLFOAmount, 0.0,
-      \toneModulatorLFORate, tempoBPM / 60.0 / 4,
+      \toneModulatorLFORate, tempoBPM / 60.0 / 8,
       \toneModulatorGainMultiplierBus, control15Bus,
       \toneModulatorLFOAmountBus, control16Bus
     );
     //"playing...".postln();
-    //~player = pat.play();
     envsPat.play(quant: 4);
     outputChannel.play(EventStreamPlayer.new(pat.asStream()), (quant:4));
   });
@@ -395,9 +435,9 @@
 
 }.value());
 
-(
-  ~player.stop();
-)
+//(
+  //~player.stop();
+//)
 
 //(
   //~pat = Pseq([
@@ -410,53 +450,17 @@
   //~stream.next();
 //)
 
-(
-Env.new(
-      //initial attack             peak          exp. decay
-      [0.0,   1.0,      0.9,      0.9,      0.0 ],
-      [   0.001,      0.05,      0.05,   1.2      ],
-      [0.0,   2.5,     4.5,      -2.5,   -5.5  ],
-      releaseNode: 3
-    ).plot();
-)
+//(
+//Env.new(
+      ////initial attack             peak          exp. decay
+      //[0.0,   1.0,      0.9,      0.9,      0.0 ],
+      //[   0.001,      0.05,      0.05,   1.2      ],
+      //[0.0,   2.5,     4.5,      -2.5,   -5.5  ],
+      //releaseNode: 3
+    //).plot();
+//)
 
-(
-  ~c = LinkClock.new();
-)
+//(
+  //~c = LinkClock.new();
+//)
 
-(
-  var synthdef = Patch("owa.eminator.CrazyVoices", (
-    gate: KrNumberEditor(1, \gate),
-    freq: KrNumberEditor(440, \freq),
-    amp: KrNumberEditor(1.0, \amp),
-  )).asSynthDef().add();
-~player = Pbind(
-  \instrument, synthdef.name,
-  //\degree, Pseq([0, 5, 3, 8, 7, 0, 7, 5], inf),
-  \degree, Pseq([0, 7, 2, 0, 7, 0, 2, 2], inf),
-  \scale, Scale.minor,
-  \octave, Prand([1, 2, 6, 7], inf),
-  // D
-  \mtranspose, 2,
-  //\dur, Prand([0.5, Rest(0.5)], inf),
-  \dur, Prand([0.25, Rest(0.25), 0.5, Rest(0.5)], inf),
-  \amp, -5.0.dbamp(),
-  \vibratoSpeed, ~c.tempo * 4,
-  \vibratoDepth, 2, // in semitones
-  \vowel, Prand([0, 1, 2, 3, 4], inf),
-  \phasingAmt, 0.0,
-  //\phasingAmt, Prand([0.0, 0.5, 1.0], inf),
-  \legato, 1.0,
-  \att, 0.05,
-  \rel, 0.25,
-  //\filterFreq, Pfunc({
-    //arg e;
-
-    //e[\scale].degreeToFreq(
-      //e[\degree],
-      //"D2".notemidi().midicps(),
-      //e[\octave]
-    //);
-  //})
-).play(~c, quant: 4);
-)

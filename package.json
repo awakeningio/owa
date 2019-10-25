@@ -5,7 +5,7 @@
   "main": "build/main.js",
   "scripts": {
     "test": "NODE_ENV=test nyc --require @babel/register npm run mocha",
-    "mocha": "mocha --require @babel/register --require source-map-support --timeout 10000 --slow 4000 --bail",
+    "mocha": "mocha --require @babel/register --require source-map-support --timeout 15000 --slow 10000 --bail",
     "build_docs": "plantuml -tsvg docs/*.puml",
     "watch_docs": "npm-watch build_docs",
     "build": "babel src -d build",
@@ -80,7 +80,7 @@
     "@serialport/list": "^1.1.5",
     "@serialport/parser-readline": "^1.0.5",
     "@tweenjs/tween.js": "^17.3.0",
-    "awakening-sequencers": "^0.8.10",
+    "awakening-sequencers": "^0.8.12",
     "babel-plugin-istanbul": "^5.1.1",
     "chai": "^4.2.0",
     "color": "^3.1.0",

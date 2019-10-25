@@ -1,121 +1,38 @@
 EminatorKickSnareSequencer : AwakenedSequencer {
-  var kickSynthdef,
+  var 
     snareSynthdef,
-    acousticKickSamplerManager,
-    electronicSnareSampleManager,
-    acousticSnareSampleManager,
-    lastSessionPhase;
+    lastSessionPhase,
+    instrument;
 
   initPatch {
-    var sampleManager = OWASampleManager.getInstance();
-
-    acousticKickSamplerManager = sampleManager.getVoiceSampleManager('acoustic_kick');
-    electronicSnareSampleManager = sampleManager.getVoiceSampleManager('electronic_snare');
-    acousticSnareSampleManager = sampleManager.getVoiceSampleManager('acoustic_snare');
-
-    kickSynthdef = Patch("owa.EminatorKick", (
-      velocity: KrNumberEditor(0, [0, 127]),
-      gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(-0.0.dbamp(), \amp),
-      acousticStartTimesBufnum: acousticKickSamplerManager.startTimesBuf.bufnum
-    )).asSynthDef().add();
-
-    snareSynthdef = Patch("owa.EminatorSnare", (
-      velocity: KrNumberEditor(0, [0, 127]),
-      gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(-0.0.dbamp(), \amp),
-      electronicStartTimesBufnum: electronicSnareSampleManager.startTimesBuf.bufnum,
-      acousticStartTimesBufnum: acousticSnareSampleManager.startTimesBuf.bufnum
-    )).asSynthDef().add();
-  }
-
-  updateNotes {
-    var state = store.getState(),
-      kickMidiKey,
-      snareMidiKey,
-      sessionPhase;
-
-    sessionPhase = state.sessionPhase.asSymbol();
-
-    kickMidiKey = switch(sessionPhase, 
-      \TRANS_6, {
-        'eminator_kick_L6';
-      },
-      \TRANS_4, {
-        'eminator_kick_L4';
-      },
-      \TRANS_2, {
-        'eminator_kick_L2'
-      }
-    );
-
-    if (kickMidiKey !== nil, {
-      Pdefn(
-        'EminatorKickNotes',
-        Pseq(bufManager.midiSequences[kickMidiKey], inf)
-      );
-    });
-    Pdefn('EminatorKickNotes').quant = currentState.playQuant;
-
-    snareMidiKey = switch(sessionPhase,
-      \TRANS_6, {
-        'eminator_snare_L6';
-      },
-      \TRANS_4, {
-        'eminator_snare_L4';
-      },
-      \TRANS_2, {
-        'eminator_snare_L2';
-      }
-    );
-
-    if (snareMidiKey !== nil, {
-      Pdefn(
-        'EminatorSnareNotes',
-        Pseq(bufManager.midiSequences[snareMidiKey], inf)
-      );
-    });
-    Pdefn('EminatorSnareNotes').quant = currentState.playQuant;
+    instrument = EminatorKickSnareInstrument.new(params);
   }
 
   initStream {
-    var kickPat, snarePat;
-    kickPat = Pbind(
-      \instrument, kickSynthdef.name,
-      \velocity, Pseq([110], inf),
-      [\midinoteFromFile, \dur], Pdefn('EminatorKickNotes'),
-      \midinote, Pfunc({
-        arg e;
-        //"e['midinoteFromFile']:".postln;
-        //e['midinoteFromFile'].postln;
-        "D0".notemidi();
-      }),
-      \acousticSampleBufnum, acousticKickSamplerManager.sampleBufnumPattern(),
-    );
-
-    snarePat = Pbind(
-      \instrument, snareSynthdef.name,
-      [\midinote, \dur], Pdefn('EminatorSnareNotes'),
-      \velocity, Pseq([110], inf),
-      \electronicSampleBufnum, electronicSnareSampleManager.sampleBufnumPattern(),
-      \acousticSampleBufnum, acousticSnareSampleManager.sampleBufnumPattern()
-    );
-
-    ^Ppar([
-      kickPat,
-      snarePat
-    ]).asStream();
+    ^instrument.pattern.asStream();
   }
 
   handleStateChange {
     var state = store.getState();
     var sessionPhase = state.sessionPhase.asSymbol();
+    var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
     
     super.handleStateChange();
 
     if (lastSessionPhase !== sessionPhase, {
-      this.updateNotes();
+      instrument.updateForSessionPhase(sessionPhase);
       lastSessionPhase = sessionPhase;
+    });
+
+    if (currentState.propQuant !== lastPropQuant, {
+      instrument.updatePropQuant(currentState.propQuant);    
+    });
+
+    if (lastVariationIndex !== currentState.variationIndex, {
+      if ((sessionPhase == 'QUEUE_TRANS_6').or(sessionPhase == 'TRANS_6').or(sessionPhase == 'PLAYING_6'), {
+        instrument.useLevel6Variation(currentState.variationIndex);    
+      });
     });
   }
 }

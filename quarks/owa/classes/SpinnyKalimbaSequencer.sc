@@ -1,5 +1,5 @@
 /**
- *  @file       KalimbaSequencer.sc
+ *  @file       SpinnyKalimbaSequencer.sc
  *
  *
  *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-KalimbaSequencer : AwakenedSequencer {
+SpinnyKalimbaSequencer : AwakenedSequencer {
   var synthdef;
 
   initPatch {

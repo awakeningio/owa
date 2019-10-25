@@ -20,8 +20,7 @@ OWAController {
     bufManager,
     clockController,
     seqFactory,
-    idlePlayer,
-    sampleManager;
+    idlePlayer;
 
 
   *new {
@@ -97,11 +96,7 @@ OWAController {
     ));
     
 
-    bufManager.load_bufs([
-      ["kick_01 [2018-05-20 115711].wav", \kick_01],
-      ["hhclosed_96 [2018-05-20 155504].wav", \hhclosed_96],
-      ["hhopen_83 [2018-05-20 155504].wav", \hhopen_83],
-      ["chime high pitch ring_D.wav", \chime_ring_d],
+    bufManager.load_bufs(([
       ["spinny-pluck_L6_sfx [2018-05-27 133232].wav", 'spinny-pluck_L6_sfx'],
       [
         "spinny-pluck_L4_chords-1 [2018-07-07 122629]_mono.wav",
@@ -127,7 +122,7 @@ OWAController {
       'spinny-pluck_L2_chords-3'],
       ["spinny-pluck_L2_chords-4 [2018-08-03 182410]_mono.wav",
       'spinny-pluck_L2_chords-4'],
-      
+
       [
         "eminator_floortom_01 [2019-03-23 192053].aif",
         'eminator_floortom_01'
@@ -148,15 +143,6 @@ OWAController {
         "eminator_snareroll_01 [2019-03-23 192053].aif",
         'eminator_snareroll_01'
       ],
-      ["sharp_eerie/eerie_L6_01 [2019-05-10 104045]_mono.aif", \sharp_eerie_01],
-      ["sharp_eerie/eerie_L6_02 [2019-05-10 104045]_mono.aif", \sharp_eerie_02],
-      ["sharp_eerie/eerie_L6_03 [2019-05-10 104045]_mono.aif", \sharp_eerie_03],
-      ["sharp_eerie/eerie_L6_04 [2019-05-10 104045]_mono.aif", \sharp_eerie_04],
-      ["sharp_eerie/eerie_L6_05 [2019-05-10 104045]_mono.aif", \sharp_eerie_05],
-      ["sharp_eerie/eerie_L6_06 [2019-05-10 104045]_mono.aif", \sharp_eerie_06],
-      ["sharp_eerie/eerie_L6_07 [2019-05-10 104045]_mono.aif", \sharp_eerie_07],
-      ["sharp_eerie/eerie_L6_08 [2019-05-10 104045]_mono.aif", \sharp_eerie_08],
-      ["sharp_eerie/eerie_L6_09 [2019-05-10 104045]_mono.aif", \sharp_eerie_09],
       ["eminator-chords/render chords L2 01 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_01],
       ["eminator-chords/render chords L2 02 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_02],
       ["eminator-chords/render chords L2 03 [2019-05-19 204530]__mono.wav", \eminator_chords_L2_03],
@@ -166,22 +152,13 @@ OWAController {
       ["eminator-chords/render chords L4 03 [2019-05-19 204530]__mono.wav", \eminator_chords_L4_03],
       ["eminator-chords/render chords L4 04 [2019-05-19 204530]__mono.wav", \eminator_chords_L4_04],
 
-    ], ({
+    ]
+    ++ EminatorSharpEerieInstrument.getBufsToLoadList()
+    ++ SpinnyChimeInstrument.getBufsToLoadList()
+  ), ({
       // when buffers are done loading
       // load midi files
       bufManager.load_midi([
-        (
-          midiFileName: "spinny-pluck_L6_hats.mid",
-          midiKey: 'spinny-pluck_L6_hats',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['spinny_pluck']
-        ),
-        (
-          midiFileName: "spinny-pluck_L2_hats.mid",
-          midiKey: 'spinny-pluck_L2_hats',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['spinny_pluck']
-        ),
         (
           midiFileName: "spinny-pluck_L6_lead.mid",
           midiKey: 'spinny-pluck_L6_lead',
@@ -216,57 +193,24 @@ OWAController {
           tempoBPM: OWAConstants.tempoBySongId['eminator']
         ),
         (
-          midiFileName: "eminator_L2_hats.mid",
-          midiKey: 'eminator_hats_L2',
-          makeDuration: 8 * 4,
+          midiFileName: "eminator_bass_L6-01.mid",
+          midiKey: 'eminator_bass_L6_01',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
           tempoBPM: OWAConstants.tempoBySongId['eminator']
         ),
         (
-          midiFileName: "eminator_L4_hats.mid",
-          midiKey: 'eminator_hats_L4',
-          makeDuration: 8 * 4,
+          midiFileName: "eminator_bass_L6-02.mid",
+          midiKey: 'eminator_bass_L6_02',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
           tempoBPM: OWAConstants.tempoBySongId['eminator']
         ),
         (
-          midiFileName: "eminator_L6_hats.mid",
-          midiKey: 'eminator_hats_L6',
-          makeDuration: 2 * 7,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_kick_L2.mid",
-          midiKey: 'eminator_kick_L2',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_kick_L4.mid",
-          midiKey: 'eminator_kick_L4',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_kick_L6.mid",
-          midiKey: 'eminator_kick_L6',
-          makeDuration: 2 * 7,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_snare_L2.mid",
-          midiKey: 'eminator_snare_L2',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_snare_L4.mid",
-          midiKey: 'eminator_snare_L4',
-          makeDuration: 8 * 4,
-          tempoBPM: OWAConstants.tempoBySongId['eminator']
-        ),
-        (
-          midiFileName: "eminator_snare_L6.mid",
-          midiKey: 'eminator_snare_L6',
-          makeDuration: 2 * 7,
+          midiFileName: "eminator_bass_L6-03.mid",
+          midiKey: 'eminator_bass_L6_03',
+          makeDuration: 4 * 7,
+          ccsToEnv: [15, 16],
           tempoBPM: OWAConstants.tempoBySongId['eminator']
         ),
         (
@@ -275,7 +219,11 @@ OWAController {
           makeDuration: 4 * 16,
           tempoBPM: OWAConstants.tempoBySongId['eminator']
         )
-      ]);
+      ]
+      ++ EminatorKickSnareInstrument.getMidiToLoadList()
+      ++ EminatorHatsInstrument.getMidiToLoadList()
+      ++ SpinnyHatsInstrument.getMidiToLoadList()
+    );
 
       bufManager.cue_bufs([
         (
@@ -335,10 +283,25 @@ OWAController {
         )
       ]);
 
-      sampleManager = OWASampleManager.new((
-        bufManager: bufManager,
-        soundsDir: "SOUNDS_DIRECTORY_PATH".getenv(),
-        onDoneLoading: {
+      bufManager.load_sample_providers_from_metadata(
+        EminatorKickSnareInstrument.getSampleProviderMetadatasToLoadList()
+        ++ EminatorHatsInstrument.getSampleProviderMetadatasToLoadList()
+        ++ EminatorWubBuzzInstrument.getSampleProviderMetadatasToLoadList()
+        ++ SpinnyHatsInstrument.getSampleProviderMetadatasToLoadList()
+        ++ SpinnyKickInstrument.getSampleProviderMetadatasToLoadList()
+        ++ [
+          // TODO move these to their respective instruments
+          'high-pop',
+          'lead'
+        ].collect({
+          arg voiceName;
+          (
+            name: voiceName,
+            metadataFilePath: voiceName.asString() ++ ".json",
+            class: PitchedVoiceSampleManager
+          );
+        }),
+        {
           // initialize sequencers
           seqFactory.setStore(store);
 
@@ -354,9 +317,7 @@ OWAController {
             type: "OWA_SOUND_INIT_DONE"
           ));
         }
-      ));
-
-
+      );
     }));
 
 

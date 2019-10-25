@@ -984,10 +984,10 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-awakening-sequencers@^0.8.10:
-  version "0.8.10"
-  resolved "https://registry.yarnpkg.com/awakening-sequencers/-/awakening-sequencers-0.8.10.tgz#563564ca7879ba5caad905d505b292a26fa0e9e9"
-  integrity sha512-M44DrrXF1RFZKnqZVZR/B3Ctw2MghF8LndM5fC5Au9xjZ2qcbqEsLFtw7RxbtT+BaaounKil3iXRI+vGADbkjw==
+awakening-sequencers@^0.8.12:
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/awakening-sequencers/-/awakening-sequencers-0.8.12.tgz#45ac70b37df33d49e24474667534decc36ddcd1b"
+  integrity sha512-3h+FSIDP5zQ4w6vWaKSfBULM0BiXwNWsBWb1lOE1NNw+AqblYXhM3f4Axp6kCGah79EJDXw1BrEnNnDc4RLUBg==
   dependencies:
     lodash "^4.17.11"
     midi "^0.9.5"

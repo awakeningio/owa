@@ -80,7 +80,7 @@
     "@serialport/list": "^1.1.5",
     "@serialport/parser-readline": "^1.0.5",
     "@tweenjs/tween.js": "^17.3.0",
-    "awakening-sequencers": "^0.8.12",
+    "awakening-sequencers": "^0.8.13",
     "babel-plugin-istanbul": "^5.1.1",
     "chai": "^4.2.0",
     "color": "^3.1.0",

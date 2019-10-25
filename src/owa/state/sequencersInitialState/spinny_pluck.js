@@ -10,6 +10,7 @@ export function createSpinnyPluckState (additionalInitialState) {
     'spinny_pluck-6_0': create_owa_sequencer('spinny_pluck-6_0', 'SpinnyBassSequencer', {
       numBeats: 2 * 4,
       playQuant: [4, 4],
+      propQuant: [4, 0],
       phaseProps: {
         [SESSION_PHASES.TRANS_6]: {
           variationIndex: 0,
@@ -34,6 +35,7 @@ export function createSpinnyPluckState (additionalInitialState) {
     'spinny_pluck-6_1': create_owa_sequencer('spinny_pluck-6_1', 'SpinnyKickSequencer', {
       numBeats: 2 * 4,
       playQuant: [4, 4],
+      propQuant: [4, 0],
       phaseProps: {
         [SESSION_PHASES.TRANS_6]: {
           variationIndex: 0,
@@ -61,16 +63,32 @@ export function createSpinnyPluckState (additionalInitialState) {
     'spinny_pluck-6_2': create_owa_sequencer('spinny_pluck-6_2', 'SpinnyHiHatSequencer', {
       numBeats: 8 * 4,
       playQuant: [4, 4],
-      midiName: 'spinny-pluck_L6_hats',
+      propQuant: [4, 0],
       phaseProps: {
-        [SESSION_PHASES.TRANS_2]: {
-          midiName: 'spinny-pluck_L2_hats'
+        [SESSION_PHASES.TRANS_6]: {
+          variationIndex: 0,
+          variationProps: [
+            {
+              variationIndex: 0
+            },
+            {
+              variationIndex: 1
+            },
+            {
+              variationIndex: 2
+            }
+          ],
+          variationMenuType: VARIATION_MENU_TYPES.SECTIONS
+        },
+        [SESSION_PHASES.TRANS_4]: {
+          variationMenuType: VARIATION_MENU_TYPES.NONE
         }
       }
     }, additionalInitialState),
     'spinny_pluck-6_3': create_owa_sequencer('spinny_pluck-6_3', 'SpinnyLeadPopSequencer', {
       numBeats: 4 * 4,
-      playQuant: [4, 4]
+      playQuant: [4, 4],
+      propQuant: [4, 0],
     }, additionalInitialState),
     'spinny_pluck-6_4': create_owa_sequencer('spinny_pluck-6_4', 'SpinnyChimeSequencer', {
       numBeats: 2 * 4,
@@ -102,7 +120,8 @@ export function createSpinnyPluckState (additionalInitialState) {
     'spinny_pluck-6_5': create_owa_sequencer('spinny_pluck-6_5', 'SpinnySfxSequencer', {
       numBeats: 8 * 4,
       playQuant: [4, 4],
-      stopQuant: [4, 4]
+      stopQuant: [4, 4],
+      propQuant: [4, 0],
     }, additionalInitialState),
     'spinny_pluck-2_0': create_owa_sequencer('spinny_pluck-2_0', 'SpinnyKalimbaSequencer', {
       numBeats: 8,

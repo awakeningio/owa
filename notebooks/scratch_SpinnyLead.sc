@@ -28,35 +28,56 @@
 (
   var patch,
     synthdef,
-    pat;
+    pattern;
 
     patch = Patch("cs.percussion.Impulsive", (
       makeStereo: 1
     ));
     synthdef = patch.asSynthDef().add();
-    pat = Pbind(
-      //\type, \instr,
-      //\instr, "cs.percussion.Impulsive",
+    pattern = Pbind(
       \instrument, synthdef.name,
-      [\midinote, \dur], Pdefn('SpinnyLeadPop'),
+      \scale, Scale.minor,
+      \root, 2,
+      \octave, 6,
+      [\degree, \dur], Pdefn('SpinnyLeadPop'),
       \amp, 1.0.dbamp()
     );
 
-    ~pattern = pat;
+    ~pattern = pattern;
 )
 
 (
   Pdefn('SpinnyLeadPop', Ptuple([
     Pseq([
-      Pseq(["F#6", "C0", "A6", "C0"].notemidi(), 5),
-      Pseq(["F#6", "A6", "A6", "A6"].notemidi(), 3)
+      Pseq([3, 5], 5),
+      Pseq([3, 5, 5, 5], 3)
     ], inf),
     Pseq([
-      Pseq([1/2, Rest(1/2)], 10),
+      Pseq([1], 10),
       Pseq([1/2], 12)
     ], inf)
   ]));
 )
+(
+  Pdefn('SpinnyLeadPop', Ptuple([
+    Pseq(
+      [3, 5, 7, 2]
+    , inf),
+    Pseq([
+      1, 1/2, 1/2, 1
+    ], inf)
+  ]));
+)
+(
+  Pdefn('SpinnyLeadPop', Ptuple([
+    Pseq(
+      [3, 5, 7, 2,    Pseq([3, 5], 6)]
+    , inf),
+    Pseq([
+      1/3, 1/3, 1/3, 1, Pseq([1/2], 12)
+    ], inf)
+  ]));
+)
 
-~pattern.play();
-~pattern.stop();
+~player = ~pattern.play();
+~player.stop();

@@ -9,25 +9,38 @@
  **/
 
 SpinnyLeadPopSequencer : AwakenedSequencer {
-  var patch,
-    synthdef;
-  initStream {
-    var pat;
+  var inst,
+    lastSessionPhase;
 
-    patch = Patch("cs.percussion.Impulsive", (
-      makeStereo: 1
-    ));
-    synthdef = patch.asSynthDef().add();
-    pat = Pbind(
-      //\type, \instr,
-      //\instr, "cs.percussion.Impulsive",
-      \instrument, synthdef.name,
-      [\midinote, \dur], Pseq(
-        bufManager.midiSequences['spinny-pluck_L6_lead'],
-        inf
-      ),
-      \amp, 1.0.dbamp()
-    );
-    ^pat.asStream();
+  initPatch {
+    inst = SpinnyLeadPopInstrument.new(params);
+  }
+
+  initStream {
+    ^inst.pattern.asStream();
+  }
+
+  handleStateChange {
+    var state = store.getState();
+    var sessionPhase = state.sessionPhase.asSymbol();
+    var lastPropQuant = currentState.propQuant;
+    var lastVariationIndex = currentState.variationIndex;
+    
+    super.handleStateChange();
+
+    if (lastSessionPhase !== sessionPhase, {
+      inst.updateForSessionPhase(sessionPhase);
+      lastSessionPhase = sessionPhase;
+    });
+
+    if (currentState.propQuant !== lastPropQuant, {
+      inst.updatePropQuant(currentState.propQuant);    
+    });
+
+    if (lastVariationIndex !== currentState.variationIndex, {
+      if ((sessionPhase == 'QUEUE_TRANS_6').or(sessionPhase == 'TRANS_6').or(sessionPhase == 'PLAYING_6'), {
+        inst.useLevel6Variation(currentState.variationIndex);    
+      });
+    });
   }
 }

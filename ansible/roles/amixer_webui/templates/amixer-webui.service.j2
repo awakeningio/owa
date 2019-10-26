@@ -1,0 +1,14 @@
+[Unit]
+Description=ALSA Mixer Web UI
+DefaultDependencies=yes
+
+[Service]
+WorkingDirectory={{ amixer_webui_root }}
+TimeoutStartSec=30
+ExecStart=/usr/bin/python3 alsamixer_webui.py -p {{ amixer_webui_port }} -l 0.0.0.0
+
+[Install]
+#WantedBy=multi-user.target
+#WantedBy=autologin@.service
+WantedBy=default.target
+

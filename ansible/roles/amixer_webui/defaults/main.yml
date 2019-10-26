@@ -1,0 +1,5 @@
+---
+# defaults file for amixer_webui
+amixer_webui_root: /usr/local/share/amixer-webui
+amixer_webui_port: 8890
+amixer_webui_user: pi

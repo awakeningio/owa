@@ -14,5 +14,7 @@
         name: colinsullivan.supercollider
     - include_role:
         name: base
+    - include_role:
+        name: amixer_webui
 
 - import_playbook: site_deploy.yml

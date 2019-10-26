@@ -1,0 +1,60 @@
+---
+# tasks file for amixer_webui
+- name: Install python deps
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - python3
+      - python3-pip
+      - python3-setuptools
+
+- name: Clone amixer-webui to build dir
+  git:
+    dest: "{{ amixer_webui_root }}"
+    clone: yes
+    repo: https://github.com/JiriSko/amixer-webui.git
+
+#- name: Install amixer-webui requirements with pip3
+  #pip:
+    #executable: /usr/bin/pip3
+    #requirements: "{{ amixer_webui_root }}/requirements.txt"
+
+- name: user systemd file directory
+  file:
+    path: "/home/{{ amixer_webui_user }}/.local/share/systemd/user/"
+    state: directory
+    owner: "{{ amixer_webui_user }}"
+    group: "{{ amixer_webui_user }}"
+
+- name: user systemd file
+  template:
+    src: amixer-webui.service.j2
+    dest: "/home/{{ amixer_webui_user }}/.local/share/systemd/user/amixer-webui.service"
+    owner: "{{ amixer_webui_user }}"
+    group: "{{ amixer_webui_user }}"
+    mode: 0644
+  register: amixer_webui_service
+
+- name: systemd daemon-reload
+  become_user: "{{ amixer_webui_user }}"
+  systemd:
+    scope: user
+    daemon_reload: yes
+  when: amixer_webui_service.changed
+
+- name: restart amixer-webui user service
+  become_user: "{{ amixer_webui_user }}"
+  systemd:
+    scope: user
+    name: amixer-webui.service
+    state: restarted
+  when: amixer_webui_service.changed
+
+- name: amixer-webui service enabled and started
+  become_user: "{{ amixer_webui_user }}"
+  systemd:
+    scope: user
+    name: amixer-webui.service
+    state: started
+    enabled: true

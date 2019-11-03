@@ -15,7 +15,7 @@ import {
 import isEqual from "lodash/isEqual";
 import every from "lodash/every";
 
-import awakeningSequencers from "awakening-sequencers";
+import SCReduxSequencers from "supercollider-redux-sequencers";
 
 import { create_segmentId } from "owa/models";
 import {
@@ -25,7 +25,7 @@ import {
   TRANS_SEQUENCERID_BY_SONGID
 } from "owa/constants";
 
-const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
+const PLAYING_STATES = SCReduxSequencers.PLAYING_STATES;
 
 const getTempo = state => state.tempo;
 const getSessionPhase = state => state.sessionPhase;
@@ -202,7 +202,7 @@ export const getSCState = createDeepEqualSelector(
   getTempo,
   getSessionPhase,
   getSessionPhaseDurations,
-  awakeningSequencers.selectors.getSCSequencers,
+  SCReduxSequencers.selectors.getSCSequencers,
   getRevealReady,
   getIdlePlayer,
   (

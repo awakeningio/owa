@@ -1,11 +1,11 @@
-import awakeningSequencers from 'awakening-sequencers';
+import SCReduxSequencers from 'supercollider-redux-sequencers';
 
 import { createPhaseEndQuant } from 'owa/models';
 import {
   VARIATION_MENU_TYPES,
   VARIATION_INTERACTION_STATES
 } from 'owa/constants';
-const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
+const PLAYING_STATES = SCReduxSequencers.PLAYING_STATES;
 
 export function apply_phase_props (sequencer, sessionPhase) {
   let newSequencer = sequencer;
@@ -36,7 +36,7 @@ export function do_queue_on_phase_start (sequencer, sessionPhase, songId) {
 
 export function create_owa_sequencer (sequencerId, type, defaults = {}, additionalInitialState) {
   let sequencer = {
-    ...awakeningSequencers.create_default_sequencer(sequencerId, type),
+    ...SCReduxSequencers.create_default_sequencer(sequencerId, type),
     queueOnPhaseStart: false,
     phaseProps: {},
     variationProps: [],

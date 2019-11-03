@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import awakeningSequencers from 'awakening-sequencers'
+import SCReduxSequencers from 'supercollider-redux-sequencers'
 
 import configureStore from '../src/configureStore';
 import { SESSION_PHASES } from 'owa/constants';
@@ -40,7 +40,7 @@ describe("IdleAnimation", function () {
   });
   it("should switch to playing animation when sequencer is playing", function () {
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
-    store.dispatch(awakeningSequencers.actions.sequencerPlaying(
+    store.dispatch(SCReduxSequencers.actions.sequencerPlaying(
         getSegmentIdToSequencerId(store.getState())[segment.segmentId]
     ));
     expect(idleAnimation.stop.callCount).to.equal(1);

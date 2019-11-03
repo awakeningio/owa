@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import awakeningSequencers from 'awakening-sequencers'
+import SCReduxSequencers from 'supercollider-redux-sequencers'
 
 import LightingController from '../src/LightingController.js'
 import configureStore from "../src/configureStore"
@@ -38,7 +38,7 @@ describe("LightingController", function () {
     );
     segmentLightingController.queuedAnimation.start = sinon.fake();
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
-    store.dispatch(awakeningSequencers.actions.sequencerQueued(
+    store.dispatch(SCReduxSequencers.actions.sequencerQueued(
         getSegmentIdToSequencerId(store.getState())[
           segmentTwo.segmentId
         ]

@@ -84,7 +84,7 @@ OWAController {
       //store: linkStore,
       //clockOffsetSeconds: 0.0
     //));
-    clockController = OWAClockController.new((
+    clockController = SCReduxTempoClockController.new((
       store: store
     ));
 

@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import awakeningSequencers from 'awakening-sequencers';
+import SCReduxSequencers from 'supercollider-redux-sequencers';
 import * as actionTypes from '../actionTypes'
 function level (state, action) {
   switch (action.type) {
@@ -34,7 +34,7 @@ function level (state, action) {
       //}
       break;
 
-    case awakeningSequencers.actionTypes.SEQUENCER_PLAYING:
+    case SCReduxSequencers.actionTypes.SEQUENCER_PLAYING:
       //if (state.playbackType === LEVEL_PLAYBACK_TYPE.SEQUENTIAL) {
         //if (state.segmentPlaybackIndex === false) {
           //break;

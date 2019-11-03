@@ -11,7 +11,7 @@
 import Color from "color";
 import TWEEN from "@tweenjs/tween.js";
 
-import awakeningSequencers from "awakening-sequencers";
+import SCReduxSequencers from "supercollider-redux-sequencers";
 import ControllerWithStore from "./ControllerWithStore";
 import { setPixelColors, setPixelsColors } from "./Pixels";
 import { getSegmentIdToSequencerId } from "./selectors";
@@ -113,7 +113,7 @@ class SegmentPlayingAnimation extends ControllerWithStore {
     //if (sequencer.playingState !== this.lastState.sequencer.playingState) {
 
     //switch (sequencer.playingState) {
-    //case awakeningSequencers.PLAYING_STATES.PLAYING:
+    //case SCReduxSequencers.PLAYING_STATES.PLAYING:
     //this.start();
     //break;
 
@@ -125,8 +125,8 @@ class SegmentPlayingAnimation extends ControllerWithStore {
 
     if (
       [
-        awakeningSequencers.PLAYING_STATES.PLAYING,
-        awakeningSequencers.PLAYING_STATES.STOP_QUEUED
+        SCReduxSequencers.PLAYING_STATES.PLAYING,
+        SCReduxSequencers.PLAYING_STATES.STOP_QUEUED
       ].includes(sequencer.playingState) &&
       sequencer.event !== this.lastState.sequencer.event
     ) {

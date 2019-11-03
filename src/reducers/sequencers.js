@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import awakeningSequencers from "awakening-sequencers";
+import SCReduxSequencers from "supercollider-redux-sequencers";
 import * as actionTypes from "../actionTypes";
 import { create_segmentId, createPhaseEndQuant } from "owa/models";
 import {
@@ -32,7 +32,7 @@ import {
 
 import { seconds_timestamp } from "../utils";
 
-const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
+const PLAYING_STATES = SCReduxSequencers.PLAYING_STATES;
 
 // Handles commonalities for any button-based sequencer
 function owaButtonSequencer(state, action, fullState) {
@@ -45,7 +45,7 @@ function owaButtonSequencer(state, action, fullState) {
       };
     // When a sequencer parameter change goes into effect, if it was for this
     // sequencer, reset menu
-    case awakeningSequencers.actionTypes.SEQUENCER_PROP_CHANGED:
+    case SCReduxSequencers.actionTypes.SEQUENCER_PROP_CHANGED:
       if (action.payload.sequencerId === state.sequencerId) {
         return {
           ...state,
@@ -467,7 +467,7 @@ export default function sequencers(state, action, fullState, prevSessionPhase) {
   let newFullState = fullState;
   let newState = state;
   // Handles basic , stopping, queueing of all sequencers
-  newState = awakeningSequencers.reducer(newState, action);
+  newState = SCReduxSequencers.reducer(newState, action);
   newFullState = {
     ...newFullState,
     sequencers: newState

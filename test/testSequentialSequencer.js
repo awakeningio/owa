@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import awakeningSequencers from "awakening-sequencers";
+import SCReduxSequencers from "supercollider-redux-sequencers";
 import { OWA_READY_STATES, SESSION_PHASES } from "owa/constants";
 import configureStore from "../src/configureStore";
 import OWAController from "../src/OWAController";
@@ -13,7 +13,7 @@ import {
 } from "../src/selectors";
 import * as actions from "../src/actions";
 
-const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
+const PLAYING_STATES = SCReduxSequencers.PLAYING_STATES;
 
 describe("Sequential Sequencer", function() {
   var store,

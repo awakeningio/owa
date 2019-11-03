@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import awakeningSequencers from 'awakening-sequencers';
+import SCReduxSequencers from 'supercollider-redux-sequencers';
 
 import {
   OWA_SOUND_INIT_DONE,
@@ -18,7 +18,7 @@ import {
 import { SESSION_PHASES } from 'owa/constants';
 import { createIdlePlayer } from 'owa/models';
 
-const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
+const PLAYING_STATES = SCReduxSequencers.PLAYING_STATES;
 
 export default function idlePlayer (state = createIdlePlayer(), action) {
   switch (action.type) {

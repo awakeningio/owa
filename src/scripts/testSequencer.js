@@ -31,14 +31,14 @@ var owaStateStore = configureStore({
 const main = function () {
   owaStateStore.dispatch(buttonPressed('level_6', 3));
   setTimeout(function () {
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('2_0'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('2_1'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_5'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_0'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_1'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_2'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_3'));
-    //store.dispatch(awakeningSequencers.actions.sequencerQueued('6_4'));
+    //store.dispatch(SCReduxSequencers.actions.sequencerQueued('2_0'));
+    //store.dispatch(SCReduxSequencers.actions.sequencerQueued('2_1'));
+    //store.dispatch(SCReduxSequencers.actions.sequencerQueued('6_5'));
+    //store.dispatch(SCReduxSequencers.actions.sequencerQueued('6_0'));
+    //store.dispatch(SCReduxSequencers.actions.sequencerQueued('6_1'));
+    //store.dispatch(SCReduxSequencers.actions.sequencerQueued('6_2'));
+    //store.dispatch(SCReduxSequencers.actions.sequencerQueued('6_3'));
+    //store.dispatch(SCReduxSequencers.actions.sequencerQueued('6_4'));
 
     //setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 1)), 2000);
     //setTimeout(() => owaStateStore.dispatch(buttonPressed('level_6', 2)), 2000);
@@ -48,12 +48,12 @@ const main = function () {
 
     //setTimeout(function () {
       //store.dispatch(buttonPressed('level_4', 0));
-      ////store.dispatch(awakeningSequencers.actions.sequencerStopQueued('6_5'));
+      ////store.dispatch(SCReduxSequencers.actions.sequencerStopQueued('6_5'));
       ////setTimeout(function () {
-        ////store.dispatch(awakeningSequencers.actions.sequencerQueued('6_5'));
+        ////store.dispatch(SCReduxSequencers.actions.sequencerQueued('6_5'));
       ////}, 750);
     //}, 5000);
-    ////store.dispatch(awakeningSequencers.actions.sequencerQueued('trans'));
+    ////store.dispatch(SCReduxSequencers.actions.sequencerQueued('trans'));
   }, 15000);
 };
 

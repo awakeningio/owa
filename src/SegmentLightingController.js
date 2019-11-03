@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-import awakeningSequencers from "awakening-sequencers";
+import SCReduxSequencers from "supercollider-redux-sequencers";
 
 import ControllerWithStore from "./ControllerWithStore";
 import SegmentQueuedAnimation from "./SegmentQueuedAnimation";
@@ -28,7 +28,7 @@ import {
   getSegmentIdToSequencerId
 } from "./selectors";
 
-const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
+const PLAYING_STATES = SCReduxSequencers.PLAYING_STATES;
 
 /**
  *  @class        SegmentLightingController
@@ -82,13 +82,13 @@ class SegmentLightingController extends ControllerWithStore {
 
   //if (sequencer.sequencerId === 'level_4') {
   //if (
-  //sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
+  //sequencer.playingState === SCReduxSequencers.PLAYING_STATES.PLAYING
   //&& sequencer.event.bufName === segmentIdToBufName[segment.segmentId]
   //) {
   //this.playingAnimation.tick();
   //}
   //} else {
-  //if (sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING) {
+  //if (sequencer.playingState === SCReduxSequencers.PLAYING_STATES.PLAYING) {
   //this.playingAnimation.tick();
   //}
   //}
@@ -227,8 +227,8 @@ class SegmentLightingController extends ControllerWithStore {
           this.queuedAnimation.start();
         } else if (
           sequencer.playingState ===
-            awakeningSequencers.PLAYING_STATES.QUEUED ||
-          sequencer.playingState === awakeningSequencers.PLAYING_STATES.REQUEUED
+            SCReduxSequencers.PLAYING_STATES.QUEUED ||
+          sequencer.playingState === SCReduxSequencers.PLAYING_STATES.REQUEUED
         ) {
           this.playingAnimation.stop();
           switch (state.sessionPhase) {
@@ -244,13 +244,13 @@ class SegmentLightingController extends ControllerWithStore {
               break;
           }
         } else if (
-          sequencer.playingState === awakeningSequencers.PLAYING_STATES.PLAYING
+          sequencer.playingState === SCReduxSequencers.PLAYING_STATES.PLAYING
         ) {
           this.playingAnimation.start();
           this.queuedAnimation.stop();
         } else if (
           sequencer.playingState ===
-          awakeningSequencers.PLAYING_STATES.STOP_QUEUED
+          SCReduxSequencers.PLAYING_STATES.STOP_QUEUED
         ) {
           // if stop was queued, animation continues to play because sequencer
           // continues to play.

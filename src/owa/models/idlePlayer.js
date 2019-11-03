@@ -1,8 +1,8 @@
-import awakeningSequencers from 'awakening-sequencers';
+import SCReduxSequencers from 'supercollider-redux-sequencers';
 
 export function createIdlePlayer () {
   return {
     gate: 0,
-    playingState: awakeningSequencers.PLAYING_STATES.STOPPED
+    playingState: SCReduxSequencers.PLAYING_STATES.STOPPED
   };
 }

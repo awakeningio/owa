@@ -9,7 +9,7 @@
  **/
 
 import { expect } from "chai";
-import awakeningSequencers from "awakening-sequencers";
+import SCReduxSequencers from "supercollider-redux-sequencers";
 
 import configureStore from "../src/configureStore";
 import { createInitialState } from "owa/state";
@@ -29,7 +29,7 @@ import {
 import { buttonPressed, sessionPhaseAdvanced } from "../src/actions";
 import { SESSION_PHASES } from "owa/constants";
 
-const PLAYING_STATES = awakeningSequencers.PLAYING_STATES;
+const PLAYING_STATES = SCReduxSequencers.PLAYING_STATES;
 
 describe("getLevel6Segments", function() {
   var store, state;
@@ -109,7 +109,7 @@ describe("getLevel4Ready", function() {
     expect(getLevel4Ready(store.getState())).to.be.false;
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
     store.dispatch(
-      awakeningSequencers.actions.sequencerPlaying(
+      SCReduxSequencers.actions.sequencerPlaying(
         getSegmentIdToSequencerId(store.getState())[level6Segments[0].segmentId]
       )
     );
@@ -123,7 +123,7 @@ describe("getLevel4Ready", function() {
         buttonPressed(level6Segments[i].levelId, level6Segments[i].segmentIndex)
       );
       store.dispatch(
-        awakeningSequencers.actions.sequencerPlaying(
+        SCReduxSequencers.actions.sequencerPlaying(
           getSegmentIdToSequencerId(store.getState())[
             level6Segments[i].segmentId
           ]
@@ -167,7 +167,7 @@ describe("getLevel2Ready", function() {
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_6));
     state = store.getState();
     store.dispatch(
-      awakeningSequencers.actions.sequencerPlaying(
+      SCReduxSequencers.actions.sequencerPlaying(
         getSegmentIdToSequencerId(state)[level6Segments[0].segmentId]
       )
     );
@@ -177,7 +177,7 @@ describe("getLevel2Ready", function() {
       );
       state = store.getState();
       store.dispatch(
-        awakeningSequencers.actions.sequencerPlaying(
+        SCReduxSequencers.actions.sequencerPlaying(
           getSegmentIdToSequencerId(state)[level6Segments[i].segmentId]
         )
       );
@@ -192,7 +192,7 @@ describe("getLevel2Ready", function() {
     store.dispatch(sessionPhaseAdvanced(SESSION_PHASES.PLAYING_4));
     state = store.getState();
     store.dispatch(
-      awakeningSequencers.actions.sequencerPlaying(
+      SCReduxSequencers.actions.sequencerPlaying(
         getSegmentIdToSequencerId(state)[level4Segment.segmentId]
       )
     );
@@ -247,7 +247,7 @@ describe("getRevealReady", function() {
       buttonPressed(level2Segments[1].levelId, level2Segments[1].segmentIndex)
     );
     store.dispatch(
-      awakeningSequencers.actions.sequencerPlaying(
+      SCReduxSequencers.actions.sequencerPlaying(
         getSegmentIdToSequencerId(store.getState())[level2Segments[1].segmentId]
       )
     );

@@ -80,7 +80,6 @@
     "@serialport/list": "^1.1.5",
     "@serialport/parser-readline": "^1.0.5",
     "@tweenjs/tween.js": "^17.3.0",
-    "awakening-sequencers": "^0.8.13",
     "babel-plugin-istanbul": "^5.1.1",
     "chai": "^4.2.0",
     "color": "^3.1.0",
@@ -93,6 +92,7 @@
     "serialport": "^7.1.5",
     "sinon": "^7.2.7",
     "supercollider-redux": "0.0.97",
+    "supercollider-redux-sequencers": "file:../supercollider-redux-sequencers",
     "supercolliderjs": "github:colinsullivan/supercolliderjs#23b1a67c77ebc61c3fd930052bb73f9aa9ba73df",
     "winston": "^3.2.1"
   },

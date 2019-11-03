@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 import { expect } from 'chai';
-import awakeningSequencers from 'awakening-sequencers';
+import SCReduxSequencers from 'supercollider-redux-sequencers';
 import supercolliderRedux from 'supercollider-redux';
 
 import configureStore from "../src/configureStore";
@@ -34,7 +34,7 @@ describe('SCState', function () {
     const prevLevel6Sequencers = getLevel6Sequencers(state);
 
     store.dispatch(
-      awakeningSequencers.actions.sequencerQueued(
+      SCReduxSequencers.actions.sequencerQueued(
         prevLevel6Sequencers[0].sequencerId
       )
     );
@@ -51,7 +51,7 @@ describe('SCState', function () {
 
     prevSCState = scState;
     store.dispatch(
-      awakeningSequencers.actions.sequencerPlaying(
+      SCReduxSequencers.actions.sequencerPlaying(
         prevLevel6Sequencers[0].sequencerId
       )
     );

@@ -21,7 +21,7 @@ import * as actionTypes from "./actionTypes"
 import SerialInputController from './SerialInputController'
 import InactivityTimeoutController from './InactivityTimeoutController';
 
-//import awakeningSequencers from "awakening-sequencers"
+//import SCReduxSequencers from "supercollider-redux-sequencers"
 //import * as actions from './actions'
 
 class OWAController extends ControllerWithStore {

@@ -1,4 +1,4 @@
-EminatorNoisySFXSequencer : AwakenedSequencer {
+EminatorNoisySFXSequencer : SCReduxSequencer {
   var wubBuzzInstrument;
 
   initPatch {

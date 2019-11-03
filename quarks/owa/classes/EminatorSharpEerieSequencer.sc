@@ -1,4 +1,4 @@
-EminatorSharpEerieSequencer : AwakenedSequencer {
+EminatorSharpEerieSequencer : SCReduxSequencer {
   var synthdef,
 		bufnums,
     lastSessionPhase,

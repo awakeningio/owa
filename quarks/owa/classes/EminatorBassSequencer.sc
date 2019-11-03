@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-EminatorBassSequencer : AwakenedSequencer {
+EminatorBassSequencer : SCReduxSequencer {
   var control15Synthdefs,
     control16Synthdefs,
     control15Bus,

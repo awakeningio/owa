@@ -1,4 +1,4 @@
-EminatorCrazyVoicesSequencer : AwakenedSequencer {
+EminatorCrazyVoicesSequencer : SCReduxSequencer {
   var synthdef,
     lastSessionPhase;
   initPatch {

@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SpinnyLeadPopSequencer : AwakenedSequencer {
+SpinnyLeadPopSequencer : SCReduxSequencer {
   var inst,
     lastSessionPhase;
 

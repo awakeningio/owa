@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SpinnyKalimbaSequencer : AwakenedSequencer {
+SpinnyKalimbaSequencer : SCReduxSequencer {
   var synthdef;
 
   initPatch {

@@ -57,7 +57,7 @@ OWAController {
       rootDir: "SOUNDS_DIRECTORY_PATH".getenv()
     ));
 
-    seqFactory = AwakenedSequencerFactory.getInstance();
+    seqFactory = SCReduxSequencerFactory.getInstance();
     seqFactory.setBufManager(bufManager);
 
     sounds = List.new();

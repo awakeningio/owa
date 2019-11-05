@@ -806,6 +806,58 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
+"@supercollider/lang@file:../patches/supercolliderjs/packages/lang":
+  version "1.0.0-alpha.0"
+  dependencies:
+    "@supercollider/logger" "^1.0.0-alpha.0"
+    "@supercollider/server" "^1.0.0-alpha.0"
+    commander "^2.9.0"
+    cuid "^2.1.6"
+    js-yaml "3.13.1"
+    lodash "^4.17.15"
+    temp "~0.9.0"
+    tslib "1.10.0"
+    untildify "^4.0.0"
+
+"@supercollider/logger@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@supercollider/logger/-/logger-1.0.0-alpha.0.tgz#ee0cf6f787a562b7a51ff8ceeca7242704452b6b"
+  integrity sha512-/OESga4SpNUv5OSy6zuZI1oiVlWP/RhGN3YPlvS4Lw2lYR8Lufzf7dlN+m0ugIeKPy8xGge3c7+Vj3DiZLJoJQ==
+  dependencies:
+    chalk "^2.4.2"
+    tslib "1.10.0"
+
+"@supercollider/osc@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@supercollider/osc/-/osc-1.0.0-alpha.0.tgz#9a9cf78bfea54856e46c4df9dfcd1778f2e75286"
+  integrity sha512-Q5AdfEM1e7X7bR6qLLB7TNaE4P7OjsMQFql4O2jVKXYjxD9kY2Os47ozObMuQS6qK6DHk58enhLc50DlmVkipw==
+
+"@supercollider/scapi@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@supercollider/scapi/-/scapi-1.0.0-alpha.0.tgz#d9336b15c7445ef385e9f2c6212ac17d0c1d868b"
+  integrity sha512-rEkn2mPdIpQi5sMZtvA2Ky52KiwUmv918cSpnQgfoMEJT1QnQzEzTbY8W650G3YfkFxOiOk3lN0yH7AgFxzphg==
+  dependencies:
+    "@supercollider/logger" "^1.0.0-alpha.0"
+    "@supercollider/osc" "^1.0.0-alpha.0"
+    cuid "^2.1.6"
+    lodash "^4.17.15"
+    tslib "1.10.0"
+
+"@supercollider/server@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@supercollider/server/-/server-1.0.0-alpha.0.tgz#ac6dc91623078a2d43f21f58f5e2e0e702d282b6"
+  integrity sha512-CzEAvsn/qO7XNtkk8lZVbOcbtQDP7cIV7hrEplEQzoWst1BHrHtBWNck/WSTSOfQjH0riS3ll7eBhb/io5MTbQ==
+  dependencies:
+    "@supercollider/logger" "^1.0.0-alpha.0"
+    "@supercollider/osc" "^1.0.0-alpha.0"
+    commander "^2.9.0"
+    immutable "^3.8.1"
+    js-yaml "3.13.1"
+    lodash "^4.17.15"
+    rx "^4.1.0"
+    tslib "1.10.0"
+    untildify "^4.0.0"
+
 "@tweenjs/tween.js@^17.3.0":
   version "17.4.0"
   resolved "https://registry.yarnpkg.com/@tweenjs/tween.js/-/tween.js-17.4.0.tgz#2e9ab3f2111906b30dfe1ef3259a9781dd211d35"
@@ -983,18 +1035,6 @@ atob@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-
-awakening-sequencers@^0.8.13:
-  version "0.8.13"
-  resolved "https://registry.yarnpkg.com/awakening-sequencers/-/awakening-sequencers-0.8.13.tgz#b22aa9beafe89d2928dd504f05cc26d708bca666"
-  integrity sha512-oeEnTzHT7QNxBSSOdxkXww7jJBOSof1iLVcp76mdeTUn3g7V0MvFgGTKtLtA5bxGqbbGxH5+ebuEiRh0wuIEgw==
-  dependencies:
-    lodash "^4.17.11"
-    midi "^0.9.5"
-    redux "^3.6.0"
-    reselect "^3.0.1"
-    supercollider-redux "0.0.97"
-    supercolliderjs "^0.14.2"
 
 babel-code-frame@^6.22.0:
   version "6.26.0"
@@ -2898,7 +2938,7 @@ lodash.flattendeep@^4.4.0:
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
   integrity sha1-+wMJF/hqMTTlvJvsDWngAT3f7bI=
 
-lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
+lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -3492,7 +3532,7 @@ osc-min@^1.1.1:
   dependencies:
     binpack "~0"
 
-osc@^2.2.0, osc@^2.2.3:
+osc@^2.2.0, osc@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/osc/-/osc-2.3.1.tgz#fcb3ccea5ec6d098a71b0737c5463837c52580dc"
   integrity sha512-7kT91FXuCQBpy0NVcXZRLAqBHJlDA3ECXZBMTLwQdgF7N+M2ODVMR06Hp9Yr/qsIl7K3A60Z3rpDJizW9BGvQQ==
@@ -4416,14 +4456,23 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
-supercollider-redux@0.0.97:
-  version "0.0.97"
-  resolved "https://registry.yarnpkg.com/supercollider-redux/-/supercollider-redux-0.0.97.tgz#cc99c28813355fdcb403541184dc0b44fc12b1fd"
-  integrity sha512-G/2XsyXkAYN5JAiTIYA5BHLIgLtx1jWzofSbjz+agaO9NeMnay1OFGWOLdmoqdLGizuF/1IehSTLJWxdNXmnzg==
+"supercollider-redux-sequencers@file:../supercollider-redux-sequencers":
+  version "0.8.13"
   dependencies:
-    osc "^2.2.3"
+    lodash "^4.17.11"
+    midi "^0.9.5"
     redux "^3.6.0"
+    reselect "^3.0.1"
+    supercollider-redux "0.0.97"
     supercolliderjs "^0.14.2"
+
+supercollider-redux@0.0.97, "supercollider-redux@file:../supercollider-redux":
+  version "0.0.97"
+  dependencies:
+    "@supercollider/lang" "file:../../Library/Caches/Yarn/v6/npm-supercollider-redux-0.0.97-a78af049-7ed6-48a1-9ac0-469b87fa0a7e-1572935122209/node_modules/patches/supercolliderjs/packages/lang"
+    "@supercollider/scapi" "^1.0.0-alpha.0"
+    osc "^2.3.1"
+    redux "^3.7.2"
 
 supercolliderjs@^0.14.2:
   version "0.14.2"

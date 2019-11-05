@@ -33,7 +33,7 @@ class OWAController extends ControllerWithStore {
       remotePort: getEnvOrError('GUI_OSC_IN_PORT'),
       remoteHost: getEnvOrError('GUI_HOST')
     });
-    this.scController = new SCController();
+    this.scController = new SCController(this.store);
     this.store.dispatch({
       type: actionTypes.OWA_SOUND_BOOT_STARTED
     });

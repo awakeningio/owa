@@ -10,7 +10,7 @@
 
 import ControllerWithStore from "./ControllerWithStore"
 import OSCActionListener from "./OSCActionListener"
-import { getEnvOrError } from "./utils"
+//import { getEnvOrError } from "./utils"
 import * as constants from "owa/constants"
 import { getSCState } from './selectors'
 
@@ -22,8 +22,7 @@ class SoundController extends ControllerWithStore {
   init () {
     this._apiCallIndex = 0;
     this.actionListener = new OSCActionListener(this.store, {
-      localPort: getEnvOrError('SC_OSC_OUT_PORT'),
-      remotePort: getEnvOrError('SC_OSC_IN_PORT')
+      localPort: 3335
     });
 
     this.lastState = {

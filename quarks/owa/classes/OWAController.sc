@@ -28,19 +28,21 @@ OWAController {
   }
 
   boot {
-    store = StateStore.new(());
-    store.setDispatchLocations((
-      \main: (
-        addr: "127.0.0.1",
-        port: "SC_OSC_OUT_PORT".getenv().asInteger()
-      )
-    ));
+    //store = StateStore.new(());
+    //store.setDispatchLocations((
+      //\main: (
+        //addr: "127.0.0.1",
+        //port: "SC_OSC_OUT_PORT".getenv().asInteger()
+      //)
+    //));
 
     //OSCFunc.new({
       //arg msg, time, addr, recvPort;
     //}, '/owa/init')
 
     //linkStore = StateStore.new(());
+
+    store = SCReduxStore.getInstance();
     
     outputChannel = MixerChannel.new(
       "OWAController",

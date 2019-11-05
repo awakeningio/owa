@@ -91,7 +91,7 @@
     "reselect": "^3.0.1",
     "serialport": "^7.1.5",
     "sinon": "^7.2.7",
-    "supercollider-redux": "0.0.97",
+    "supercollider-redux": "file:../supercollider-redux",
     "supercollider-redux-sequencers": "file:../supercollider-redux-sequencers",
     "supercolliderjs": "github:colinsullivan/supercolliderjs#23b1a67c77ebc61c3fd930052bb73f9aa9ba73df",
     "winston": "^3.2.1"

@@ -6,8 +6,8 @@ EminatorLeadSequencer : AwakenedSequencer {
     var patch = Patch("owa.eminator.Lead", (
       velocity: KrNumberEditor(0, [0, 127]),
       gate: KrNumberEditor(1, \gate),
-      amp: KrNumberEditor(-21.0.dbamp(), \amp),
-      startTimesByVelocity: leadSamplerManager.startTimesBuf.bufnum
+      startTimesByVelocity: leadSamplerManager.startTimesBuf.bufnum,
+      amp: -24.0.dbamp()
     ));
     patch.gate.lag = 0;
     

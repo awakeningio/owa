@@ -1,6 +1,6 @@
 Instr("owa.eminator.Lead", {
   arg gate,
-    amp = 1.0,
+    amp = 0.5,
     velocity,
     startTimesByVelocity,
     sample,

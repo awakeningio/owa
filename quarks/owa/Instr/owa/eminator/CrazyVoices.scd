@@ -1,7 +1,7 @@
 Instr("owa.eminator.CrazyVoices", {
 	arg gate = 1,
     freq = 220,
-    amp = 0.5,
+    amp = 0.3,
     vibratoSpeed = 6,
     vibratoDepth = 4,
     vowel = 0,
@@ -100,6 +100,8 @@ Instr("owa.eminator.CrazyVoices", {
     relaxTime: 0.3,
     mul: 2.0.dbamp()
   );
+
+  [out, out];
   
 }, [
   \gate,

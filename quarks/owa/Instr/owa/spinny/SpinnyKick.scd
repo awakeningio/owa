@@ -35,7 +35,7 @@ Instr("owa.spinny.SpinnyKick", {
     slopeAbove: 0.4,
     clampTime: 0.005,
     relaxTime: 0.01
-  );
+  ) * 4.0.dbamp();
 
   out = amp * env * out;
   [out, out];

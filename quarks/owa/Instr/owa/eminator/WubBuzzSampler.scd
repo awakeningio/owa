@@ -23,7 +23,7 @@ Instr("owa.eminator.WubBuzzSampler", {
     sampleDur: 0.8
   ));
 
-  out;
+  [out, out];
 }, [
   \gate,
   \amp,

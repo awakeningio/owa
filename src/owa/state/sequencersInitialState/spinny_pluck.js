@@ -247,7 +247,7 @@ export function createSpinnyPluckState (additionalInitialState) {
           attackTime: 120.0/60.0 * 6,
           releaseTime: 4.0,
           numBeats: 15 * 4,
-          amp: 1.5
+          amp: 1.0
         },
         [SESSION_PHASES.QUEUE_TRANS_4]: {
           bufName: 'spinny-pluck_L6-L4',

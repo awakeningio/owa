@@ -5,7 +5,7 @@ EminatorCrazyVoicesSequencer : AwakenedSequencer {
     var patch = Patch("owa.eminator.CrazyVoices", (
       gate: KrNumberEditor(1, \gate),
       freq: KrNumberEditor(440, \freq),
-      amp: KrNumberEditor(-3.0.dbamp(), \amp),
+      amp: KrNumberEditor(-4.0.dbamp(), \amp),
       phasingAmt: KrNumberEditor(0.0, \unipolar)
     ));
     patch.gate.lag = 0;

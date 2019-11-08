@@ -13,6 +13,7 @@ SpinnyOrganicPercSequencer : AwakenedSequencer {
   initPatch {
     synthdef = Patch("cs.fm.OrganicPercussion", (
       //gate: KrNumberEditor(1.0, \gate),
+      amp: -33.0.dbamp(),
       gate: 1,
       autoDurationOn: 1
     )).asSynthDef().add();
@@ -21,7 +22,6 @@ SpinnyOrganicPercSequencer : AwakenedSequencer {
   initStream {
     ^Pbind(
       \instrument, synthdef.name,
-      \amp, -30.0.dbamp(),
       \degree, Prand([
         Pseq([8, 2, 3, 7]),
         Pseq([8, 5, 7, 0]),

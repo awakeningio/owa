@@ -49,7 +49,7 @@ SpinnyKalimbaSequencer : AwakenedSequencer {
         Pseq([6, 6, 6, 6, 6]),
       ], inf),
       \legato, Prand([0.3, 0.15], inf),
-      \amp, -21.0.dbamp()*(2**Pgauss(0, 0.1)),
+      \amp, -21.0.dbamp(),
       \mix, Pwhite(0.05, 0.35),
     ).asStream();
   }

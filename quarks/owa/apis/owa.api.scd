@@ -11,7 +11,7 @@
 (
   init: {
     arg reply, params;
-    var owa, store, linkStore;
+    var owa, store;
     owa = OWAController.getInstance();
     owa.store.setState(params.state);
     //owa.linkStore.setState(params.linkState);

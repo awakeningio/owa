@@ -41,7 +41,7 @@ Instr("owa.eminator.Bass", {
   out = -14.0.dbamp() * out;
   //out = out + Resonz.ar(out, 140, 1.05, 6.0.dbamp());
 
-  out;
+  [out, out];
 }, [
   \freq,
   \gate,

@@ -49,7 +49,7 @@ OWAController {
       outbus: 0
     );
 
-    outputChannel.level = 1.0;
+    outputChannel.level = 3.0.dbamp();
 
     //  create the buffer manager that will load the samples we need for this
     //  patch.

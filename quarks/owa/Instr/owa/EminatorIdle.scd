@@ -118,7 +118,7 @@ Instr("owa.EminatorIdle", {
 
   out = env * amp * (drone + dust);
 
-  out;
+  [out, out];
 }, [
   \amp,
   \gate,

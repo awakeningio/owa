@@ -12,7 +12,7 @@ SpinnyBassInstrument {
     clock = params['clockController'].clock;
 
     patch = Patch("cs.fm.WideBass", (
-      amp: -32.dbamp(),
+      amp: -20.dbamp(),
       gate: KrNumberEditor(1, \gate),
       useSustain: 0
     ));

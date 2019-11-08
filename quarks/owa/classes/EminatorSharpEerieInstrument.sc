@@ -25,6 +25,7 @@ EminatorSharpEerieInstrument {
     
     patch = Patch("owa.eminator.SharpEerieSampler", (
       gate: KrNumberEditor(1, \gate),
+      amp: -3.0.dbamp()
     ));
     patch.gate.lag = 0;
     synthdef = patch.asSynthDef().add();

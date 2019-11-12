@@ -30,8 +30,7 @@ describe("OWAController", function () {
         }
       }
     });
-    this.owaController = new OWAController(store, {
-    });
+    this.owaController = new OWAController(store, {});
 
   });
 

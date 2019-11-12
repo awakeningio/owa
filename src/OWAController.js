@@ -12,7 +12,6 @@
 import { getEnvOrError } from "./utils"
 import ControllerWithStore from "./ControllerWithStore"
 import OSCActionListener from "./OSCActionListener"
-import SoundController from "./SoundController"
 import LightingController from './LightingController'
 import SCController from './SCController'
 import logger from "./logging"
@@ -44,17 +43,7 @@ class OWAController extends ControllerWithStore {
     } else {
       this.inactivityTimeoutController = null;
     }
-    this.scController.boot().then((sclang) => {
-      this.soundController = new SoundController(this.store, {
-        sclang
-        //linkStateStore: this.params.linkStateStore
-      });
-      //this.abletonLinkController = new AbletonLinkController(
-        //this.params.linkStateStore,
-        //{
-          //stateTreePrefix: 'abletonlink'
-        //}
-      //);
+    this.scController.boot().then(() => {
       this.lightingController = new LightingController(this.store);
       this.serialInputController = new SerialInputController(this.store);
 
@@ -73,9 +62,10 @@ class OWAController extends ControllerWithStore {
   quit () {
     return new Promise((resolve, reject) => {
       // quit SC
-      this.soundController.quit();
       this.actionListener.quit();
-      this.lightingController.quit();
+      if (this.lightingController) {
+        this.lightingController.quit();
+      }
       if (this.inactivityTimeoutController) {
         this.inactivityTimeoutController.quit();
       }

@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === "development" || LOG_LEVEL === 1) {
  **/
 const stateTransformer = function(state) {
   const toPrint = {};
-  toPrint.sequencers = state.sequencers;
+  //toPrint.sequencers = state.sequencers;
   //Object.keys(state.sequencers).forEach(function (seqId) {
   //toPrint.sequencers[seqId] = _.pick(state.sequencers[seqId], [
   //'type',
@@ -78,11 +78,13 @@ const stateTransformer = function(state) {
       //lastPropChangeAt: state.sequencers['eminator-6_0'].lastPropChangeAt
     //}
   //};
+  toPrint.soundReady = state.soundReady;
   toPrint.sessionPhase = state.sessionPhase;
   //toPrint.sessionPhaseDurations = state.sessionPhaseDurations;
   toPrint.idlePlayer = state.idlePlayer;
   toPrint.soundReady = state.soundReady;
   toPrint.songId = state.songId;
+  toPrint.SCRedux = state.SCRedux;
   //toPrint.sequencers = state.sequencers;
   //toPrint.segments = state.segments;
   return toPrint;

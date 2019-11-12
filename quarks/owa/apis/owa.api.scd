@@ -11,20 +11,23 @@
 (
   init: {
     arg reply, params;
-    var owa, store;
-    owa = OWAController.getInstance();
-    owa.store.setState(params.state);
+    //var owa, store;
+    "owa.api.init".postln();
+    OWAController.getInstance().init(params);
+    //owa.store.setState(params.state);
     //owa.linkStore.setState(params.linkState);
-    owa.init(params);
-    reply.value();
+    //owa.init(params);
+    reply.value((
+      result: "ok"
+    ));
   },
-  setState: {
-    arg reply, state;
-    var owa = OWAController.getInstance();
-    var store = owa.store;
-    store.setState(state);
-    reply.value();
-  },
+  //setState: {
+    //arg reply, state;
+    //var owa = OWAController.getInstance();
+    //var store = owa.store;
+    //store.setState(state);
+    //reply.value();
+  //},
   //setLinkState: {
     //arg reply, state;
     //var owa = OWAController.getInstance();

@@ -9,10 +9,13 @@
  **/
 
 import SCRedux from "supercollider-redux";
+import SCAPI from "@supercollider/scapi";
 //import sc from 'supercolliderjs';
 import logger from "./logging";
 //import { getEnvAsNumber } from "./utils";
 import ControllerWithStore from "./ControllerWithStore";
+import * as constants from "owa/constants";
+import { getSCState } from "./selectors";
 
 //const EXTERNAL_SC = getEnvAsNumber("EXTERNAL_SC");
 let scBootScript = `
@@ -54,8 +57,43 @@ OWAController.initInstance();
  **/
 class SCController extends ControllerWithStore {
   init() {
-    this.sclangController = new SCRedux.SCLangController(this.store);
+    this.sclangController = new SCRedux.SCLangController(this.store, {
+      interpretOnLangBoot: scBootScript
+    });
+    this.scStoreController = new SCRedux.SCStoreController(this.store, {
+      scStateSelector: getSCState
+    });
     this.sclang = null;
+    this.api = null;
+
+    this.lastState = {};
+    this.lastState.soundReady = null;
+    const initSub = this.store.subscribe(() => {
+      const state = this.store.getState();
+
+      if (state.soundReady !== this.lastState.soundReady) {
+        this.lastState.soundReady = state.soundReady;
+
+        if (state.soundReady == constants.OWA_READY_STATES.BOOTED) {
+          console.log("calling owa.init");
+          const api = new SCAPI();
+          api.connect();
+          api
+            .call(undefined, "owa.init", [
+              {
+                constants
+              }
+            ])
+            .then(() => {
+              api.disconnect();
+              initSub();
+            }).catch(err => {
+              console.log("err");
+              console.log(err);
+            })
+        }
+      }
+    });
   }
   boot() {
     return new Promise((res, rej) => {
@@ -63,12 +101,9 @@ class SCController extends ControllerWithStore {
         .boot()
         .then(sclang => {
           this.sclang = sclang;
-          sclang
-            .interpret(scBootScript)
-            .then(() => {
-              this.handleBooted();
-              res();
-            })
+          this.scStoreController
+            .init()
+            .then(() => this.handleBooted())
             .catch(rej);
         })
         .catch(rej);
@@ -97,6 +132,8 @@ class SCController extends ControllerWithStore {
     }
   }
   quit() {
+    clearInterval(this.debugSCInterval);
+    this.scStoreController.quit();
     return this.sclangController.quit();
   }
 }

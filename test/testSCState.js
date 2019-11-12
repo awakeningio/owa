@@ -9,7 +9,6 @@
  **/
 import { expect } from 'chai';
 import SCReduxSequencers from 'supercollider-redux-sequencers';
-import supercolliderRedux from 'supercollider-redux';
 
 import configureStore from "../src/configureStore";
 import { getSCState, getLevel6Sequencers } from '../src/selectors'
@@ -68,7 +67,7 @@ describe('SCState', function () {
     const level6Sequencers = getLevel6Sequencers(state);
     
     store.dispatch({
-      type: supercolliderRedux.actionTypes.SUPERCOLLIDER_EVENTSTREAMPLAYER_NEXTBEAT,
+      type: SCReduxSequencers.actionTypes.SUPERCOLLIDER_EVENTSTREAMPLAYER_NEXTBEAT,
       payload: {
         id: level6Sequencers[0].sequencerId,
         nextTime: 1,

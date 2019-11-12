@@ -352,9 +352,6 @@ export default function createEminatorState(additionalInitialState) {
     )
   ];
 
-  console.log("sequencerList");
-  console.log(sequencerList);
-
   return sequencerList.reduce((acc, sequencer) => {
     acc[sequencer.sequencerId] = sequencer;
     return acc;

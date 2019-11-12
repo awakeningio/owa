@@ -9,6 +9,8 @@
  **/
 import { combineReducers } from 'redux';
 
+import SCRedux from "supercollider-redux";
+
 import soundReady from './soundReady';
 import sequencers from './sequencers';
 import levels from './levels';
@@ -23,6 +25,7 @@ import firstSegmentPressed from './firstSegmentPressed';
 import songId from './songId';
 
 var combined = combineReducers({
+  SCRedux: SCRedux.reducer,
   songId,
   fadecandyConnection,
   soundReady,

@@ -42,7 +42,7 @@ SpinnyHatsInstrument {
       closedSampleProvider;
 
     bufManager = params['bufManager'];
-    clock = params['clockController'].clock;
+    clock = params['clock'];
 
     openSampleProvider = bufManager.getSampleProvider('distorted_hat_open');
     closedSampleProvider = bufManager.getSampleProvider('distorted_hat_closed');

@@ -82,19 +82,14 @@ OWAController {
       this.handle_state_change();
     });
 
-    //clockController = ReduxAbletonTempoClockController.new((
-      //store: linkStore,
-      //clockOffsetSeconds: 0.0
-    //));
     clockController = SCReduxTempoClockController.new((
       store: store
     ));
-
-    seqFactory.setClockController(clockController);
+    seqFactory.setClock(clockController.clock);
 
     sessionController = SessionTimingController.new((
       store: store,
-      clockController: clockController
+      clock: clockController.clock
     ));
     
 

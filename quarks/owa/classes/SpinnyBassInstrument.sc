@@ -9,7 +9,7 @@ SpinnyBassInstrument {
     var synthdef,
       originalFreq = "D3".notemidi().midicps();
 
-    clock = params['clockController'].clock;
+    clock = params['clock'];
 
     patch = Patch("cs.fm.WideBass", (
       amp: -28.dbamp(),

@@ -15,7 +15,7 @@ SpinnyChimeInstrument {
       originalFreq = "D3".notemidi().midicps();
 
     bufManager = params['bufManager'];
-    clock = params['clockController'].clock;
+    clock = params['clock'];
 
     patch = Patch("owa.PitchedSampler", (
       originalFreq: originalFreq,

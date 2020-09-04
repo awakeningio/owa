@@ -15,7 +15,7 @@
  **/
 SessionTimingController {
   var store,
-    clockController,
+    clock,
     lastState;
     
   *new {
@@ -28,7 +28,7 @@ SessionTimingController {
     arg params;
 
     store = params.store;
-    clockController = params.clockController;
+    clock = params.clock;
 
     lastState = (
       sessionPhase: nil,
@@ -100,7 +100,7 @@ SessionTimingController {
       ++ nextPhase ++ " after duration " ++ phaseDuration
     ).postln();
 
-    clockController.clock.play({
+    clock.play({
       store.dispatch((
         type: 'SESSION_PHASE_ADVANCED',
         payload: (

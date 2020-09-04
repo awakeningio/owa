@@ -88,7 +88,7 @@ EminatorBassSequencer : SCReduxSequencer {
   }
 
   assignPdefnsFromCurrentState {
-    var tempo = clockController.clock.tempo,
+    var tempo = clock.tempo,
       midiKey = currentState.midiKey;
 
     Pdefn('EminatorBassSeqControl16').quant = currentState.propQuant;
@@ -156,7 +156,7 @@ EminatorBassSequencer : SCReduxSequencer {
           arg event;
           (event[\midinote] + 12).midicps();
         }),
-        \toneModulatorLFORate, clockController.clock.tempo / 4.0,
+        \toneModulatorLFORate, clock.tempo / 4.0,
         \toneModulatorGainMultiplierBus, control15Bus,
         \toneModulatorLFOAmountBus, control16Bus
       )

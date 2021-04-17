@@ -1,4 +1,4 @@
-EminatorKickSnareSequencer : AwakenedSequencer {
+EminatorKickSnareSequencer : SCReduxSequencer {
   var 
     snareSynthdef,
     lastSessionPhase,

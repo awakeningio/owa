@@ -1,4 +1,4 @@
-EminatorLeadSequencer : AwakenedSequencer {
+EminatorLeadSequencer : SCReduxSequencer {
   var synthdef;
 
   initPatch {

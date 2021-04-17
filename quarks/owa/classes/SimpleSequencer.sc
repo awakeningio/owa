@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SimpleSequencer : AwakenedSequencer {
+SimpleSequencer : SCReduxSequencer {
   var pat,
     //instr,
     patStream,

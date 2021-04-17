@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-EminatorBassSequencer : AwakenedSequencer {
+EminatorBassSequencer : SCReduxSequencer {
   var control15Synthdefs,
     control16Synthdefs,
     control15Bus,
@@ -88,7 +88,7 @@ EminatorBassSequencer : AwakenedSequencer {
   }
 
   assignPdefnsFromCurrentState {
-    var tempo = clockController.clock.tempo,
+    var tempo = clock.tempo,
       midiKey = currentState.midiKey;
 
     Pdefn('EminatorBassSeqControl16').quant = currentState.propQuant;
@@ -156,7 +156,7 @@ EminatorBassSequencer : AwakenedSequencer {
           arg event;
           (event[\midinote] + 12).midicps();
         }),
-        \toneModulatorLFORate, clockController.clock.tempo / 4.0,
+        \toneModulatorLFORate, clock.tempo / 4.0,
         \toneModulatorGainMultiplierBus, control15Bus,
         \toneModulatorLFOAmountBus, control16Bus
       )

@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-OneShotSamplerSequencer : AwakenedSequencer {
+OneShotSamplerSequencer : SCReduxSequencer {
   var synthdefsForBufNames,
     lastAmp = false,
     lastAttackTime = false,

@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SpinnySfxSequencer : AwakenedSequencer {
+SpinnySfxSequencer : SCReduxSequencer {
   var patch,
     synthdef;
   initPatch {

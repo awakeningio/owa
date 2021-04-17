@@ -1,4 +1,4 @@
-EminatorWhispPopSequencer : AwakenedSequencer {
+EminatorWhispPopSequencer : SCReduxSequencer {
   var synthdef;
 
   initPatch {

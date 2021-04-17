@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SpinnyChimeSequencer : AwakenedSequencer {
+SpinnyChimeSequencer : SCReduxSequencer {
   var inst,
     lastSessionPhase;
 

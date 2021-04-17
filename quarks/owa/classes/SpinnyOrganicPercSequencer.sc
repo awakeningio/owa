@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SpinnyOrganicPercSequencer : AwakenedSequencer {
+SpinnyOrganicPercSequencer : SCReduxSequencer {
   var synthdef;
   initPatch {
     synthdef = Patch("cs.fm.OrganicPercussion", (

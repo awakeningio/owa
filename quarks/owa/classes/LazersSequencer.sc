@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-LazersSequencer : AwakenedSequencer  {
+LazersSequencer : SCReduxSequencer  {
   var patchSynth;
   initPatch {
     var p = Patch("cs.fm.Lazers", (

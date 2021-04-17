@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-ChordProgSequencer : AwakenedSequencer {
+ChordProgSequencer : SCReduxSequencer {
   var synthdefsForBufNames,
     bufNameProxy,
     lastBufSequence = nil;

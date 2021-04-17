@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SpinnyBassSequencer : AwakenedSequencer {
+SpinnyBassSequencer : SCReduxSequencer {
   var inst,
     lastSessionPhase;
 

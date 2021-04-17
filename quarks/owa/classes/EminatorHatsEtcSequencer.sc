@@ -1,4 +1,4 @@
-EminatorHatsEtcSequencer : AwakenedSequencer {
+EminatorHatsEtcSequencer : SCReduxSequencer {
   var lastSessionPhase,
     hatsInstrument;
 

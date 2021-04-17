@@ -8,7 +8,7 @@
  *  @license    Licensed under the GPLv3 license.
  **/
 
-SpinnyHiHatSequencer : AwakenedSequencer {
+SpinnyHiHatSequencer : SCReduxSequencer {
   var inst,
     lastSessionPhase;
 
